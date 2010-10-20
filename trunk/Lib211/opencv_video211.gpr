@@ -1,0 +1,7 @@
+Project opencv_video211 is
+   for Externally_Built use "true";
+   for Source_Files use ();
+   for Library_Dir use ".";
+   for Library_Name use "libopencv_video211";
+   for Library_Kind use "dynamic";
+end opencv_video211;
