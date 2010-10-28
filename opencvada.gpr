@@ -21,9 +21,9 @@ with "Lib211\opencv_ml211";
 with "Lib211\opencv_objdetect211";
 with "Lib211\opencv_video211";
 
-project OpenCV is
+project OpenCVAda is
 
-   for Source_Dirs use ("Source\", "Source\Samples", "Source\legacy", "Source\core", "Source\calib3d");
+   for Source_Dirs use ("Source", "Source\Samples", "Source\legacy", "Source\core", "Source\calib3d", "Source\imgproc", "Source\video", "Source\highgui");
    for Object_Dir use "Build";
    for Exec_Dir use "Exec";
    for Main use ("Main.adb", "camera_test.adb", "chessboard_test.adb", "window_test.adb");
@@ -40,5 +40,5 @@ project OpenCV is
       for Vcs_Repository_Root use "https://192.168.0.84/svn/vision_system/Ada/OpenCV";
    end Ide;
 
-end OpenCV;
+end OpenCVAda;
 
