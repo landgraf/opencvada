@@ -13,11 +13,8 @@
 -----------------------------------------------------------------------
 
 --File-Info-------------------------------------------------------------
--- calib_3d-compat.ads - compat_c.h
--- Comments, Information, Other
+-- video.ads
+-- Ada only file.
 -----------------------------------------------------------------------
-
-package Calib_3D.Compat is
-private
-   procedure Nulled;
-end Calib_3D.Compat;
+package Video is
+end Video;

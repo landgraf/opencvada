@@ -13,11 +13,13 @@
 -----------------------------------------------------------------------
 
 --File-Info-------------------------------------------------------------
--- calib_3d-compat.ads - compat_c.h
+-- video-tracking.adb - video-tracking.hpp
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 
-package Calib_3D.Compat is
-private
-   procedure Nulled;
-end Calib_3D.Compat;
+package body Video.Tracking is
+   procedure Nulled is
+   begin
+      null;
+   end Nulled;
+end Video.Tracking;

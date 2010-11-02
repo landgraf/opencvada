@@ -18,4 +18,8 @@
 -----------------------------------------------------------------------
 
 package body Calib_3D is
+   procedure Nulled is
+   begin
+      null;
+   end Nulled;
 end Calib_3D;

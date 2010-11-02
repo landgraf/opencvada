@@ -13,11 +13,9 @@
 -----------------------------------------------------------------------
 
 --File-Info-------------------------------------------------------------
--- calib_3d-compat.ads - compat_c.h
+-- imgproc-compat_c.adb - imgproc-compat_c.hpp
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 
-package Calib_3D.Compat is
-private
-   procedure Nulled;
-end Calib_3D.Compat;
+package body Imgproc.Compat_C is
+end Imgproc.Compat_C;

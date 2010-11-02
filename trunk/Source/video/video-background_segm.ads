@@ -13,11 +13,9 @@
 -----------------------------------------------------------------------
 
 --File-Info-------------------------------------------------------------
--- calib_3d-compat.ads - compat_c.h
+-- video-background_segm.ads - video-background_segm.hpp
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 
-package Calib_3D.Compat is
-private
-   procedure Nulled;
-end Calib_3D.Compat;
+package Video.Background_Segm is
+end Video.Background_Segm;

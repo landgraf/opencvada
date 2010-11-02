@@ -13,11 +13,19 @@
 -----------------------------------------------------------------------
 
 --File-Info-------------------------------------------------------------
--- calib_3d-compat.ads - compat_c.h
+-- highgui.adb - highgui.hpp
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 
-package Calib_3D.Compat is
-private
-   procedure Nulled;
-end Calib_3D.Compat;
+package body Highgui is
+
+   function CreateFileSettings ( Compression     : Compression_Type;
+                                Compression_Rate : Integer;
+                                Not_Used         : Integer := 0) return File_Settings is
+   begin
+      return File_Settings'( Compression, Compression_Rate, Not_Used );
+   end CreateFileSettings;
+
+   procedure Nulled is
+   begin null; end Nulled;
+end Highgui;

@@ -131,7 +131,7 @@ package body Core.Core_C is
       Line_Iterator_Mask : Integer;
       Diff               : Ptrdiff_T ;
 
-      use Types_C.C_Point_Arr;
+      use Core_Types_C.C_Point_Arr;
    begin
       if (LineIterator.Err < 0) then
          Line_Iterator_Mask := -1;
