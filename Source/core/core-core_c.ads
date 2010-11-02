@@ -19,7 +19,7 @@
 
 with Interfaces; use Interfaces;
 with Interfaces.C; use Interfaces.C;
-with Core.Types_C; use Core.Types_C;
+with Core_Types_C; use Core_Types_C;
 with System;
 with Interfaces.C.Strings;
 with GNAT.Source_Info;
@@ -1298,8 +1298,8 @@ package Core.Core_C is
                             return Integer;
 
    procedure CvChangeSeqBlock (Reader    : Cv_Void_P;
-                               Direction : Integer) renames Types_C.CvChangeSeqBlock;
-   procedure CvCreateSeqBlock (Writer : Cv_Seq_Writer_P) renames Types_C.CvCreateSeqBlock;
+                               Direction : Integer) renames Core_Types_C.CvChangeSeqBlock;
+   procedure CvCreateSeqBlock (Writer : Cv_Seq_Writer_P) renames Core_Types_C.CvCreateSeqBlock;
 
    -- Creates an empty set.
    function CvCreateSet ( SetFlags  : Integer;
@@ -1661,6 +1661,7 @@ package Core.Core_C is
       Dx                : Float;
       Line_Type         : Integer;
    end record;
+   type Cv_Font_P is access Cv_Font;
 
    -- Initializes font structure.
    procedure CvInitFont (Font      : access Cv_Font;

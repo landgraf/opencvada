@@ -13,11 +13,11 @@
 -----------------------------------------------------------------------
 
 --File-Info-------------------------------------------------------------
--- calib_3d-compat.ads - compat_c.h
+-- imgproc.ads - imgproc.hpp
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 
-package Calib_3D.Compat is
+package Imgproc is
 private
    procedure Nulled;
-end Calib_3D.Compat;
+end Imgproc;

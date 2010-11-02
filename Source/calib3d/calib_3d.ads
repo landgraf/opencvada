@@ -16,15 +16,17 @@
 -- calib_3d.ads - Camera Calibration, Pose Estimation and Stereo
 -- Comments, Information, Other
 -----------------------------------------------------------------------
+with Core_Types_C; use Core_Types_C;
+with Core; use Core;
 
 package Calib_3D is
    -- Camera Calibration, Pose Estimation and Stereo ---------------------------
    -----------------------------------------------------------------------------
    type Cv_POSIT_Object is record
       N : Integer;
-      Inv_Matr : Cv_32f_Array;
-      Obj_Vecs : Cv_32f_Array;
-      Img_Vecs : Cv_32f_Array;
+      Inv_Matr : access Cv_32f_Array;
+      Obj_Vecs : access Cv_32f_Array;
+      Img_Vecs : access Cv_32f_Array;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_POSIT_Object);
    type Cv_POSIT_Object_P is access all Cv_POSIT_Object;
@@ -44,7 +46,7 @@ package Calib_3D is
                       Criteria           : Cv_Term_Criteria;
                       Rotation_Matrix    : Cv_32f_Array;
                       Translation_Vector : Cv_32f_Array);
-   pragma Import (C, CvPOSIT; "cvPOSIT");
+   pragma Import (C, CvPOSIT, "cvPOSIT");
 
    --     Releases CvPOSITObject structure
    procedure CvReleasePOSITObject (Posit_Object : access Cv_POSIT_Object_P);
@@ -450,5 +452,6 @@ package Calib_3D is
                                    HandleMissingValues : Integer := 0);
    pragma Import (C, CvReprojectImageTo3D, "cvReprojectImageTo3D");
 
-
+private
+   procedure Nulled;
 end Calib_3D;

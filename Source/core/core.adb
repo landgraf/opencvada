@@ -13,11 +13,15 @@
 -----------------------------------------------------------------------
 
 --File-Info-------------------------------------------------------------
--- calib_3d-compat.ads - compat_c.h
+-- core.ads - core.hpp
 -- Comments, Information, Other
 -----------------------------------------------------------------------
+package body Core is
+--
 
-package Calib_3D.Compat is
-private
-   procedure Nulled;
-end Calib_3D.Compat;
+   --------------------------------------------------------------------------------
+   -- Ada stuff
+   --------------------------------------------------------------------------------
+procedure Nulled is begin null; end Nulled;
+
+end Core;

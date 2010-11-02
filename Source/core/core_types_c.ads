@@ -30,7 +30,7 @@ pragma Warnings (On);
 with Ada.Numerics.Generic_Elementary_Functions;
 
 
-package Core.Types_C is
+package Core_Types_C is
 --
 
    -----------------------------------------------------------------------------
@@ -131,6 +131,7 @@ package Core.Types_C is
    package C_Strings renames Interfaces.C.Strings;
 
    type String_C is new String;
+
    Null_String_C : constant String_C (1 .. 0) := "";
    function "+" (Right : String) return String_C;
 
@@ -1779,6 +1780,36 @@ package Core.Types_C is
                                    Target => Cv_Void_P);
    pragma Warnings (On);
 
+   -----------------------------------------------------------------------------
+   -- C ** conversions
+   -----------------------------------------------------------------------------
+   -- START Unbounded array pointers --
+   Mat_Data_Requirement : Mat_Data; -- This is just a dummy, do not use!
+   type Cv_Mat_Array is array (Integer range <>) of aliased Cv_Mat;
+   type Cv_Mat_P_Array is array (Integer range <>) of aliased Cv_Mat_P;
+   type Cv_Size_Array is array (Integer range <>) of aliased Cv_Size;
+   type Cv_Size_P_Array is array (Integer range <>) of aliased Cv_Size_P;
+
+   package C_Mat_Arr_Ptr is
+     new Interfaces.C.Pointers (Integer, Cv_Mat, Cv_Mat_Array, (0, 0, null, 0, Mat_Data_Requirement, 0, 0));
+   use type C_Mat_Arr_Ptr.Pointer;
+   subtype C_Mat_Ptr is C_Mat_Arr_Ptr.Pointer;
+
+   package C_Mat_P_Arr_Ptr is
+     new Interfaces.C.Pointers (Integer, Cv_Mat_P, Cv_Mat_P_Array, null);
+   use type C_Mat_P_Arr_Ptr.Pointer;
+   subtype C_Mat_P_Ptr is C_Mat_P_Arr_Ptr.Pointer;
+
+   package C_Size_Arr_Ptr is
+     new Interfaces.C.Pointers (Integer, Cv_Size, Cv_Size_Array, (0, 0));
+   use type C_Size_Arr_Ptr.Pointer;
+   subtype C_Size_Ptr is C_Size_Arr_Ptr.Pointer;
+
+   package C_Size_P_Arr_Ptr is
+     new Interfaces.C.Pointers (Integer, Cv_Size_P, Cv_Size_P_Array, null);
+   use type C_Size_P_Arr_Ptr.Pointer;
+   subtype C_Size_P_Ptr is C_Size_P_Arr_Ptr.Pointer;
+
 private
    pragma Import (C, CvIplDepth, "cvIplDepth");
    pragma Import (C, CvRound, "cvRound");
@@ -1793,4 +1824,4 @@ private
    pragma Import (C, CvmSet, "cvmSet");
    pragma Import (C, CvCreateSeqBlock, "cvCreateSeqBlock");
    pragma Import (C, CvChangeSeqBlock, "cvChangeSeqBlock");
-end Core.Types_C;
+end Core_Types_C;

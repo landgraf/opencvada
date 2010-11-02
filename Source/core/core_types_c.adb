@@ -17,7 +17,7 @@
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 
-package body Core.Types_C is
+package body Core_Types_C is
 
    function CV_NODE_TYPE (Flags : Unsigned_32)
                              return Unsigned_32 is
@@ -950,10 +950,7 @@ package body Core.Types_C is
       return CvRect (Roi.X_Offset, Roi.Y_Offset, Roi.Width, Roi.Height);
    end CvROIToRect;
 
-   function "+" (Right : String) return String_C is
-   begin
-      return String_C (Right & ASCII.NUL);
-   end "+";
+
 
    function "+" (Right : Ipl_Image_P) return Cv_Arr_P is
    begin
@@ -979,6 +976,10 @@ package body Core.Types_C is
       return Mat.all.Data.Cv_8u + Interfaces.C.Ptrdiff_T (Mat.all.Step * (Row) + (Pix_Size) * (Col));
    end CV_MAT_ELEM_PTR_FAST;
 
+   function "+" (Right : String) return String_C is
+   begin
+      return String_C (Right & ASCII.NUL);
+   end "+";
 
    --
-end Core.Types_C;
+end Core_Types_C;

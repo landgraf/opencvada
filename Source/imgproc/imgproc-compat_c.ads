@@ -13,11 +13,17 @@
 -----------------------------------------------------------------------
 
 --File-Info-------------------------------------------------------------
--- calib_3d-compat.ads - compat_c.h
--- Comments, Information, Other
+-- imgproc-compat_c.ads - imgproc-compat_c.hpp
+-- Should be considered depricated.
 -----------------------------------------------------------------------
 
-package Calib_3D.Compat is
+package Imgproc.Compat_C is
+   function CvMatArray (Rows : Integer;
+                        Cols : Integer;
+                        Mat_Array_Type : Integer;
+                        Count          : Integer;
+                        Data           : Cv_Void_P) return Cv_Mat;
+
 private
-   procedure Nulled;
-end Calib_3D.Compat;
+   pragma Import (C, CvMatArray, "cvMatArray");
+end Imgproc.Compat_C;

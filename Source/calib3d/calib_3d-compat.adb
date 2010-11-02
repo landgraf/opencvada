@@ -18,4 +18,5 @@
 -----------------------------------------------------------------------
 
 package body Calib_3D.Compat is
+   procedure Nulled is begin null; end Nulled;
 end Calib_3D.Compat;

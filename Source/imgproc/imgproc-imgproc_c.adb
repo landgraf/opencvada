@@ -13,11 +13,14 @@
 -----------------------------------------------------------------------
 
 --File-Info-------------------------------------------------------------
--- calib_3d-compat.ads - compat_c.h
+-- imgproc_c.adb - imgproc_c.hpp
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 
-package Calib_3D.Compat is
-private
-   procedure Nulled;
-end Calib_3D.Compat;
+package body Imgproc.Imgproc_C is
+   function CvContourPerimeter (Curve : Cv_Void_P)
+                                return Long_Float is
+   begin
+      return CvArcLength (Curve, CvSlice (0), 1);
+   end CvContourPerimeter;
+end Imgproc.Imgproc_C;
