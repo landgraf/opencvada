@@ -1,0 +1,2080 @@
+
+
+#ifndef __OPENCV_FEATURES_2D_HPP__
+#define __OPENCV_FEATURES_2D_HPP__
+
+#include "opencv2/core/core.hpp"
+
+#ifdef __cplusplus
+#include <limits>
+
+extern "C" {
+#endif
+
+typedef struct CvSURFPoint
+{
+    CvPoint2D32f pt;
+    int laplacian;
+    int size;
+    float dir;
+    float hessian;
+} CvSURFPoint;
+
+CV_INLINE CvSURFPoint cvSURFPoint( CvPoint2D32f pt, int laplacian,
+                                   int size, float dir CV_DEFAULT(0),
+                                   float hessian CV_DEFAULT(0))
+{
+    CvSURFPoint kp;
+    kp.pt = pt;
+    kp.laplacian = laplacian;
+    kp.size = size;
+    kp.dir = dir;
+    kp.hessian = hessian;
+    return kp;
+}
+
+typedef struct CvSURFParams
+{
+    int extended;
+    double hessianThreshold;
+
+    int nOctaves;
+    int nOctaveLayers;
+} CvSURFParams;
+
+CVAPI(CvSURFParams) cvSURFParams( double hessianThreshold, int extended CV_DEFAULT(0) );
+
+
+
+CVAPI(void) cvExtractSURF( const CvArr* img, const CvArr* mask,
+                           CvSeq** keypoints, CvSeq** descriptors,
+                           CvMemStorage* storage, CvSURFParams params, int useProvidedKeyPts CV_DEFAULT(0)  );
+
+
+typedef struct CvMSERParams
+{
+    
+    int delta;
+    
+    int maxArea;
+    
+    int minArea;
+    
+    float maxVariation;
+    
+    float minDiversity;
+    
+    
+    
+    
+    int maxEvolution;
+    
+    double areaThreshold;
+    
+    double minMargin;
+    
+    int edgeBlurSize;
+} CvMSERParams;
+
+CVAPI(CvMSERParams) cvMSERParams( int delta CV_DEFAULT(5), int min_area CV_DEFAULT(60),
+                           int max_area CV_DEFAULT(14400), float max_variation CV_DEFAULT(.25f),
+                           float min_diversity CV_DEFAULT(.2f), int max_evolution CV_DEFAULT(200),
+                           double area_threshold CV_DEFAULT(1.01),
+                           double min_margin CV_DEFAULT(.003),
+                           int edge_blur_size CV_DEFAULT(5) );
+
+
+CVAPI(void) cvExtractMSER( CvArr* _img, CvArr* _mask, CvSeq** contours, CvMemStorage* storage, CvMSERParams params );
+
+
+typedef struct CvStarKeypoint
+{
+    CvPoint pt;
+    int size;
+    float response;
+} CvStarKeypoint;
+
+CV_INLINE CvStarKeypoint cvStarKeypoint(CvPoint pt, int size, float response)
+{
+    CvStarKeypoint kpt;
+    kpt.pt = pt;
+    kpt.size = size;
+    kpt.response = response;
+    return kpt;
+}
+
+typedef struct CvStarDetectorParams
+{
+    int maxSize;
+    int responseThreshold;
+    int lineThresholdProjected;
+    int lineThresholdBinarized;
+    int suppressNonmaxSize;
+} CvStarDetectorParams;
+
+CV_INLINE CvStarDetectorParams cvStarDetectorParams(
+    int maxSize CV_DEFAULT(45),
+    int responseThreshold CV_DEFAULT(30),
+    int lineThresholdProjected CV_DEFAULT(10),
+    int lineThresholdBinarized CV_DEFAULT(8),
+    int suppressNonmaxSize CV_DEFAULT(5))
+{
+    CvStarDetectorParams params;
+    params.maxSize = maxSize;
+    params.responseThreshold = responseThreshold;
+    params.lineThresholdProjected = lineThresholdProjected;
+    params.lineThresholdBinarized = lineThresholdBinarized;
+    params.suppressNonmaxSize = suppressNonmaxSize;
+
+    return params;
+}
+
+CVAPI(CvSeq*) cvGetStarKeypoints( const CvArr* img, CvMemStorage* storage,
+        CvStarDetectorParams params CV_DEFAULT(cvStarDetectorParams()));
+
+#ifdef __cplusplus
+}
+
+namespace cv
+{
+    struct CV_EXPORTS DefaultRngAuto
+    {
+        const static uint64 def_state = (uint64)-1;
+        const uint64 old_state;
+
+        DefaultRngAuto() : old_state(theRNG().state) { theRNG().state = def_state; }
+        ~DefaultRngAuto() { theRNG().state = old_state; }
+
+        DefaultRngAuto& operator=(const DefaultRngAuto&);
+    };
+
+
+
+
+
+
+class CV_EXPORTS CvAffinePose
+{
+public:
+    float phi;
+    float theta;
+    float lambda1;
+    float lambda2;
+};
+
+
+class CV_EXPORTS KeyPoint
+{
+public:
+    
+    KeyPoint() : pt(0,0), size(0), angle(-1), response(0), octave(0), class_id(-1) {}
+    
+    KeyPoint(Point2f _pt, float _size, float _angle=-1,
+            float _response=0, int _octave=0, int _class_id=-1)
+            : pt(_pt), size(_size), angle(_angle),
+            response(_response), octave(_octave), class_id(_class_id) {}
+    
+    KeyPoint(float x, float y, float _size, float _angle=-1,
+            float _response=0, int _octave=0, int _class_id=-1)
+            : pt(x, y), size(_size), angle(_angle),
+            response(_response), octave(_octave), class_id(_class_id) {}
+    
+    static void convert(const std::vector<KeyPoint>& keypoints, std::vector<Point2f>& points2f,
+                        const std::vector<int>& keypointIndexes=std::vector<int>());
+    
+    static void convert(const std::vector<Point2f>& points2f, std::vector<KeyPoint>& keypoints,
+                        float size=1, float response=1, int octave=0, int class_id=-1);
+
+    
+    
+    
+    static float overlap(const KeyPoint& kp1, const KeyPoint& kp2);
+
+    Point2f pt; 
+    float size; 
+    float angle; 
+    float response; 
+    int octave; 
+    int class_id; 
+};
+
+
+CV_EXPORTS void write(FileStorage& fs, const string& name, const vector<KeyPoint>& keypoints);
+
+CV_EXPORTS void read(const FileNode& node, vector<KeyPoint>& keypoints);    
+
+
+class CV_EXPORTS SIFT
+{
+public:
+    struct CommonParams
+    {
+        static const int DEFAULT_NOCTAVES = 4;
+        static const int DEFAULT_NOCTAVE_LAYERS = 3;
+        static const int DEFAULT_FIRST_OCTAVE = -1;
+        enum{ FIRST_ANGLE = 0, AVERAGE_ANGLE = 1 };
+
+        CommonParams();
+        CommonParams( int _nOctaves, int _nOctaveLayers, int _firstOctave, int _angleMode );
+        int nOctaves, nOctaveLayers, firstOctave;
+        int angleMode;
+    };
+
+    struct DetectorParams
+    {
+        static double GET_DEFAULT_THRESHOLD() { return 0.04 / SIFT::CommonParams::DEFAULT_NOCTAVE_LAYERS / 2.0; }
+        static double GET_DEFAULT_EDGE_THRESHOLD() { return 10.0; }
+
+        DetectorParams();
+        DetectorParams( double _threshold, double _edgeThreshold );
+        double threshold, edgeThreshold;
+    };
+
+    struct DescriptorParams
+    {
+        static double GET_DEFAULT_MAGNIFICATION() { return 3.0; }
+        static const bool DEFAULT_IS_NORMALIZE = true;
+        static const int DESCRIPTOR_SIZE = 128;
+
+        DescriptorParams();
+        DescriptorParams( double _magnification, bool _isNormalize, bool _recalculateAngles );
+        double magnification;
+        bool isNormalize;
+        bool recalculateAngles;
+    };
+
+    SIFT();
+    
+    SIFT( double _threshold, double _edgeThreshold,
+          int _nOctaves=CommonParams::DEFAULT_NOCTAVES,
+          int _nOctaveLayers=CommonParams::DEFAULT_NOCTAVE_LAYERS,
+          int _firstOctave=CommonParams::DEFAULT_FIRST_OCTAVE,
+          int _angleMode=CommonParams::FIRST_ANGLE );
+    
+    SIFT( double _magnification, bool _isNormalize=true,
+          bool _recalculateAngles = true,
+          int _nOctaves=CommonParams::DEFAULT_NOCTAVES,
+          int _nOctaveLayers=CommonParams::DEFAULT_NOCTAVE_LAYERS,
+          int _firstOctave=CommonParams::DEFAULT_FIRST_OCTAVE,
+          int _angleMode=CommonParams::FIRST_ANGLE );
+    SIFT( const CommonParams& _commParams,
+          const DetectorParams& _detectorParams = DetectorParams(),
+          const DescriptorParams& _descriptorParams = DescriptorParams() );
+
+    
+    int descriptorSize() const { return DescriptorParams::DESCRIPTOR_SIZE; }
+    
+    void operator()(const Mat& img, const Mat& mask,
+                    vector<KeyPoint>& keypoints) const;
+    
+    
+    void operator()(const Mat& img, const Mat& mask,
+                    vector<KeyPoint>& keypoints,
+                    Mat& descriptors,
+                    bool useProvidedKeypoints=false) const;
+
+    CommonParams getCommonParams () const { return commParams; }
+    DetectorParams getDetectorParams () const { return detectorParams; }
+    DescriptorParams getDescriptorParams () const { return descriptorParams; }
+protected:
+    CommonParams commParams;
+    DetectorParams detectorParams;
+    DescriptorParams descriptorParams;
+};
+
+    
+
+class CV_EXPORTS SURF : public CvSURFParams
+{
+public:
+    
+    SURF();
+    
+    SURF(double _hessianThreshold, int _nOctaves=4,
+         int _nOctaveLayers=2, bool _extended=false);
+
+    
+    int descriptorSize() const;
+    
+    void operator()(const Mat& img, const Mat& mask,
+                    vector<KeyPoint>& keypoints) const;
+    
+    void operator()(const Mat& img, const Mat& mask,
+                    vector<KeyPoint>& keypoints,
+                    vector<float>& descriptors,
+                    bool useProvidedKeypoints=false) const;
+};
+
+
+class CV_EXPORTS MSER : public CvMSERParams
+{
+public:
+    
+    MSER();
+    
+    MSER( int _delta, int _min_area, int _max_area,
+          double _max_variation, double _min_diversity,
+          int _max_evolution, double _area_threshold,
+          double _min_margin, int _edge_blur_size );
+    
+    void operator()( const Mat& image, vector<vector<Point> >& msers, const Mat& mask ) const;
+};
+
+
+class CV_EXPORTS StarDetector : public CvStarDetectorParams
+{
+public:
+    
+    StarDetector();
+    
+    StarDetector(int _maxSize, int _responseThreshold,
+                 int _lineThresholdProjected,
+                 int _lineThresholdBinarized,
+                 int _suppressNonmaxSize);
+    
+    void operator()(const Mat& image, vector<KeyPoint>& keypoints) const;
+};
+
+
+CV_EXPORTS void FAST( const Mat& image, vector<KeyPoint>& keypoints, int threshold, bool nonmaxSupression=true );
+
+
+class CV_EXPORTS PatchGenerator
+{
+public:
+    PatchGenerator();
+    PatchGenerator(double _backgroundMin, double _backgroundMax,
+                   double _noiseRange, bool _randomBlur=true,
+                   double _lambdaMin=0.6, double _lambdaMax=1.5,
+                   double _thetaMin=-CV_PI, double _thetaMax=CV_PI,
+                   double _phiMin=-CV_PI, double _phiMax=CV_PI );
+    void operator()(const Mat& image, Point2f pt, Mat& patch, Size patchSize, RNG& rng) const;
+    void operator()(const Mat& image, const Mat& transform, Mat& patch,
+                    Size patchSize, RNG& rng) const;
+    void warpWholeImage(const Mat& image, Mat& matT, Mat& buf,
+                        Mat& warped, int border, RNG& rng) const;
+    void generateRandomTransform(Point2f srcCenter, Point2f dstCenter,
+                                 Mat& transform, RNG& rng, bool inverse=false) const;
+    void setAffineParam(double lambda, double theta, double phi);
+    
+    double backgroundMin, backgroundMax;
+    double noiseRange;
+    bool randomBlur;
+    double lambdaMin, lambdaMax;
+    double thetaMin, thetaMax;
+    double phiMin, phiMax;
+};
+
+
+class CV_EXPORTS LDetector
+{
+public:
+    LDetector();
+    LDetector(int _radius, int _threshold, int _nOctaves,
+              int _nViews, double _baseFeatureSize, double _clusteringDistance);
+    void operator()(const Mat& image, vector<KeyPoint>& keypoints, int maxCount=0, bool scaleCoords=true) const;
+    void operator()(const vector<Mat>& pyr, vector<KeyPoint>& keypoints, int maxCount=0, bool scaleCoords=true) const;
+    void getMostStable2D(const Mat& image, vector<KeyPoint>& keypoints,
+                         int maxCount, const PatchGenerator& patchGenerator) const;
+    void setVerbose(bool verbose);
+    
+    void read(const FileNode& node);
+    void write(FileStorage& fs, const String& name=String()) const;
+    
+    int radius;
+    int threshold;
+    int nOctaves;
+    int nViews;
+    bool verbose;
+    
+    double baseFeatureSize;
+    double clusteringDistance;
+};
+
+typedef LDetector YAPE;
+
+class CV_EXPORTS FernClassifier
+{
+public:
+    FernClassifier();
+    FernClassifier(const FileNode& node);
+    FernClassifier(const vector<vector<Point2f> >& points,
+                   const vector<Mat>& refimgs,
+                   const vector<vector<int> >& labels=vector<vector<int> >(),
+                   int _nclasses=0, int _patchSize=PATCH_SIZE,
+                   int _signatureSize=DEFAULT_SIGNATURE_SIZE,
+                   int _nstructs=DEFAULT_STRUCTS,
+                   int _structSize=DEFAULT_STRUCT_SIZE,
+                   int _nviews=DEFAULT_VIEWS,
+                   int _compressionMethod=COMPRESSION_NONE,
+                   const PatchGenerator& patchGenerator=PatchGenerator());
+    virtual ~FernClassifier();
+    virtual void read(const FileNode& n);
+    virtual void write(FileStorage& fs, const String& name=String()) const;
+    virtual void trainFromSingleView(const Mat& image,
+                                     const vector<KeyPoint>& keypoints,
+                                     int _patchSize=PATCH_SIZE,
+                                     int _signatureSize=DEFAULT_SIGNATURE_SIZE,
+                                     int _nstructs=DEFAULT_STRUCTS,
+                                     int _structSize=DEFAULT_STRUCT_SIZE,
+                                     int _nviews=DEFAULT_VIEWS,
+                                     int _compressionMethod=COMPRESSION_NONE,
+                                     const PatchGenerator& patchGenerator=PatchGenerator());
+    virtual void train(const vector<vector<Point2f> >& points,
+                       const vector<Mat>& refimgs,
+                       const vector<vector<int> >& labels=vector<vector<int> >(),
+                       int _nclasses=0, int _patchSize=PATCH_SIZE,
+                       int _signatureSize=DEFAULT_SIGNATURE_SIZE,
+                       int _nstructs=DEFAULT_STRUCTS,
+                       int _structSize=DEFAULT_STRUCT_SIZE,
+                       int _nviews=DEFAULT_VIEWS,
+                       int _compressionMethod=COMPRESSION_NONE,
+                       const PatchGenerator& patchGenerator=PatchGenerator());
+    virtual int operator()(const Mat& img, Point2f kpt, vector<float>& signature) const;
+    virtual int operator()(const Mat& patch, vector<float>& signature) const;
+    virtual void clear();
+    void setVerbose(bool verbose);
+    
+    int getClassCount() const;
+    int getStructCount() const;
+    int getStructSize() const;
+    int getSignatureSize() const;
+    int getCompressionMethod() const;
+    Size getPatchSize() const;
+    
+    struct Feature
+    {
+        uchar x1, y1, x2, y2;
+        Feature() : x1(0), y1(0), x2(0), y2(0) {}
+        Feature(int _x1, int _y1, int _x2, int _y2)
+        : x1((uchar)_x1), y1((uchar)_y1), x2((uchar)_x2), y2((uchar)_y2)
+        {}
+        template<typename _Tp> bool operator ()(const Mat_<_Tp>& patch) const
+        { return patch(y1,x1) > patch(y2, x2); }
+    };
+    
+    enum
+    {
+        PATCH_SIZE = 31,
+        DEFAULT_STRUCTS = 50,
+        DEFAULT_STRUCT_SIZE = 9,
+        DEFAULT_VIEWS = 5000,
+        DEFAULT_SIGNATURE_SIZE = 176,
+        COMPRESSION_NONE = 0,
+        COMPRESSION_RANDOM_PROJ = 1,
+        COMPRESSION_PCA = 2,
+        DEFAULT_COMPRESSION_METHOD = COMPRESSION_NONE
+    };
+    
+protected:
+    virtual void prepare(int _nclasses, int _patchSize, int _signatureSize,
+                         int _nstructs, int _structSize,
+                         int _nviews, int _compressionMethod);
+    virtual void finalize(RNG& rng);
+    virtual int getLeaf(int fidx, const Mat& patch) const;
+    
+    bool verbose;
+    int nstructs;
+    int structSize;
+    int nclasses;
+    int signatureSize;
+    int compressionMethod;
+    int leavesPerStruct;
+    Size patchSize;
+    vector<Feature> features;
+    vector<int> classCounters;
+    vector<float> posteriors;
+};
+
+class CV_EXPORTS PlanarObjectDetector
+{
+public:
+    PlanarObjectDetector();
+    PlanarObjectDetector(const FileNode& node);
+    PlanarObjectDetector(const vector<Mat>& pyr, int _npoints=300,
+                         int _patchSize=FernClassifier::PATCH_SIZE,
+                         int _nstructs=FernClassifier::DEFAULT_STRUCTS,
+                         int _structSize=FernClassifier::DEFAULT_STRUCT_SIZE,
+                         int _nviews=FernClassifier::DEFAULT_VIEWS,
+                         const LDetector& detector=LDetector(),
+                         const PatchGenerator& patchGenerator=PatchGenerator());
+    virtual ~PlanarObjectDetector();
+    virtual void train(const vector<Mat>& pyr, int _npoints=300,
+                       int _patchSize=FernClassifier::PATCH_SIZE,
+                       int _nstructs=FernClassifier::DEFAULT_STRUCTS,
+                       int _structSize=FernClassifier::DEFAULT_STRUCT_SIZE,
+                       int _nviews=FernClassifier::DEFAULT_VIEWS,
+                       const LDetector& detector=LDetector(),
+                       const PatchGenerator& patchGenerator=PatchGenerator());
+    virtual void train(const vector<Mat>& pyr, const vector<KeyPoint>& keypoints,
+                       int _patchSize=FernClassifier::PATCH_SIZE,
+                       int _nstructs=FernClassifier::DEFAULT_STRUCTS,
+                       int _structSize=FernClassifier::DEFAULT_STRUCT_SIZE,
+                       int _nviews=FernClassifier::DEFAULT_VIEWS,
+                       const LDetector& detector=LDetector(),
+                       const PatchGenerator& patchGenerator=PatchGenerator());
+    Rect getModelROI() const;
+    vector<KeyPoint> getModelPoints() const;
+    const LDetector& getDetector() const;
+    const FernClassifier& getClassifier() const;
+    void setVerbose(bool verbose);
+    
+    void read(const FileNode& node);
+    void write(FileStorage& fs, const String& name=String()) const;
+    bool operator()(const Mat& image, Mat& H, vector<Point2f>& corners) const;
+    bool operator()(const vector<Mat>& pyr, const vector<KeyPoint>& keypoints,
+                    Mat& H, vector<Point2f>& corners, vector<int>* pairs=0) const;
+    
+protected:
+    bool verbose;
+    Rect modelROI;
+    vector<KeyPoint> modelPoints;
+    LDetector ldetector;
+    FernClassifier fernClassifier;
+};
+
+
+
+struct RTreeNode;
+
+struct CV_EXPORTS BaseKeypoint
+{
+  int x;
+  int y;
+  IplImage* image;
+
+  BaseKeypoint()
+    : x(0), y(0), image(NULL)
+  {}
+
+  BaseKeypoint(int x, int y, IplImage* image)
+    : x(x), y(y), image(image)
+  {}
+};
+
+class CV_EXPORTS RandomizedTree
+{
+public:
+  friend class RTreeClassifier;
+
+  static const uchar PATCH_SIZE = 32;
+  static const int DEFAULT_DEPTH = 9;
+  static const int DEFAULT_VIEWS = 5000;
+  static const size_t DEFAULT_REDUCED_NUM_DIM = 176;
+  static float GET_LOWER_QUANT_PERC() { return .03f; }
+  static float GET_UPPER_QUANT_PERC() { return .92f; }
+
+  RandomizedTree();
+  ~RandomizedTree();
+
+  void train(std::vector<BaseKeypoint> const& base_set, RNG &rng,
+             int depth, int views, size_t reduced_num_dim, int num_quant_bits);
+  void train(std::vector<BaseKeypoint> const& base_set, RNG &rng,
+             PatchGenerator &make_patch, int depth, int views, size_t reduced_num_dim,
+             int num_quant_bits);
+
+  
+  static void quantizeVector(float *vec, int dim, int N, float bnds[2], int clamp_mode=0);
+  static void quantizeVector(float *src, int dim, int N, float bnds[2], uchar *dst);
+
+  
+  float* getPosterior(uchar* patch_data);
+  const float* getPosterior(uchar* patch_data) const;
+  uchar* getPosterior2(uchar* patch_data);
+  const uchar* getPosterior2(uchar* patch_data) const;
+
+  void read(const char* file_name, int num_quant_bits);
+  void read(std::istream &is, int num_quant_bits);
+  void write(const char* file_name) const;
+  void write(std::ostream &os) const;
+
+  int classes() { return classes_; }
+  int depth() { return depth_; }
+
+  
+  void discardFloatPosteriors() { freePosteriors(1); }
+
+  inline void applyQuantization(int num_quant_bits) { makePosteriors2(num_quant_bits); }
+
+  
+  void savePosteriors(std::string url, bool append=false);
+  void savePosteriors2(std::string url, bool append=false);
+
+private:
+  int classes_;
+  int depth_;
+  int num_leaves_;
+  std::vector<RTreeNode> nodes_;
+  float **posteriors_;        
+  uchar **posteriors2_;     
+  std::vector<int> leaf_counts_;
+
+  void createNodes(int num_nodes, RNG &rng);
+  void allocPosteriorsAligned(int num_leaves, int num_classes);
+  void freePosteriors(int which);    
+  void init(int classes, int depth, RNG &rng);
+  void addExample(int class_id, uchar* patch_data);
+  void finalize(size_t reduced_num_dim, int num_quant_bits);
+  int getIndex(uchar* patch_data) const;
+  inline float* getPosteriorByIndex(int index);
+  inline const float* getPosteriorByIndex(int index) const;
+  inline uchar* getPosteriorByIndex2(int index);
+  inline const uchar* getPosteriorByIndex2(int index) const;
+  
+  void convertPosteriorsToChar();
+  void makePosteriors2(int num_quant_bits);
+  void compressLeaves(size_t reduced_num_dim);
+  void estimateQuantPercForPosteriors(float perc[2]);
+};
+
+
+inline uchar* getData(IplImage* image)
+{
+  return reinterpret_cast<uchar*>(image->imageData);
+}
+
+inline float* RandomizedTree::getPosteriorByIndex(int index)
+{
+  return const_cast<float*>(const_cast<const RandomizedTree*>(this)->getPosteriorByIndex(index));
+}
+
+inline const float* RandomizedTree::getPosteriorByIndex(int index) const
+{
+  return posteriors_[index];
+}
+
+inline uchar* RandomizedTree::getPosteriorByIndex2(int index)
+{
+  return const_cast<uchar*>(const_cast<const RandomizedTree*>(this)->getPosteriorByIndex2(index));
+}
+
+inline const uchar* RandomizedTree::getPosteriorByIndex2(int index) const
+{
+  return posteriors2_[index];
+}
+
+struct CV_EXPORTS RTreeNode
+{
+  short offset1, offset2;
+
+  RTreeNode() {}
+
+  RTreeNode(uchar x1, uchar y1, uchar x2, uchar y2)
+    : offset1(y1*RandomizedTree::PATCH_SIZE + x1),
+      offset2(y2*RandomizedTree::PATCH_SIZE + x2)
+  {}
+
+  
+  inline bool operator() (uchar* patch_data) const
+  {
+    return patch_data[offset1] > patch_data[offset2];
+  }
+};
+
+class CV_EXPORTS RTreeClassifier
+{
+public:
+  static const int DEFAULT_TREES = 48;
+  static const size_t DEFAULT_NUM_QUANT_BITS = 4;
+
+  RTreeClassifier();
+
+  void train(std::vector<BaseKeypoint> const& base_set,
+             RNG &rng,
+             int num_trees = RTreeClassifier::DEFAULT_TREES,
+             int depth = RandomizedTree::DEFAULT_DEPTH,
+             int views = RandomizedTree::DEFAULT_VIEWS,
+             size_t reduced_num_dim = RandomizedTree::DEFAULT_REDUCED_NUM_DIM,
+             int num_quant_bits = DEFAULT_NUM_QUANT_BITS);
+  void train(std::vector<BaseKeypoint> const& base_set,
+             RNG &rng,
+             PatchGenerator &make_patch,
+             int num_trees = RTreeClassifier::DEFAULT_TREES,
+             int depth = RandomizedTree::DEFAULT_DEPTH,
+             int views = RandomizedTree::DEFAULT_VIEWS,
+             size_t reduced_num_dim = RandomizedTree::DEFAULT_REDUCED_NUM_DIM,
+             int num_quant_bits = DEFAULT_NUM_QUANT_BITS);
+
+  
+  void getSignature(IplImage *patch, uchar *sig) const;
+  void getSignature(IplImage *patch, float *sig) const;
+  void getSparseSignature(IplImage *patch, float *sig, float thresh) const;
+  
+  void getFloatSignature(IplImage *patch, float *sig) const { getSignature(patch, sig); }
+
+  static int countNonZeroElements(float *vec, int n, double tol=1e-10);
+  static inline void safeSignatureAlloc(uchar **sig, int num_sig=1, int sig_len=176);
+  static inline uchar* safeSignatureAlloc(int num_sig=1, int sig_len=176);
+
+  inline int classes() const { return classes_; }
+  inline int original_num_classes() const { return original_num_classes_; }
+
+  void setQuantization(int num_quant_bits);
+  void discardFloatPosteriors();
+
+  void read(const char* file_name);
+  void read(std::istream &is);
+  void write(const char* file_name) const;
+  void write(std::ostream &os) const;
+
+  
+  void saveAllFloatPosteriors(std::string file_url);
+  void saveAllBytePosteriors(std::string file_url);
+  void setFloatPosteriorsFromTextfile_176(std::string url);
+  float countZeroElements();
+
+  std::vector<RandomizedTree> trees_;
+
+private:
+  int classes_;
+  int num_quant_bits_;
+  mutable uchar **posteriors_;
+  mutable unsigned short *ptemp_;
+  int original_num_classes_;
+  bool keep_floats_;
+};
+
+
+
+class CV_EXPORTS OneWayDescriptor
+{
+public:
+    OneWayDescriptor();
+    ~OneWayDescriptor();
+
+    
+    void Allocate(int pose_count, CvSize size, int nChannels);
+
+    
+    
+    
+    
+    
+    void GenerateSamples(int pose_count, IplImage* frontal, int norm = 0);
+
+    
+    
+    
+    
+    
+    
+    
+    void GenerateSamplesFast(IplImage* frontal, CvMat* pca_hr_avg,
+                             CvMat* pca_hr_eigenvectors, OneWayDescriptor* pca_descriptors);
+
+    
+    void SetTransforms(CvAffinePose* poses, CvMat** transforms);
+
+    
+    
+    
+    
+    
+    void Initialize(int pose_count, IplImage* frontal, const char* feature_name = 0, int norm = 0);
+
+    
+    
+    
+    
+    
+    
+    
+    
+    void InitializeFast(int pose_count, IplImage* frontal, const char* feature_name,
+                        CvMat* pca_hr_avg, CvMat* pca_hr_eigenvectors, OneWayDescriptor* pca_descriptors);
+
+    
+    
+    
+    
+    
+    void ProjectPCASample(IplImage* patch, CvMat* avg, CvMat* eigenvectors, CvMat* pca_coeffs) const;
+
+    
+    
+    
+    void InitializePCACoeffs(CvMat* avg, CvMat* eigenvectors);
+
+    
+    
+    
+    
+    void EstimatePose(IplImage* patch, int& pose_idx, float& distance) const;
+
+    
+    
+    
+    
+    
+    
+    
+    void EstimatePosePCA(CvArr* patch, int& pose_idx, float& distance, CvMat* avg, CvMat* eigenvalues) const;
+
+    
+    CvSize GetPatchSize() const
+    {
+        return m_patch_size;
+    }
+
+    
+    
+    CvSize GetInputPatchSize() const
+    {
+        return cvSize(m_patch_size.width*2, m_patch_size.height*2);
+    }
+
+    
+    
+    
+    IplImage* GetPatch(int index);
+
+    
+    
+    
+    CvAffinePose GetPose(int index) const;
+
+    
+    void Save(const char* path);
+
+    
+    
+    
+    
+    
+    int ReadByName(CvFileStorage* fs, CvFileNode* parent, const char* name);
+
+    
+    
+    
+    
+    int ReadByName(const FileNode &parent, const char* name);
+
+    
+    
+    
+    void Write(CvFileStorage* fs, const char* name);
+
+    
+    const char* GetFeatureName() const;
+
+    
+    CvPoint GetCenter() const;
+
+    void SetPCADimHigh(int pca_dim_high) {m_pca_dim_high = pca_dim_high;};
+    void SetPCADimLow(int pca_dim_low) {m_pca_dim_low = pca_dim_low;};
+
+    int GetPCADimLow() const;
+    int GetPCADimHigh() const;
+
+    CvMat** GetPCACoeffs() const {return m_pca_coeffs;}
+
+protected:
+    int m_pose_count; 
+    CvSize m_patch_size; 
+    IplImage** m_samples; 
+    IplImage* m_input_patch;
+    IplImage* m_train_patch;
+    CvMat** m_pca_coeffs; 
+    CvAffinePose* m_affine_poses; 
+    CvMat** m_transforms; 
+
+    string m_feature_name; 
+    CvPoint m_center; 
+
+    int m_pca_dim_high; 
+    int m_pca_dim_low; 
+};
+
+
+
+
+class CV_EXPORTS OneWayDescriptorBase
+{
+public:
+
+    
+    
+    
+    
+    
+    
+    
+    
+    OneWayDescriptorBase(CvSize patch_size, int pose_count, const char* train_path = 0, const char* pca_config = 0,
+                         const char* pca_hr_config = 0, const char* pca_desc_config = 0, int pyr_levels = 1,
+                         int pca_dim_high = 100, int pca_dim_low = 100);
+
+    OneWayDescriptorBase(CvSize patch_size, int pose_count, const string &pca_filename, const string &train_path = string(), const string &images_list = string(),
+                         float _scale_min = 0.7f, float _scale_max=1.5f, float _scale_step=1.2f, int pyr_levels = 1,
+                         int pca_dim_high = 100, int pca_dim_low = 100);
+
+
+    virtual ~OneWayDescriptorBase();
+    void clear ();
+
+
+    
+    void Allocate(int train_feature_count);
+
+    
+    void AllocatePCADescriptors();
+
+    
+    CvSize GetPatchSize() const {return m_patch_size;};
+    
+    int GetPoseCount() const {return m_pose_count;};
+
+    
+    int GetPyrLevels() const {return m_pyr_levels;};
+
+    
+    int GetDescriptorCount() const {return m_train_feature_count;};
+
+    
+    
+    
+    
+    void CreateDescriptorsFromImage(IplImage* src, const std::vector<cv::KeyPoint>& features);
+
+    
+    void CreatePCADescriptors();
+
+    
+    const OneWayDescriptor* GetDescriptor(int desc_idx) const {return &m_descriptors[desc_idx];};
+
+    
+    
+    
+    
+    
+    
+    
+    void FindDescriptor(IplImage* patch, int& desc_idx, int& pose_idx, float& distance, float* _scale = 0, float* scale_ranges = 0) const;
+
+    
+    
+    
+    
+    
+    
+    
+    void FindDescriptor(IplImage* patch, int n, std::vector<int>& desc_idxs, std::vector<int>& pose_idxs,
+                        std::vector<float>& distances, std::vector<float>& _scales, float* scale_ranges = 0) const;
+
+    
+    
+    
+    
+    
+    
+    void FindDescriptor(IplImage* src, cv::Point2f pt, int& desc_idx, int& pose_idx, float& distance) const;
+
+    
+    void InitializePoses();
+
+    
+    void InitializeTransformsFromPoses();
+
+    
+    void InitializePoseTransforms();
+
+    
+    
+    
+    
+    void InitializeDescriptor(int desc_idx, IplImage* train_image, const char* feature_label);
+
+    void InitializeDescriptor(int desc_idx, IplImage* train_image, const cv::KeyPoint& keypoint, const char* feature_label);
+
+    
+    void InitializeDescriptors(IplImage* train_image, const vector<cv::KeyPoint>& features,
+                               const char* feature_label = "", int desc_start_idx = 0);
+
+    
+    
+    void Write (FileStorage &fs) const;
+    
+    
+    
+    void Read (const FileNode &fn);
+
+    
+    
+    int LoadPCADescriptors(const char* filename);
+
+    
+    
+    int LoadPCADescriptors(const FileNode &fn);
+
+    
+    
+    void SavePCADescriptors(const char* filename);
+
+    
+    
+    void SavePCADescriptors(CvFileStorage* fs) const;
+
+    
+    
+    
+    void GeneratePCA(const char* img_path, const char* images_list, int pose_count=500);
+
+    
+    void SetPCAHigh(CvMat* avg, CvMat* eigenvectors);
+
+    
+    void SetPCALow(CvMat* avg, CvMat* eigenvectors);
+
+    int GetLowPCA(CvMat** avg, CvMat** eigenvectors)
+    {
+        *avg = m_pca_avg;
+        *eigenvectors = m_pca_eigenvectors;
+        return m_pca_dim_low;
+    };
+
+    int GetPCADimLow() const {return m_pca_dim_low;};
+    int GetPCADimHigh() const {return m_pca_dim_high;};
+
+    void ConvertDescriptorsArrayToTree(); 
+
+    
+    static string GetPCAFilename () { return "pca.yml"; }
+
+protected:
+    CvSize m_patch_size; 
+    int m_pose_count; 
+    int m_train_feature_count; 
+    OneWayDescriptor* m_descriptors; 
+    CvMat* m_pca_avg; 
+    CvMat* m_pca_eigenvectors; 
+    CvMat* m_pca_hr_avg; 
+    CvMat* m_pca_hr_eigenvectors; 
+    OneWayDescriptor* m_pca_descriptors; 
+
+    cv::flann::Index* m_pca_descriptors_tree;
+    CvMat* m_pca_descriptors_matrix;
+
+    CvAffinePose* m_poses; 
+    CvMat** m_transforms; 
+
+    int m_pca_dim_high;
+    int m_pca_dim_low;
+
+    int m_pyr_levels;
+    float scale_min;
+    float scale_max;
+    float scale_step;
+
+    
+    
+    void SavePCAall (FileStorage &fs) const;
+
+    
+    
+    void LoadPCAall (const FileNode &fn);
+};
+
+class CV_EXPORTS OneWayDescriptorObject : public OneWayDescriptorBase
+{
+public:
+    
+    
+    
+    
+    
+    
+    
+    
+    OneWayDescriptorObject(CvSize patch_size, int pose_count, const char* train_path, const char* pca_config,
+                           const char* pca_hr_config = 0, const char* pca_desc_config = 0, int pyr_levels = 1);
+
+    OneWayDescriptorObject(CvSize patch_size, int pose_count, const string &pca_filename,
+                           const string &train_path = string (), const string &images_list = string (),
+                           float _scale_min = 0.7f, float _scale_max=1.5f, float _scale_step=1.2f, int pyr_levels = 1);
+
+
+    virtual ~OneWayDescriptorObject();
+
+    
+    
+    
+    void Allocate(int train_feature_count, int object_feature_count);
+
+
+    void SetLabeledFeatures(const vector<cv::KeyPoint>& features) {m_train_features = features;};
+    vector<cv::KeyPoint>& GetLabeledFeatures() {return m_train_features;};
+    const vector<cv::KeyPoint>& GetLabeledFeatures() const {return m_train_features;};
+    vector<cv::KeyPoint> _GetLabeledFeatures() const;
+
+    
+    int IsDescriptorObject(int desc_idx) const;
+
+    
+    int MatchPointToPart(CvPoint pt) const;
+
+    
+    
+    int GetDescriptorPart(int desc_idx) const;
+
+
+    void InitializeObjectDescriptors(IplImage* train_image, const vector<cv::KeyPoint>& features,
+                                     const char* feature_label, int desc_start_idx = 0, float scale = 1.0f,
+                                     int is_background = 0);
+
+    
+    int GetObjectFeatureCount() const {return m_object_feature_count;};
+
+protected:
+    int* m_part_id; 
+    vector<cv::KeyPoint> m_train_features; 
+    int m_object_feature_count; 
+
+};
+
+
+
+
+
+class CV_EXPORTS FeatureDetector
+{
+public:
+    virtual ~FeatureDetector() {}
+    
+    
+    void detect( const Mat& image, vector<KeyPoint>& keypoints, const Mat& mask=Mat() ) const
+    {
+        detectImpl( image, mask, keypoints );
+    }
+    
+    virtual void read(const FileNode&) {}
+    virtual void write(FileStorage&) const {}
+
+protected:
+    
+    virtual void detectImpl( const Mat& image, const Mat& mask, vector<KeyPoint>& keypoints ) const = 0;
+
+    
+    static void removeInvalidPoints( const Mat& mask, vector<KeyPoint>& keypoints );
+};
+
+class CV_EXPORTS FastFeatureDetector : public FeatureDetector
+{
+public:
+    FastFeatureDetector( int _threshold = 1, bool _nonmaxSuppression = true );
+
+    virtual void read (const FileNode& fn);
+    virtual void write (FileStorage& fs) const;
+
+protected:
+    virtual void detectImpl( const Mat& image, const Mat& mask, vector<KeyPoint>& keypoints ) const;
+
+    int threshold;
+    bool nonmaxSuppression;
+};
+
+
+class CV_EXPORTS GoodFeaturesToTrackDetector : public FeatureDetector
+{
+public:
+    GoodFeaturesToTrackDetector( int _maxCorners, double _qualityLevel, double _minDistance,
+                                 int _blockSize=3, bool _useHarrisDetector=false, double _k=0.04 );
+
+    virtual void read (const FileNode& fn);
+    virtual void write (FileStorage& fs) const;
+
+protected:
+    virtual void detectImpl( const Mat& image, const Mat& mask, vector<KeyPoint>& keypoints ) const;
+
+    int maxCorners;
+    double qualityLevel;
+    double minDistance;
+    int blockSize;
+    bool useHarrisDetector;
+    double k;
+};
+
+class CV_EXPORTS MserFeatureDetector : public FeatureDetector
+{
+public:
+    MserFeatureDetector( CvMSERParams params = cvMSERParams () );
+    MserFeatureDetector( int delta, int minArea, int maxArea, double maxVariation, double minDiversity,
+                         int maxEvolution, double areaThreshold, double minMargin, int edgeBlurSize );
+
+    virtual void read (const FileNode& fn);
+    virtual void write (FileStorage& fs) const;
+
+protected:
+    virtual void detectImpl( const Mat& image, const Mat& mask, vector<KeyPoint>& keypoints ) const;
+
+    MSER mser;
+};
+
+class CV_EXPORTS StarFeatureDetector : public FeatureDetector
+{
+public:
+    StarFeatureDetector( int maxSize=16, int responseThreshold=30, int lineThresholdProjected = 10,
+                         int lineThresholdBinarized=8, int suppressNonmaxSize=5 );
+
+    virtual void read (const FileNode& fn);
+    virtual void write (FileStorage& fs) const;
+
+protected:
+    virtual void detectImpl( const Mat& image, const Mat& mask, vector<KeyPoint>& keypoints ) const;
+
+    StarDetector star;
+};
+
+class CV_EXPORTS SiftFeatureDetector : public FeatureDetector
+{
+public:
+    SiftFeatureDetector( double threshold=SIFT::DetectorParams::GET_DEFAULT_THRESHOLD(),
+                         double edgeThreshold=SIFT::DetectorParams::GET_DEFAULT_EDGE_THRESHOLD(),
+                         int nOctaves=SIFT::CommonParams::DEFAULT_NOCTAVES,
+                         int nOctaveLayers=SIFT::CommonParams::DEFAULT_NOCTAVE_LAYERS,
+                         int firstOctave=SIFT::CommonParams::DEFAULT_FIRST_OCTAVE,
+                         int angleMode=SIFT::CommonParams::FIRST_ANGLE );
+
+    virtual void read (const FileNode& fn);
+    virtual void write (FileStorage& fs) const;
+
+protected:
+    virtual void detectImpl( const Mat& image, const Mat& mask, vector<KeyPoint>& keypoints ) const;
+
+    SIFT sift;
+};
+
+class CV_EXPORTS SurfFeatureDetector : public FeatureDetector
+{
+public:
+    SurfFeatureDetector( double hessianThreshold = 400., int octaves = 3, int octaveLayers = 4 );
+
+    virtual void read (const FileNode& fn);
+    virtual void write (FileStorage& fs) const;
+
+protected:
+    virtual void detectImpl( const Mat& image, const Mat& mask, vector<KeyPoint>& keypoints ) const;
+
+    SURF surf;
+};
+
+CV_EXPORTS Ptr<FeatureDetector> createFeatureDetector( const string& detectorType );
+
+class CV_EXPORTS DenseFeatureDetector : public FeatureDetector
+{
+public:
+    DenseFeatureDetector() : initFeatureScale(1), featureScaleLevels(1), featureScaleMul(0.1f),
+                             initXyStep(6), initImgBound(0),  varyXyStepWithScale(true), varyImgBoundWithScale(false) {}
+    DenseFeatureDetector( float _initFeatureScale, int _featureScaleLevels=1, float _featureScaleMul=0.1f,
+                          int _initXyStep=6, int _initImgBound=0, bool _varyXyStepWithScale=true, bool _varyImgBoundWithScale=false ) :
+        initFeatureScale(_initFeatureScale), featureScaleLevels(_featureScaleLevels), featureScaleMul(_featureScaleMul),
+        initXyStep(_initXyStep), initImgBound(_initImgBound), varyXyStepWithScale(_varyXyStepWithScale), varyImgBoundWithScale(_varyImgBoundWithScale) {}
+
+protected:
+
+    virtual void detectImpl( const Mat& image, const Mat& mask, vector<KeyPoint>& keypoints ) const;
+
+    float initFeatureScale;
+    int featureScaleLevels;
+    float featureScaleMul;
+
+    int initXyStep;
+    int initImgBound;
+
+    bool varyXyStepWithScale;
+    bool varyImgBoundWithScale;
+};
+
+
+class CV_EXPORTS GridAdaptedFeatureDetector : public FeatureDetector
+{
+public:
+    GridAdaptedFeatureDetector( const Ptr<FeatureDetector>& _detector, int _maxTotalKeypoints,
+                                int _gridRows=4, int _gridCols=4 );
+    
+
+protected:
+    Ptr<FeatureDetector> detector;
+    int maxTotalKeypoints;
+    int gridRows;
+    int gridCols;
+
+    virtual void detectImpl( const Mat& image, const Mat& mask, vector<KeyPoint>& keypoints ) const;
+};
+
+
+class PyramidAdaptedFeatureDetector : public FeatureDetector
+{
+public:
+    PyramidAdaptedFeatureDetector( const Ptr<FeatureDetector>& _detector, int _levels=2 );
+
+    
+
+protected:
+    Ptr<FeatureDetector> detector;
+    int levels;
+
+    virtual void detectImpl( const Mat& image, const Mat& mask, vector<KeyPoint>& keypoints ) const;
+};
+
+CV_EXPORTS Mat windowedMatchingMask( const vector<KeyPoint>& keypoints1, const vector<KeyPoint>& keypoints2,
+                                     float maxDeltaX, float maxDeltaY );
+
+
+
+
+class CV_EXPORTS DescriptorExtractor
+{
+public:
+    virtual ~DescriptorExtractor() {}
+    
+    virtual void compute( const Mat& image, vector<KeyPoint>& keypoints, Mat& descriptors ) const = 0;
+
+    virtual void read( const FileNode& ) {};
+    virtual void write( FileStorage& ) const {};
+
+    virtual int descriptorSize() const = 0;
+    virtual int descriptorType() const = 0;
+
+protected:
+    
+    static void removeBorderKeypoints( vector<KeyPoint>& keypoints,
+                                       Size imageSize, int borderPixels );
+};
+
+class CV_EXPORTS SiftDescriptorExtractor : public DescriptorExtractor
+{
+public:
+    SiftDescriptorExtractor( double magnification=SIFT::DescriptorParams::GET_DEFAULT_MAGNIFICATION(),
+                             bool isNormalize=true, bool recalculateAngles=true,
+                             int nOctaves=SIFT::CommonParams::DEFAULT_NOCTAVES,
+                             int nOctaveLayers=SIFT::CommonParams::DEFAULT_NOCTAVE_LAYERS,
+                             int firstOctave=SIFT::CommonParams::DEFAULT_FIRST_OCTAVE,
+                             int angleMode=SIFT::CommonParams::FIRST_ANGLE );
+
+    virtual void compute( const Mat& image, vector<KeyPoint>& keypoints, Mat& descriptors ) const;
+    virtual void read( const FileNode &fn );
+    virtual void write( FileStorage &fs ) const;
+
+    virtual int descriptorSize() const { return sift.descriptorSize(); }
+    virtual int descriptorType() const { return CV_32FC1; }
+
+protected:
+    SIFT sift;
+};
+
+class CV_EXPORTS SurfDescriptorExtractor : public DescriptorExtractor
+{
+public:
+    SurfDescriptorExtractor( int nOctaves=4,
+                             int nOctaveLayers=2, bool extended=false );
+
+    virtual void compute( const Mat& image, vector<KeyPoint>& keypoints, Mat& descriptors ) const;
+    virtual void read( const FileNode &fn );
+    virtual void write( FileStorage &fs ) const;
+
+    virtual int descriptorSize() const { return surf.descriptorSize(); }
+    virtual int descriptorType() const { return CV_32FC1; }
+
+protected:
+    SURF surf;
+};
+
+template<typename T>
+class CV_EXPORTS CalonderDescriptorExtractor : public DescriptorExtractor
+{
+public:
+    CalonderDescriptorExtractor( const string& classifierFile );
+
+    virtual void compute( const Mat& image, vector<KeyPoint>& keypoints, Mat& descriptors ) const;
+    virtual void read( const FileNode &fn );
+    virtual void write( FileStorage &fs ) const;
+
+    virtual int descriptorSize() const { return classifier_.classes(); }
+    virtual int descriptorType() const { return DataType<T>::type; }
+
+protected:
+    RTreeClassifier classifier_;
+    static const int BORDER_SIZE = 16;
+};
+
+template<typename T>
+CalonderDescriptorExtractor<T>::CalonderDescriptorExtractor(const std::string& classifier_file)
+{
+    classifier_.read( classifier_file.c_str() );
+}
+
+template<typename T>
+void CalonderDescriptorExtractor<T>::compute( const cv::Mat& image,
+                                              std::vector<cv::KeyPoint>& keypoints,
+                                              cv::Mat& descriptors) const
+{
+  
+  removeBorderKeypoints(keypoints, image.size(), BORDER_SIZE);
+
+  
+  descriptors.create(keypoints.size(), classifier_.classes(), cv::DataType<T>::type);
+
+  int patchSize = RandomizedTree::PATCH_SIZE;
+  int offset = patchSize / 2;
+  for (size_t i = 0; i < keypoints.size(); ++i) {
+    cv::Point2f pt = keypoints[i].pt;
+    IplImage ipl = image( Rect((int)(pt.x - offset), (int)(pt.y - offset), patchSize, patchSize) );
+    classifier_.getSignature( &ipl, descriptors.ptr<T>(i));
+  }
+}
+
+template<typename T>
+void CalonderDescriptorExtractor<T>::read( const FileNode& )
+{}
+
+template<typename T>
+void CalonderDescriptorExtractor<T>::write( FileStorage& ) const
+{}
+
+
+class OpponentColorDescriptorExtractor : public DescriptorExtractor
+{
+public:
+    OpponentColorDescriptorExtractor( const Ptr<DescriptorExtractor>& dextractor );
+
+    virtual void compute( const Mat& image, vector<KeyPoint>& keypoints, Mat& descriptors ) const;
+
+    virtual void read( const FileNode& );
+    virtual void write( FileStorage& ) const;
+
+    virtual int descriptorSize() const { return 3*dextractor->descriptorSize(); }
+    virtual int descriptorType() const { return dextractor->descriptorType(); }
+
+protected:
+    Ptr<DescriptorExtractor> dextractor;
+};
+
+CV_EXPORTS Ptr<DescriptorExtractor> createDescriptorExtractor( const string& descriptorExtractorType );
+
+
+template<typename T>
+struct CV_EXPORTS Accumulator
+{
+    typedef T Type;
+};
+
+template<> struct Accumulator<unsigned char>  { typedef unsigned int Type; };
+template<> struct Accumulator<unsigned short> { typedef unsigned int Type; };
+template<> struct Accumulator<char>   { typedef int Type; };
+template<> struct Accumulator<short>  { typedef int Type; };
+
+
+template<class T>
+struct CV_EXPORTS L2
+{
+    typedef T ValueType;
+    typedef typename Accumulator<T>::Type ResultType;
+
+    ResultType operator()( const T* a, const T* b, int size ) const
+    {
+        ResultType result = ResultType();
+        for( int i = 0; i < size; i++ )
+        {
+            ResultType diff = a[i] - b[i];
+            result += diff*diff;
+        }
+        return sqrt(result);
+    }
+};
+
+
+template<class T>
+struct CV_EXPORTS L1
+{
+    typedef T ValueType;
+    typedef typename Accumulator<T>::Type ResultType;
+
+    ResultType operator()( const T* a, const T* b, int size ) const
+    {
+        ResultType result = ResultType();
+        for( int i = 0; i < size; i++ )
+        {
+            ResultType diff = a[i] - b[i];
+            result += fabs( diff );
+        }
+        return result;
+    }
+};
+
+
+
+
+struct CV_EXPORTS DMatch
+{
+    int indexTrain;
+    int indexQuery;
+    float distance;
+
+    
+    bool operator<( const DMatch &m) const
+    {
+        return distance < m.distance;
+    }
+};
+
+
+
+class CV_EXPORTS DescriptorMatcher
+{
+public:
+    virtual ~DescriptorMatcher() {}
+    
+    void add( const Mat& descriptors );
+
+    
+    virtual void index() = 0;
+
+    
+    void match( const Mat& query, vector<int>& matches ) const;
+
+    
+    void match( const Mat& query, const Mat& mask, vector<int>& matches ) const;
+
+    
+    void match( const Mat& query, vector<DMatch>& matches ) const;
+
+    
+    void match( const Mat& query, const Mat& mask, vector<DMatch>& matches ) const;
+
+    void match( const Mat& query, const Mat& train, vector<DMatch>& matches, const Mat& mask ) const;
+
+    
+    void match( const Mat& query, vector<vector<DMatch> >& matches, float threshold ) const;
+
+    
+    void match( const Mat& query, const Mat& mask,
+                vector<vector<DMatch> >&  matches, float threshold ) const;
+
+    virtual void clear();
+
+protected:
+    Mat m_train;
+
+    
+    virtual void matchImpl( const Mat& query, const Mat& train, vector<int>& matches, const Mat& mask ) const = 0;
+
+    
+    virtual void matchImpl( const Mat& query, const Mat& train, vector<DMatch>& matches, const Mat& mask ) const = 0;
+
+    virtual void matchImpl( const Mat& query, const Mat& train, vector<vector<DMatch> >& matches, float threshold, const Mat& mask ) const = 0;
+
+
+    static bool possibleMatch( const Mat& mask, int index_1, int index_2 )
+    {
+        return mask.empty() || mask.at<char>(index_1, index_2);
+    }
+};
+
+
+template<class Distance>
+class CV_EXPORTS BruteForceMatcher : public DescriptorMatcher
+{
+public:
+    BruteForceMatcher( Distance d = Distance() ) : distance(d) {}
+    virtual void index() {}
+protected:
+   virtual void matchImpl( const Mat& query, const Mat& train, vector<int>& matches, const Mat& mask ) const;
+
+   virtual void matchImpl( const Mat& query, const Mat& train, vector<DMatch>& matches, const Mat& mask ) const;
+
+   virtual void matchImpl( const Mat& query, const Mat& train, vector<vector<DMatch> >& matches, float threshold, const Mat& mask ) const;
+
+   Distance distance;
+};
+
+template<class Distance> inline
+void BruteForceMatcher<Distance>::matchImpl( const Mat& query, const Mat& train, vector<int>& matches, const Mat& mask ) const
+{
+    vector<DMatch> fullMatches;
+    matchImpl( query, train, fullMatches, mask );
+    matches.clear();
+    matches.resize( fullMatches.size() );
+    for( size_t i=0;i<fullMatches.size();i++)
+    {
+        matches[i] = fullMatches[i].indexTrain;
+    }
+}
+
+template<class Distance> inline
+void BruteForceMatcher<Distance>::matchImpl( const Mat& query, const Mat& train, vector<DMatch>& matches, const Mat& mask ) const
+{
+    typedef typename Distance::ValueType ValueType;
+    typedef typename Distance::ResultType DistanceType;
+
+    assert( mask.empty() || (mask.rows == query.rows && mask.cols == train.rows) );
+
+    assert( query.cols == train.cols ||  query.empty() ||  train.empty() );
+    assert( DataType<ValueType>::type == query.type() ||  query.empty() );
+    assert( DataType<ValueType>::type == train.type() ||  train.empty() );
+
+    int dimension = query.cols;
+    matches.clear();
+    matches.reserve(query.rows);
+
+    for( int i = 0; i < query.rows; i++ )
+    {
+        const ValueType* d1 = (const ValueType*)(query.data + query.step*i);
+        int matchIndex = -1;
+        DistanceType matchDistance = std::numeric_limits<DistanceType>::max();
+
+        for( int j = 0; j < train.rows; j++ )
+        {
+            if( possibleMatch(mask, i, j) )
+            {
+                const ValueType* d2 = (const ValueType*)(train.data + train.step*j);
+                DistanceType curDistance = distance(d1, d2, dimension);
+                if( curDistance < matchDistance )
+                {
+                    matchDistance = curDistance;
+                    matchIndex = j;
+                }
+            }
+        }
+
+        if( matchIndex != -1 )
+        {
+            DMatch match;
+            match.indexTrain = matchIndex;
+            match.indexQuery = i;
+            match.distance = matchDistance;
+            matches.push_back( match );
+        }
+    }
+}
+
+template<class Distance> inline
+void BruteForceMatcher<Distance>::matchImpl( const Mat& query, const Mat& train, vector<vector<DMatch> >& matches,
+                                             float threshold, const Mat& mask ) const
+{
+    typedef typename Distance::ValueType ValueType;
+    typedef typename Distance::ResultType DistanceType;
+
+    assert( mask.empty() || (mask.rows == query.rows && mask.cols == train.rows) );
+
+    assert( query.cols == train.cols ||  query.empty() ||  train.empty() );
+    assert( DataType<ValueType>::type == query.type() ||  query.empty() );
+    assert( DataType<ValueType>::type == train.type() || train.empty() );
+
+    int dimension = query.cols;
+    matches.clear();
+    matches.resize( query.rows );
+
+    for( int i = 0; i < query.rows; i++ )
+    {
+        const ValueType* d1 = (const ValueType*)(query.data + query.step*i);
+
+        for( int j = 0; j < train.rows; j++ )
+        {
+            if( possibleMatch(mask, i, j) )
+            {
+                const ValueType* d2 = (const ValueType*)(train.data + train.step*j);
+                DistanceType curDistance = distance(d1, d2, dimension);
+                if( curDistance < threshold )
+                {
+                    DMatch match;
+                    match.distance = curDistance;
+                    match.indexQuery = i;
+                    match.indexTrain = j;
+                    matches[i].push_back( match );
+                }
+            }
+        }
+    }
+}
+
+template<>
+void BruteForceMatcher<L2<float> >::matchImpl( const Mat& query, const Mat& train, vector<DMatch>& matches, const Mat& mask) const;
+
+CV_EXPORTS Ptr<DescriptorMatcher> createDescriptorMatcher( const string& descriptorMatcherType );
+
+
+
+class CV_EXPORTS KeyPointCollection
+{
+public:
+    
+    
+    
+    void add( const Mat& _image, const vector<KeyPoint>& _points );
+
+    
+    size_t calcKeypointCount() const;
+
+    
+    KeyPoint getKeyPoint( int index ) const;
+
+    
+    void clear();
+
+    vector<Mat> images;
+    vector<vector<KeyPoint> > points;
+
+    
+    
+    vector<int> startIndices;
+};
+
+
+class CV_EXPORTS GenericDescriptorMatch
+{
+public:
+    enum IndexType
+    {
+        NoIndex,
+        KDTreeIndex
+    };
+
+    GenericDescriptorMatch() {}
+    virtual ~GenericDescriptorMatch() {}
+
+    
+    virtual void add( KeyPointCollection& keypoints );
+
+    
+    virtual void add( const Mat& image, vector<KeyPoint>& points ) = 0;
+
+    
+    
+    
+    virtual void classify( const Mat& image, vector<KeyPoint>& points );
+
+    
+    
+    
+    
+    virtual void match( const Mat& image, vector<KeyPoint>& points, vector<int>& indices ) = 0;
+
+    
+    
+    
+    
+    virtual void match( const Mat& image, vector<KeyPoint>& points, vector<DMatch>& matches );
+
+    virtual void match( const Mat& image, vector<KeyPoint>& points, vector<vector<DMatch> >& matches, float threshold );
+
+    
+    virtual void clear();
+
+    
+    virtual void read( const FileNode& ) {};
+    
+    
+    virtual void write( FileStorage& ) const {};
+
+protected:
+    KeyPointCollection collection;
+};
+
+
+class CV_EXPORTS OneWayDescriptorMatch : public GenericDescriptorMatch
+{
+public:
+    class Params
+    {
+    public:
+        static const int POSE_COUNT = 500;
+        static const int PATCH_WIDTH = 24;
+        static const int PATCH_HEIGHT = 24;
+        static float GET_MIN_SCALE() { return 0.7f; }
+        static float GET_MAX_SCALE() { return 1.5f; }
+        static float GET_STEP_SCALE() { return 1.2f; }
+
+        Params( int _poseCount = POSE_COUNT,
+                Size _patchSize = Size(PATCH_WIDTH, PATCH_HEIGHT),
+                string _pcaFilename = string (),
+                string _trainPath = string(),
+                string _trainImagesList = string(),
+                float _minScale = GET_MIN_SCALE(), float _maxScale = GET_MAX_SCALE(),
+                float _stepScale = GET_STEP_SCALE() ) :
+        poseCount(_poseCount), patchSize(_patchSize), pcaFilename(_pcaFilename),
+        trainPath(_trainPath), trainImagesList(_trainImagesList),
+        minScale(_minScale), maxScale(_maxScale), stepScale(_stepScale) {}
+
+        int poseCount;
+        Size patchSize;
+        string pcaFilename;
+        string trainPath;
+        string trainImagesList;
+
+        float minScale, maxScale, stepScale;
+    };
+
+    OneWayDescriptorMatch();
+
+    
+    OneWayDescriptorMatch( const Params& _params );
+    virtual ~OneWayDescriptorMatch();
+
+    
+    void initialize( const Params& _params, OneWayDescriptorBase *_base = 0 );
+
+    
+    virtual void add( const Mat& image, vector<KeyPoint>& keypoints );
+
+    
+    virtual void add( KeyPointCollection& keypoints );
+
+    
+    
+    
+    
+    
+    
+    virtual void match( const Mat& image, vector<KeyPoint>& points, vector<int>& indices );
+
+    virtual void match( const Mat& image, vector<KeyPoint>& points, vector<DMatch>& matches );
+
+    virtual void match( const Mat& image, vector<KeyPoint>& points, vector<vector<DMatch> >& matches, float threshold);
+
+    
+    virtual void classify( const Mat& image, vector<KeyPoint>& points );
+
+    
+    virtual void clear ();
+
+    
+    virtual void read( const FileNode &fn );
+    
+    
+    virtual void write( FileStorage& fs ) const;
+
+protected:
+    Ptr<OneWayDescriptorBase> base;
+    Params params;
+};
+
+
+class CV_EXPORTS FernDescriptorMatch : public GenericDescriptorMatch
+{
+public:
+    class Params
+    {
+    public:
+        Params( int _nclasses=0,
+                int _patchSize=FernClassifier::PATCH_SIZE,
+                int _signatureSize=FernClassifier::DEFAULT_SIGNATURE_SIZE,
+                int _nstructs=FernClassifier::DEFAULT_STRUCTS,
+                int _structSize=FernClassifier::DEFAULT_STRUCT_SIZE,
+                int _nviews=FernClassifier::DEFAULT_VIEWS,
+                int _compressionMethod=FernClassifier::COMPRESSION_NONE,
+                const PatchGenerator& patchGenerator=PatchGenerator() );
+
+        Params( const string& _filename );
+
+        int nclasses;
+        int patchSize;
+        int signatureSize;
+        int nstructs;
+        int structSize;
+        int nviews;
+        int compressionMethod;
+        PatchGenerator patchGenerator;
+
+        string filename;
+    };
+
+    FernDescriptorMatch();
+
+    FernDescriptorMatch( const Params& _params );
+    virtual ~FernDescriptorMatch();
+
+    void initialize( const Params& _params );
+
+    virtual void add( const Mat& image, vector<KeyPoint>& keypoints );
+
+    virtual void match( const Mat& image, vector<KeyPoint>& keypoints, vector<int>& indices );
+
+    virtual void match( const Mat& image, vector<KeyPoint>& points, vector<DMatch>& matches);
+
+    virtual void match( const Mat& image, vector<KeyPoint>& points, vector<vector<DMatch> >& matches, float threshold);
+
+    virtual void classify( const Mat& image, vector<KeyPoint>& keypoints );
+
+    virtual void clear();
+
+    virtual void read( const FileNode &fn );
+
+    virtual void write( FileStorage& fs ) const;
+    
+protected:
+    void trainFernClassifier();
+    void calcBestProbAndMatchIdx( const Mat& image, const Point2f& pt,
+                                  float& bestProb, int& bestMatchIdx, vector<float>& signature );
+    Ptr<FernClassifier> classifier;
+    Params params;
+};
+
+CV_EXPORTS Ptr<GenericDescriptorMatch> createGenericDescriptorMatcher( const string& genericDescritptorMatcherType,
+                                                                       const string &paramsFilename = string () );
+
+
+
+
+class CV_EXPORTS VectorDescriptorMatch : public GenericDescriptorMatch
+{
+public:
+    using GenericDescriptorMatch::add;
+
+    VectorDescriptorMatch( const Ptr<DescriptorExtractor>& _extractor, const Ptr<DescriptorMatcher>& _matcher )
+                        : extractor( _extractor ), matcher( _matcher ) {}
+
+    virtual ~VectorDescriptorMatch() {}
+
+    
+    void index();
+
+    
+    virtual void add( const Mat& image, vector<KeyPoint>& keypoints );
+
+    
+    virtual void match( const Mat& image, vector<KeyPoint>& points, vector<int>& keypointIndices );
+
+    virtual void match( const Mat& image, vector<KeyPoint>& points, vector<DMatch>& matches );
+
+    virtual void match( const Mat& image, vector<KeyPoint>& points,
+                        vector<vector<DMatch> >& matches, float threshold );
+
+    virtual void clear();
+    virtual void read( const FileNode& fn );
+    virtual void write( FileStorage& fs ) const;
+
+protected:
+    Ptr<DescriptorExtractor> extractor;
+    Ptr<DescriptorMatcher> matcher;
+    
+};
+
+
+struct CV_EXPORTS DrawMatchesFlags
+{
+    enum{ DEFAULT = 0, 
+                       
+                       
+                       
+                       
+          DRAW_OVER_OUTIMG = 1, 
+                                
+          NOT_DRAW_SINGLE_POINTS = 2, 
+          DRAW_RICH_KEYPOINTS = 4 
+                                  
+        };
+};
+
+
+CV_EXPORTS void drawKeypoints( const Mat& image, const vector<KeyPoint>& keypoints, Mat& outImg,
+                               const Scalar& color=Scalar::all(-1), int flags=DrawMatchesFlags::DEFAULT );
+
+
+CV_EXPORTS void drawMatches( const Mat& img1, const vector<KeyPoint>& keypoints1,
+							 const Mat& img2, const vector<KeyPoint>& keypoints2,
+                             const vector<int>& matches1to2, Mat& outImg,
+                             const Scalar& matchColor=Scalar::all(-1), const Scalar& singlePointColor=Scalar::all(-1),
+                             const vector<char>& matchesMask=vector<char>(), int flags=DrawMatchesFlags::DEFAULT );
+
+CV_EXPORTS void drawMatches( const Mat& img1, const vector<KeyPoint>& keypoints1,
+                             const Mat& img2, const vector<KeyPoint>& keypoints2,
+                             const vector<DMatch>& matches1to2, Mat& outImg,
+                             const Scalar& matchColor=Scalar::all(-1), const Scalar& singlePointColor=Scalar::all(-1),
+                             const vector<char>& matchesMask=vector<char>(), int flags=DrawMatchesFlags::DEFAULT );
+
+CV_EXPORTS void drawMatches( const Mat& img1, const vector<KeyPoint>& keypoints1,
+                             const Mat& img2, const vector<KeyPoint>& keypoints2,
+                             const vector<vector<DMatch> >& matches1to2, Mat& outImg,
+                             const Scalar& matchColor=Scalar::all(-1), const Scalar& singlePointColor=Scalar::all(-1),
+                             const vector<vector<char> >& matchesMask=vector<vector<char> >(), int flags=DrawMatchesFlags::DEFAULT );
+
+
+
+CV_EXPORTS void evaluateFeatureDetector( const Mat& img1, const Mat& img2, const Mat& H1to2,
+                                         vector<KeyPoint>* keypoints1, vector<KeyPoint>* keypoints2,
+                                         float& repeatability, int& correspCount,
+                                         const Ptr<FeatureDetector>& fdetector=Ptr<FeatureDetector>() );
+
+CV_EXPORTS void computeRecallPrecisionCurve( const vector<vector<DMatch> >& matches1to2,
+                                             const vector<vector<uchar> >& correctMatches1to2Mask,
+                                             vector<Point2f>& recallPrecisionCurve );
+CV_EXPORTS float getRecall( const vector<Point2f>& recallPrecisionCurve, float l_precision );
+
+CV_EXPORTS void evaluateGenericDescriptorMatcher( const Mat& img1, const Mat& img2, const Mat& H1to2,
+                                                  vector<KeyPoint>& keypoints1, vector<KeyPoint>& keypoints2,
+                                                  vector<vector<DMatch> >* matches1to2, vector<vector<uchar> >* correctMatches1to2Mask,
+                                                  vector<Point2f>& recallPrecisionCurve,
+                                                  const Ptr<GenericDescriptorMatch>& dmatch=Ptr<GenericDescriptorMatch>() );
+
+
+
+
+class CV_EXPORTS BOWTrainer
+{
+public:
+    BOWTrainer(){}
+    virtual ~BOWTrainer(){}
+
+    void add( const Mat& descriptors );
+    const vector<Mat>& getDescriptors() const { return descriptors; }
+    int descripotorsCount() const { return descriptors.empty() ? 0 : size; }
+
+    virtual void clear();
+
+    
+    virtual Mat cluster() const = 0;
+    virtual Mat cluster( const Mat& descriptors ) const = 0;
+
+protected:
+    vector<Mat> descriptors;
+    int size;
+};
+
+
+class CV_EXPORTS BOWKMeansTrainer : public BOWTrainer
+{
+public:
+    BOWKMeansTrainer( int clusterCount, const TermCriteria& termcrit=TermCriteria(),
+                      int attempts=3, int flags=KMEANS_PP_CENTERS );
+    virtual ~BOWKMeansTrainer(){}
+
+    
+    virtual Mat cluster() const;
+    virtual Mat cluster( const Mat& descriptors ) const;
+
+protected:
+
+    int clusterCount;
+    TermCriteria termcrit;
+    int attempts;
+    int flags;
+};
+
+
+class CV_EXPORTS BOWImgDescriptorExtractor
+{
+public:
+    BOWImgDescriptorExtractor( const Ptr<DescriptorExtractor>& dextractor,
+                               const Ptr<DescriptorMatcher>& dmatcher );
+    virtual ~BOWImgDescriptorExtractor(){}
+
+    void setVocabulary( const Mat& vocabulary );
+    const Mat& getVocabulary() const { return vocabulary; }
+    void compute( const Mat& image, vector<KeyPoint>& keypoints, Mat& imgDescriptor,
+                  vector<vector<int> >* pointIdxsInClusters=0 ) const;
+    int descriptorSize() const { return vocabulary.empty() ? 0 : vocabulary.rows; }
+    int descriptorType() const { return CV_32FC1; }
+
+protected:
+    Mat vocabulary;
+    Ptr<DescriptorExtractor> dextractor;
+    Ptr<DescriptorMatcher> dmatcher;
+};
+
+} 
+
+#endif 
+
+#endif
+
+
