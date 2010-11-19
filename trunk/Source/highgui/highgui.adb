@@ -17,7 +17,7 @@
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 
-package body Highgui.Highgui_C is
+package body Highgui is
 --
 
    --  //for color cvScalar(blue_component, green_component, red\_component[, alpha_component])
@@ -241,4 +241,4 @@ package body Highgui.Highgui_C is
       return WCvCreateVideoWriter (+Filename, Fourcc, Fps, Width, Height, Is_Color);
    end CvCreateVideoWriter;
 
-end Highgui.Highgui_C;
+end Highgui;
