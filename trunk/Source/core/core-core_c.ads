@@ -1663,6 +1663,8 @@ package Core.Core_C is
    end record;
    type Cv_Font_P is access Cv_Font;
 
+
+
    -- Initializes font structure.
    procedure CvInitFont (Font      : access Cv_Font;
                          FontFace  : Cv_Font_Face;
@@ -1674,6 +1676,12 @@ package Core.Core_C is
 
    function CvFont (Scale     : Long_Float;
                     Thickness : Integer := 1) return Cv_Font;
+
+   procedure CvPutText (Img   : Cv_Arr_P;
+                        Text  : String;
+                        Org   : Cv_Point;
+                        Font  : access Cv_Font;
+                        Color : Cv_Scalar);
 
    -- Retrieves the width and height of a text string.
    procedure CvGetTextSize (TextString : String;
@@ -1736,13 +1744,13 @@ package Core.Core_C is
    -- Returns the currently observed node and moves the iterator toward the previous node.
    function CvPrevTreeNode (TreeIterator : Cv_Tree_Node_Iterator_P) return Cv_Void_P;
 
-    --Adds a new node to a tree.
+   --Adds a new node to a tree.
    procedure CvInsertNodeIntoTree (Node   : Cv_Void_P;
                                    Parent : Cv_Void_P;
                                    Fram   : Cv_Void_P);
 
-     --/* Removes contour from tree (together with the contour children). */
-   procedure CvRemoveNodeFromTree (Node : Cv_Void_P;
+   --/* Removes contour from tree (together with the contour children). */
+   procedure CvRemoveNodeFromTree (Node  : Cv_Void_P;
                                    Frame : Cv_Void_P);
 
    --Gathers all node pointers to a single sequence.
@@ -1768,7 +1776,7 @@ package Core.Core_C is
    function CvRegisterModule (Module_Info : access Cv_Module_Info)
                               return Integer;
 
-    --     Switches between optimized/non-optimized modes.
+   --     Switches between optimized/non-optimized modes.
    function CvUseOptimized (Onoff : Integer)
                             return Integer;
 
@@ -1777,9 +1785,9 @@ package Core.Core_C is
                               Version              : access Interfaces.C.Strings.Chars_Ptr;
                               Loaded_Addon_Plugins : access Interfaces.C.Strings.Chars_Ptr);
 
-      type Cv_Alloc_Func is access function (Size     : Size_T;
+   type Cv_Alloc_Func is access function (Size     : Size_T;
                                           Userdata : Cv_Void_P)
-                                          return Cv_Void_P;
+                                             return Cv_Void_P;
    pragma Convention (C, Cv_Alloc_Func);
 
    type Cv_Free_Func is access function (Pptr     : Cv_Void_P;
@@ -1792,7 +1800,7 @@ package Core.Core_C is
                                  Free_Func  : Cv_Free_Func := null;
                                  Userdata   : Cv_Void_P := null);
 
-      -- typedef IplImage* (CV_STDCALL* Cv_iplCreateImageHeader)
+   -- typedef IplImage* (CV_STDCALL* Cv_iplCreateImageHeader)
    --   (int,int,int,char*,char*,int,int,int,int,int,IplROI*,IplImage*,void*,IplTileInfo*);
    type Cv_Ipl_Create_Image_Header is access function (N_Size        : Integer;
                                                        ID            : Integer;
@@ -1864,7 +1872,7 @@ package Core.Core_C is
    procedure CvReleaseFileStorage (Fs : access Cv_File_Storage_P);
 
    --/* returns attribute value or 0 (NULL) if there is no such attribute */
-   function CvAttrValue (Attr : Cv_Attr_List_P;
+   function CvAttrValue (Attr       : Cv_Attr_List_P;
                          Attr_Name  : Interfaces.C.Strings.Chars_Ptr) return Interfaces.C.Strings.Chars_Ptr;
 
    --     Starts writing a new structure.
@@ -1899,9 +1907,9 @@ package Core.Core_C is
                              Eol_Comment : Integer);
 
    --     Writes a user object.
-   procedure CvWrite (Fs   : access Cv_File_Storage;
-                      Name : Interfaces.C.Strings.Chars_Ptr;
-                      Ptr  : Cv_Void_P;
+   procedure CvWrite (Fs         : access Cv_File_Storage;
+                      Name       : Interfaces.C.Strings.Chars_Ptr;
+                      Ptr        : Cv_Void_P;
                       Attributes : Cv_Attr_List := CvAttrList);
 
    --     Starts the next stream.
@@ -1920,8 +1928,8 @@ package Core.Core_C is
                             Create_Missing : Integer := 0)
                             return Cv_String_Hash_Node_P;
 
-    --     Retrieves one of the top-level nodes of the file storage.
-   function CvGetRootFileNode (Fs : access Cv_File_Storage;
+   --     Retrieves one of the top-level nodes of the file storage.
+   function CvGetRootFileNode (Fs           : access Cv_File_Storage;
                                Stream_Index : Integer := 0)
                                return Cv_File_Node_P;
 
@@ -1933,8 +1941,8 @@ package Core.Core_C is
                            return Cv_File_Node_P;
 
    --     Finds a node in a map or file storage.
-   function CvGetFileNodeByName (Fs : access Cv_File_Storage;
-                                 Map : access Cv_File_Node;
+   function CvGetFileNodeByName (Fs   : access Cv_File_Storage;
+                                 Map  : access Cv_File_Node;
                                  Name : Interfaces.C.Strings.Chars_Ptr)
                                  return Cv_File_Node_P;
 
@@ -1943,9 +1951,9 @@ package Core.Core_C is
                        Default_Value : Integer := 0)
                        return Integer;
 
-   function CvReadIntByName (Fs : Cv_File_Storage_P;
-                             Map : Cv_File_Node_P ;
-                             Name : Interfaces.C.Strings.Chars_Ptr;
+   function CvReadIntByName (Fs            : Cv_File_Storage_P;
+                             Map           : Cv_File_Node_P ;
+                             Name          : Interfaces.C.Strings.Chars_Ptr;
                              Default_Value : Integer := 0) return Integer;
 
    --     Retrieves a floating-point value from a file node.
@@ -1961,11 +1969,11 @@ package Core.Core_C is
                               return Long_Float;
 
    --     Retrieves a text string from a file node.
-   function CvReadString (Node : access Cv_File_Node;
+   function CvReadString (Node          : access Cv_File_Node;
                           Default_Value : Interfaces.C.Strings.Chars_Ptr := Interfaces.C.Strings.Null_Ptr)
                           return Interfaces.C.Strings.Chars_Ptr;
 
-    --     Finds a file node by its name and returns its value.
+   --     Finds a file node by its name and returns its value.
    function CvReadStringByName (Fs            : access Cv_File_Storage;
                                 Map           : access Cv_File_Node;
                                 Name          : Interfaces.C.Strings.Chars_Ptr;
@@ -1997,7 +2005,7 @@ package Core.Core_C is
                                  Dst    : Cv_Void_P;
                                  Dt     : Interfaces.C.Strings.Chars_Ptr);
 
-    --     Reads multiple numbers.
+   --     Reads multiple numbers.
    procedure CvReadRawData (Fs  : access Cv_File_Storage;
                             Src : access Cv_File_Node;
                             Dst : Cv_Void_P;
@@ -2084,7 +2092,7 @@ package Core.Core_C is
    -----------------------------------------------------------------------------
    --/* retrieve/set the number of threads used in OpenMP implementations */
    function CvGetNumThreads return Integer;
-   procedure cvSetNumThreads ( Threads : Integer := 0);
+   procedure CvSetNumThreads ( Threads : Integer := 0);
 
    --/* get index of the thread being executed */
    function CvGetThreadNum return Integer;
@@ -2111,8 +2119,8 @@ package Core.Core_C is
    function CvSetErrMode (Mode : Integer)
                           return Integer;
 
-    --     Raises an error.
-   function CvError (Status : Integer;
+   --     Raises an error.
+   function CvError (Status    : Integer;
                      Func_Name : Interfaces.C.Strings.Chars_Ptr;
                      Err_Msg   : Interfaces.C.Strings.Chars_Ptr;
                      Filename  : Interfaces.C.Strings.Chars_Ptr;
@@ -2125,15 +2133,15 @@ package Core.Core_C is
 
    --/* Retrieves detailed information about the last error occured */
    -- This doesn't work anyway so why do I care! it returns 0 yay!
-   function CvGetErrInfo(Errcode_Desc : access Interfaces.C.Strings.chars_ptr;
-                          Desciption   : access Interfaces.C.Strings.chars_ptr;
-                          Filename     : access Interfaces.C.Strings.chars_ptr;
-                         Line         : access Integer) return Integer;
+   function CvGetErrInfo (Errcode_Desc : access Interfaces.C.Strings.Chars_Ptr;
+                          Desciption   : access Interfaces.C.Strings.Chars_Ptr;
+                          Filename     : access Interfaces.C.Strings.Chars_Ptr;
+                          Line         : access Integer) return Integer;
 
    --   /* Maps IPP error codes to the counterparts from OpenCV */
    function CvErrorFromIppStatus (IppStatus : Integer) return Integer;
 
-   type Cv_Error_Callback is access function (Status : Integer;
+   type Cv_Error_Callback is access function (Status    : Integer;
                                               Func_Name : Interfaces.C.Strings.Chars_Ptr;
                                               Err_Msg   : Interfaces.C.Strings.Chars_Ptr;
                                               File_Name : Interfaces.C.Strings.Chars_Ptr;
@@ -2147,7 +2155,7 @@ package Core.Core_C is
                              Prev_Userdata : access Cv_Void_P)
                              return Cv_Error_Callback;
 
-    --     Provide standard error handling.
+   --     Provide standard error handling.
    function CvNulDevReport (Status    : Integer;
                             Func_Name : Interfaces.C.Strings.Chars_Ptr;
                             Err_Msg   : Interfaces.C.Strings.Chars_Ptr;
@@ -2156,14 +2164,14 @@ package Core.Core_C is
                             Userdata  : Cv_Void_P)
                             return Integer;
 
-   function CvStdErrReport (Status : Integer;
+   function CvStdErrReport (Status    : Integer;
                             Func_Name : Interfaces.C.Strings.Chars_Ptr;
                             Err_Msg   : Interfaces.C.Strings.Chars_Ptr;
                             File_Name : Interfaces.C.Strings.Chars_Ptr;
                             Line      : Integer;
                             Userdata  : Cv_Void_P) return Integer;
 
-   function CvGuiBoxReport (Status : Integer;
+   function CvGuiBoxReport (Status    : Integer;
                             Func_Name : Interfaces.C.Strings.Chars_Ptr;
                             Err_Msg   : Interfaces.C.Strings.Chars_Ptr;
                             File_Name : Interfaces.C.Strings.Chars_Ptr;
@@ -2176,7 +2184,7 @@ package Core.Core_C is
                            File    : String := GNAT.Source_Info.File;
                            Line    : Integer := GNAT.Source_Info.Line);
 
-      -- This function is a rename...
+   -- This function is a rename...
    procedure CV_ERROR (Status  : Integer;
                        Func    : String := GNAT.Source_Info.Enclosing_Entity;
                        Context : String := GNAT.Source_Info.Enclosing_Entity;
@@ -2184,7 +2192,7 @@ package Core.Core_C is
                        Line    : Integer := GNAT.Source_Info.Line) renames OPENCV_ERROR;
 
    -- Don't use this it doesn't work.
-   procedure OPENCV_ERRCHK (Func : String := GNAT.Source_Info.Enclosing_Entity;
+   procedure OPENCV_ERRCHK (Func    : String := GNAT.Source_Info.Enclosing_Entity;
                             Context : String := GNAT.Source_Info.Enclosing_Entity;
                             File    : String := GNAT.Source_Info.File;
                             Line    : Integer := GNAT.Source_Info.Line);
@@ -2200,24 +2208,24 @@ package Core.Core_C is
 
    procedure OPENCV_CALL;
 
-    procedure CV_ERROR_FROM_CODE (Status  : Integer;
-                                Func    : String := GNAT.Source_Info.Enclosing_Entity;
-                                Context : String := GNAT.Source_Info.Enclosing_Entity;
-                                File    : String := GNAT.Source_Info.File;
-                                  Line    : Integer := GNAT.Source_Info.Line) renames OPENCV_ERROR;
+   procedure CV_ERROR_FROM_CODE (Status  : Integer;
+                                 Func    : String := GNAT.Source_Info.Enclosing_Entity;
+                                 Context : String := GNAT.Source_Info.Enclosing_Entity;
+                                 File    : String := GNAT.Source_Info.File;
+                                 Line    : Integer := GNAT.Source_Info.Line) renames OPENCV_ERROR;
 
-   procedure CV_CHECK(Func : String := GNAT.Source_Info.Enclosing_Entity;
-                            Context : String := GNAT.Source_Info.Enclosing_Entity;
-                            File    : String := GNAT.Source_Info.File;
-                      Line    : Integer := GNAT.Source_Info.Line);
+   procedure CV_CHECK (Func    : String := GNAT.Source_Info.Enclosing_Entity;
+                       Context : String := GNAT.Source_Info.Enclosing_Entity;
+                       File    : String := GNAT.Source_Info.File;
+                       Line    : Integer := GNAT.Source_Info.Line);
 
    procedure CV_CALL renames OPENCV_CALL;
 
    procedure CV_ASSERT (Expression : Boolean;
-                            Func       : String := GNAT.Source_Info.Enclosing_Entity;
-                            Context    : String := GNAT.Source_Info.Enclosing_Entity;
-                            File       : String := GNAT.Source_Info.File;
-                            Line       : Integer := GNAT.Source_Info.Line) renames OPENCV_ASSERT;
+                        Func       : String := GNAT.Source_Info.Enclosing_Entity;
+                        Context    : String := GNAT.Source_Info.Enclosing_Entity;
+                        File       : String := GNAT.Source_Info.File;
+                        Line       : Integer := GNAT.Source_Info.Line) renames OPENCV_ASSERT;
    -----------------------------------------------------------------------------
    -- Private
    -----------------------------------------------------------------------------
