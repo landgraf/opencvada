@@ -24,7 +24,7 @@ with Interfaces; use Interfaces;
 with Core; use Core;
 use Core;
 
-package Highgui.Highgui_C is
+package Highgui is
 --
 
    -----------------------------------------------------------------------------
@@ -582,4 +582,4 @@ private
    pragma Import (C, WCvCreateVideoWriter, "cvCreateVideoWriter");
    pragma Import (C, CvWriteFrame, "cvWriteFrame");
    pragma Import (C, CvReleaseVideoWriter, "cvReleaseVideoWriter");
-end Highgui.Highgui_C;
+end Highgui;
