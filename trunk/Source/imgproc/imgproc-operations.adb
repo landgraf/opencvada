@@ -17,10 +17,10 @@
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 
-package body Imgproc.Imgproc_C is
+package body Imgproc.Operations is
    function CvContourPerimeter (Curve : Cv_Void_P)
                                 return Long_Float is
    begin
       return CvArcLength (Curve, CvSlice (0), 1);
    end CvContourPerimeter;
-end Imgproc.Imgproc_C;
+end Imgproc.Operations;

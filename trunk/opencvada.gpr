@@ -23,22 +23,28 @@ with "Lib211\opencv_video211";
 
 project OpenCVAda is
 
-   for Source_Dirs use ("Source", "Source\Samples", "Source\legacy", "Source\core", "Source\calib3d", "Source\imgproc", "Source\video", "Source\highgui");
+   for Source_Dirs use ("Source", "Source\Samples", "Source\legacy", "Source\core", "Source\calib3d", "Source\imgproc", "Source\video", "Source\highgui", "Source\objdetect", "Source\features_2d", "Source\ffmpeg");
    for Object_Dir use "Build";
    for Exec_Dir use "Exec";
    for Main use ("Main.adb", "camera_test.adb", "chessboard_test.adb", "window_test.adb");
+   for Languages use ("Ada");
 
    package Builder is
    end Builder;
 
    package Compiler is
       for Default_Switches ("ada") use ("-gnat05");
+      for Default_Switches ("c++") use ("-IC:\OpenCvSVN\build\include\opencv2\highgui", "-IC:\OpenCvSVN\build\include\opencv2\core", "-IC:\OpenCvSVN\build\include");
    end Compiler;
 
    package Ide is
       for Vcs_Kind use "Subversion Windows";
       for Vcs_Repository_Root use "https://192.168.0.84/svn/vision_system/Ada/OpenCV";
    end Ide;
+
+   package Naming is
+      for Specification_Suffix ("c++") use ".hpp";
+   end Naming;
 
 end OpenCVAda;
 

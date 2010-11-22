@@ -17,7 +17,7 @@
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 
-package body Core_Types_C is
+package body Core is
 
    function CV_NODE_TYPE (Flags : Unsigned_32)
                              return Unsigned_32 is
@@ -982,4 +982,4 @@ package body Core_Types_C is
    end "+";
 
    --
-end Core_Types_C;
+end Core;

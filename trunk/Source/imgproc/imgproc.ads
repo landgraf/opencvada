@@ -17,11 +17,10 @@
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 with Interfaces; use Interfaces;
-with Core_Types_C; use Core_Types_C;
 with Interfaces.C;
 with Core; use Core;
 
-package Imgproc.types_c is
+package Imgproc is
    -- Connected component structure
    type Cv_Connected_Comp is
       record
@@ -455,4 +454,4 @@ package Imgproc.types_c is
                           IPL_BORDER_REFLECT   => 2, --does not work
                         IPL_BORDER_WRAP      => 3 -- does not work
                        );
-end Imgproc.types_c;
+end Imgproc;

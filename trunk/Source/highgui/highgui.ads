@@ -2,7 +2,7 @@
 -- Ada bindings for OpenCV 2.1.1 (from SVN 3 October 2010, rev. 3703)
 -- Developed as a master thesis project at Mälardalens Högskola
 -- OpenCV: http://opencv.willowgarage.com/
--- Ada bindings : http://not_available.nope/
+-- Ada bindings : http://code.google.com/p/opencvada/
 -- License @ ./LICENSE (BSD license)
 -----------------------------------------------------------------------
 
@@ -17,8 +17,8 @@
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 
-with Core_Types_C; use Core_Types_C;
-with Core.Core_C; use Core.Core_C;
+with Core; use Core;
+with Core.Operations; use Core.Operations;
 with Interfaces.C.Strings;
 with Interfaces; use Interfaces;
 with Core; use Core;
@@ -30,6 +30,32 @@ package Highgui is
    -----------------------------------------------------------------------------
    -- Basic GUI functions
    -----------------------------------------------------------------------------
+
+   -------
+   -- Ada stuff
+   ---------
+   type Cv_Capture is null record;
+   type Cv_Capture_P is access Cv_Capture;
+
+   type Compression_Type is ( CV_IMWRITE_JPEG_QUALITY,
+                             CV_IMWRITE_PNG_COMPRESSION,
+                             CV_IMWRITE_PXM_BINARY );
+   for Compression_Type use
+     (CV_IMWRITE_JPEG_QUALITY    => 1,
+      CV_IMWRITE_PNG_COMPRESSION => 16,
+      CV_IMWRITE_PXM_BINARY      => 32);
+
+   type File_Settings is record
+      Compression                         : Compression_Type;
+      Compression_Rate                    : Integer;
+      Not_Used                            : Integer;
+   end record;
+
+   function CreateFileSettings ( Compression     : Compression_Type;
+                                Compression_Rate : Integer;
+                                Not_Used         : Integer := 0) return File_Settings;
+
+
 
    -----------------------------------------------------------------------------
    -- QT
@@ -58,7 +84,7 @@ package Highgui is
    --  //and alpha= 0 <-> 0xFF (not transparent <-> transparent)
    function CvFontQt (Name_Font  : String;
                       Point_Size : Integer := -1;
-                      Color      : Cv_Scalar := Core_Types_C.CvScalarAll (0.0);
+                      Color      : Cv_Scalar := Core.CvScalarAll (0.0);
                       Weight     : Cv_Font_Weight := CV_FONT_NORMAL;
                       Style      : Cv_Font_Style :=  CV_STYLE_NORMAL;
                       Spacing    : Integer := 0) return Cv_Font;

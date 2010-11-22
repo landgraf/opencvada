@@ -17,13 +17,10 @@
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 
-with Core.Core_C; use Core.Core_C;
-with Core_Types_C; use Core_Types_C;
+with Core; use Core;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with Interfaces; use Interfaces;
-with Imgproc.types_c;
-with Core; use Core;
-use Core;
+with Imgproc;
 
 package Video.Tracking is
 --
@@ -173,14 +170,14 @@ package Video.Tracking is
    function CvCamShift (ProbImage : Cv_Arr_P;
                         Window    : Cv_Rect;
                         Criteria  : Cv_Term_Criteria;
-                        Comp      : Imgproc.Types_C.Cv_Connected_Comp_P;
+                        Comp      : Imgproc.Cv_Connected_Comp_P;
                         Box       : access Cv_Box_2D := null) return Integer;
 
    -- Finds the object center on back projection.
    function CvMeanShift (ProbImage : Cv_Arr_P;
                          Window    : Cv_Rect;
                          Criteria  : Cv_Term_Criteria;
-                         Comp      : Imgproc.Types_C.Cv_Connected_Comp_P) return Integer;
+                         Comp      : Imgproc.Cv_Connected_Comp_P) return Integer;
 
    -- Standard Kalman filter (in G. Welch' and G. Bishop's notation):
    -- x(k)=A*x(k-1)+B*u(k)+w(k)  p(w)~N(0,Q)
@@ -246,11 +243,6 @@ package Video.Tracking is
    function CvKalmanUpdateByMeasurement (Kalman      : Cv_Kalman_P;
                                          Measurement : Cv_Mat_P) return Cv_Mat_P renames CvKalmanCorrect;
 
-   -----------------------------------------------------------------------------
-   -- CPP
-   -----------------------------------------------------------------------------
-
-   -- namespace cv {
 private
    procedure Nulled;
 

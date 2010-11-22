@@ -16,7 +16,7 @@
 -- core_c.adb - core.hpp
 -- Comments, Information, Other
 -----------------------------------------------------------------------
-package body Core.Core_C is
+package body Core.Operations is
 -- CvFree
    procedure CvFree (Ptr : access Cv_Void_P) is
       Temp_Ptr : access Cv_Void_P := Ptr;
@@ -131,7 +131,7 @@ package body Core.Core_C is
       Line_Iterator_Mask : Integer;
       Diff               : Ptrdiff_T ;
 
-      use Core_Types_C.C_Point_Arr;
+      use Core.C_Point_Arr;
    begin
       if (LineIterator.Err < 0) then
          Line_Iterator_Mask := -1;
@@ -234,4 +234,4 @@ package body Core.Core_C is
    begin
       null;
    end OPENCV_CALL;
-end Core.Core_C;
+end Core.Operations;

@@ -24,7 +24,7 @@ package body Highgui is
    --  //and alpha= 0 <-> 0xFF (not transparent <-> transparent)
    function CvFontQt (Name_Font  : String;
                       Point_Size : Integer := -1;
-                      Color      : Cv_Scalar := Core_Types_C.CvScalarAll (0.0);
+                      Color      : Cv_Scalar := Core.CvScalarAll (0.0);
                       Weight     : Cv_Font_Weight := CV_FONT_NORMAL;
                       Style      : Cv_Font_Style :=  CV_STYLE_NORMAL;
                       Spacing    : Integer := 0) return Cv_Font is
@@ -207,7 +207,12 @@ package body Highgui is
       return WCvSaveImage (+Filename, Image, Settings);
    end CvSaveImage;
 
-
+   function CreateFileSettings ( Compression     : Compression_Type;
+                                Compression_Rate : Integer;
+                                Not_Used         : Integer := 0) return File_Settings is
+   begin
+      return File_Settings'( Compression, Compression_Rate, Not_Used );
+   end CreateFileSettings;
 
    function CvEncodeImage (Ext    : String;
                            Image  : Cv_Arr_P;
