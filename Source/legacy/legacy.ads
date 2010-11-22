@@ -19,10 +19,8 @@
 
 with Interfaces; use Interfaces;
 with Interfaces.C.Pointers;
-with Core_Types_C; use Core_Types_C;
-with Imgproc.Types_C; use Imgproc.Types_C;
+with Imgproc; use Imgproc;
 with Core; use Core;
---with Cv.Planar_Subdivisions; use Cv.Planar_Subdivisions;
 
 package Legacy is
 

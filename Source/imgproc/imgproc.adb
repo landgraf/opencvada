@@ -17,7 +17,7 @@
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 
-package body Imgproc.Types_C is
+package body Imgproc is
 --
 
    -- /* initializes 8-element array for fast access to 3x3 neighborhood of a pixel */
@@ -47,4 +47,4 @@ package body Imgproc.Types_C is
    end CV_SUBDIV2D_NEXT_EDGE;
 
 
-end Imgproc.Types_C;
+end Imgproc;

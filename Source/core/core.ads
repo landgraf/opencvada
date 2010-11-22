@@ -30,7 +30,7 @@ pragma Warnings (On);
 with Ada.Numerics.Generic_Elementary_Functions;
 
 
-package Core_Types_C is
+package Core is
 --
 
    -----------------------------------------------------------------------------
@@ -1824,4 +1824,4 @@ private
    pragma Import (C, CvmSet, "cvmSet");
    pragma Import (C, CvCreateSeqBlock, "cvCreateSeqBlock");
    pragma Import (C, CvChangeSeqBlock, "cvChangeSeqBlock");
-end Core_Types_C;
+end Core;

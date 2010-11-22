@@ -18,4 +18,5 @@
 -----------------------------------------------------------------------
 
 package body Video.Background_Segm is
+   procedure Nulled is begin null; end Nulled;
 end Video.Background_Segm;

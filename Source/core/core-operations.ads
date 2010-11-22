@@ -19,19 +19,18 @@
 
 with Interfaces; use Interfaces;
 with Interfaces.C; use Interfaces.C;
-with Core_Types_C; use Core_Types_C;
 with System;
 with Interfaces.C.Strings;
 with GNAT.Source_Info;
 
-package Core.Core_C is
+package Core.Operations is
 --
 
    -----------------------------------------------------------------------------
    -- Array allocation, deallocation, initialization and access to elements
    -----------------------------------------------------------------------------
    --     Allocates a memory buffer.
-   function CvAlloc (Size : Size_T)
+   function CvAlloc (Size : Interfaces.C.Size_T)
                      return Cv_Void_P;
 
    --     Deallocates a memory buffer.
@@ -1298,8 +1297,8 @@ package Core.Core_C is
                             return Integer;
 
    procedure CvChangeSeqBlock (Reader    : Cv_Void_P;
-                               Direction : Integer) renames Core_Types_C.CvChangeSeqBlock;
-   procedure CvCreateSeqBlock (Writer : Cv_Seq_Writer_P) renames Core_Types_C.CvCreateSeqBlock;
+                               Direction : Integer) renames Core.CvChangeSeqBlock;
+   procedure CvCreateSeqBlock (Writer : Cv_Seq_Writer_P) renames Core.CvCreateSeqBlock;
 
    -- Creates an empty set.
    function CvCreateSet ( SetFlags  : Integer;
@@ -1785,7 +1784,7 @@ package Core.Core_C is
                               Version              : access Interfaces.C.Strings.Chars_Ptr;
                               Loaded_Addon_Plugins : access Interfaces.C.Strings.Chars_Ptr);
 
-   type Cv_Alloc_Func is access function (Size     : Size_T;
+   type Cv_Alloc_Func is access function (Size     : Interfaces.C.Size_T;
                                           Userdata : Cv_Void_P)
                                              return Cv_Void_P;
    pragma Convention (C, Cv_Alloc_Func);
@@ -2555,4 +2554,4 @@ private
    pragma Import (C, CvNulDevReport, "cvNulDevReport");
    pragma Import (C, CvStdErrReport, "cvStdErrReport");
    pragma Import (C, CvGuiBoxReport, "cvGuiBoxReport");
-end Core.Core_C;
+end Core.Operations;

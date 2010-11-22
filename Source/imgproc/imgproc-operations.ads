@@ -17,15 +17,13 @@
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 
-with Core_Types_C; use Core_Types_C;
-with Imgproc.Types_C; use Imgproc.Types_C;
 with Legacy;
 with Interfaces; use Interfaces;
 with Core; use Core;
 use Core;
 use Core;
 
-package Imgproc.Imgproc_C is
+package Imgproc.Operations is
 --
 
    -----------------------------------------------------------------------------
@@ -995,4 +993,4 @@ private
    pragma Import (C, CvLSHAdd, "cvLSHAdd");
    pragma Import (C, CvLSHRemove, "cvLSHRemove");
    pragma Import (C, CvLSHQuery, "cvLSHQuery");
-end Imgproc.Imgproc_C;
+end Imgproc.Operations;

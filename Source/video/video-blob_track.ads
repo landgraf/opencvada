@@ -18,4 +18,6 @@
 -----------------------------------------------------------------------
 
 package Video.Blob_Track is
+private
+   procedure Nulled;
 end Video.Blob_Track;
