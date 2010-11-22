@@ -60,6 +60,7 @@ package Calib_3D is
                                     return Integer;
    pragma Import (C, CvRANSACUpdateNumIters, "cvRANSACUpdateNumIters");
 
+   --     Convert points to/from homogeneous coordinates.
    procedure CvConvertPointsHomogeneous (Src : Cv_Mat_P;
                                          Dst : Cv_Mat_P);
    pragma Import (C, CvConvertPointsHomogeneous, "cvConvertPointsHomogeneous");
