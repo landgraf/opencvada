@@ -981,5 +981,11 @@ package body Core is
       return String_C (Right & ASCII.NUL);
    end "+";
 
-   --
+   -----------------------------------------------------------------------------
+   -- Inline functions
+   -----------------------------------------------------------------------------
+   function CvRound (Value : Long_Float) return Integer is
+   begin
+      return Integer(Long_Float'Rounding (Value));
+   end CvRound;
 end Core;

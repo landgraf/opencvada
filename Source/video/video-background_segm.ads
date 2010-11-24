@@ -143,13 +143,10 @@ package Video.Background_Segm is
    pragma Convention (C_Pass_By_Copy, Cv_FGD_Stat_Model_Params);
    type Cv_FGD_Stat_Model_Params_P is access Cv_FGD_Stat_Model_Params;
 
-   subtype Cv_8u_Array_3 is Cv_8u_Array (1 .. 3);
-   subtype Cv_8u_Array_6 is Cv_8u_Array (1 .. 6);
-
    type Cv_BG_Pixel_C_Stat_Table is record
       Pv  : Float;
       Pvb : Float;
-      V   : Cv_8u_Array_3;
+      V   : Cv_8u_Array (1 .. 3);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_BG_Pixel_C_Stat_Table);
    type Cv_BG_Pixel_C_Stat_Table_P is access Cv_BG_Pixel_C_Stat_Table;
@@ -157,7 +154,7 @@ package Video.Background_Segm is
    type Cv_BG_Pixel_CC_Stat_Table is record
       Pv  : Float;
       Pvb : Float;
-      V   : Cv_8u_Array_6;
+      V   : Cv_8u_Array (1 .. 6);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_BG_Pixel_CC_Stat_Table);
    type Cv_BG_Pixel_CC_Stat_Table_P is access Cv_BG_Pixel_CC_Stat_Table;
@@ -285,19 +282,19 @@ package Video.Background_Segm is
       Next : Cv_BG_Code_Book_Elem_P;
       T_Last_Update : Integer;
       Stale         : Integer;
-      Box_Min       : Cv_8u_Array_3;
-      Box_Max       : Cv_8u_Array_3;
-      Learn_Min     : Cv_8u_Array_3;
-      Learn_Max     : Cv_8u_Array_3;
+      Box_Min       : Cv_8u_Array (1 .. 3);
+      Box_Max       : Cv_8u_Array (1 .. 3);
+      Learn_Min     : Cv_8u_Array (1 .. 3);
+      Learn_Max     : Cv_8u_Array (1 .. 3);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_BG_Code_Book_Elem);
 
    type Cv_BG_Code_Book_Model is record
       Size      : Cv_Size;
       T         : Integer;
-      Cb_Bounds : Cv_8u_Array_3;
-      Mod_Min   : Cv_8u_Array_3;
-      Mod_Max   : Cv_8u_Array_3;
+      Cb_Bounds : Cv_8u_Array (1 .. 3);
+      Mod_Min   : Cv_8u_Array (1 .. 3);
+      Mod_Max   : Cv_8u_Array (1 .. 3);
       Cb_Map    : C_Bg_Code_Book_Elem_Ptr;
       Storage   : Cv_Mem_Storage_P;
       Free_List : Cv_BG_Code_Book_Elem_P;

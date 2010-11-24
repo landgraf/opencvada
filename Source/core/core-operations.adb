@@ -131,7 +131,7 @@ package body Core.Operations is
       Line_Iterator_Mask : Integer;
       Diff               : Ptrdiff_T ;
 
-      use Core.C_Point_Arr;
+      use Core.C_Point_Arr_Ptr;
    begin
       if (LineIterator.Err < 0) then
          Line_Iterator_Mask := -1;
@@ -142,7 +142,7 @@ package body Core.Operations is
       LineIterator_Temp.all.Err := LineIterator.all.Err + LineIterator.all.Minus_Delta + Integer (Unsigned_32 (LineIterator.all.Plus_Delta) and Unsigned_32 (Line_Iterator_Mask));
 
       diff :=  ptrdiff_t (LineIterator.all.Minus_Step + Integer (Unsigned_32 (LineIterator.all.Plus_Step) and Unsigned_32 (Line_Iterator_Mask))) ;
-      LineIterator_temp.Ptr := C_Point_Arr.Pointer(LineIterator.all.Ptr + Diff);
+      LineIterator_temp.Ptr := C_Point_Arr_Ptr.Pointer(LineIterator.all.Ptr + Diff);
 
    end CV_NEXT_LINE_POINT;
 

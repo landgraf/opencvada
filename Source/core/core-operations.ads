@@ -235,7 +235,6 @@ package Core.Operations is
    CV_MAX_ARR : constant := 10;
 
    type Cv_N_Array_Ptr_Array is array (Integer range 1 .. CV_MAX_ARR) of Cv_Void_P;
-   type Cv_N_Array_Integer_Array is array (Integer range 1 .. CV_MAX_DIM) of Integer;
    type Cv_N_Array_CvMatND_P_Array is array (Integer range 1 .. CV_MAX_ARR) of Cv_Mat_ND_P;
 
    type Cv_N_Array_Iterator is
@@ -244,7 +243,7 @@ package Core.Operations is
          Dims  : Integer;
          Size  : Cv_Size;
          Ptr   : Cv_N_Array_Ptr_Array;
-         Stack : Cv_N_Array_Integer_Array;
+         Stack : Cv_32s_Array(1 .. CV_MAX_DIM);
          Hdr   : Cv_N_Array_CvMatND_P_Array;
       end record;
 
@@ -1538,7 +1537,7 @@ package Core.Operations is
 
    -- Fills a convex polygon.
    procedure CvFillConvexPoly (Img      : Cv_Arr_P;
-                               Pts      : Cv_Point_Arr;
+                               Pts      : Cv_Point_Array;
                                Npts     : Integer;
                                Color    : Cv_Scalar;
                                LineType : Integer := 8;
@@ -1546,7 +1545,7 @@ package Core.Operations is
 
    -- Fills a polygon's interior.
    procedure CvFillPoly (Img      : Cv_Arr_P;
-                         Pts      : Cv_Point_Arr_P_Arr;
+                         Pts      : Cv_Point_2d_CPtr;
                          Npts     : Cv_32U_Array;
                          Contours : Integer;
                          Color    : Cv_Scalar;
@@ -1555,7 +1554,7 @@ package Core.Operations is
 
    -- Draws simple or thick polygons.
    procedure CvPolyLine (Img       : Cv_Arr_P;
-                         Pts       : Cv_Point_PP;
+                         Pts       : Cv_Point_2d_CPtr;
                          Npts      : Cv_32U_Array;
                          Contours  : Integer;
                          IsClosed  : Integer;
@@ -1600,7 +1599,7 @@ package Core.Operations is
                             Shift      : Integer := 0) renames CvEllipse;
 
    procedure CvDrawPolyLine (Img       : Cv_Arr_P;
-                             Pts       : Cv_Point_PP;
+                             Pts       : Cv_Point_2d_CPtr;
                              Npts      : Cv_32U_Array;
                              Contours  : Integer;
                              IsClosed  : Integer;
@@ -1705,7 +1704,7 @@ package Core.Operations is
                             Angle       : Integer;
                             ArcStart    : Integer;
                             ArcEnd      : Integer;
-                            Pts         : Cv_Point_Arr;
+                            Pts         : Cv_Point_Array;
                             DeltaVal    : Integer) return Integer;
 
    -- Draws contour outlines or interiors in an image.
@@ -1726,7 +1725,7 @@ package Core.Operations is
    -- Iteration through the sequence tree
    -----------------------------------------------------------------------------
    type Cv_Tree_Node_Iterator is record
-      Node      : access Integer; -- Note: This is actually a void*
+      Node      : Cv_Void_P; -- Note: This is actually a void*
       Level     : Integer;
       Max_Level : Integer;
    end record;

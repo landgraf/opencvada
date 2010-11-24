@@ -495,7 +495,7 @@ package Imgproc.Operations is
                             Storage : Cv_Mem_Storage_P := null) return Cv_Box_2D;
 
    -- Finds the circumscribed circle of minimal area for a given 2D point set.
-   function CvMinEnclosingCircle (Points : Cv_Point_Arr;
+   function CvMinEnclosingCircle (Points : Cv_Point_Array;
                                   Center : access Cv_Point_2D_32F;
                                   Radius : access Long_Float) return Integer;
 
@@ -554,12 +554,12 @@ package Imgproc.Operations is
    function CvCreateHist (Dims     : Integer;
                           Sizes    : Cv_32S_Array;
                           HistType : Integer;
-                          Ranges   : Cv_32F_Array_P_Arr := Cv_32F_Array_NULL;
+                          Ranges   : Cv_32F_Ptr_2d_Array := Cv_32F_Array_NULL;
                           Uniform  : Integer := 1) return Cv_Histogram_P;
 
     --Sets the bounds of the histogram bins.
    procedure CvSetHistBinRanges (Hist     : Cv_Histogram_P;
-                                 Ranges   : Cv_32F_Array_P_Arr;
+                                 Ranges   : Cv_32F_Ptr_2d_Array;
                                  Uniforrm : Integer);
 
    -- Makes a histogram out of an array.
@@ -567,7 +567,7 @@ package Imgproc.Operations is
                                        Sizes   : Cv_32S_Array;
                                        Hist    : Cv_Histogram_P;
                                        Data    : Cv_32F_Array;
-                                       Ranges  : Cv_32F_Array_P_Arr; -- fix me
+                                       Ranges  : Cv_32F_Ptr_2d_Array; -- fix me
                                        Uniform : Integer := 1);
 
    --Releases the histogram.

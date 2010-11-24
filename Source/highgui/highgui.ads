@@ -282,16 +282,6 @@ package Highgui is
                           Iscolor  : Integer
                           := CV_LOAD_IMAGE_COLOR) return Cv_Mat_P;
 
-
-
---     type File_Settings is record
---        Compression                         : Compression_Type;
---        Compression_Rate                    : Integer;
---        Not_Used                            : Integer;
---     end record;
-
-
-
    -- save image to file
    function CvSaveImage (Filename      : String;
                          Image         : Cv_Arr_P;
