@@ -6,13 +6,13 @@
 
         
 
-CV_INLINE  void  cvFindFundamentalMatrix( int* points1, int* points2,
+  void  cvFindFundamentalMatrix( int* points1, int* points2,
                             int numpoints, int CV_UNREFERENCED(method), float* matrix )
 ;
 
 
 
-CV_INLINE int
+ int
 cvFindChessBoardCornerGuesses( const void* arr, void* CV_UNREFERENCED(thresharr),
                                CvMemStorage * CV_UNREFERENCED(storage),
                                CvSize pattern_size, CvPoint2D32f * corners,
@@ -21,14 +21,14 @@ cvFindChessBoardCornerGuesses( const void* arr, void* CV_UNREFERENCED(thresharr)
 
 
 
-CV_INLINE void cvCalibrateCamera( int image_count, int* _point_counts,
+ void cvCalibrateCamera( int image_count, int* _point_counts,
     CvSize image_size, CvPoint2D32f* _image_points, CvPoint3D32f* _object_points,
     float* _distortion_coeffs, float* _camera_matrix, float* _translation_vectors,
     float* _rotation_matrices, int flags )
 ;
 
 
-CV_INLINE void cvCalibrateCamera_64d( int image_count, int* _point_counts,
+ void cvCalibrateCamera_64d( int image_count, int* _point_counts,
     CvSize image_size, CvPoint2D64f* _image_points, CvPoint3D64f* _object_points,
     double* _distortion_coeffs, double* _camera_matrix, double* _translation_vectors,
     double* _rotation_matrices, int flags )
@@ -37,7 +37,7 @@ CV_INLINE void cvCalibrateCamera_64d( int image_count, int* _point_counts,
 
 
 
-CV_INLINE void cvFindExtrinsicCameraParams( int point_count,
+ void cvFindExtrinsicCameraParams( int point_count,
     CvSize CV_UNREFERENCED(image_size), CvPoint2D32f* _image_points,
     CvPoint3D32f* _object_points, float* focal_length,
     CvPoint2D32f principal_point, float* _distortion_coeffs,
@@ -46,7 +46,7 @@ CV_INLINE void cvFindExtrinsicCameraParams( int point_count,
 
 
 
-CV_INLINE void cvFindExtrinsicCameraParams_64d( int point_count,
+ void cvFindExtrinsicCameraParams_64d( int point_count,
     CvSize CV_UNREFERENCED(image_size), CvPoint2D64f* _image_points,
     CvPoint3D64f* _object_points, double* focal_length,
     CvPoint2D64f principal_point, double* _distortion_coeffs,
@@ -57,13 +57,13 @@ CV_INLINE void cvFindExtrinsicCameraParams_64d( int point_count,
 
 
 
-CV_INLINE void  cvRodrigues( CvMat* rotation_matrix, CvMat* rotation_vector,
+ void  cvRodrigues( CvMat* rotation_matrix, CvMat* rotation_vector,
                              CvMat* jacobian, int conv_type )
 ;
 
 
 
-CV_INLINE void  cvProjectPoints( int point_count, CvPoint3D64f* _object_points,
+ void  cvProjectPoints( int point_count, CvPoint3D64f* _object_points,
     double* _rotation_vector, double*  _translation_vector,
     double* focal_length, CvPoint2D64f principal_point,
     double* _distortion, CvPoint2D64f* _image_points,
@@ -76,7 +76,7 @@ CV_INLINE void  cvProjectPoints( int point_count, CvPoint3D64f* _object_points,
 
 
 
-CV_INLINE void  cvProjectPointsSimple( int point_count, CvPoint3D64f* _object_points,
+ void  cvProjectPointsSimple( int point_count, CvPoint3D64f* _object_points,
     double* _rotation_matrix, double*  _translation_vector,
     double* _camera_matrix, double* _distortion, CvPoint2D64f* _image_points )
 ;
