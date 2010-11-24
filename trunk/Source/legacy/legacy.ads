@@ -25,20 +25,15 @@ with Core; use Core;
 package Legacy is
 
 -- Types that are not imported yet ---------------------------------------------
-   type Cv_Matrix_3_Array is array (1 .. 3, 1 .. 3) of Float;
    type Cv_Matrix_3 is record
-      M : Cv_Matrix_3_Array;
+      M : Cv_32f_2d_Array(1 .. 3, 1 .. 3);
    end record;
 
-   type Rand_State_Param is array (Integer range 1 .. 2) of Cv_Scalar;
    type Cv_Rand_State is record
       State    : Cv_RNG;
       Disttype : Integer;
-      Param    : Rand_State_Param;
+      Param    : Cv_Scalar_Array(1 .. 2);
    end record;
-
-   type Cv_Mat_Array is array (Integer range <>) of aliased Cv_Mat;
---     type Cv_Mat_P_Array is array (Integer range <>) of aliased Cv_Mat_P;
 
    Mat_Data_Requirement : Mat_Data; -- This is just a dummy, do not use!
    package C_Mat_Arr_Ptr is
@@ -437,19 +432,16 @@ package Legacy is
    pragma Convention (C_Pass_By_Copy, Cv_Stereo_Line_Coeff);
    type Cv_Stereo_Line_Coeff_P is access all Cv_Stereo_Line_Coeff;
 
-   subtype Cv_32f_Array_2 is Cv_32f_Array (1 .. 2);
-   subtype Cv_32f_Array_3 is Cv_32f_Array (1 .. 3);
-   subtype Cv_32f_Array_4 is Cv_32f_Array (1 .. 4);
-   subtype Cv_32f_Array_9 is Cv_32f_Array (1 .. 9);
+
 
    type Cv_Camera is record
-      Img_Size   : Cv_32f_Array_2; -- size of the camera view, used during calibration
-      Matrix     : Cv_32f_Array_9; -- intinsic camera parameters:  [ fx 0 cx; 0 fy cy; 0 0 1 ]
-      Distortion : Cv_32f_Array_4; -- distortion coefficients - two coefficients for radial distortion
+      Img_Size   : Cv_32f_Array (1 .. 2); -- size of the camera view, used during calibration
+      Matrix     : Cv_32f_Array (1 .. 9); -- intinsic camera parameters:  [ fx 0 cx; 0 fy cy; 0 0 1 ]
+      Distortion : Cv_32f_Array (1 .. 4); -- distortion coefficients - two coefficients for radial distortion
                                    -- and another two for tangential: [ k1 k2 p1 p2 ]
 
-      Rot_Matr   : Cv_32f_Array_9; -- rotation matrix and transition vector relatively
-      Trans_Vect : Cv_32f_Array_3; -- to some reference point in the space
+      Rot_Matr   : Cv_32f_Array (1 .. 9); -- rotation matrix and transition vector relatively
+      Trans_Vect : Cv_32f_Array (1 .. 3); -- to some reference point in the space
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Camera);
    type Cv_Camera_P is access all Cv_Camera;
@@ -466,13 +458,13 @@ package Legacy is
    type Cv_64f_Array_AxBxC is array (Integer range <>, Integer range <>, Integer range <>) of aliased Long_Float;
    subtype Cv_64f_Array_2x3x3 is Cv_64f_Array_AxBxC (1 .. 2, 1 .. 3, 1 .. 3);
 
-   type Cv_64f_Array_AxB is array (Integer range <>, Integer range <>) of aliased Long_Float;
-   subtype Cv_64f_Array_3x3 is Cv_64f_Array_AxB (1 .. 3, 1 .. 3);
-   subtype Cv_64f_Array_4x2 is Cv_64f_Array_AxB (1 .. 4, 1 .. 2);
+
+   subtype Cv_64f_Array_3x3 is Cv_64f_2d_Array (1 .. 3, 1 .. 3);
+   subtype Cv_64f_Array_4x2 is Cv_64f_2d_Array (1 .. 4, 1 .. 2);
 
    type Cv_Stereo_Camera is record
       Camera            : Cv_Camera_P_Array_2; -- two individual camera parameters
-      Fund_Matr         : Cv_32f_Array_9; -- fundamental matrix
+      Fund_Matr         : Cv_32f_Array(1 .. 9); -- fundamental matrix
 
       -- New part for stereo
       Epipole           : Cv_Point_3d_32f_Array_2;
@@ -483,15 +475,15 @@ package Legacy is
       Warpsize          : Cv_Size;
       Line_Coeffs       : Cv_Stereo_Line_Coeff_P;
       Need_Swap_Cameras : Integer;
-      Rot_Matrix        : Cv_32f_Array_9;
-      Trans_Vector      : Cv_32f_Array_3;
+      Rot_Matrix        : Cv_32f_Array (1 .. 9);
+      Trans_Vector      : Cv_32f_Array (1 .. 3);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Stereo_Camera);
    type Cv_Stereo_Camera_P is access all Cv_Stereo_Camera;
 
    type Cv_Contour_Orientation is record
-      Egvals  : Cv_32f_Array_2;
-      Egvects : Cv_32f_Array_4;
+      Egvals  : Cv_32f_Array(1 .. 2);
+      Egvects : Cv_32f_Array(1 .. 4);
       Max     : Float;
       Min     : Float;
       Imax    : Integer;
@@ -804,7 +796,7 @@ package Legacy is
 
    --     Changes the contour position to minimize its energy.
    procedure CvSnakeImage (Image        : Ipl_Image_P;
-                           Points       : Cv_Point_Arr;
+                           Points       : Cv_Point_Array;
                            Length       : Integer;
                            Alpha        : Cv_32F_Array;
                            Beta         : Cv_32F_Array;
@@ -842,8 +834,6 @@ package Legacy is
 
    CV_MAX_NUM_GREY_LEVELS_8U : constant := 256;
 
-   subtype Cv_32s_Array_256 is Cv_32s_Array (1 .. CV_MAX_NUM_GREY_LEVELS_8U);
-
    type Cv_64f_Array_P_Array is array (Integer range <>) of aliased Cv_64f_Array_P;
 
    package C_64f_Array_P_Arr_Ptr is
@@ -857,8 +847,8 @@ package Legacy is
       Matrices                     : access C_64f_Array_P_Ptr; -- double***
 
       Num_Lookup_Table_Elements    : Integer;
-      Forward_Lookup_Table         : Cv_32s_Array_256;
-      Reverse_Lookup_Table         : Cv_32s_Array_256;
+      Forward_Lookup_Table         : Cv_32s_Array (1 .. CV_MAX_NUM_GREY_LEVELS_8U);
+      Reverse_Lookup_Table         : Cv_32s_Array (1 .. CV_MAX_NUM_GREY_LEVELS_8U);
       Descriptors                  : C_64f_Array_P_Ptr; -- double**
       Num_Descriptors              : Integer;
       Descriptor_Optimization_Type : Integer;
@@ -969,12 +959,9 @@ package Legacy is
                                       P  : Cv_Point_3d_32f)
                                       return Cv_3d_Tracker_Tracked_Object;
 
-   type Cv_32f_Array_AxB is array (Integer range <>, Integer range <>) of aliased Float;
-   subtype Cv_32f_Array_4x4 is Cv_32f_Array_AxB (1 .. 4, 1 .. 4);
-
    type Cv_3d_Tracker_Camera_Info is record
       Valid           : Cv_Bool;
-      Mat             : Cv_32f_Array_4x4;
+      Mat             : Cv_32f_2d_Array (1 .. 4, 1 .. 4);
       Principal_Point : Cv_Point_2d_32f;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_3d_Tracker_Camera_Info);
@@ -983,8 +970,8 @@ package Legacy is
 
    type Cv_3d_Tracker_Camera_Intrinsics is record
       Principal_Point : Cv_Point_2d_32f;
-      Focal_Length    : Cv_32f_Array_2;
-      Distortion      : Cv_32f_Array_4;
+      Focal_Length    : Cv_32f_Array(1 .. 2);
+      Distortion      : Cv_32f_Array(1 .. 4);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_3d_Tracker_Camera_Intrinsics);
    type Cv_3d_Tracker_Camera_Intrinsics_P is access Cv_3d_Tracker_Camera_Intrinsics;
@@ -1298,224 +1285,7 @@ package Legacy is
    function IplHeight (Img : Ipl_Image_P)
                        return Integer;
 
-   -- Calibration Engine -------------------------------------------------------
-   -----------------------------------------------------------------------------
-   subtype Cv_Calib_Etalon_Type is Integer range -1 .. 0;
-   CV_CALIB_ETALON_USER         : constant Cv_Calib_Etalon_Type := -1;
-   CV_CALIB_ETALON_CHESSBOARD   : constant Cv_Calib_Etalon_Type := 0;
-   CV_CALIB_ETALON_CHECKERBOARD : constant Cv_Calib_Etalon_Type := CV_CALIB_ETALON_CHESSBOARD;
-
-   package Class_CvCalibFilter is
-      CV_MAX_CAMERAS : constant := 3;
-
-      subtype Cv_Camera_Array_3 is Cv_Camera_Array (1 .. CV_MAX_CAMERAS);
-      subtype Cv_Point_2d_32f_Array_3 is Cv_Point_2d_32f_Array (1 .. CV_MAX_CAMERAS);
-      subtype Cv_32s_Array_3 is Cv_32s_Array (1 .. CV_MAX_CAMERAS);
-      subtype Cv_Mat_Array_3x2 is Cv_Mat_Array_AxB (1 .. 3, 1 .. 2);
-
-      type CvCalibFilter is tagged limited record
-         Etalon_Type        : Cv_Calib_Etalon_Type;
-         Etalon_Param_Count : Integer;
-         Etalon_Params      : C_64f_Ptr;
-         Etalon_Point_Count : Integer;
-         Etalon_Points      : C_Point_2d_32f_Ptr;
-         Img_Size           : Cv_Size;
-         Gray_Img           : Cv_Mat_P;
-         Temp_Img           : Cv_Mat_P;
-         Storage            : Cv_Mem_Storage_P;
-
-         -- Camera data
-         Camera_Count       : Integer;
-         Camera_Params      : Cv_Camera_Array_3;
-         Stereo             : Cv_Stereo_Camera;
-         Points             : Cv_32s_Array_3;
-         Undist_Map         : access Cv_Mat_Array_3x2;
-         Undist_Img         : Cv_Mat_P;
-         Latest_Counts      : Cv_32s_Array_3;
-         Latest_Points      : access Cv_Point_2d_32f_Array_3;
-         Rect_Map           : access Cv_Mat_Array_3x2;
-
-         Max_Points         : Integer;
-         Frames_Total       : Integer;
-         Frames_Accepted    : Integer;
-         Is_Calibrated      : Cv_Bool;
-      end record;
-      pragma Import (CPP, CvCalibFilter);
-
-      function New_CvCalibFilter return CvCalibFilter;
-      pragma CPP_Constructor (New_CvCalibFilter, "_ZN13CvCalibFilterC1Ev");
-
-      procedure Delete_CvCalibFilter (This : access CvCalibFilter);
-      pragma Import (CPP, Delete_CvCalibFilter, "_ZN13CvCalibFilterD0E0");
-
-      procedure SetCameraCount (This : access CvCalibFilter; Count : Integer);
-      pragma Import (CPP, SetCameraCount, "_ZN13CvCalibFilter14SetCameraCountEi");
-
-      --        Retrieves number of cameras
---        function GetCameraCount (This : access CvCalibFilter) return Integer;
-
-      --        Sets etalon type - one for all cameras.
-      --        etalonParams is used in case of pre-defined etalons (such as
-      --        chessboard). Number of elements in etalonParams is determined
-      --        by etalonType. E.g., if etalon type is CV_ETALON_TYPE_CHESSBOARD
-      --        then:
-      --           etalonParams[0] is number of squares per one side of etalon
-      --           etalonParams[1] is number of squares per another side of
-      --           etalon
-      --           etalonParams[2] is linear size of squares in the board in
-      --           arbitrary units.
-      --         pointCount & points are used in case of
-      --         CV_CALIB_ETALON_USER (user-defined) etalon.
-      function SetEtalon (This          : access CvCalibFilter;
-                          Etalon_Type   : Integer;
-                          Etalon_Params : Cv_64f_Array;
-                          Point_Count   : Integer := 0;
-                          Points        : C_Point_2d_32f_Ptr := null)
-                          return Cv_Bool;
-      pragma Import (Cpp, SetEtalon, "_ZN13CvCalibFilter9SetEtalonE17CvCalibEtalonTypePdiP12CvPoint2D32f");
-
-      --        Retrieves etalon parameters/or and points
-      function GetEtalon (This : access CvCalibFilter;
-                          Param_Count : access Integer;
-                          Params      : C_64f_Ptr;
-                          Point_Count : access Integer;
-                          Points      : Cv_Point_2d_32f_P)
-                          return Integer;
-      pragma Import (Cpp, GetEtalon, "_ZNK13CvCalibFilter9GetEtalonEPiPPKdS0_PPK12CvPoint2D32f");
-
-      --        Starts cameras calibration
-      function SetFrames (This         : access CvCalibFilter;
-                          Total_Frames : Integer)
-                          return Cv_Bool;
-      pragma Import (Cpp, SetFrames, "_ZN13CvCalibFilter9SetFramesEi");
-
-      --        Stops cameras calibration
-      procedure Stop (Calibrate : Cv_Bool := 0);
-      pragma Import (Cpp, Stop, "_ZN13CvCalibFilter4StopEb");
-
-      --        Returns calibration state
---        function IsCalibrated (This : access CvCalibFilter) return Cv_Bool;
-
-      --        Feeds another serie of snapshots (one per each camera) to filter.
-      --        Etalon points on these images are found automatically.
-      --        If the function can't locate points, it returns false
-      function FindEtalonImg (This : access CvCalibFilter;
-                           Imgs : Ipl_Image_Array)
-                           return Cv_Bool;
-      pragma Import (Cpp, FindEtalonImg, "_ZN13CvCalibFilter10FindEtalonEPP9_IplImage");
-
-      --        The same but takes matrices
-      function FindEtalonArr (This : access CvCalibFilter;
-                           Imgs : C_Arr_Ptr)
-                           return Cv_Bool;
-      pragma Import (Cpp, FindEtalonArr, "_ZN13CvCalibFilter10FindEtalonEPP5CvMat");
-
-      --        Lower-level function for feeding filter with already found
-      --        etalon points. Array of point arrays for each camera is passed.
-      function Push (This   : access CvCalibFilter;
-                     Points : C_Point_2d_32f_Ptr := null)
-                     return Cv_Bool;
-      pragma Import (Cpp, Push, "_ZN13CvCalibFilter4PushEPPK12CvPoint2D32f");
-
-      --        Returns total number of accepted frames and, optionally,
-      --        total number of frames to collect
-      function GetFrameCount (This         : access CvCalibFilter;
-                              Frames_Total : access Integer)
-                              return Integer;
-      pragma Import (Cpp, GetFrameCount, "_ZNK13CvCalibFilter13GetFrameCountEPi");
-
-      --        Retrieves camera parameters for specified camera.
-      --        If camera is not calibrated the function returns 0
-      function GetCameraParams (This : access CvCalibFilter;
-                                Idx  : Integer := 0)
-                                return Cv_Camera_P;
-      pragma Import (Cpp, GetCameraParams, "_ZNK13CvCalibFilter15GetCameraParamsEi");
-
-      function GetStereoParams (This : access CvCalibFilter) return Cv_Stereo_Camera_P;
-      pragma Import (Cpp, GetStereoParams, "_ZNK13CvCalibFilter15GetStereoParamsEv");
-
-      --        Sets camera parameters for all cameras
-      function SetCameraParams (This   : access CvCalibFilter;
-                                Params : Cv_Camera_P)
-                                return Cv_Bool;
-      pragma Import (Cpp, SetCameraParams, "_ZN13CvCalibFilter15SetCameraParamsEP8CvCamera");
-
-      --        Saves all camera parameters to file
-      function SaveCameraParams (This     : access CvCalibFilter;
-                                 Filename : String_C) -- TODO: Correct with string?
-                                 return Cv_Bool;
-      pragma Import (Cpp, SaveCameraParams, "_ZN13CvCalibFilter16SaveCameraParamsEPKc");
-
-      --        Loads all camera parameters from file
-      function LoadCameraParams (This : access CvCalibFilter;
-                                 Filename : String_C)
-                                 return Cv_Bool;
-      pragma Import (Cpp, LoadCameraParams, "_ZN13CvCalibFilter16LoadCameraParamsEPKc");
-
-      --        Undistorts images using camera parameters. Some of src pointers
-      --        can be NULL.
-      function UndistortImg (This : access CvCalibFilter;
-                          Src  : Ipl_Image_P_Array; -- TODO: Check types
-                          Dst  : Ipl_Image_P_Array) -- TODO: Check types
-                          return Cv_Bool;
-      pragma Import (Cpp, UndistortImg, "_ZN13CvCalibFilter9UndistortEPP9_IplImageS2_");
-
-      --        Undistorts images using camera parameters. Some of src pointers
-      --        can be NULL.
-      function UndistortMat (This : access CvCalibFilter;
-                          Src  : access C_Mat_Ptr; -- TODO: Check types
-                          Dst  : access C_Mat_Ptr) -- TODO: Check types
-                          return Cv_Bool;
-      pragma Import (Cpp, UndistortMat, "_ZN13CvCalibFilter9UndistortEPP5CvMatS2_");
-
-      --        Returns array of etalon points detected/partally detected
-      --        on the latest frame for idx-th camera
-      function GetLatestPoints (This  : access CvCalibFilter;
-                                Idx   : Integer;
-                                Pts   : C_Point_2d_32f_Ptr;
-                                Count : access Integer;
-                                Found : access Boolean)
-                                return Cv_Bool;
-      pragma Import (Cpp, GetLatestPoints, "_ZN13CvCalibFilter15GetLatestPointsEiPP12CvPoint2D32fPiPb");
-
-      procedure DrawPointsImg (This : access CvCalibFilter;
-                               Dst  : access C_Ipl_Image_Ptr);
-      pragma Import (Cpp, DrawPointsImg, "_ZN13CvCalibFilter10DrawPointsEPP9_IplImage");
-
-      procedure DrawPointsMat (This : access CvCalibFilter;
-                               Dst  : access C_Mat_Ptr);
-      pragma Import (Cpp, DrawPointsMat, "_ZN13CvCalibFilter10FindEtalonEPP5CvMat");
-
-      function RectifyImg (This   : access CvCalibFilter;
-                        Srcarr : Ipl_Image_P_Array;
-                        Dstarr : Ipl_Image_P_Array)
-                        return Cv_Bool;
-      pragma Import (Cpp, RectifyImg, "_ZN13CvCalibFilter7RectifyEPP9_IplImageS2_");
-
-      function RectifyMat (This   : access CvCalibFilter;
-                        Srcarr : access C_Mat_Ptr;
-                        Dstarr : access C_Mat_Ptr)
-                        return Cv_Bool;
-      pragma Import (Cpp, RectifyMat, "_ZN13CvCalibFilter7RectifyEPP5CvMatS2_");
-   end Class_CvCalibFilter;
-   use Class_CvCalibFilter;
-
-
-   -- This class cannot be imported because the most functions are declared in
-   -- the legacy.hpp header file for the class. (Possible workaround is to move
-   -- the c++ code into legacy.cpp and recompile the dll)
---     package Class_Cv_Image is
---        type Cv_Image is tagged limited record
---           Image    : aliased Ipl_Image_P;
---           Refcount : access Integer;
---        end record;
---        pragma Import (CPP, Cv_Image);
---
---        function CvImage return Cv_Image;
---        pragma Import(Cpp,
---     end Class_Cv_Image;
---     use Class_Cv_Image;
-
+private
 
    pragma Import (C, CvSegmentImage, "cvSegmentImage");
    pragma Import (C, CvCalcCovarMatrixEx, "cvCalcCovarMatrixEx");

@@ -281,15 +281,15 @@ package Imgproc is
    type Cv_Subdiv_2D_Point_P is access Cv_Subdiv_2D_Point;
 
    -- Array for Cv_Quad_Edge_2D
-   type Cv_Subdiv_2D_Point_P_Arr4 is array (Integer range 1 .. 4) of Cv_Subdiv_2D_Point_P;
-   type Cv_Subdiv_2D_Edge_Arr4 is array (Integer range 1 .. 4) of Cv_Subdiv_2D_Edge;
+   type Cv_Subdiv_2D_Point_P_Arr is array (Integer range <>) of Cv_Subdiv_2D_Point_P;
+   type Cv_Subdiv_2D_Edge_Arr is array (Integer range <>) of Cv_Subdiv_2D_Edge;
 
    --/* quad-edge structure fields */
    type Cv_Quad_Edge_2D is
       record
          Flags : Integer;
-         Pt    : Cv_Subdiv_2D_Point_P_Arr4;
-         Next  : Cv_Subdiv_2D_Edge_Arr4;
+         Pt    : Cv_Subdiv_2D_Point_P_Arr(1 .. 4);
+         Next  : Cv_Subdiv_2D_Edge_Arr(1 .. 4);
       end record;
    type Cv_Quad_Edge_2D_P is access Cv_Quad_Edge_2D;
 
