@@ -654,7 +654,7 @@ package body Core is
 
    function CV_MAT_ELEM_PTR (Mat : Cv_Mat_P;
                              Row : Integer;
-                             Col : Integer) return C_8u_Ptr is
+                             Col : Integer) return Cv_8u_Pointer is
    begin
       return CV_MAT_ELEM_PTR_FAST (Mat, Row, Col, CV_ELEM_SIZE (Mat.all.Mat_Type));
    end CV_MAT_ELEM_PTR;
@@ -662,7 +662,7 @@ package body Core is
    function CV_MAT_ELEM (Mat      : Cv_Mat_P;
                          Elemtype : Integer;
                          Row      : Integer;
-                         Col      : Integer) return C_8u_Ptr is
+                         Col      : Integer) return Cv_8u_Pointer is
    begin
       return CV_MAT_ELEM_PTR_FAST (Mat, Row, Col, Elemtype'Size / 8);
    end CV_MAT_ELEM;
@@ -971,7 +971,7 @@ package body Core is
    function CV_MAT_ELEM_PTR_FAST (Mat      : Cv_Mat_P;
                                   Row      : Integer;
                                   Col      : Integer;
-                                  Pix_Size : Integer) return C_8u_Ptr is
+                                  Pix_Size : Integer) return Cv_8u_Pointer is
    begin
       return Mat.all.Data.Cv_8u + Interfaces.C.Ptrdiff_T (Mat.all.Step * (Row) + (Pix_Size) * (Col));
    end CV_MAT_ELEM_PTR_FAST;
@@ -988,4 +988,106 @@ package body Core is
    begin
       return Integer(Long_Float'Rounding (Value));
    end CvRound;
+
+
+   -----------------------------------------------------------------------------
+   -- 2d array functions
+   -----------------------------------------------------------------------------
+   function To_2d_Pointer (Src : access Cv_8u_2d_Array)
+                           return Cv_8u_Pointer_Array is
+      D        : aliased Cv_8u_2d_Array := Src.all;
+      Last     : Integer := D'Last (1);
+      First    : Integer := D'First (1);
+      First_2d : Integer := D'First (2);
+      Dst      : Cv_8u_Pointer_Array(D'Range);
+   begin
+      for I in Integer range D'Range loop
+         Dst (I) := D (I, D'First (2))'Unchecked_Access;
+      end loop;
+      return Dst;
+   end To_2d_Pointer;
+
+   function To_2d_Pointer (Src : access Cv_8s_2d_Array)
+                           return Cv_8s_Pointer_Array is
+      D        : aliased Cv_8s_2d_Array := Src.all;
+      Last     : Integer := D'Last (1);
+      First    : Integer := D'First (1);
+      First_2d : Integer := D'First (2);
+      Dst      : Cv_8s_Pointer_Array (D'Range);
+   begin
+      for I in Integer range D'Range loop
+         Dst (I) := D (I, D'First (2))'Unchecked_Access;
+      end loop;
+      return Dst;
+   end To_2d_Pointer;
+
+   function To_2d_Pointer (Src : access Cv_16u_2d_Array)
+                           return Cv_16u_Pointer_Array is
+      D        : aliased Cv_16u_2d_Array := Src.all;
+      Last     : Integer := D'Last (1);
+      First    : Integer := D'First (1);
+      First_2d : Integer := D'First (2);
+      Dst      : Cv_16u_Pointer_Array (D'Range);
+   begin
+      for I in Integer range D'Range loop
+         Dst (I) := D (I, D'First (2))'Unchecked_Access;
+      end loop;
+      return Dst;
+   end To_2d_Pointer;
+
+   function To_2d_Pointer (Src : access Cv_16s_2d_Array)
+                              return Cv_16s_Pointer_Array is
+      D        : aliased Cv_16s_2d_Array := Src.all;
+      Last     : Integer := D'Last (1);
+      First    : Integer := D'First (1);
+      First_2d : Integer := D'First (2);
+      Dst      : Cv_16s_Pointer_Array (D'Range);
+   begin
+      for I in Integer range D'Range loop
+         Dst (I) := D (I, D'First (2))'Unchecked_Access;
+      end loop;
+      return Dst;
+   end To_2d_Pointer;
+
+   function To_2d_Pointer (Src : access Cv_32s_2d_Array)
+                           return Cv_32s_Pointer_Array is
+      D        : aliased Cv_32s_2d_Array := Src.all;
+      Last     : Integer := D'Last (1);
+      First    : Integer := D'First (1);
+      First_2d : Integer := D'First (2);
+      Dst      : Cv_32s_Pointer_Array (D'Range);
+   begin
+      for I in Integer range D'Range loop
+         Dst (I) := D (I, D'First (2))'Unchecked_Access;
+      end loop;
+      return Dst;
+   end To_2d_Pointer;
+
+   function To_2d_Pointer (Src : access Cv_32f_2d_Array)
+                           return Cv_32f_Pointer_Array is
+      D        : aliased Cv_32f_2d_Array := Src.all;
+      Last     : Integer := D'Last (1);
+      First    : Integer := D'First (1);
+      First_2d : Integer := D'First (2);
+      Dst      : Cv_32f_Pointer_Array (D'Range);
+   begin
+      for I in Integer range D'Range loop
+         Dst (I) := D (I, D'First (2))'Unchecked_Access;
+      end loop;
+      return Dst;
+   end To_2d_Pointer;
+
+   function To_2d_Pointer (Src : access Cv_64f_2d_Array)
+                           return Cv_64f_Pointer_Array is
+      D        : aliased Cv_64F_2d_Array := Src.all;
+      Last     : Integer := D'Last (1);
+      First    : Integer := D'First (1);
+      First_2d : Integer := D'First (2);
+      Dst      : Cv_64F_Pointer_Array (D'Range);
+   begin
+      for I in Integer range D'Range loop
+         Dst (I) := D (I, D'First (2))'Unchecked_Access;
+      end loop;
+      return Dst;
+   end To_2d_Pointer;
 end Core;

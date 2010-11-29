@@ -174,7 +174,7 @@ package Legacy is
       Level      : Integer;
       Num_States : Integer;
       Trans_P    : Cv_32f_Array_P;    -- float *
-      Obs_Prob   : C_32f_Ptr_Array_P; -- float **
+      Obs_Prob   : Cv_32f_Pointer_Array_P; -- float **
       U          : Cv_EHMM_Union;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_EHMM);
@@ -355,30 +355,30 @@ package Legacy is
    -- Stereo Correspondence ----------------------------------------------------
    type Cv_Clique_Finder is record
       Graph          : Cv_Graph_P;
-      Adj_Mat        : C_32s_Ptr_Array_P;
+      Adj_Mat        : Cv_32s_Pointer_Array_P;
       N              : Integer; -- Graph size
 
       -- stacks, counters etc
       K              : Integer; -- Stack size
-      Current_Comp   : C_32s_Ptr;
-      All_Cliques    : C_32s_Ptr_Array_P;
+      Current_Comp   : Cv_32s_Pointer;
+      All_Cliques    : Cv_32s_Pointer_Array_P;
 
-      Ne             : C_32s_Ptr;
-      Ce             : C_32s_Ptr;
-      Fixp           : C_32s_Ptr;
-      Nod            : C_32s_Ptr;
-      S              : C_32s_Ptr;
+      Ne             : Cv_32s_Pointer;
+      Ce             : Cv_32s_Pointer;
+      Fixp           : Cv_32s_Pointer;
+      Nod            : Cv_32s_Pointer;
+      S              : Cv_32s_Pointer;
 
       Status         : Integer;
       Best_Score     : Integer;
       Weighted       : Integer;
       Weighted_Edges : Integer;
       Best_Weight    : Float;
-      Edge_Weights   : C_32f_Ptr;
-      Vertex_Weights : C_32f_Ptr;
+      Edge_Weights   : Cv_32f_Pointer;
+      Vertex_Weights : Cv_32f_Pointer;
 
-      Cur_Weight     : C_32f_Ptr;
-      Cand_Weight    : C_32f_Ptr;
+      Cur_Weight     : Cv_32f_Pointer;
+      Cand_Weight    : Cv_32f_Pointer;
    end record;
 
    CLIQUE_TIME_OFF : constant := 2;
@@ -836,20 +836,23 @@ package Legacy is
 
    type Cv_64f_Array_P_Array is array (Integer range <>) of aliased Cv_64f_Array_P;
 
-   package C_64f_Array_P_Arr_Ptr is
-     new Interfaces.C.Pointers (Integer, Cv_64f_Array_P, Cv_64f_Array_P_Array, null);
-   use type C_64f_Array_P_Arr_Ptr.Pointer;
-   subtype C_64f_Array_P_Ptr is C_64f_Array_P_Arr_Ptr.Pointer;
+   -- This is not good please fix.
+--     package C_64f_Array_P_Arr_Ptr is
+--       new Interfaces.C.Pointers (Integer, Cv_64f_Array_P, Cv_64f_Array_P_Array, null);
+--     use type C_64f_Array_P_Arr_Ptr.Pointer;
+--     subtype C_64f_Array_P_Ptr is C_64f_Array_P_Arr_Ptr.Pointer;
+
+
 
    type Cv_GLCM is record
       Matrix_Side_Length           : Integer;
       Num_Matrices                 : Integer;
-      Matrices                     : access C_64f_Array_P_Ptr; -- double***
+      Matrices                     : access Cv_64F_Pointer_Array_P; -- double***
 
       Num_Lookup_Table_Elements    : Integer;
       Forward_Lookup_Table         : Cv_32s_Array (1 .. CV_MAX_NUM_GREY_LEVELS_8U);
       Reverse_Lookup_Table         : Cv_32s_Array (1 .. CV_MAX_NUM_GREY_LEVELS_8U);
-      Descriptors                  : C_64f_Array_P_Ptr; -- double**
+      Descriptors                  : Cv_64F_Pointer_Array_P; -- double**
       Num_Descriptors              : Integer;
       Descriptor_Optimization_Type : Integer;
       Optimization_Type            : Integer;
@@ -859,7 +862,7 @@ package Legacy is
 
    function CvCreateGLCM (Src_Image : Ipl_Image_P;
                           Step_Magnitude : Integer;
-                          Step_Direction : C_32s_Ptr := null;
+                          Step_Direction : Cv_32s_Pointer := null;
                           Num_Step_Directions : Integer := 0;
                           Optimization_Type   : Integer := CV_GLCM_OPTIMIZATION_NONE)
                           return Cv_GLCM_P;
@@ -1175,74 +1178,74 @@ package Legacy is
    --     stereo-pair
    procedure CvMakeScanlines (Matrix     : Cv_Matrix_3;
                               Img_Size   : Cv_Size;
-                              Scanlines1 : C_32s_Ptr;
-                              Scanlines2 : C_32s_Ptr;
-                              Lengths1   : C_32s_Ptr;
-                              Lengths2   : C_32s_Ptr;
+                              Scanlines1 : Cv_32s_Pointer;
+                              Scanlines2 : Cv_32s_Pointer;
+                              Lengths1   : Cv_32s_Pointer;
+                              Lengths2   : Cv_32s_Pointer;
                               Line_Count : access Integer);
 
    --     Grab pixel values from scanlines and stores them sequentially
    --     (some sort of perspective image transform)
    procedure CvPreWarpImage (Line_Count : Integer;
                              Img        : Ipl_Image_P;
-                             Dst        : C_8u_Ptr;
-                             Dst_Nums   : C_32s_Ptr;
-                             Scan_Lines : C_32s_Ptr);
+                             Dst        : Cv_8u_Pointer;
+                             Dst_Nums   : Cv_32s_Pointer;
+                             Scan_Lines : Cv_32s_Pointer);
 
    --     Approximate each grabbed scanline by a sequence of runs
    --     (lossy run-length compression)
    procedure CvFindRuns (Line_Count    : Integer;
-                         Prewarp1      : C_8u_Ptr;
-                         Prewarp2      : C_8u_Ptr;
-                         Line_Lengths1 : C_32s_Ptr;
-                         Line_Lengths2 : C_32s_Ptr;
-                         Runs1         : C_32s_Ptr;
-                         Runs2         : C_32s_Ptr;
-                         Num_Runs1     : C_32s_Ptr;
-                         Num_Runs2     : C_32s_Ptr);
+                         Prewarp1      : Cv_8u_Pointer;
+                         Prewarp2      : Cv_8u_Pointer;
+                         Line_Lengths1 : Cv_32s_Pointer;
+                         Line_Lengths2 : Cv_32s_Pointer;
+                         Runs1         : Cv_32s_Pointer;
+                         Runs2         : Cv_32s_Pointer;
+                         Num_Runs1     : Cv_32s_Pointer;
+                         Num_Runs2     : Cv_32s_Pointer);
 
    --     Compares two sets of compressed scanlines
    procedure CvDynamicCorrespondMulti (Line_Count  : Integer;
-                                       First       : C_32s_Ptr;
-                                       First_Runs  : C_32s_Ptr;
-                                       Second      : C_32s_Ptr;
-                                       Second_Runs : C_32s_Ptr;
-                                       First_Corr  : C_32s_Ptr;
-                                       Second_Corr : C_32s_Ptr);
+                                       First       : Cv_32s_Pointer;
+                                       First_Runs  : Cv_32s_Pointer;
+                                       Second      : Cv_32s_Pointer;
+                                       Second_Runs : Cv_32s_Pointer;
+                                       First_Corr  : Cv_32s_Pointer;
+                                       Second_Corr : Cv_32s_Pointer);
 
    --     Finds scanline ending coordinates for some intermediate "virtual"
    --     camera position
-   procedure CvMakeAlphaScanlines (Scanlines1  : C_32s_Ptr;
-                                   Scanlines2  : C_32s_Ptr;
-                                   Scanlines_A : C_32s_Ptr;
-                                   Lengths     : C_32s_Ptr;
+   procedure CvMakeAlphaScanlines (Scanlines1  : Cv_32s_Pointer;
+                                   Scanlines2  : Cv_32s_Pointer;
+                                   Scanlines_A : Cv_32s_Pointer;
+                                   Lengths     : Cv_32s_Pointer;
                                    Line_Count  : Integer;
                                    Alpha       : Float);
 
    --     Blends data of the left and right image scanlines to get
    --     pixel values of "virtual" image scanlines
    procedure CvMorphEpilinesMulti (Line_Count  : Integer;
-                                   First_Pix   : C_8u_Ptr;
-                                   First_Num   : C_32s_Ptr;
-                                   Second_Pix  : C_8u_Ptr;
-                                   Second_Num  : C_32s_Ptr;
-                                   Dst_Pix     : C_8u_Ptr;
-                                   Dst_Num     : C_32s_Ptr;
+                                   First_Pix   : Cv_8u_Pointer;
+                                   First_Num   : Cv_32s_Pointer;
+                                   Second_Pix  : Cv_8u_Pointer;
+                                   Second_Num  : Cv_32s_Pointer;
+                                   Dst_Pix     : Cv_8u_Pointer;
+                                   Dst_Num     : Cv_32s_Pointer;
                                    Alpha       : Float;
-                                   First       : C_32s_Ptr;
-                                   First_Runs  : C_32s_Ptr;
-                                   Second      : C_32s_Ptr;
-                                   Second_Runs : C_32s_Ptr;
-                                   First_Corr  : C_32s_Ptr;
-                                   Second_Corr : C_32s_Ptr);
+                                   First       : Cv_32s_Pointer;
+                                   First_Runs  : Cv_32s_Pointer;
+                                   Second      : Cv_32s_Pointer;
+                                   Second_Runs : Cv_32s_Pointer;
+                                   First_Corr  : Cv_32s_Pointer;
+                                   Second_Corr : Cv_32s_Pointer);
 
    --     Does reverse warping of the morphing result to make
    --     it fill the destination image rectangle
    procedure CvPostWarpImage (Line_Count : Integer;
-                              Src        : C_8u_Ptr;
-                              Src_Nums   : C_32s_Ptr;
+                              Src        : Cv_8u_Pointer;
+                              Src_Nums   : Cv_32s_Pointer;
                               Img        : Ipl_Image_P;
-                              Scanlines  : C_32s_Ptr);
+                              Scanlines  : Cv_32s_Pointer);
 
    --     Deletes Moire (missed pixels that appear due to discretization)
    procedure CvDeleteMoire (Img : Ipl_Image_P);
