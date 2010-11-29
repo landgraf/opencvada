@@ -83,59 +83,86 @@ package Core is
    package C_8u_Arr_Ptr is
      new Interfaces.C.Pointers (Integer, Unsigned_8, Cv_8u_Array, 0);
    use type C_8u_Arr_Ptr.Pointer;
-   subtype C_8u_Ptr is C_8u_Arr_Ptr.Pointer;
+   subtype Cv_8u_Pointer is C_8u_Arr_Ptr.Pointer;
 
-   type C_8u_Ptr_Array is array (Integer range <>) of C_8u_Ptr;
-   type C_8u_Ptr_Array_P is access C_8u_Ptr_Array;
+   type Cv_8u_Pointer_Array is array (Integer range <>) of Cv_8u_Pointer;
+   type Cv_8u_Pointer_Array_P is access Cv_8u_Pointer_Array;
+
+   -- Changes an ada 2d array into a C compatible 2d array
+   function To_2d_Pointer (Src : access Cv_8u_2d_Array)
+                           return Cv_8u_Pointer_Array;
 
    package C_8s_Arr_Ptr is
      new Interfaces.C.Pointers (Integer, Integer_8, Cv_8s_Array, 0);
    use type C_8s_Arr_Ptr.Pointer;
-   subtype C_8s_Ptr is C_8s_Arr_Ptr.Pointer;
+   subtype Cv_8s_Pointer is C_8s_Arr_Ptr.Pointer;
 
-   type C_8s_Ptr_Array is array (Integer range <>) of C_8s_Ptr;
-   type C_8s_Ptr_Array_P is access C_8s_Ptr_Array;
+   type Cv_8s_Pointer_Array is array (Integer range <>) of Cv_8s_Pointer;
+   type Cv_8s_Pointer_Array_P is access Cv_8s_Pointer_Array;
+
+   -- Changes an ada 2d array into a C compatible 2d array
+   function To_2d_Pointer (Src : access Cv_8s_2d_Array)
+                           return Cv_8s_Pointer_Array;
 
    package C_16u_Arr_Ptr is
      new Interfaces.C.Pointers (Integer, Unsigned_16, Cv_16u_Array, 0);
    use type C_16u_Arr_Ptr.Pointer;
-   subtype C_16u_Ptr is C_16u_Arr_Ptr.Pointer;
+   subtype Cv_16u_Pointer is C_16u_Arr_Ptr.Pointer;
 
-   type C_16u_Ptr_Array is array (Integer range <>) of C_16u_Ptr;
-   type C_16u_Ptr_Array_P is access C_16u_Ptr_Array;
+   type Cv_16u_Pointer_Array is array (Integer range <>) of Cv_16u_Pointer;
+   type Cv_16u_Pointer_Array_P is access Cv_16u_Pointer_Array;
+
+   -- Changes an ada 2d array into a C compatible 2d array
+   function To_2d_Pointer (Src : access Cv_16u_2d_Array)
+                           return Cv_16u_Pointer_Array;
 
    package C_16s_Arr_Ptr is
      new Interfaces.C.Pointers (Integer, Integer_16, Cv_16s_Array, 0);
    use type C_16s_Arr_Ptr.Pointer;
-   subtype C_16s_Ptr is C_16s_Arr_Ptr.Pointer;
+   subtype Cv_16s_Pointer is C_16s_Arr_Ptr.Pointer;
 
-   type C_16s_Ptr_Array is array (Integer range <>) of C_16s_Ptr;
-   type C_16s_Ptr_Array_P is access C_16s_Ptr_Array;
+   type Cv_16s_Pointer_Array is array (Integer range <>) of Cv_16s_Pointer;
+   type Cv_16s_Pointer_Array_P is access Cv_16s_Pointer_Array;
+
+   -- Changes an ada 2d array into a C compatible 2d array
+   function To_2d_Pointer (Src : access Cv_16s_2d_Array)
+                           return Cv_16s_Pointer_Array;
 
    package C_32s_Arr_Ptr is
      new Interfaces.C.Pointers (Integer, Integer, Cv_32s_Array, 0);
    use type C_32s_Arr_Ptr.Pointer;
-   subtype C_32s_Ptr is C_32s_Arr_Ptr.Pointer;
+   subtype Cv_32s_Pointer is C_32s_Arr_Ptr.Pointer;
 
-   type C_32s_Ptr_Array is array (Integer range <>) of C_32s_Ptr;
-   type C_32s_Ptr_Array_P is access C_32s_Ptr_Array;
+   type Cv_32s_Pointer_Array is array (Integer range <>) of Cv_32s_Pointer;
+   type Cv_32s_Pointer_Array_P is access Cv_32s_Pointer_Array;
+
+   -- Changes an ada 2d array into a C compatible 2d array
+   function To_2d_Pointer (Src : access Cv_32s_2d_Array)
+                           return Cv_32s_Pointer_Array;
 
    package C_32f_Arr_Ptr is
      new Interfaces.C.Pointers (Integer, Float, Cv_32f_Array, 0.0);
    use type C_32f_Arr_Ptr.Pointer;
-   subtype C_32f_Ptr is C_32f_Arr_Ptr.Pointer;
+   subtype Cv_32f_Pointer is C_32f_Arr_Ptr.Pointer;
 
-   type C_32f_Ptr_Array is array (Integer range <>) of C_32f_Ptr;
-   type C_32f_Ptr_Array_P is access C_32f_Ptr_Array;
+   type Cv_32f_Pointer_Array is array (Integer range <>) of Cv_32f_Pointer;
+   type Cv_32f_Pointer_Array_P is access Cv_32f_Pointer_Array;
 
-   package C_64f_Arr_Ptr is
-     new Interfaces.C.Pointers (Integer, Long_Float, Cv_64f_Array, 0.0);
-   use type C_64f_Arr_Ptr.Pointer;
-   subtype C_64f_Ptr is C_64f_Arr_Ptr.Pointer;
+   -- Changes an ada 2d array into a C compatible 2d array
+   function To_2d_Pointer (Src : access Cv_32f_2d_Array)
+                           return Cv_32f_Pointer_Array;
 
-   type C_64f_Ptr_Array is array (Integer range <>) of C_64f_Ptr;
-   type C_64f_Ptr_Array_P is access C_64f_Ptr_Array;
+   package Cv_64f_Pointers is
+     new Interfaces.C.Pointers (Integer, Long_Float , Cv_64F_Array, 0.0);
+   subtype Cv_64f_Pointer is Cv_64f_Pointers.Pointer;
+   type Cv_64f_Pointer_P is access Cv_64f_Pointer;
 
+   type Cv_64F_Pointer_Array is array (Integer range <>) of Cv_64f_Pointer;
+   type Cv_64F_Pointer_Array_P is access Cv_64F_Pointer_Array;
+
+   -- Changes an ada 2d array into a C compatible 2d array
+   function To_2d_Pointer (Src : access Cv_64f_2d_Array)
+                           return Cv_64f_Pointer_Array;
 
    package C_Strings renames Interfaces.C.Strings;
 
@@ -150,6 +177,7 @@ package Core is
 
    type Cv_String_Array is array (Integer range <>) of aliased Interfaces.C.Strings.Chars_Ptr;
 
+   -- fix this
    package C_String_Arr_Ptr is
      new Interfaces.C.Pointers (Integer, Interfaces.C.Strings.Chars_Ptr, Cv_String_Array, null);
    use type C_String_Arr_Ptr.Pointer;
@@ -477,19 +505,19 @@ package Core is
    type Mat_Data (Option : Mat_Type := Cv_Mat_32f) is record
       case Option is
          when Cv_Mat_8u =>
-            Cv_8u  : C_8u_Ptr;
+            Cv_8u  : Cv_8u_Pointer;
          when Cv_Mat_8s =>
-            Cv_8s  : C_8s_Ptr;
+            Cv_8s  : Cv_8s_Pointer;
          when Cv_Mat_16u =>
-            Cv_16u : C_16u_Ptr;
+            Cv_16u : Cv_16u_Pointer;
          when Cv_Mat_16s =>
-            Cv_16s : C_16s_Ptr;
+            Cv_16s : Cv_16s_Pointer;
          when Cv_Mat_32s =>
-            Cv_32s : C_32s_Ptr;
+            Cv_32s : Cv_32s_Pointer;
          when Cv_Mat_32f =>
-            Cv_32f : C_32f_Ptr;
+            Cv_32f : Cv_32f_Pointer;
          when Cv_Mat_64f =>
-            Cv_64f : C_64f_Ptr;
+            Cv_64f : Cv_64f_Pointer;
       end case;
    end record;
    pragma Unchecked_Union (Mat_Data);
@@ -540,16 +568,16 @@ package Core is
    function CV_MAT_ELEM_PTR_FAST (Mat      : Cv_Mat_P;
                                   Row      : Integer;
                                   Col      : Integer;
-                                  Pix_Size : Integer) return C_8u_Ptr;
+                                  Pix_Size : Integer) return Cv_8u_Pointer;
 
    function CV_MAT_ELEM_PTR (Mat : Cv_Mat_P;
                              Row : Integer;
-                             Col : Integer) return C_8u_Ptr;
+                             Col : Integer) return Cv_8u_Pointer;
 
    function CV_MAT_ELEM (Mat      : Cv_Mat_P;
                          Elemtype : Integer;
                          Row      : Integer;
-                         Col      : Integer) return C_8u_Ptr;
+                         Col      : Integer) return Cv_8u_Pointer;
 
    --     Returns the particular element of single-channel floating-point
    --     matrix.
@@ -1666,10 +1694,6 @@ package Core is
    function To_Void is
      new Ada.Unchecked_Conversion (Source => Float_P,
                                    Target => Cv_Void_P);
-
-
-
-
    function Image_To_Arr is
      new Ada.Unchecked_Conversion (Source => Ipl_Image_P,
                                    Target => Cv_Arr_P);
@@ -1759,7 +1783,6 @@ package Core is
    function Cv_64f_To_Arr is
      new Ada.Unchecked_Conversion (Source => Cv_64f_Array_P,
                                    Target => Cv_Arr_P);
-
 
    function "+" (Right : Ipl_Image_P) return Cv_Arr_P;
 
