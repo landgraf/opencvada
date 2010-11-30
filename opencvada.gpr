@@ -26,14 +26,15 @@ project OpenCVAda is
    for Source_Dirs use ("Source", "Source\Samples", "Source\legacy", "Source\core", "Source\calib3d", "Source\imgproc", "Source\video", "Source\highgui", "Source\objdetect", "Source\features_2d", "Source\ffmpeg");
    for Object_Dir use "Build";
    for Exec_Dir use "Exec";
-   for Main use ("Main.adb", "camera_test.adb", "chessboard_test.adb", "window_test.adb");
+   for Main use ("Main.adb");
    for Languages use ("Ada");
 
    package Builder is
+      for Default_Switches ("ada") use ("-s", "-m");
    end Builder;
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnat05");
+      for Default_Switches ("ada") use ("-gnatw.hkd", "-gnat05");
       for Default_Switches ("c++") use ("-IC:\OpenCvSVN\build\include\opencv2\highgui", "-IC:\OpenCvSVN\build\include\opencv2\core", "-IC:\OpenCvSVN\build\include");
    end Compiler;
 

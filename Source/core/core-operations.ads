@@ -17,8 +17,8 @@
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 
-with Interfaces; use Interfaces;
-with Interfaces.C; use Interfaces.C;
+--  with Interfaces; use Interfaces;
+--  with Interfaces.C; use Interfaces.C;
 with System;
 with Interfaces.C.Strings;
 with GNAT.Source_Info;
@@ -1545,7 +1545,7 @@ package Core.Operations is
 
    -- Fills a polygon's interior.
    procedure CvFillPoly (Img      : Cv_Arr_P;
-                         Pts      : Cv_Point_2d_CPtr;
+                         Pts      : Cv_Point_Pointer_Array;
                          Npts     : Cv_32U_Array;
                          Contours : Integer;
                          Color    : Cv_Scalar;
@@ -1554,7 +1554,7 @@ package Core.Operations is
 
    -- Draws simple or thick polygons.
    procedure CvPolyLine (Img       : Cv_Arr_P;
-                         Pts       : Cv_Point_2d_CPtr;
+                         Pts       : Cv_Point_Pointer_Array;
                          Npts      : Cv_32U_Array;
                          Contours  : Integer;
                          IsClosed  : Integer;
@@ -1599,7 +1599,7 @@ package Core.Operations is
                             Shift      : Integer := 0) renames CvEllipse;
 
    procedure CvDrawPolyLine (Img       : Cv_Arr_P;
-                             Pts       : Cv_Point_2d_CPtr;
+                             Pts       : Cv_Point_Pointer_Array;
                              Npts      : Cv_32U_Array;
                              Contours  : Integer;
                              IsClosed  : Integer;

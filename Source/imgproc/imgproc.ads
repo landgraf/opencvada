@@ -243,11 +243,11 @@ package Imgproc is
 --           HeaderSize : Integer;
 --           Seq        : Cv_Seq_P;
 --           Block      : Cv_Seq_Block_P;
---           Ptr        : C_Arr_Ptr;
---           BlockMin   : C_Arr_Ptr;
---           BlockMax   : C_Arr_Ptr;
+--           Ptr        : Cv_Arr_Pointer;
+--           BlockMin   : Cv_Arr_Pointer;
+--           BlockMax   : Cv_Arr_Pointer;
 --           DeltaIndex : Integer;
---           PrevElem   : C_Arr_Ptr;
+--           PrevElem   : Cv_Arr_Pointer;
 --           --
 --           Code       : Unsigned_8;
 --           Pt         : Cv_Point;

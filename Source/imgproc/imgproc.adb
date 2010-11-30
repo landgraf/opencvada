@@ -41,6 +41,7 @@ package body Imgproc is
    end CV_INIT_3X3_DELTAS;
 
    function CV_SUBDIV2D_NEXT_EDGE (Edge : Cv_Quad_Edge_2D) return Cv_Quad_Edge_2D_P is
+      pragma Unreferenced (Edge);
    begin
       -- #define  CV_SUBDIV2D_NEXT_EDGE( edge )  (((CvQuadEdge2D*)((edge) & ~3))->next[(edge)&3])
       return null;

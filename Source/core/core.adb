@@ -20,7 +20,7 @@
 package body Core is
 
    function CV_NODE_TYPE (Flags : Unsigned_32)
-                             return Unsigned_32 is
+                          return Unsigned_32 is
    begin
       return (Flags and Cv_Node_Type_Mask);
    end CV_NODE_TYPE;
@@ -135,7 +135,7 @@ package body Core is
       end if;
    end CV_NODE_SEQ_IS_SIMPLE;
 
-   function CvAttrList (Attr : C_String_Ptr := null;
+   function CvAttrList (Attr : Cv_String_Pointer := null;
                         Next : Cv_Attr_List_P := null)
                         return Cv_Attr_List is
       L : Cv_Attr_List;
@@ -145,21 +145,21 @@ package body Core is
       return L;
    end CvAttrList;
 
-   procedure CV_WRITE_SEQ_ELEM_VAR ( Elem_Ptr : C_Arr_Ptr;
+   procedure CV_WRITE_SEQ_ELEM_VAR ( Elem_Ptr : Cv_Arr_Pointer;
                                     Writer   : Cv_Seq_Writer_P ) is
    begin
-      if (Writer.Ptr - Writer.Block_Max) <= 0 then
+      if (Writer.all.Ptr - Writer.all.Block_Max) <= 0 then
          CvCreateSeqBlock (Writer);
       end if;
-      Memcpy (Writer.Ptr'Address, Elem_Ptr'Address, System.CRTL.Size_T (Writer.all.Seq.all.Elem_Size));
-      Writer.all.Ptr := Writer.all.Ptr + Ptrdiff_T (Writer.all.Seq.Elem_Size);
+      Memcpy (Writer.all.Ptr'Address, Elem_Ptr'Address, System.CRTL.Size_T (Writer.all.Seq.all.Elem_Size));
+      Writer.all.Ptr := Writer.all.Ptr + Ptrdiff_T (Writer.all.Seq.all.Elem_Size);
    end CV_WRITE_SEQ_ELEM_VAR;
 
    procedure CV_NEXT_SEQ_ELEM (Elem_Size : Integer;
                                Reader    : Cv_Seq_Reader_P) is
    begin
       Reader.all.Ptr := Reader.all.Ptr + Ptrdiff_T (Elem_Size);
-      if (Reader.Ptr - Reader.all.BlockMax) <= 0 then
+      if (Reader.all.Ptr - Reader.all.BlockMax) <= 0 then
          CvChangeSeqBlock (To_Void (Reader), 1);
       end if;
    end CV_NEXT_SEQ_ELEM;
@@ -168,7 +168,7 @@ package body Core is
                                Reader    : Cv_Chain_Pt_Reader_P) is
    begin
       Reader.all.Ptr := Reader.all.Ptr + Ptrdiff_T (Elem_Size);
-      if (Reader.Ptr - Reader.all.BlockMax) <= 0 then
+      if (Reader.all.Ptr - Reader.all.BlockMax) <= 0 then
          CvChangeSeqBlock (To_Void (Reader), 1);
       end if;
    end CV_NEXT_SEQ_ELEM;
@@ -177,30 +177,30 @@ package body Core is
                                Reader    : Cv_Seq_Reader_P ) is
    begin
       Reader.all.Ptr := Reader.all.Ptr - Ptrdiff_T (Elem_Size);
-      if (Reader.BlockMin - Reader.all.Ptr) > 0 then
+      if (Reader.all.BlockMin - Reader.all.Ptr) > 0 then
          CvChangeSeqBLock (To_Void (Reader), -1);
       end if;
    end CV_PREV_SEQ_ELEM;
 
-   procedure CV_READ_SEQ_ELEM ( Elem  : C_Arr_Ptr;
+   procedure CV_READ_SEQ_ELEM ( Elem  : Cv_Arr_Pointer;
                                Reader : Cv_Seq_Reader_P ) is
    begin
-      Memcpy (Elem'Address, Reader.all.Ptr'Address, System.Crtl.Size_T (Reader.all.Seq.Elem_Size));
-      CV_NEXT_SEQ_ELEM (Reader.all.Seq.Elem_Size, Reader);
+      Memcpy (Elem'Address, Reader.all.Ptr'Address, System.Crtl.Size_T (Reader.all.Seq.all.Elem_Size));
+      CV_NEXT_SEQ_ELEM (Reader.all.Seq.all.Elem_Size, Reader);
    end CV_READ_SEQ_ELEM;
 
    procedure CV_READ_SEQ_ELEM ( Elem  : Unsigned_8;
                                Reader : Cv_Chain_Pt_Reader_P ) is
    begin
-      Memcpy (Elem'Address, Reader.all.Ptr'Address, System.Crtl.Size_T (Reader.all.Seq.Elem_Size));
-      CV_NEXT_SEQ_ELEM (Reader.all.Seq.Elem_Size, Reader);
+      Memcpy (Elem'Address, Reader.all.Ptr'Address, System.Crtl.Size_T (Reader.all.Seq.all.Elem_Size));
+      CV_NEXT_SEQ_ELEM (Reader.all.Seq.all.Elem_Size, Reader);
    end CV_READ_SEQ_ELEM;
 
-   procedure CV_REV_READ_SEQ_ELEM ( Elem  : C_Arr_Ptr;
+   procedure CV_REV_READ_SEQ_ELEM ( Elem  : Cv_Arr_Pointer;
                                    Reader : Cv_Seq_Reader_P ) is
    begin
-      Memcpy (Elem'Address, Reader.all.Ptr'Address, System.CRTL.Size_T (Reader.all.Seq.Elem_Size));
-      CV_PREV_SEQ_ELEM (Reader.all.Seq.Elem_Size, Reader);
+      Memcpy (Elem'Address, Reader.all.Ptr'Address, System.CRTL.Size_T (Reader.all.Seq.all.Elem_Size));
+      CV_PREV_SEQ_ELEM (Reader.all.Seq.all.Elem_Size, Reader);
    end CV_REV_READ_SEQ_ELEM;
 
 
@@ -209,10 +209,10 @@ package body Core is
    begin
       Pt := Reader.all.Pt;
       if not (Reader.all.Ptr = null) then
-         CV_READ_SEQ_ELEM (Reader.Code, Reader);
-         if ((Reader.Code and not (Unsigned_8 (7))) = 0) then
-            Reader.Pt.X := Reader.Pt.X + Integer (Reader.Deltas (Integer (Reader.all.Code), 1));
-            Reader.Pt.Y := Reader.Pt.Y + Integer (Reader.Deltas (Integer (Reader.all.Code), 2));
+         CV_READ_SEQ_ELEM (Reader.all.Code, Reader);
+         if ((Reader.all.Code and not (Unsigned_8 (7))) = 0) then
+            Reader.all.Pt.X := Reader.all.Pt.X + Integer (Reader.all.Deltas (Integer (Reader.all.Code), 1));
+            Reader.all.Pt.Y := Reader.all.Pt.Y + Integer (Reader.all.Deltas (Integer (Reader.all.Code), 2));
          end if;
       end if;
 
@@ -261,7 +261,7 @@ package body Core is
 
    function CV_IS_SET_ELEM (Ptr : CV_Set_Elem_P) return Integer is
    begin
-      if Ptr.Flags >= 0 then
+      if Ptr.all.Flags >= 0 then
          return 1;
       end if;
       return 0;
@@ -272,7 +272,7 @@ package body Core is
    function CV_IS_SEQ (Seq : Cv_Seq_P) return Integer is
    begin
       if not (Seq = null) then
-         if (Unsigned_32 (Seq.all.Flags) and CV_MAGIC_MASK) = CV_SEQ_MAGIC_VAL then
+         if (Seq.all.Flags and CV_MAGIC_MASK) = CV_SEQ_MAGIC_VAL then
             return 1;
          end if;
       end if;
@@ -284,7 +284,7 @@ package body Core is
    function CV_IS_SET (Set : Cv_Seq_P) return Integer is
    begin
       if not (Set = null) then
-         if (Unsigned_32 (Set.all.Flags) and CV_MAGIC_MASK) = CV_SET_MAGIC_VAL then
+         if (Set.all.Flags and CV_MAGIC_MASK) = CV_SET_MAGIC_VAL then
             return 1;
          end if;
       end if;
@@ -363,12 +363,12 @@ package body Core is
 
    function  CV_SEQ_ELTYPE ( Seq : Cv_Seq_P ) return Integer is
    begin
-      return Integer (Unsigned_32 (Seq.all.Flags) and CV_SEQ_ELTYPE_MASK);
+      return Integer (Seq.all.Flags and CV_SEQ_ELTYPE_MASK);
    end CV_SEQ_ELTYPE;
 
    function CV_SEQ_KIND ( Seq : Cv_Seq_P ) return Integer is
    begin
-      return Integer (Unsigned_32 (Seq.all.Flags)and CV_SEQ_KIND_MASK );
+      return Integer (Seq.all.Flags and CV_SEQ_KIND_MASK );
    end CV_SEQ_KIND;
 
    function CV_IS_SEQ_INDEX ( Seq : Cv_Seq_P) return Integer is
@@ -391,7 +391,7 @@ package body Core is
 
    function CV_IS_SEQ_CLOSED ( Seq : Cv_Seq_P) return Integer is
    begin
-      if not ((Unsigned_32 (Seq.all.Flags) and CV_SEQ_FLAG_CLOSED) = 0) then
+      if not ((Seq.all.Flags and CV_SEQ_FLAG_CLOSED) = 0) then
          return 1;
       end if;
       return 0;
@@ -399,7 +399,7 @@ package body Core is
 
    function CV_IS_SEQ_CONVEX ( Seq : Cv_Seq_P)   return Integer is
    begin
-      if not ((Unsigned_32 (Seq.all.Flags) and CV_SEQ_FLAG_CONVEX) = 0) then
+      if not ((Seq.all.Flags and CV_SEQ_FLAG_CONVEX) = 0) then
          return 1;
       end if;
       return 0;
@@ -407,7 +407,7 @@ package body Core is
 
    function CV_IS_SEQ_HOLE ( Seq : Cv_Seq_P) return Integer is
    begin
-      if not ((Unsigned_32 (Seq.all.Flags) and  CV_SEQ_FLAG_HOLE) = 0) then
+      if not ((Seq.all.Flags and  CV_SEQ_FLAG_HOLE) = 0) then
          return 1;
       end if;
       return 0;
@@ -415,7 +415,7 @@ package body Core is
 
    function CV_IS_SEQ_SIMPLE ( Seq : Cv_Seq_P) return Integer is
    begin
-      if (not ((Unsigned_32 (Seq.all.Flags) and CV_SEQ_FLAG_SIMPLE) = 0) or CV_IS_SEQ_CONVEX (Seq) = 1) then
+      if (not ((Seq.all.Flags and CV_SEQ_FLAG_SIMPLE) = 0) or CV_IS_SEQ_CONVEX (Seq) = 1) then
          return 1;
       end if;
       return 0;
@@ -494,7 +494,7 @@ package body Core is
    end CV_IS_GRAPH;
    function CV_IS_GRAPH_ORIENTED ( Seq : Cv_Seq_P) return Integer is
    begin
-      if not ((Unsigned_32 (Seq.all.Flags) and CV_GRAPH_FLAG_ORIENTED) = 0) then
+      if not ((Seq.all.Flags and CV_GRAPH_FLAG_ORIENTED) = 0) then
          return 1;
       end if;
       return 0;
@@ -689,8 +689,10 @@ package body Core is
       return 0;
    end CV_IS_SPARSE_MAT_HDR;
 
-   function CvMat (Rows   : Integer; Cols : Integer;
-                   M_Type : Integer; Data : Cv_Void_P := null)
+   function CvMat (Rows   : Integer;
+                   Cols   : Integer;
+                   M_Type : Integer;
+                   Data   : Mat_Data)
                    return Cv_Mat is
       Mat      : Cv_Mat;
       Mat_Type : Integer;
@@ -701,7 +703,7 @@ package body Core is
       Mat.Cols := Cols;
       Mat.Rows := Rows;
       Mat.Step := Mat.Cols * CV_ELEM_SIZE (Mat_Type);
-      --        Mat.Data.Ptr := Void_To_Char (Data);
+      Mat.Data := Data;
       Mat.Refcount := null;
       Mat.Hdr_Refcount := 0;
 
@@ -715,7 +717,7 @@ package body Core is
 
    function CV_MAT_CN (Flags : Integer) return Integer is
    begin
-      return Integer (Shift_Left (Unsigned_32 (Unsigned_32 (Flags) and Unsigned_32 (CV_MAT_CN_MASK)), CV_CN_SHIFT)) + 1;
+      return Integer (Shift_Left (Unsigned_32 (Flags) and Unsigned_32 (CV_MAT_CN_MASK), CV_CN_SHIFT)) + 1;
    end CV_MAT_CN;
 
    function CV_ELEM_SIZE_1 (E_Type : Integer) return Integer is
@@ -986,7 +988,7 @@ package body Core is
    -----------------------------------------------------------------------------
    function CvRound (Value : Long_Float) return Integer is
    begin
-      return Integer(Long_Float'Rounding (Value));
+      return Integer (Long_Float'Rounding (Value));
    end CvRound;
 
 
@@ -996,11 +998,9 @@ package body Core is
    function To_2d_Pointer (Src : access Cv_8u_2d_Array)
                            return Cv_8u_Pointer_Array is
       D        : aliased Cv_8u_2d_Array := Src.all;
-      Last     : Integer := D'Last (1);
-      First    : Integer := D'First (1);
-      First_2d : Integer := D'First (2);
-      Dst      : Cv_8u_Pointer_Array(D'Range);
+      Dst      : Cv_8u_Pointer_Array (D'Range);
    begin
+      Dst := (others => null);
       for I in Integer range D'Range loop
          Dst (I) := D (I, D'First (2))'Unchecked_Access;
       end loop;
@@ -1010,11 +1010,9 @@ package body Core is
    function To_2d_Pointer (Src : access Cv_8s_2d_Array)
                            return Cv_8s_Pointer_Array is
       D        : aliased Cv_8s_2d_Array := Src.all;
-      Last     : Integer := D'Last (1);
-      First    : Integer := D'First (1);
-      First_2d : Integer := D'First (2);
       Dst      : Cv_8s_Pointer_Array (D'Range);
    begin
+      Dst := (others => null);
       for I in Integer range D'Range loop
          Dst (I) := D (I, D'First (2))'Unchecked_Access;
       end loop;
@@ -1024,11 +1022,9 @@ package body Core is
    function To_2d_Pointer (Src : access Cv_16u_2d_Array)
                            return Cv_16u_Pointer_Array is
       D        : aliased Cv_16u_2d_Array := Src.all;
-      Last     : Integer := D'Last (1);
-      First    : Integer := D'First (1);
-      First_2d : Integer := D'First (2);
       Dst      : Cv_16u_Pointer_Array (D'Range);
    begin
+      Dst := (others => null);
       for I in Integer range D'Range loop
          Dst (I) := D (I, D'First (2))'Unchecked_Access;
       end loop;
@@ -1036,13 +1032,11 @@ package body Core is
    end To_2d_Pointer;
 
    function To_2d_Pointer (Src : access Cv_16s_2d_Array)
-                              return Cv_16s_Pointer_Array is
+                           return Cv_16s_Pointer_Array is
       D        : aliased Cv_16s_2d_Array := Src.all;
-      Last     : Integer := D'Last (1);
-      First    : Integer := D'First (1);
-      First_2d : Integer := D'First (2);
       Dst      : Cv_16s_Pointer_Array (D'Range);
    begin
+      Dst := (others => null);
       for I in Integer range D'Range loop
          Dst (I) := D (I, D'First (2))'Unchecked_Access;
       end loop;
@@ -1052,11 +1046,9 @@ package body Core is
    function To_2d_Pointer (Src : access Cv_32s_2d_Array)
                            return Cv_32s_Pointer_Array is
       D        : aliased Cv_32s_2d_Array := Src.all;
-      Last     : Integer := D'Last (1);
-      First    : Integer := D'First (1);
-      First_2d : Integer := D'First (2);
       Dst      : Cv_32s_Pointer_Array (D'Range);
    begin
+      Dst := (others => null);
       for I in Integer range D'Range loop
          Dst (I) := D (I, D'First (2))'Unchecked_Access;
       end loop;
@@ -1066,11 +1058,9 @@ package body Core is
    function To_2d_Pointer (Src : access Cv_32f_2d_Array)
                            return Cv_32f_Pointer_Array is
       D        : aliased Cv_32f_2d_Array := Src.all;
-      Last     : Integer := D'Last (1);
-      First    : Integer := D'First (1);
-      First_2d : Integer := D'First (2);
-      Dst      : Cv_32f_Pointer_Array (D'Range);
+      Dst      : Cv_32f_Pointer_Array (D'Range); --:= (null,null,null,null); --:= (others => null);
    begin
+      Dst := (others => null);
       for I in Integer range D'Range loop
          Dst (I) := D (I, D'First (2))'Unchecked_Access;
       end loop;
@@ -1080,11 +1070,21 @@ package body Core is
    function To_2d_Pointer (Src : access Cv_64f_2d_Array)
                            return Cv_64f_Pointer_Array is
       D        : aliased Cv_64F_2d_Array := Src.all;
-      Last     : Integer := D'Last (1);
-      First    : Integer := D'First (1);
-      First_2d : Integer := D'First (2);
       Dst      : Cv_64F_Pointer_Array (D'Range);
    begin
+      Dst := (others => null);
+      for I in Integer range D'Range loop
+         Dst (I) := D (I, D'First (2))'Unchecked_Access;
+      end loop;
+      return Dst;
+   end To_2d_Pointer;
+
+   function To_2d_Pointer (Src : access Cv_Point_2d_Array)
+                            return Cv_Point_Pointer_Array is
+      D        : aliased Cv_Point_2d_Array := Src.all;
+      Dst      : Cv_Point_Pointer_Array (D'Range);
+   begin
+      Dst := (others => null);
       for I in Integer range D'Range loop
          Dst (I) := D (I, D'First (2))'Unchecked_Access;
       end loop;

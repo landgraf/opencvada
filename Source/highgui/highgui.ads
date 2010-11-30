@@ -21,8 +21,6 @@ with Core; use Core;
 with Core.Operations; use Core.Operations;
 with Interfaces.C.Strings;
 with Interfaces; use Interfaces;
-with Core; use Core;
-use Core;
 
 package Highgui is
 --
@@ -117,12 +115,12 @@ package Highgui is
    procedure CvLoadWindowParameters (Name : String);
 
    type CvStartLoop_Function is access function (Argc : Integer;
-                                                 Argv : C_String_Ptr) return Integer;
+                                                 Argv : Cv_String_Pointer) return Integer;
    pragma Convention (C, CvStartLoop_Function);
 
    function CvStartLoop (Pt2func : CvStartLoop_Function;
                          Argc    : Integer;
-                         Argv    : C_String_Ptr) return Integer;
+                         Argv    : Cv_String_Pointer) return Integer;
 
    procedure CvStopLoop;
 
@@ -149,7 +147,7 @@ package Highgui is
 
    -- this function is used to set some external parameters in case of X Window
    function CvInitSystem (Argc : Integer;
-                          Argv : C_String_Ptr) return Integer;
+                          Argv : Cv_String_Pointer) return Integer;
 
    function CvStartWindowThread return Integer;
 
@@ -482,7 +480,7 @@ private
                              Intial_Button_State : Integer) return Integer;
    --
    function WCvInitSystem (Argc : Integer;
-                           Argv : C_String_Ptr) return Integer;
+                           Argv : Cv_String_Pointer) return Integer;
 
    function WCvNamedWindow (WindowName  : String_C;
                             Flags       : Highgui_Window_Params := CV_WINDOW_AUTOSIZE) return Integer;

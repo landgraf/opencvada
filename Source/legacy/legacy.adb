@@ -30,13 +30,13 @@ package body Legacy is
    function CV_CURRENT_INT (Reader : Cv_Seq_Reader_P)
                             return Integer is
    begin
-      return Character'Pos (From_Arr (Value (Reader.Ptr) (1)));
+      return Character'Pos (From_Arr (Value (Reader.all.Ptr) (1)));
    end CV_CURRENT_INT;
 
    function CV_PREV_INT (Reader : Cv_Seq_Reader_P)
                          return Integer is
    begin
-      return Character'Pos (From_Arr (Value (Reader.PrevElem) (1)));
+      return Character'Pos (From_Arr (Value (Reader.all.PrevElem) (1)));
    end CV_PREV_INT;
 
    function IplWidth (Img : Ipl_Image_P)
@@ -44,10 +44,10 @@ package body Legacy is
    begin
       if Img = null then
          return 0;
-      elsif Img.ROI = null then
-         return Img.Width;
+      elsif Img.all.ROI = null then
+         return Img.all.Width;
       else
-         return Img.ROI.Width;
+         return Img.all.ROI.all.Width;
       end if;
    end IplWidth;
 
@@ -56,22 +56,11 @@ package body Legacy is
    begin
       if Img = null then
          return 0;
-      elsif Img.ROI = null then
-         return Img.Height;
+      elsif Img.all.ROI = null then
+         return Img.all.Height;
       else
-         return Img.ROI.Height;
+         return Img.all.ROI.all.Height;
       end if;
    end IplHeight;
 
---     package body Class_CvCalibFilter is
---        function GetCameraCount (This : access CvCalibFilter) return Integer is
---        begin
---           return This.Camera_Count;
---        end GetCameraCount;
---
---        function IsCalibrated (This : access CvCalibFilter) return Cv_Bool is
---        begin
---           return This.Is_Calibrated;
---        end IsCalibrated;
---     end Class_CvCalibFilter;
 end Legacy;
