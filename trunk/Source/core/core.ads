@@ -80,10 +80,10 @@ package Core is
    type Cv_32f_Array_P is access Cv_32f_Array;
    type Cv_64f_Array_P is access Cv_64f_Array;
 
-   package C_8u_Arr_Ptr is
+   package Cv_8u_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Unsigned_8, Cv_8u_Array, 0);
-   use type C_8u_Arr_Ptr.Pointer;
-   subtype Cv_8u_Pointer is C_8u_Arr_Ptr.Pointer;
+   use type Cv_8u_Pointer_Pkg.Pointer;
+   subtype Cv_8u_Pointer is Cv_8u_Pointer_Pkg.Pointer;
 
    type Cv_8u_Pointer_Array is array (Integer range <>) of Cv_8u_Pointer;
    type Cv_8u_Pointer_Array_P is access Cv_8u_Pointer_Array;
@@ -92,10 +92,10 @@ package Core is
    function To_2d_Pointer (Src : access Cv_8u_2d_Array)
                            return Cv_8u_Pointer_Array;
 
-   package C_8s_Arr_Ptr is
+   package Cv_8s_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Integer_8, Cv_8s_Array, 0);
-   use type C_8s_Arr_Ptr.Pointer;
-   subtype Cv_8s_Pointer is C_8s_Arr_Ptr.Pointer;
+   use type Cv_8s_Pointer_Pkg.Pointer;
+   subtype Cv_8s_Pointer is Cv_8s_Pointer_Pkg.Pointer;
 
    type Cv_8s_Pointer_Array is array (Integer range <>) of Cv_8s_Pointer;
    type Cv_8s_Pointer_Array_P is access Cv_8s_Pointer_Array;
@@ -104,10 +104,10 @@ package Core is
    function To_2d_Pointer (Src : access Cv_8s_2d_Array)
                            return Cv_8s_Pointer_Array;
 
-   package C_16u_Arr_Ptr is
+   package Cv_16u_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Unsigned_16, Cv_16u_Array, 0);
-   use type C_16u_Arr_Ptr.Pointer;
-   subtype Cv_16u_Pointer is C_16u_Arr_Ptr.Pointer;
+   use type Cv_16u_Pointer_Pkg.Pointer;
+   subtype Cv_16u_Pointer is Cv_16u_Pointer_Pkg.Pointer;
 
    type Cv_16u_Pointer_Array is array (Integer range <>) of Cv_16u_Pointer;
    type Cv_16u_Pointer_Array_P is access Cv_16u_Pointer_Array;
@@ -116,10 +116,10 @@ package Core is
    function To_2d_Pointer (Src : access Cv_16u_2d_Array)
                            return Cv_16u_Pointer_Array;
 
-   package C_16s_Arr_Ptr is
+   package Cv_16s_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Integer_16, Cv_16s_Array, 0);
-   use type C_16s_Arr_Ptr.Pointer;
-   subtype Cv_16s_Pointer is C_16s_Arr_Ptr.Pointer;
+   use type Cv_16s_Pointer_Pkg.Pointer;
+   subtype Cv_16s_Pointer is Cv_16s_Pointer_Pkg.Pointer;
 
    type Cv_16s_Pointer_Array is array (Integer range <>) of Cv_16s_Pointer;
    type Cv_16s_Pointer_Array_P is access Cv_16s_Pointer_Array;
@@ -128,10 +128,10 @@ package Core is
    function To_2d_Pointer (Src : access Cv_16s_2d_Array)
                            return Cv_16s_Pointer_Array;
 
-   package C_32s_Arr_Ptr is
+   package Cv_32s_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Integer, Cv_32s_Array, 0);
-   use type C_32s_Arr_Ptr.Pointer;
-   subtype Cv_32s_Pointer is C_32s_Arr_Ptr.Pointer;
+   use type Cv_32s_Pointer_Pkg.Pointer;
+   subtype Cv_32s_Pointer is Cv_32s_Pointer_Pkg.Pointer;
 
    type Cv_32s_Pointer_Array is array (Integer range <>) of Cv_32s_Pointer;
    type Cv_32s_Pointer_Array_P is access Cv_32s_Pointer_Array;
@@ -140,10 +140,10 @@ package Core is
    function To_2d_Pointer (Src : access Cv_32s_2d_Array)
                            return Cv_32s_Pointer_Array;
 
-   package C_32f_Arr_Ptr is
+   package Cv_32f_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Float, Cv_32f_Array, 0.0);
-   use type C_32f_Arr_Ptr.Pointer;
-   subtype Cv_32f_Pointer is C_32f_Arr_Ptr.Pointer;
+   use type Cv_32f_Pointer_Pkg.Pointer;
+   subtype Cv_32f_Pointer is Cv_32f_Pointer_Pkg.Pointer;
 
    type Cv_32f_Pointer_Array is array (Integer range <>) of Cv_32f_Pointer;
    type Cv_32f_Pointer_Array_P is access Cv_32f_Pointer_Array;
@@ -152,9 +152,9 @@ package Core is
    function To_2d_Pointer (Src : access Cv_32f_2d_Array)
                            return Cv_32f_Pointer_Array;
 
-   package Cv_64f_Pointers is
+   package Cv_64f_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Long_Float , Cv_64F_Array, 0.0);
-   subtype Cv_64f_Pointer is Cv_64f_Pointers.Pointer;
+   subtype Cv_64f_Pointer is Cv_64f_Pointer_Pkg.Pointer;
    type Cv_64f_Pointer_P is access Cv_64f_Pointer;
 
    type Cv_64F_Pointer_Array is array (Integer range <>) of Cv_64f_Pointer;
@@ -178,10 +178,10 @@ package Core is
    type Cv_String_Array is array (Integer range <>) of aliased Interfaces.C.Strings.Chars_Ptr;
 
    -- fix this
-   package C_String_Arr_Ptr is
+   package Cv_String_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Interfaces.C.Strings.Chars_Ptr, Cv_String_Array, null);
-   use type C_String_Arr_Ptr.Pointer;
-   subtype C_String_Ptr is C_String_Arr_Ptr.Pointer;
+   use type Cv_String_Pointer_Pkg.Pointer;
+   subtype Cv_String_Pointer is Cv_String_Pointer_Pkg.Pointer;
 
    package Value_Functions is new Ada.Numerics.Generic_Elementary_Functions (Float);
 
@@ -199,11 +199,11 @@ package Core is
    type Cv_Arr_P_Array is array (Integer range <>) of aliased Cv_Arr_P;
    type Cv_Arr_P_Array_P is access Cv_Arr_P_Array;
 
-   package C_Cv_Arr_P_Arr_Ptr is
+   package Cv_Arr_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Cv_Arr_P, Cv_Arr_P_Array, null);
-   use type C_Cv_Arr_P_Arr_Ptr.Pointer;
-   subtype C_Cv_Arr_P_Ptr is C_Cv_Arr_P_Arr_Ptr.Pointer;
-   type C_Arr_Ptr is new C_Cv_Arr_P_Ptr;
+   use type Cv_Arr_Pointer_Pkg.Pointer;
+   subtype C_Cv_Arr_P_Ptr is Cv_Arr_Pointer_Pkg.Pointer;
+   type Cv_Arr_Pointer is new C_Cv_Arr_P_Ptr;
 
 
    type Suf is (S, U, F);
@@ -421,20 +421,14 @@ package Core is
       Image_Data_Origin : C_Strings.Chars_Ptr; -- This might require some wrapper function to return a proper Ada string
    end record;
    pragma Convention (C_Pass_By_Copy, Ipl_Image);
-   type Ipl_Image_Array is array (Integer range <>) of aliased Ipl_Image;
+--   type Ipl_Image_Array is array (Integer range <>) of aliased Ipl_Image;
    type Ipl_Image_P_Array is array (Integer range<>) of aliased Ipl_Image_P;
-   Ipl_Image_Dummy : Ipl_Image;
 
 
-   package C_Ipl_Image_Arr_Ptr is
-     new Interfaces.C.Pointers (Integer, Ipl_Image, Ipl_Image_Array, Ipl_Image_Dummy);
-   use type C_Ipl_Image_Arr_Ptr.Pointer;
-   subtype C_Ipl_Image_Ptr is C_Ipl_Image_Arr_Ptr.Pointer;
-
-   package C_Ipl_Image_P_Arr_Ptr is
+   package Cv_Ipl_Image_P_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Ipl_Image_P, Ipl_Image_P_Array, null);
-   use type C_Ipl_Image_P_Arr_Ptr.Pointer;
-   subtype C_Ipl_Image_P_Ptr is C_Ipl_Image_P_Arr_Ptr.Pointer;
+   use type Cv_Ipl_Image_P_Pointer_Pkg.Pointer;
+   subtype Cv_Ipl_Image_P_Pointer is Cv_Ipl_Image_P_Pointer_Pkg.Pointer;
 
    type Ipl_Conv_Kernel is
       record
@@ -561,8 +555,10 @@ package Core is
 
    function IPL2CV_DEPTH (Depth : Integer) return Integer;
 
-   function CvMat (Rows   : Integer; Cols : Integer;
-                   M_Type : Integer; Data : Cv_Void_P := null)
+   function CvMat (Rows   : Integer;
+                   Cols   : Integer;
+                   M_Type : Integer;
+                   Data   : Mat_Data)
                    return Cv_Mat;
 
    function CV_MAT_ELEM_PTR_FAST (Mat      : Cv_Mat_P;
@@ -692,38 +688,26 @@ package Core is
    type Thresh_Arr is array (Integer range 0 ..  CV_MAX_DIM, Integer range 0 .. 1) of Float;
    pragma Convention (C, Thresh_Arr);
 
---     type Cv_32F_Array_A is array (Integer range <>) of aliased Float; --- FIX ME!
---     pragma Convention (C, Cv_32F_Array_A);
-
-   package C_Float_Array is new Interfaces.C.Pointers (Integer, Float, Cv_32F_Array, 0.0);
-   subtype C_Float_Array_P is C_Float_Array.Pointer;
-
-   type Cv_32F_Ptr_2d_Array is array (Integer range <>) of C_Float_Array_P;
-   pragma Convention (C, Cv_32F_Ptr_2d_Array);
---     type Cv_32F_PP is new Cv_32F_Array_P_Arr;
-
-   Cv_32F_Array_NULL : Cv_32F_Ptr_2d_Array (1 .. 0);
-
+   Cv_32F_Array_NULL : Cv_32F_Pointer_Array (1 .. 0);
    Cv_32s_Array_Null :  Cv_32s_Array (1 .. 0);
 
-
-   type Cv_32F_Ptr_2d_Array_P is access all Cv_32F_Ptr_2d_Array; -- for Cv_Histogram only?
 
    type Cv_Histogram is
       record
          HistType : Integer;
          Bins     : Cv_Arr_P;
          Thresh   : Thresh_Arr;
-         Thresh2  : Cv_32F_Ptr_2d_Array_P;
+         Thresh2  : Cv_32F_Pointer_Array_P;
          Mat      : Cv_Mat_ND;
       end record;
    type Cv_Histogram_P is access Cv_Histogram;
 
    type Cv_Histogram_P_Array is array (Integer range <>) of aliased Cv_Histogram_P;
-   package C_Histogram_P_Arr_Ptr is
+
+   package Cv_Histogram_P_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Cv_Histogram_P, Cv_Histogram_P_Array, null);
-   use type C_Histogram_P_Arr_Ptr.Pointer;
-   subtype C_Histogram_P_Ptr is C_Histogram_P_Arr_Ptr.Pointer;
+   use type Cv_Histogram_P_Pointer_Pkg.Pointer;
+   subtype Cv_Histogram_P_Pointer is Cv_Histogram_P_Pointer_Pkg.Pointer;
 
    function CV_IS_HIST (Hist : Cv_Histogram_P) return Integer;
    function CV_IS_UNIFORM_HIST (Hist : Cv_Histogram_P) return Integer;
@@ -785,13 +769,15 @@ package Core is
 
    function CvPoint (X : Integer; Y : Integer) return Cv_Point;
 
-   package C_Point_Arr_Ptr is
+   package Cv_Point_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Cv_Point, Cv_Point_Array, Cv_Point_Dummy);
-   use type C_Point_Arr_Ptr.Pointer;
-   subtype Cv_Point_CPtr is C_Point_Arr_Ptr.Pointer;
+   use type Cv_Point_Pointer_Pkg.Pointer;
+   subtype Cv_Point_Pointer is Cv_Point_Pointer_Pkg.Pointer;
 
-   type Cv_Point_2d_CPtr is array ( Integer range <> ) of Cv_Point_CPtr;
-   pragma Convention (C, Cv_Point_2d_CPtr);
+   type Cv_Point_Pointer_Array is array (Integer range <> ) of Cv_Point_Pointer;
+
+   function To_2d_Pointer (Src : access Cv_Point_2d_Array)
+                         return Cv_Point_Pointer_Array;
 
    type Cv_Point_2D_32f is record
       X : Float;
@@ -801,7 +787,6 @@ package Core is
    type Cv_Point_2d_32f_P is access all Cv_Point_2d_32f;
    type Cv_Point_2D_32F_Array is array (Integer range <>) of aliased Cv_Point_2D_32f;
    Cv_Point_2d_32f_Array_Null : Cv_Point_2d_32f_Array (1 .. 0);
-   Cv_Point_2d_32f_Dummy : Cv_Point_2d_32f;
 
    function CvPoint2D32f (X : Long_Float; Y : Long_Float)
                           return Cv_Point_2D_32f;
@@ -809,10 +794,6 @@ package Core is
 
    function CvPointFrom32f (Point : Cv_Point_2D_32f) return Cv_Point;
 
-   package C_Point_2d_32f_Arr_Ptr is
-     new Interfaces.C.Pointers (Integer, Cv_Point_2d_32f, Cv_Point_2d_32f_Array, Cv_Point_2d_32f_Dummy);
-   use type C_Point_2d_32f_Arr_Ptr.Pointer;
-   subtype C_Point_2d_32f_Ptr is C_Point_2d_32f_Arr_Ptr.Pointer;
 
    type Cv_Point_3d_32f is record
       X : Float;
@@ -823,15 +804,10 @@ package Core is
    type Cv_Point_3d_32f_P is access all Cv_Point_3d_32f;
    type Cv_Point_3D_32F_Array is array (Integer range <>) of aliased Cv_Point_3D_32F;
    Cv_Point_3d_32f_Array_Null : Cv_Point_3d_32f_Array (1 .. 0);
-   Cv_Point_3d_32f_Dummy : Cv_Point_3d_32f;
 
    function CvPoint3D32f (X : Long_Float; Y : Long_Float;
                           Z : Long_Float) return Cv_Point_3D_32f;
 
-   package C_Point_3d_32f_Arr_Ptr is
-     new Interfaces.C.Pointers (Integer, Cv_Point_3d_32f, Cv_Point_3d_32f_Array, Cv_Point_3d_32f_Dummy);
-   use type C_Point_3d_32f_Arr_Ptr.Pointer;
-   subtype C_Point_3d_32f_Ptr is C_Point_3d_32f_Arr_Ptr.Pointer;
 
    type Cv_Point_2d_64f is record
       X : Long_Float;
@@ -855,15 +831,15 @@ package Core is
    type Cv_Point_3d_64f_P is access all Cv_Point_3d_64f;
    type Cv_Point_3D_64F_Array is array (Integer range <>) of aliased Cv_Point_3D_64F;
    Cv_Point_3D_64F_Array_Null : Cv_Point_3D_64F_Array ( 1 .. 0);
-   Cv_Point_3d_64f_Dummy : Cv_Point_3d_64f;
+--     Cv_Point_3d_64f_Dummy : Cv_Point_3d_64f;
 
    function CvPoint3D64f (X : Long_Float; Y : Long_Float;
                           Z : Long_Float) return Cv_Point_3d_64f;
 
-   package C_Point_3d_64f_Arr_Ptr is
-     new Interfaces.C.Pointers (Integer, Cv_Point_3d_64f, Cv_Point_3d_64f_Array, Cv_Point_3d_64f_Dummy);
-   use type C_Point_3d_64f_Arr_Ptr.Pointer;
-   subtype C_Point_3d_64f_Ptr is C_Point_3d_64f_Arr_Ptr.Pointer;
+--     package C_Point_3d_64f_Arr_Ptr is
+--       new Interfaces.C.Pointers (Integer, Cv_Point_3d_64f, Cv_Point_3d_64f_Array, Cv_Point_3d_64f_Dummy);
+--     use type C_Point_3d_64f_Arr_Ptr.Pointer;
+--     subtype CvPoint_3d_64f_Ptr is C_Point_3d_64f_Arr_Ptr.Pointer;
 
    -----------------------------------------------------------------------------
    -- Cv_Size & Cv_Box
@@ -898,7 +874,7 @@ package Core is
 
    type Cv_Line_Iterator is
       record
-         Ptr         : Cv_Point_CPtr;
+         Ptr         : Cv_Point_Pointer;
          Err         : Integer;
          Plus_Delta  : Integer;
          Minus_Delta : Integer;
@@ -1004,7 +980,7 @@ package Core is
       Total       : Integer;
       Elem_Size   : Integer;
       Block_Max   : Interfaces.C.Strings.Chars_Ptr;
-      Ptr         : C_Arr_Ptr; --test this
+      Ptr         : Cv_Arr_Pointer; --test this
       Delta_Elems : Integer;
       Storage     : access Cv_Mem_Storage;
       Free_Blocks : access Cv_Seq_Block;
@@ -1029,7 +1005,7 @@ package Core is
    package C_Set_Elem_Arr_Ptr is
      new Interfaces.C.Pointers (Integer, Cv_Set_Elem, Cv_Set_Elem_Array, Cv_Set_Elem_Dummy);
    use type C_Set_Elem_Arr_Ptr.Pointer;
-   subtype C_Set_Elem_Ptr is C_Set_Elem_Arr_Ptr.Pointer;
+   subtype Cv_Set_Elem_Pointer is C_Set_Elem_Arr_Ptr.Pointer;
 
    type Cv_Set is record
       Flags        : Integer;
@@ -1056,7 +1032,7 @@ package Core is
    package C_Set_Arr_Ptr is
      new Interfaces.C.Pointers (Integer, Cv_Set, Cv_Set_Array, Cv_Set_Dummy);
    use type C_Set_Arr_Ptr.Pointer;
-   subtype C_Set_Ptr is C_Set_Arr_Ptr.Pointer;
+   subtype Cv_Set_Pointer is C_Set_Arr_Ptr.Pointer;
 
    CV_SET_ELEM_IDX_MASK : constant := (16#4000000# - 1);
    CV_SET_ELEM_FREE_FLAG : constant := 16#80000000#;
@@ -1154,11 +1130,11 @@ package Core is
          HeaderSize : Integer;
          Seq        : Cv_Seq_P;
          Block      : Cv_Seq_Block_P;
-         Ptr        : C_Arr_Ptr;
-         BlockMin   : C_Arr_Ptr;
-         BlockMax   : C_Arr_Ptr;
+         Ptr        : Cv_Arr_Pointer;
+         BlockMin   : Cv_Arr_Pointer;
+         BlockMax   : Cv_Arr_Pointer;
          DeltaIndex : Integer;
-         PrevElem   : C_Arr_Ptr;
+         PrevElem   : Cv_Arr_Pointer;
          --
          Code       : Unsigned_8;
          Pt         : Cv_Point;
@@ -1317,9 +1293,9 @@ package Core is
          Header_Size : Integer;
          Seq         : Cv_Seq_P;
          Block       : Cv_Seq_Block_P;
-         Ptr         : C_Arr_Ptr;
-         Block_Min   : C_Arr_Ptr;
-         Block_Max   : C_Arr_Ptr;
+         Ptr         : Cv_Arr_Pointer;
+         Block_Min   : Cv_Arr_Pointer;
+         Block_Max   : Cv_Arr_Pointer;
       end record;
    type Cv_Seq_Writer_P is access Cv_Seq_Writer;
 
@@ -1331,11 +1307,11 @@ package Core is
          HeaderSize : Integer;
          Seq        : Cv_Seq_P;
          Block      : Cv_Seq_Block_P;
-         Ptr        : C_Arr_Ptr;
-         BlockMin   : C_Arr_Ptr;
-         BlockMax   : C_Arr_Ptr;
+         Ptr        : Cv_Arr_Pointer;
+         BlockMin   : Cv_Arr_Pointer;
+         BlockMax   : Cv_Arr_Pointer;
          DeltaIndex : Integer;
-         PrevElem   : C_Arr_Ptr;
+         PrevElem   : Cv_Arr_Pointer;
       end record;
    type Cv_Seq_Reader_P is access Cv_Seq_Reader;
 
@@ -1354,11 +1330,11 @@ package Core is
    --
 
    --  /* Add element to sequence: */
-   procedure CV_WRITE_SEQ_ELEM_VAR ( Elem_Ptr : C_Arr_Ptr;
+   procedure CV_WRITE_SEQ_ELEM_VAR ( Elem_Ptr : Cv_Arr_Pointer;
                                     Writer   : Cv_Seq_Writer_P );
 
    -- Not portable to Ada.
-   procedure CV_WRITE_SEQ_ELEM ( Elem_Ptr : C_Arr_Ptr;
+   procedure CV_WRITE_SEQ_ELEM ( Elem_Ptr : Cv_Arr_Pointer;
                                 Writer   : Cv_Seq_Writer_P ) renames CV_WRITE_SEQ_ELEM_VAR;
 
    --  /* Move reader position forward: */
@@ -1372,13 +1348,13 @@ package Core is
                                Reader    : Cv_Seq_Reader_P );
 
    --  /* Read element and move read position forward: */
-   procedure CV_READ_SEQ_ELEM ( Elem  : C_Arr_Ptr;
+   procedure CV_READ_SEQ_ELEM ( Elem  : Cv_Arr_Pointer;
                                Reader : Cv_Seq_Reader_P );
    procedure CV_READ_SEQ_ELEM ( Elem  : Unsigned_8;
                                Reader : Cv_Chain_Pt_Reader_P );
 
    --  /* Read element and move read position backward: */
-   procedure CV_REV_READ_SEQ_ELEM ( Elem  : C_Arr_Ptr;
+   procedure CV_REV_READ_SEQ_ELEM ( Elem  : Cv_Arr_Pointer;
                                    Reader : Cv_Seq_Reader_P );
 
    procedure CV_READ_CHAIN_POINT ( Pt    : out Cv_Point;
@@ -1415,12 +1391,12 @@ package Core is
    type Cv_Attr_List;
    type Cv_Attr_List_P is access all Cv_Attr_List;
    type Cv_Attr_List is record
-      Attr : C_String_Ptr;
+      Attr : Cv_String_Pointer;
       Next : Cv_Attr_List_P;
    end record;
 
 
-   function CvAttrList (Attr : C_String_Ptr := null;
+   function CvAttrList (Attr : Cv_String_Pointer := null;
                         Next : Cv_Attr_List_P := null)
                         return Cv_Attr_List;
 
@@ -1805,25 +1781,25 @@ package Core is
    type Cv_Size_Array is array (Integer range <>) of aliased Cv_Size;
    type Cv_Size_P_Array is array (Integer range <>) of aliased Cv_Size_P;
 
-   package C_Mat_Arr_Ptr is
-     new Interfaces.C.Pointers (Integer, Cv_Mat, Cv_Mat_Array, (0, 0, null, 0, Mat_Data_Requirement, 0, 0));
-   use type C_Mat_Arr_Ptr.Pointer;
-   subtype C_Mat_Ptr is C_Mat_Arr_Ptr.Pointer;
+--     package C_Mat_Arr_Ptr is
+--       new Interfaces.C.Pointers (Integer, Cv_Mat, Cv_Mat_Array, (0, 0, null, 0, Mat_Data_Requirement, 0, 0));
+--     use type C_Mat_Arr_Ptr.Pointer;
+--     subtype C_Mat_Ptr is C_Mat_Arr_Ptr.Pointer;
 
    package C_Mat_P_Arr_Ptr is
      new Interfaces.C.Pointers (Integer, Cv_Mat_P, Cv_Mat_P_Array, null);
    use type C_Mat_P_Arr_Ptr.Pointer;
-   subtype C_Mat_P_Ptr is C_Mat_P_Arr_Ptr.Pointer;
+   subtype Cv_Mat_P_Pointer is C_Mat_P_Arr_Ptr.Pointer;
 
    package C_Size_Arr_Ptr is
      new Interfaces.C.Pointers (Integer, Cv_Size, Cv_Size_Array, (0, 0));
    use type C_Size_Arr_Ptr.Pointer;
-   subtype C_Size_Ptr is C_Size_Arr_Ptr.Pointer;
+   subtype Cv_Size_Pointer is C_Size_Arr_Ptr.Pointer;
 
-   package C_Size_P_Arr_Ptr is
-     new Interfaces.C.Pointers (Integer, Cv_Size_P, Cv_Size_P_Array, null);
-   use type C_Size_P_Arr_Ptr.Pointer;
-   subtype C_Size_P_Ptr is C_Size_P_Arr_Ptr.Pointer;
+--     package C_Size_P_Arr_Ptr is
+--       new Interfaces.C.Pointers (Integer, Cv_Size_P, Cv_Size_P_Array, null);
+--     use type C_Size_P_Arr_Ptr.Pointer;
+--     subtype C_Size_P_Ptr is C_Size_P_Arr_Ptr.Pointer;
 
    -----------------------------------------------------------------------------
    -- Fix for Interfaces.C.Pointers

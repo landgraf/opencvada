@@ -18,10 +18,6 @@
 -----------------------------------------------------------------------
 
 with Legacy;
-with Interfaces; use Interfaces;
-with Core; use Core;
-use Core;
-use Core;
 
 package Imgproc.Operations is
 --
@@ -103,14 +99,14 @@ package Imgproc.Operations is
    function CvCreatePyramid (Img          : Cv_Arr_P;
                              Extra_Layers : Integer;
                              Rate         : Long_Float;
-                             Layer_Sizes  : C_Size_Ptr := null;
+                             Layer_Sizes  : Cv_Size_Pointer := null;
                              Bufarr       : Cv_Arr_P := null;
                              Calc         : Integer := 1;
                              Filter       : Pyr_Filter := Cv_Gaussian_5x5)
-                             return C_Mat_P_Ptr;
+                             return Cv_Mat_P_Pointer;
 
    -- Releases pyramid
-   procedure CvReleasePyramid (Pyramid      : access C_Mat_P_Ptr;
+   procedure CvReleasePyramid (Pyramid      : access Cv_Mat_P_Pointer;
                                Extra_Layers : Integer);
 
    -- Does meanshift image segmentation
@@ -554,12 +550,12 @@ package Imgproc.Operations is
    function CvCreateHist (Dims     : Integer;
                           Sizes    : Cv_32S_Array;
                           HistType : Integer;
-                          Ranges   : Cv_32F_Ptr_2d_Array := Cv_32F_Array_NULL;
+                          Ranges   : Cv_32F_Pointer_Array := Cv_32F_Array_NULL;
                           Uniform  : Integer := 1) return Cv_Histogram_P;
 
     --Sets the bounds of the histogram bins.
    procedure CvSetHistBinRanges (Hist     : Cv_Histogram_P;
-                                 Ranges   : Cv_32F_Ptr_2d_Array;
+                                 Ranges   : Cv_32F_Pointer_Array;
                                  Uniforrm : Integer);
 
    -- Makes a histogram out of an array.
@@ -567,7 +563,7 @@ package Imgproc.Operations is
                                        Sizes   : Cv_32S_Array;
                                        Hist    : Cv_Histogram_P;
                                        Data    : Cv_32F_Array;
-                                       Ranges  : Cv_32F_Ptr_2d_Array; -- fix me
+                                       Ranges  : Cv_32F_Pointer_Array; -- fix me
                                        Uniform : Integer := 1);
 
    --Releases the histogram.
@@ -602,9 +598,9 @@ package Imgproc.Operations is
 
    -- Calculates bayesian probabilistic histograms
    -- (each or src and dst is an array of <number> histograms
-   procedure CvCalcBayesianProb (Src   : C_Histogram_P_Ptr;
+   procedure CvCalcBayesianProb (Src   : Cv_Histogram_P_Pointer;
                                  Count : Integer;
-                                 Dst   : C_Histogram_P_Ptr);
+                                 Dst   : Cv_Histogram_P_Pointer);
 
    -- Calculates array histogram
    procedure CvCalcArrHist (Arr        : C_Cv_Arr_P_Ptr;

@@ -18,29 +18,24 @@
 --------------------------------------------------------------------------------
 
 with Interfaces; use Interfaces;
-with Interfaces.C.Pointers;
 with Imgproc; use Imgproc;
 with Core; use Core;
+with Interfaces.C;
 
 package Legacy is
 
--- Types that are not imported yet ---------------------------------------------
+   -- Types that are not imported yet ---------------------------------------------
    type Cv_Matrix_3 is record
-      M : Cv_32f_2d_Array(1 .. 3, 1 .. 3);
+      M : Cv_32f_2d_Array (1 .. 3, 1 .. 3);
    end record;
 
    type Cv_Rand_State is record
       State    : Cv_RNG;
       Disttype : Integer;
-      Param    : Cv_Scalar_Array(1 .. 2);
+      Param    : Cv_Scalar_Array (1 .. 2);
    end record;
 
-   Mat_Data_Requirement : Mat_Data; -- This is just a dummy, do not use!
-   package C_Mat_Arr_Ptr is
-     new Interfaces.C.Pointers (Integer, Cv_Mat, Cv_Mat_Array, (0, 0, null, 0, Mat_Data_Requirement, 0, 0));
-   use type C_Mat_Arr_Ptr.Pointer;
-   subtype C_Mat_Ptr is C_Mat_Arr_Ptr.Pointer;
---------------------------------------------------------------------------------
+   --------------------------------------------------------------------------------
 
    function CvSegmentImage (Src             : Cv_Arr_P;
                             Dst             : Cv_Arr_P;
@@ -52,8 +47,8 @@ package Legacy is
    -----------------------------------------------------------------------------
    -- Eigen objects ------------------------------------------------------------
    -----------------------------------------------------------------------------
-   type Cv_Callback is access function (Index : Integer;
-                                        Buffer : Cv_Void_P;
+   type Cv_Callback is access function (Index     : Integer;
+                                        Buffer    : Cv_Void_P;
                                         User_Data : Cv_Void_P)
                                         return Integer;
    pragma Convention (C, Cv_Callback);
@@ -127,8 +122,8 @@ package Legacy is
 
    -- Cv_Img_Obs_info ----------------------------------------------------------
    type Cv_Img_Obs_Info is record
-      Obs_X : Integer;
-      Obs_Y : Integer;
+      Obs_X    : Integer;
+      Obs_Y    : Integer;
       Obs_Size : Integer;
       Obs      : Cv_32f_Array_P;
       State    : Cv_32s_Array_P;
@@ -195,7 +190,7 @@ package Legacy is
                            Num_Obs   : out Cv_Size);
 
    --     Creates storage for observation vectors
-   function CvCreateObsInfo (Num_Obs : Cv_Size;
+   function CvCreateObsInfo (Num_Obs  : Cv_Size;
                              Obs_Size : Integer)
                              return Cv_Img_Obs_Info_P;
 
@@ -299,7 +294,7 @@ package Legacy is
 
    --     returns squared distance between two 2D points with floating-point
    --     coordinates.
-   function icvSqDist2D32f (Pt1 : Cv_Point_3d_32f;
+   function IcvSqDist2D32f (Pt1 : Cv_Point_3d_32f;
                             Pt2 : Cv_Point_3d_32f)
                             return Long_Float;
 
@@ -331,8 +326,8 @@ package Legacy is
                                  CV_WEIGTHED_EDGE,
                                  CV_WEIGHTED_ALL);
 
-   for Cv_Graph_Weight_Type use (CV_NOT_WEIGHTED => 0,
-                                 CV_WEIGHTED_VTX => 1,
+   for Cv_Graph_Weight_Type use (CV_NOT_WEIGHTED  => 0,
+                                 CV_WEIGHTED_VTX  => 1,
                                  CV_WEIGTHED_EDGE => 2,
                                  CV_WEIGHTED_ALL  => 3);
 
@@ -438,7 +433,7 @@ package Legacy is
       Img_Size   : Cv_32f_Array (1 .. 2); -- size of the camera view, used during calibration
       Matrix     : Cv_32f_Array (1 .. 9); -- intinsic camera parameters:  [ fx 0 cx; 0 fy cy; 0 0 1 ]
       Distortion : Cv_32f_Array (1 .. 4); -- distortion coefficients - two coefficients for radial distortion
-                                   -- and another two for tangential: [ k1 k2 p1 p2 ]
+      -- and another two for tangential: [ k1 k2 p1 p2 ]
 
       Rot_Matr   : Cv_32f_Array (1 .. 9); -- rotation matrix and transition vector relatively
       Trans_Vect : Cv_32f_Array (1 .. 3); -- to some reference point in the space
@@ -464,7 +459,7 @@ package Legacy is
 
    type Cv_Stereo_Camera is record
       Camera            : Cv_Camera_P_Array_2; -- two individual camera parameters
-      Fund_Matr         : Cv_32f_Array(1 .. 9); -- fundamental matrix
+      Fund_Matr         : Cv_32f_Array (1 .. 9); -- fundamental matrix
 
       -- New part for stereo
       Epipole           : Cv_Point_3d_32f_Array_2;
@@ -482,8 +477,8 @@ package Legacy is
    type Cv_Stereo_Camera_P is access all Cv_Stereo_Camera;
 
    type Cv_Contour_Orientation is record
-      Egvals  : Cv_32f_Array(1 .. 2);
-      Egvects : Cv_32f_Array(1 .. 4);
+      Egvals  : Cv_32f_Array (1 .. 2);
+      Egvects : Cv_32f_Array (1 .. 4);
       Max     : Float;
       Min     : Float;
       Imax    : Integer;
@@ -511,7 +506,7 @@ package Legacy is
                                   Point2 : Cv_Point_3d_64f;
                                   Dist   : access Long_Float);
 
-   function IcvCompute3DPoint (Alpha  : long_Float;
+   function IcvCompute3DPoint (Alpha  : Long_Float;
                                Beta   : Long_Float;
                                Coeffs : Cv_Stereo_Line_Coeff_P;
                                Point  : Cv_Point_3d_64f_P)
@@ -541,11 +536,11 @@ package Legacy is
                                     Cross    : Cv_Point_2d_32f_P)
                                     return Integer;
 
-   function IcvGetCrossLineDirect (P1 : Cv_Point_2d_32f;
-                                   P2 : Cv_Point_2d_32f;
-                                   A  : Float;
-                                   B  : Float;
-                                   C  : Float;
+   function IcvGetCrossLineDirect (P1    : Cv_Point_2d_32f;
+                                   P2    : Cv_Point_2d_32f;
+                                   A     : Float;
+                                   B     : Float;
+                                   C     : Float;
                                    Cross : Cv_Point_2d_32f_P)
                                    return Integer;
 
@@ -554,9 +549,9 @@ package Legacy is
                                     Point  : Cv_Point_2d_32f)
                                     return Float;
 
-   function IcvStereoCalibration (Num_Images : Integer;
-                                  Nums       : Cv_32s_Array;
-                                  Image_Size : Cv_Size;
+   function IcvStereoCalibration (Num_Images    : Integer;
+                                  Nums          : Cv_32s_Array;
+                                  Image_Size    : Cv_Size;
                                   Image_Points1 : Cv_Point_2d_32f;
                                   Image_Points2 : Cv_Point_2d_32f;
                                   Object_Points : Cv_Point_3d_32f_P;
@@ -584,7 +579,7 @@ package Legacy is
                                 Need_Swap_Camera : access Integer)
                                 return Integer;
 
-   function IcvGetDirectionForPoint (Point : Cv_Point_2d_64f;
+   function IcvGetDirectionForPoint (Point    : Cv_Point_2d_64f;
                                      Cam_Matr : Cv_64f_Array;
                                      Direct   : Cv_Point_3d_64f_P)
                                      return Integer;
@@ -676,7 +671,7 @@ package Legacy is
                                    Warp_Size    : Cv_Size_P;
                                    Quad1        : Cv_64f_Array_4x2;
                                    Quad2        : Cv_64f_Array_4x2;
-                                   fund_matr    : Cv_64f_Array;
+                                   Fund_Matr    : Cv_64f_Array;
                                    Epipole1     : Cv_Point_3d_64f_P;
                                    Epipole2     : Cv_Point_3d_64f_P);
 
@@ -834,16 +829,6 @@ package Legacy is
 
    CV_MAX_NUM_GREY_LEVELS_8U : constant := 256;
 
-   type Cv_64f_Array_P_Array is array (Integer range <>) of aliased Cv_64f_Array_P;
-
-   -- This is not good please fix.
---     package C_64f_Array_P_Arr_Ptr is
---       new Interfaces.C.Pointers (Integer, Cv_64f_Array_P, Cv_64f_Array_P_Array, null);
---     use type C_64f_Array_P_Arr_Ptr.Pointer;
---     subtype C_64f_Array_P_Ptr is C_64f_Array_P_Arr_Ptr.Pointer;
-
-
-
    type Cv_GLCM is record
       Matrix_Side_Length           : Integer;
       Num_Matrices                 : Integer;
@@ -860,9 +845,9 @@ package Legacy is
    pragma Convention (C_Pass_By_Copy, Cv_GLCM);
    type Cv_GLCM_P is access all Cv_GLCM;
 
-   function CvCreateGLCM (Src_Image : Ipl_Image_P;
-                          Step_Magnitude : Integer;
-                          Step_Direction : Cv_32s_Pointer := null;
+   function CvCreateGLCM (Src_Image           : Ipl_Image_P;
+                          Step_Magnitude      : Integer;
+                          Step_Direction      : Cv_32s_Pointer := null;
                           Num_Step_Directions : Integer := 0;
                           Optimization_Type   : Integer := CV_GLCM_OPTIMIZATION_NONE)
                           return Cv_GLCM_P;
@@ -899,8 +884,8 @@ package Legacy is
    type Cv_Face_Elements is (Cv_Face_Mouth,
                              Cv_Face_Left_Eye,
                              Cv_Face_Right_Eye);
-   for Cv_Face_Elements use (Cv_Face_Mouth => 0,
-                             Cv_Face_Left_Eye => 1,
+   for Cv_Face_Elements use (Cv_Face_Mouth     => 0,
+                             Cv_Face_Left_Eye  => 1,
                              Cv_Face_Right_Eye => 2);
 
    function CvInitFaceTracker (P_Face_Tracking : Cv_Face_Tracker_P;
@@ -920,8 +905,8 @@ package Legacy is
    procedure CvReleaseFaceTracker (PP_Face_Tracker : access Cv_Face_Tracker_P);
 
    type Cv_Face_Data is record
-      Mouth_Rect : Cv_Rect;
-      Left_Eye_Rect : Cv_Rect;
+      Mouth_Rect     : Cv_Rect;
+      Left_Eye_Rect  : Cv_Rect;
       Right_Eye_Rect : Cv_Rect;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Face_Data);
@@ -973,8 +958,8 @@ package Legacy is
 
    type Cv_3d_Tracker_Camera_Intrinsics is record
       Principal_Point : Cv_Point_2d_32f;
-      Focal_Length    : Cv_32f_Array(1 .. 2);
-      Distortion      : Cv_32f_Array(1 .. 4);
+      Focal_Length    : Cv_32f_Array (1 .. 2);
+      Distortion      : Cv_32f_Array (1 .. 4);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_3d_Tracker_Camera_Intrinsics);
    type Cv_3d_Tracker_Camera_Intrinsics_P is access Cv_3d_Tracker_Camera_Intrinsics;
@@ -984,7 +969,7 @@ package Legacy is
                                          Camera_Intrinsics : Cv_3d_Tracker_Camera_Intrinsics_Array; -- size = num_cameras
                                          Etalon_Size       : Cv_Size;
                                          Square_Size       : Float;
-                                         Samples           : Ipl_Image_Array; -- size = num_cameras
+                                         Samples           : Ipl_Image_P_Array; -- size = num_cameras
                                          Camera_Info       : Cv_3d_Tracker_Camera_Info_Array) -- size = num_cameras
                                          return Cv_Bool;
 
@@ -1020,23 +1005,23 @@ package Legacy is
    CV_LEE_ZOOM_F   : constant := 1.0;
    CV_LEE_NON_F    : constant := 2.0;
 
---     #define CV_VORONOISITE2D_FIELDS() \
---      struct CvVoronoiNode2D *node[2]; \
---      struct CvVoronoiEdge2D *edge[2];
+   --     #define CV_VORONOISITE2D_FIELDS() \
+   --      struct CvVoronoiNode2D *node[2]; \
+   --      struct CvVoronoiEdge2D *edge[2];
 
---     #define CV_VORONOIEDGE2D_FIELDS() \
---      struct CvVoronoiNode2D *node[2]; \
---      struct CvVoronoiSite2D *site[2]; \
---      struct CvVoronoiEdge2D *next[4];
+   --     #define CV_VORONOIEDGE2D_FIELDS() \
+   --      struct CvVoronoiNode2D *node[2]; \
+   --      struct CvVoronoiSite2D *site[2]; \
+   --      struct CvVoronoiEdge2D *next[4];
 
---     #define CV_VORONOINODE2D_FIELDS()    \
---      CV_SET_ELEM_FIELDS(CvVoronoiNode2D) \
---      CvPoint2D32f pt;                    \
---      float radius;
+   --     #define CV_VORONOINODE2D_FIELDS()    \
+   --      CV_SET_ELEM_FIELDS(CvVoronoiNode2D) \
+   --      CvPoint2D32f pt;                    \
+   --      float radius;
 
---     #define CV_VORONOIDIAGRAM2D_FIELDS() \
---      CV_GRAPH_FIELDS()                   \
---      CvSet *sites;
+   --     #define CV_VORONOIDIAGRAM2D_FIELDS() \
+   --      CV_GRAPH_FIELDS()                   \
+   --      CvSet *sites;
 
    type Cv_Voronoi_Site_2d;
    type Cv_Voronoi_Site_2d_Array;
@@ -1106,9 +1091,9 @@ package Legacy is
       FreeBlocks      : Cv_Seq_Block_P;
       First           : Cv_Seq_Block_P;
 
-      Free_Elems : C_Set_Elem_Ptr;
-      Active_Count : Integer;
-      Edges : C_Set_Ptr;
+      Free_Elems      : Cv_Set_Elem_Pointer;
+      Active_Count    : Integer;
+      Edges           : Cv_Set_Pointer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Voronoi_Diagram_2d);
    type Cv_Voronoi_Diagram_2d_P is access Cv_Voronoi_Diagram_2d;

@@ -49,7 +49,7 @@ package Video.Background_Segm is
       Update             : Cv_Update_BG_Stat_Model;
       Background         : Ipl_Image_P;       -- 8UC3 reference background image
       Foreground         : Ipl_Image_P;       -- 8UC1 foreground image
-      Layers             : C_Ipl_Image_P_Ptr; -- 8UC3 reference background image, can be null
+      Layers             : Cv_Ipl_Image_P_Pointer; -- 8UC3 reference background image, can be null
       Layer_Count        : Integer;           -- Can be zero
       Storage            : Cv_Mem_Storage_P;  -- Storage for foreground_regions
       Foreground_Regions : Cv_Seq_P;          -- Foreground object contours
@@ -176,7 +176,7 @@ package Video.Background_Segm is
       Update             : Cv_Release_BG_Stat_Model;
       Background         : Ipl_Image_P;       -- 8UC3 reference background image
       Foreground         : Ipl_Image_P;       -- 8UC1 foreground image
-      Layers             : C_Ipl_Image_P_Ptr; -- 8UC3 reference background image, can be null
+      Layers             : Cv_Ipl_Image_P_Pointer; -- 8UC3 reference background image, can be null
       Layer_Count        : Integer;           -- Can be zero
       Storage            : Cv_Mem_Storage_P;  -- Storage for foreground_regions
       Foreground_Regions : Cv_Seq_P;          -- Foreground object contours
@@ -251,7 +251,7 @@ package Video.Background_Segm is
       Update             : Cv_Release_BG_Stat_Model;
       Background         : Ipl_Image_P;       -- 8UC3 reference background image
       Foreground         : Ipl_Image_P;       -- 8UC1 foreground image
-      Layers             : C_Ipl_Image_P_Ptr; -- 8UC3 reference background image, can be null
+      Layers             : Cv_Ipl_Image_P_Pointer; -- 8UC3 reference background image, can be null
       Layer_Count        : Integer;           -- Can be zero
       Storage            : Cv_Mem_Storage_P;  -- Storage for foreground_regions
       Foreground_Regions : Cv_Seq_P;          -- Foreground object contours
@@ -276,7 +276,7 @@ package Video.Background_Segm is
    package C_BG_Code_Book_Elem_P_Arr_Ptr is
      new Interfaces.C.Pointers (Integer, Cv_Bg_Code_Book_Elem_P, Cv_Bg_Code_Book_Elem_P_Array, null);
    use type C_Bg_Code_Book_Elem_P_Arr_Ptr.Pointer;
-   subtype C_Bg_Code_Book_Elem_Ptr is C_Bg_Code_Book_Elem_P_Arr_Ptr.Pointer;
+   subtype Cv_Bg_Code_Book_Elem_Pointer is C_Bg_Code_Book_Elem_P_Arr_Ptr.Pointer;
 
    type Cv_BG_Code_Book_Elem is record
       Next : Cv_BG_Code_Book_Elem_P;
@@ -295,7 +295,7 @@ package Video.Background_Segm is
       Cb_Bounds : Cv_8u_Array (1 .. 3);
       Mod_Min   : Cv_8u_Array (1 .. 3);
       Mod_Max   : Cv_8u_Array (1 .. 3);
-      Cb_Map    : C_Bg_Code_Book_Elem_Ptr;
+      Cb_Map    : Cv_Bg_Code_Book_Elem_Pointer;
       Storage   : Cv_Mem_Storage_P;
       Free_List : Cv_BG_Code_Book_Elem_P;
    end record;

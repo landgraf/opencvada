@@ -20,7 +20,6 @@ with Core; use Core;
 with Interfaces; use Interfaces;
 with Interfaces.C;
 with Interfaces.C.Pointers;
-with Interfaces.C.Strings;
 
 package Objdetect is
 
@@ -179,8 +178,8 @@ package Objdetect is
    type Cv_LSVM_Filter_Object_Array is array (Integer range <>) of aliased Cv_LSVM_Filter_Object;
    Null_Cv_LSVM_Filter_Object : Cv_LSVM_Filter_Object;
    -- C style pointer
-   package Cv_LSVM_Filter_Object_Ptr is new Interfaces.C.Pointers (Integer, Cv_LSVM_Filter_Object, Cv_LSVM_Filter_Object_Array, Null_Cv_LSVM_Filter_Object);
-   type Cv_LSVM_Filter_Object_Pointer is new Cv_LSVM_Filter_Object_Ptr.Pointer;
+   package Cv_LSVM_Filter_Object_Pointer_Pkg is new Interfaces.C.Pointers (Integer, Cv_LSVM_Filter_Object, Cv_LSVM_Filter_Object_Array, Null_Cv_LSVM_Filter_Object);
+   type Cv_LSVM_Filter_Object_Pointer is new Cv_LSVM_Filter_Object_Pointer_Pkg.Pointer;
    -- C type equal **
    type Cv_LSVM_Filter_Object_2D_Array is array (Integer range <>) of Cv_LSVM_Filter_Object_Pointer;
    type Cv_LSVM_Filter_Object_2D_Array_P is access Cv_LSVM_Filter_Object_2D_Array;

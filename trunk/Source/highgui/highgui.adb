@@ -95,7 +95,7 @@ package body Highgui is
    -- Initialisez HighGUI
    -- Not used in Windows.
    function CvInitSystem (Argc : Integer;
-                          Argv : C_String_Ptr) return Integer is
+                          Argv : Cv_String_Pointer) return Integer is
    begin
       return WCvInitSystem (Argc, Argv);
    end CvInitSystem;

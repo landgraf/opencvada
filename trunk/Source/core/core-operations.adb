@@ -19,10 +19,10 @@
 package body Core.Operations is
 -- CvFree
    procedure CvFree (Ptr : access Cv_Void_P) is
-      Temp_Ptr : access Cv_Void_P := Ptr;
+      Temp_Ptr : constant access Cv_Void_P := Ptr;
    begin
       CvFree_Wrapper (Temp_Ptr);
-      Temp_Ptr := null;
+      Temp_Ptr.all := null;
    end CvFree;
 
    -- CvReshapeMatND wrapper?
@@ -78,6 +78,7 @@ package body Core.Operations is
    -- Returns the index of a graph vertex.
    function CvGraphVtxIdx (Graph : Cv_Graph_P;
                            Vtx   : Cv_Graph_Vtx_P) return Integer is
+      pragma Unreferenced (Graph);
    begin
       return Integer(Unsigned_32(Vtx.all.Flags) and CV_SET_ELEM_IDX_MASK);
    end CvGraphVtxIdx;
@@ -85,6 +86,7 @@ package body Core.Operations is
       -- Returns the index of a graph edge.
    function CvGraphEdgeIdx (Graph : Cv_Graph_P;
                             Edge  : Cv_Graph_Edge_P) return Integer is
+      pragma Unreferenced (Graph);
    begin
       return Integer(Unsigned_32(Edge.all.Flags) and CV_SET_ELEM_IDX_MASK);
    end CvGraphEdgeIdx;
@@ -127,13 +129,13 @@ package body Core.Operations is
    end CV_RGB;
 
    procedure CV_NEXT_LINE_POINT (LineIterator : Cv_Line_Iterator_P) is
-      LineIterator_temp : Cv_Line_Iterator_P := LineIterator;
+      LineIterator_Temp : constant Cv_Line_Iterator_P := LineIterator;
       Line_Iterator_Mask : Integer;
       Diff               : Ptrdiff_T ;
 
-      use Core.C_Point_Arr_Ptr;
+      use Core.Cv_Point_Pointer_Pkg;
    begin
-      if (LineIterator.Err < 0) then
+      if (LineIterator.all.Err < 0) then
          Line_Iterator_Mask := -1;
       else
          Line_Iterator_Mask := 0;
@@ -142,7 +144,7 @@ package body Core.Operations is
       LineIterator_Temp.all.Err := LineIterator.all.Err + LineIterator.all.Minus_Delta + Integer (Unsigned_32 (LineIterator.all.Plus_Delta) and Unsigned_32 (Line_Iterator_Mask));
 
       diff :=  ptrdiff_t (LineIterator.all.Minus_Step + Integer (Unsigned_32 (LineIterator.all.Plus_Step) and Unsigned_32 (Line_Iterator_Mask))) ;
-      LineIterator_temp.Ptr := C_Point_Arr_Ptr.Pointer(LineIterator.all.Ptr + Diff);
+      LineIterator_Temp.all.Ptr :=LineIterator.all.Ptr + Diff;
 
    end CV_NEXT_LINE_POINT;
 
@@ -177,12 +179,13 @@ package body Core.Operations is
                            File    : String := GNAT.Source_Info.File;
                            Line    : Integer := GNAT.Source_Info.Line) is
       Retval : Integer;
+      pragma Unreferenced (Retval);
    begin
       Retval := CvError (Status,
-                                                  Interfaces.C.Strings.New_String (Func),
-                                                  Interfaces.C.Strings.New_String (Context),
-                                                  Interfaces.C.Strings.New_String (File),
-                                                  Line);
+                         Interfaces.C.Strings.New_String (Func),
+                         Interfaces.C.Strings.New_String (Context),
+                         Interfaces.C.Strings.New_String (File),
+                         Line);
    end OPENCV_ERROR;
 
    procedure OPENCV_ERRCHK (Func : String := GNAT.Source_Info.Enclosing_Entity;
@@ -220,10 +223,11 @@ package body Core.Operations is
       CvSetErrStatus (Integer(CV_StsOk));
    end OPENCV_RSTERR;
 
-   procedure CV_CHECK (Func : String := GNAT.Source_Info.Enclosing_Entity;
+   procedure CV_CHECK (Func    : String := GNAT.Source_Info.Enclosing_Entity;
                        Context : String := GNAT.Source_Info.Enclosing_Entity;
                        File    : String := GNAT.Source_Info.File;
                        Line    : Integer := GNAT.Source_Info.Line) is
+      pragma Unreferenced (Func, Context, File, Line);
    begin
       if CvGetErrStatus < 0 then
          CV_ERROR (Integer(CV_StsBackTrace), "Inner function failed.");
