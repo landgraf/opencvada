@@ -221,11 +221,11 @@ package Imgproc is
    type Cv_Retr is (CV_RETR_EXTERNAL,
                     CV_RETR_LIST,
                     CV_RETR_CCOMP,
-                    CV_RETS_TREE);
+                    CV_RETR_TREE);
    for Cv_Retr use (CV_RETR_EXTERNAL => 0,
                     CV_RETR_LIST => 1,
                     CV_RETR_CCOMP => 2,
-                    CV_RETS_TREE => 3);
+                    CV_RETR_TREE => 3);
 
    -- Contour approximation methods
    type Cv_Chain_Enum is new Integer range 0 .. 5;

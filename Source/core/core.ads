@@ -63,11 +63,11 @@ package Core is
    type Cv_64f_Array is array (Integer range <>) of aliased Long_Float;
 
    type Cv_8u_2d_Array is array (Integer range <>, Integer range <>) of aliased Unsigned_8;
-   type cv_8s_2d_array is array (Integer range <>, Integer range <>) of aliased integer_8;
-   type cv_16u_2d_array is array (Integer range <>, Integer range <>) of aliased unsigned_16;
-   type cv_16s_2d_array is array (Integer range <>, Integer range <>) of aliased integer_16;
-   type cv_32s_2d_array is array (Integer range <>, Integer range <>) of aliased integer;
-   type cv_32u_2d_array is array (Integer range <>, Integer range <>) of aliased unsigned_32;
+   type Cv_8s_2d_Array is array (Integer range <>, Integer range <>) of aliased Integer_8;
+   type Cv_16u_2d_Array is array (Integer range <>, Integer range <>) of aliased Unsigned_16;
+   type Cv_16s_2d_Array is array (Integer range <>, Integer range <>) of aliased Integer_16;
+   type Cv_32s_2d_Array is array (Integer range <>, Integer range <>) of aliased Integer;
+   type Cv_32u_2d_Array is array (Integer range <>, Integer range <>) of aliased Unsigned_32;
    type Cv_32f_2d_Array is array (Integer range <>, Integer range <>) of aliased Float;
    type Cv_64f_2d_Array is array (Integer range <>, Integer range <>) of aliased Long_Float;
 
@@ -403,8 +403,8 @@ package Core is
       N_Channels        : Integer;
       Alpha_Channel     : Integer;
       Depth             : Unsigned_32;
-      Color_Model       : Cv_8u_Array(1 .. 4);
-      Channel_Seq       : Cv_8u_Array(1 .. 4);
+      Color_Model       : Cv_8u_Array (1 .. 4);
+      Channel_Seq       : Cv_8u_Array (1 .. 4);
       Data_Order        : Integer;
       Origin            : Integer;
       Align             : Integer;
@@ -417,12 +417,12 @@ package Core is
       Image_Size        : Integer;
       Image_Data        : C_Strings.Chars_Ptr; -- Test with a cv_8u_array later, same with Data_Origin
       Width_Step        : Integer;
-      Border_Model      : Cv_32s_Array(1 ..4);
-      Border_Const      : Cv_32s_Array(1 ..4);
+      Border_Model      : Cv_32s_Array (1 .. 4);
+      Border_Const      : Cv_32s_Array (1 .. 4);
       Image_Data_Origin : C_Strings.Chars_Ptr; -- This might require some wrapper function to return a proper Ada string
    end record;
    pragma Convention (C_Pass_By_Copy, Ipl_Image);
---   type Ipl_Image_Array is array (Integer range <>) of aliased Ipl_Image;
+   --   type Ipl_Image_Array is array (Integer range <>) of aliased Ipl_Image;
    type Ipl_Image_P_Array is array (Integer range<>) of aliased Ipl_Image_P;
 
 
@@ -778,7 +778,7 @@ package Core is
    type Cv_Point_Pointer_Array is array (Integer range <> ) of Cv_Point_Pointer;
 
    function To_2d_Pointer (Src : access Cv_Point_2d_Array)
-                         return Cv_Point_Pointer_Array;
+                           return Cv_Point_Pointer_Array;
 
    type Cv_Point_2D_32f is record
       X : Float;
@@ -832,15 +832,15 @@ package Core is
    type Cv_Point_3d_64f_P is access all Cv_Point_3d_64f;
    type Cv_Point_3D_64F_Array is array (Integer range <>) of aliased Cv_Point_3D_64F;
    Cv_Point_3D_64F_Array_Null : Cv_Point_3D_64F_Array ( 1 .. 0);
---     Cv_Point_3d_64f_Dummy : Cv_Point_3d_64f;
+   --     Cv_Point_3d_64f_Dummy : Cv_Point_3d_64f;
 
    function CvPoint3D64f (X : Long_Float; Y : Long_Float;
                           Z : Long_Float) return Cv_Point_3d_64f;
 
---     package C_Point_3d_64f_Arr_Ptr is
---       new Interfaces.C.Pointers (Integer, Cv_Point_3d_64f, Cv_Point_3d_64f_Array, Cv_Point_3d_64f_Dummy);
---     use type C_Point_3d_64f_Arr_Ptr.Pointer;
---     subtype CvPoint_3d_64f_Ptr is C_Point_3d_64f_Arr_Ptr.Pointer;
+   --     package C_Point_3d_64f_Arr_Ptr is
+   --       new Interfaces.C.Pointers (Integer, Cv_Point_3d_64f, Cv_Point_3d_64f_Array, Cv_Point_3d_64f_Dummy);
+   --     use type C_Point_3d_64f_Arr_Ptr.Pointer;
+   --     subtype CvPoint_3d_64f_Ptr is C_Point_3d_64f_Arr_Ptr.Pointer;
 
    -----------------------------------------------------------------------------
    -- Cv_Size & Cv_Box
@@ -906,7 +906,7 @@ package Core is
    -- CvScalar
    -----------------------------------------------------------------------------
    type Cv_Scalar is record
-      Val : aliased Cv_64f_Array(1 .. 4);
+      Val : aliased Cv_64f_Array (1 .. 4);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Scalar);
    type Cv_Scalar_P is access Cv_Scalar;
@@ -971,23 +971,24 @@ package Core is
    procedure CvChangeSeqBlock (Reader    : Cv_Void_P;
                                Direction : Integer);
 
+   type Cv_Seq_P is access all Cv_Seq;
    type Cv_Seq is record
       Flags       : Unsigned_32;
       Header_Size : Integer;
-      H_Prev      : access Cv_Seq;
-      H_Next      : access Cv_Seq;
-      V_Prev      : access Cv_Seq;
-      V_Next      : access Cv_Seq;
+      H_Prev      : Cv_Seq_P;
+      H_Next      : Cv_Seq_P;
+      V_Prev      : Cv_Seq_P;
+      V_Next      : Cv_Seq_P;
       Total       : Integer;
       Elem_Size   : Integer;
       Block_Max   : Interfaces.C.Strings.Chars_Ptr;
       Ptr         : Cv_Arr_Pointer; --test this
       Delta_Elems : Integer;
-      Storage     : access Cv_Mem_Storage;
-      Free_Blocks : access Cv_Seq_Block;
-      First       : access Cv_Seq_Block;
+      Storage     : Cv_Mem_Storage_P;
+      Free_Blocks : Cv_Seq_Block_P;
+      First       : Cv_Seq_Block_P;
    end record;
-   type Cv_Seq_P is access Cv_Seq;
+
 
    CV_TYPE_NAME_SEQ : constant String := "opencv-sequence";
    CV_TYPE_NAME_SEQ_TREE : constant String := "opencv-sequence-tree";
@@ -1139,7 +1140,7 @@ package Core is
          --
          Code       : Unsigned_8;
          Pt         : Cv_Point;
-         Deltas     : Cv_8u_2d_Array(1 .. 8, 1 .. 2);
+         Deltas     : Cv_8u_2d_Array (1 .. 8, 1 .. 2);
       end record;
    type Cv_Chain_Pt_Reader_P is access Cv_Chain_Pt_Reader;
 
@@ -1165,7 +1166,7 @@ package Core is
          --           CV_CONTOUR_FIELDS()
          Rect         : Cv_Rect;
          Color        : Integer;
-         Reserved     : Cv_32s_Array(1 .. 3);
+         Reserved     : Cv_32s_Array (1 .. 3);
       end record;
    type Cv_Contour_P is access Cv_Contour;
    type Cv_Point_2D_Seq is new Cv_Contour;
@@ -1406,7 +1407,7 @@ package Core is
 
 
    type Cv_Is_Instance_Func is access function (Struct_Ptr : Cv_Void_P)
-                                                   return Integer;
+                                                return Integer;
    pragma Convention (C, Cv_Is_Instance_Func);
 
    type Cv_Release_Proc is access procedure (Struct_Dblptr : access Cv_Void_P);
@@ -1771,6 +1772,10 @@ package Core is
      new Ada.Unchecked_Conversion (Source => Cv_Seq_Reader_P,
                                    Target => Cv_Void_P);
 
+   function To_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_Seq_P,
+                                   Target => Cv_Void_P);
+
    pragma Warnings (On);
 
    -----------------------------------------------------------------------------
@@ -1783,10 +1788,10 @@ package Core is
    type Cv_Size_Array is array (Integer range <>) of aliased Cv_Size;
    type Cv_Size_P_Array is array (Integer range <>) of aliased Cv_Size_P;
 
---     package C_Mat_Arr_Ptr is
---       new Interfaces.C.Pointers (Integer, Cv_Mat, Cv_Mat_Array, (0, 0, null, 0, Mat_Data_Requirement, 0, 0));
---     use type C_Mat_Arr_Ptr.Pointer;
---     subtype C_Mat_Ptr is C_Mat_Arr_Ptr.Pointer;
+   --     package C_Mat_Arr_Ptr is
+   --       new Interfaces.C.Pointers (Integer, Cv_Mat, Cv_Mat_Array, (0, 0, null, 0, Mat_Data_Requirement, 0, 0));
+   --     use type C_Mat_Arr_Ptr.Pointer;
+   --     subtype C_Mat_Ptr is C_Mat_Arr_Ptr.Pointer;
 
    package C_Mat_P_Arr_Ptr is
      new Interfaces.C.Pointers (Integer, Cv_Mat_P, Cv_Mat_P_Array, null);
@@ -1798,10 +1803,10 @@ package Core is
    use type C_Size_Arr_Ptr.Pointer;
    subtype Cv_Size_Pointer is C_Size_Arr_Ptr.Pointer;
 
---     package C_Size_P_Arr_Ptr is
---       new Interfaces.C.Pointers (Integer, Cv_Size_P, Cv_Size_P_Array, null);
---     use type C_Size_P_Arr_Ptr.Pointer;
---     subtype C_Size_P_Ptr is C_Size_P_Arr_Ptr.Pointer;
+   --     package C_Size_P_Arr_Ptr is
+   --       new Interfaces.C.Pointers (Integer, Cv_Size_P, Cv_Size_P_Array, null);
+   --     use type C_Size_P_Arr_Ptr.Pointer;
+   --     subtype C_Size_P_Ptr is C_Size_P_Arr_Ptr.Pointer;
 
    -----------------------------------------------------------------------------
    -- Fix for Interfaces.C.Pointers
@@ -1810,7 +1815,7 @@ package Core is
 
 private
    pragma Import (C, CvIplDepth, "cvIplDepth");
---     pragma Import (C, CvRound, "cvRound"); -- implemented as an ada function
+   --     pragma Import (C, CvRound, "cvRound"); -- implemented as an ada function
    pragma Import (C, CvFloor, "cvFloor");
    pragma Import (C, CvCeil, "cvCeil");
    pragma Import (C, CvIsInf, "cvIsInf");
@@ -1822,4 +1827,6 @@ private
    pragma Import (C, CvmSet, "cvmSet");
    pragma Import (C, CvCreateSeqBlock, "cvCreateSeqBlock");
    pragma Import (C, CvChangeSeqBlock, "cvChangeSeqBlock");
+
+
 end Core;
