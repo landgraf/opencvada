@@ -26,7 +26,7 @@ project OpenCVAda is
    for Source_Dirs use ("Source", "Source\Samples", "Source\legacy", "Source\core", "Source\calib3d", "Source\imgproc", "Source\video", "Source\highgui", "Source\objdetect", "Source\features_2d", "Source\ffmpeg");
    for Object_Dir use "Build";
    for Exec_Dir use "Exec";
-   for Main use ("Main.adb");
+   for Main use ("Main.adb", "motempl.adb", "chess_demo.adb");
    for Languages use ("Ada");
 
    package Builder is

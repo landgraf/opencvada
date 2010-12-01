@@ -563,7 +563,7 @@ package body Core is
    end CV_HIST_HAS_RANGES;
 
 
-   function IPL2CV_DEPTH (Depth : Integer) return Integer is
+   function IPL2CV_DEPTH (Depth : Unsigned_32) return Integer is
       Temp : Unsigned_32 := 0;
    begin
       if (Unsigned_32 (Depth) and IPL_DEPTH_SIGN) > 0 then

@@ -22,6 +22,7 @@
 with System;
 with Interfaces.C.Strings;
 with GNAT.Source_Info;
+with Imgproc;
 
 package Core.Operations is
 --
@@ -39,14 +40,14 @@ package Core.Operations is
    --     Creates an image header but does not allocate the image data.
    function CvCreateImageHeader (Width   : Integer;
                                  Height  : Integer;
-                                 Depth   : Integer;
+                                 Depth   : Unsigned_32;
                                  Channel : Integer)
                                  return Ipl_Image_P;
 
    --     Initializes an image header that was previously allocated.
    function CvInitImageHeader (Image    : access Ipl_Image;
                                Size     : Cv_Size;
-                               Depth    : Integer;
+                               Depth    : Unsigned_32;
                                Channels : Integer;
                                Origin   : Integer := 0;
                                Align    : Integer := 4)
@@ -55,7 +56,7 @@ package Core.Operations is
    --     Creates an image header and allocates the image data.
    function CvCreateImage (Width    : Integer;
                            Height   : Integer;
-                           Depth    : Integer;
+                           Depth    : Unsigned_32;
                            Channels : Integer)
                            return Ipl_Image_P;
 
@@ -1804,7 +1805,7 @@ package Core.Operations is
                                                        ID            : Integer;
                                                        N_Channels    : Integer;
                                                        Alpha_Channel : Integer;
-                                                       Depth         : Integer;
+                                                       Depth         : Unsigned_32;
                                                        Color_Model   : Interfaces.C.Strings.Chars_Ptr;
                                                        Channel_Seq   : Interfaces.C.Strings.Chars_Ptr;
                                                        Data_Order    : Integer;

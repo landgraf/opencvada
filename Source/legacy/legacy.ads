@@ -713,7 +713,7 @@ package Legacy is
 
    function IcvCreateIsometricImage (Src                  : Ipl_Image_P;
                                      Dst                  : Ipl_Image_P;
-                                     Desired_Depth        : Integer;
+                                     Desired_Depth        : Unsigned_32;
                                      Desired_Num_Channels : Integer)
                                      return Ipl_Image_P;
 

@@ -184,6 +184,7 @@ package Core is
    subtype Cv_String_Pointer is Cv_String_Pointer_Pkg.Pointer;
 
    package Value_Functions is new Ada.Numerics.Generic_Elementary_Functions (Float);
+   package Long_Float_Numerics is new Ada.Numerics.Generic_Elementary_Functions (Long_Float);
 
    -----------------------------------------------------------------------------
 
@@ -401,7 +402,7 @@ package Core is
       ID                : Integer;
       N_Channels        : Integer;
       Alpha_Channel     : Integer;
-      Depth             : Integer;
+      Depth             : Unsigned_32;
       Color_Model       : Cv_8u_Array(1 .. 4);
       Channel_Seq       : Cv_8u_Array(1 .. 4);
       Data_Order        : Integer;
@@ -553,7 +554,7 @@ package Core is
    function CV_ELEM_SIZE_1 (E_Type : Integer) return Integer;
    function CV_ELEM_SIZE (E_Type : Integer) return Integer;
 
-   function IPL2CV_DEPTH (Depth : Integer) return Integer;
+   function IPL2CV_DEPTH (Depth : Unsigned_32) return Integer;
 
    function CvMat (Rows   : Integer;
                    Cols   : Integer;
@@ -1769,6 +1770,7 @@ package Core is
    function To_Void is
      new Ada.Unchecked_Conversion (Source => Cv_Seq_Reader_P,
                                    Target => Cv_Void_P);
+
    pragma Warnings (On);
 
    -----------------------------------------------------------------------------
