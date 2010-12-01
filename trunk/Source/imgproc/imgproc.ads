@@ -19,6 +19,7 @@
 with Interfaces; use Interfaces;
 with Interfaces.C;
 with Core; use Core;
+with Ada.Unchecked_Conversion;
 
 package Imgproc is
    -- Connected component structure
@@ -29,7 +30,11 @@ package Imgproc is
          Rect  : Cv_Rect;
          Contour : access Cv_Seq;
       end record;
-   type Cv_Connected_Comp_P is access Cv_Connected_Comp;
+   type Cv_Connected_Comp_P is access all Cv_Connected_Comp;
+
+   function From_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+                                   Target => Cv_Connected_Comp_P);
 
    -- Image smooth Methods
    type Smooth_Type is (CV_BLUR_NO_SCALE,
