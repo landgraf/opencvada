@@ -16,7 +16,6 @@
 -- calib_3d.ads - Camera Calibration, Pose Estimation and Stereo
 -- Comments, Information, Other
 -----------------------------------------------------------------------
-with Core_Types_C; use Core_Types_C;
 with Core; use Core;
 
 package Calib_3D is
