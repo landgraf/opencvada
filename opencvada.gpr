@@ -14,7 +14,7 @@ with "Lib211\opencv_core211";
 with "Lib211\opencv_features2d211";
 with "Lib211\opencv_ffmpeg211";
 with "Lib211\opencv_gpu211";
-with "Lib211\opencv_highgui211";
+with "Lib220\opencv_highgui220";
 with "Lib211\opencv_imgproc211";
 with "Lib211\opencv_legacy211";
 with "Lib211\opencv_ml211";
