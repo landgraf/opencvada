@@ -1,7 +1,7 @@
 Project opencv_legacy211 is
    for Externally_Built use "true";
    for Source_Files use ();
-   for Library_Dir use ".";
-   for Library_Name use "libopencv_legacy211";
+   for Library_Dir use "C:\OpenCV2.2\bin";
+   for Library_Name use "opencv_legacy220";
    for Library_Kind use "dynamic";
 end opencv_legacy211;

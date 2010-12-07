@@ -269,7 +269,7 @@ package Imgproc is
    -- Planar subdivisions
    -----------------------------------------------------------------------------
    type Cv_Subdiv_2D_Edge is new Interfaces.C.Size_T;
-   type Cv_Subdiv_2D_Edge_P is access Cv_Subdiv_2D_Edge;
+   type Cv_Subdiv_2D_Edge_P is access all Cv_Subdiv_2D_Edge;
 
    --#define CV_SUBDIV2D_VIRTUAL_POINT_FLAG (1 << 30)
    CV_SUBDIV2D_VIRTUAL_POINT_FLAG : constant := 16#40000000#;

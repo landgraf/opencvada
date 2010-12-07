@@ -417,7 +417,7 @@ package Imgproc.Operations is
    -- Returns the location of a point within a Delaunay triangulation.
    function CvSubdiv2DLocate (Subdiv : Cv_Subdiv_2D_P;
                               Pt     : Cv_Point_2D_32F;
-                              Edge   : Cv_Subdiv_2D_Edge;
+                              Edge   : Cv_Subdiv_2D_Edge_P;
                               Vertex : access Cv_Subdiv_2D_Point_P := null) return Cv_Subdiv_2D_Point_Location;
 
    -- Calculates the coordinates of Voronoi diagram cells.
@@ -445,7 +445,7 @@ package Imgproc.Operations is
    function CvSubdiv2DGetEdge (Edge      : Cv_Subdiv_2D_Edge;
                                Edge_Type : CV_Next_Edge_Type) return Cv_Subdiv_2D_Edge;
 
-   function CvSubdiv2DEdgeOrg (Edege : Cv_Subdiv_2D_Edge) return Cv_Subdiv_2D_Edge_P;
+   function CvSubdiv2DEdgeOrg (Edege : Cv_Subdiv_2D_Edge) return Cv_Subdiv_2D_Point_P;
 
    -- Returns the edge destination.
    function CvSubdiv2DEdgeDst (Edge : Cv_Subdiv_2D_Edge) return Cv_Subdiv_2D_Point_P;

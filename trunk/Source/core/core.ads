@@ -28,6 +28,7 @@ pragma Warnings (Off);
 with System.CRTL; use System.CRTL;
 pragma Warnings (On);
 with Ada.Numerics.Generic_Elementary_Functions;
+limited with Imgproc;
 
 
 package Core is
@@ -304,6 +305,7 @@ package Core is
 
    --     Converts a floating-point number to an integer.
    function CvRound (Value : Long_Float) return Integer;
+   function CvRound (Value : Float) return Integer;
    function CvFloor (Value : Long_Float) return Integer;
    function CvCeil (Value : Long_Float) return Integer;
 
@@ -1315,7 +1317,7 @@ package Core is
          DeltaIndex : Integer;
          PrevElem   : Cv_Arr_Pointer;
       end record;
-   type Cv_Seq_Reader_P is access Cv_Seq_Reader;
+   type Cv_Seq_Reader_P is access all Cv_Seq_Reader;
 
    -----------------------------------------------------------------------------
    -- Operations on sequences
@@ -1775,6 +1777,14 @@ package Core is
    function To_Void is
      new Ada.Unchecked_Conversion (Source => Cv_Seq_P,
                                    Target => Cv_Void_P);
+
+   -----------------------------------------------------------------------------
+   -- Cv_Seq conversions
+   -----------------------------------------------------------------------------
+
+   function To_Seq is
+     new Ada.Unchecked_Conversion (Source => Cv_Set_P,
+                                   Target => Cv_Seq_P);
 
    pragma Warnings (On);
 
