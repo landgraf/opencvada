@@ -991,6 +991,11 @@ package body Core is
       return Integer (Long_Float'Rounding (Value));
    end CvRound;
 
+   function CvRound (Value : Float) return Integer is
+   begin
+      return Integer (Float'Rounding (Value));
+   end CvRound;
+
 
    -----------------------------------------------------------------------------
    -- 2d array functions
