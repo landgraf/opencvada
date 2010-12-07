@@ -24,7 +24,7 @@ with "Lib220\opencv_video220";
 --with "Lib211\opencv_legacy211";
 --with "Lib211\opencv_ml211";
 --with "Lib211\opencv_objdetect211";
--with "Lib211\opencv_video211";
+--with "Lib211\opencv_video211";
 
 project OpenCVAda is
 
