@@ -1603,7 +1603,6 @@ package Core is
      new Ada.Unchecked_Conversion (Source => Cv_Mat_P,
                                    Target => Cv_Arr_P);
 
-
    function To_Arr is
      new Ada.Unchecked_Conversion (Source => Cv_Arr_P_Array_P,
                                    Target => Cv_Arr_P);

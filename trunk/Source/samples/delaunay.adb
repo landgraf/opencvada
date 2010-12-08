@@ -4,8 +4,31 @@ with Core, Core.Operations; use Core, Core.Operations;
 with Highgui; use Highgui;
 with Ada;
 with Ada.Unchecked_Conversion;
-
+with Ada.Text_IO; use Ada.Text_IO;
+with Interfaces; use Interfaces;
+with Ada.Numerics;
+with Ada.Numerics.Discrete_Random;
 procedure Delaunay is
+
+   procedure Help is
+   begin
+      New_Line;
+      Put ("This program demostrates iterative construction of");
+      New_Line;
+      Put ("delaunay triangulation and voronoi tesselation.");
+      New_Line;
+      Put ("It draws a random set of points in an image and then delaunay triangulates them.");
+      New_Line;
+      Put ("Call:");
+      New_Line;
+      Put ("./delaunay");
+      New_Line;
+      Put ("This program builds the traingulation interactively, you may stop this process by");
+      New_Line;
+      Put ("hitting any key.");
+      New_Line;
+   end Help;
+
    function Init_Delaunay (Storage : Cv_Mem_Storage_P;
                            Rect    : Cv_Rect) return Cv_Subdiv_2D_P is
       Subdiv : constant Cv_Subdiv_2d_P := CvCreateSubdiv2d (Cv_Seq_Kind_Subdiv2d,
@@ -118,8 +141,10 @@ procedure Delaunay is
       end Get_Count;
 
 
-      Count : Integer := Get_Count;
-      Buf   : aliased Cv_Point_Array (0 .. Count - 1) := (others => (0, 0));
+      Count : constant Integer := Get_Count;
+      Count_Arr : Cv_32U_Array(0 .. 0);
+      Buf   : aliased Cv_Point_Array (0 .. Count - 1);
+      Buf_2d : Cv_Point_Pointer_Array (0 .. 0);
       N : Integer;
       Pt : Cv_Subdiv_2d_Point_P;
    begin
@@ -136,9 +161,113 @@ procedure Delaunay is
       if (N + 1 = Count) then
          Pt := CvSubdiv2dEdgedst (CvSubdiv2dRotateEdge (Edge, 1));
          CvFillConvexPoly (+Img, Buf, Count, CV_RGB (43, 169, 102), CV_AA, 0);
-         CvPolyLine(+Img,To_2d_Pointer(Cv_Point_2d_Array(Buf)'access),Cv_32u_Array(Count),1,1,Cv_Rgb(0,0,0),1,Cv_Aa,0);
+         Buf_2d (0) := Buf (0)'unchecked_access;
+         Count_Arr(0) := Unsigned_32(Count);
+         CvPolyLine(+Img,Buf_2d,Count_Arr,1,1,Cv_Rgb(0,0,0),1,Cv_Aa,0);
       end if;
    end Draw_Subdiv_Facet;
+
+   procedure Paint_Voronoi (Subdiv : Cv_Subdiv_2d_P;
+                            Img    : Ipl_Image_P) is
+      Reader : aliased Cv_Seq_Reader;
+      Total  : constant Integer := Subdiv.all.Edges.all.Total;
+      Elem_Size : constant Integer := Subdiv.all.Edges.all.Elem_Size;
+
+      Edge      : Cv_Quad_Edge_2d_P;
+      E         : Cv_Subdiv_2d_Edge;
+
+      function Quad_To_Subdiv is
+        new Ada.Unchecked_Conversion (Source => Cv_Quad_Edge_2d_P,
+                                      Target => Cv_Subdiv_2d_Edge);
+
+      function From_Arr is
+        new Ada.Unchecked_Conversion (Source => Cv_Arr_P,
+                                      Target => Imgproc.Cv_Quad_Edge_2d_P);
+
+   begin
+      CvCalcSubdivVoronoi2D (Subdiv);
+      CvStartReadSeq (To_Seq (Subdiv.all.Edges), Reader'Unchecked_Access, 0);
+
+      for I in Integer range 0  .. Total - 1
+      loop
+         Edge := From_Arr (Value (Reader.Ptr) (0));
+
+         -- skipping if here
+         --if ( CV_IS_SET_ELEM ( Edge ))
+         --{
+         E := Quad_To_Subdiv (Edge);
+         -- left
+         Draw_Subdiv_Facet (Img, CvSubdiv2dRotateEdge (E, 1));
+         -- right
+         Draw_Subdiv_Facet (Img, CvSubdiv2dRotateEdge (E, 3));
+         --}
+         CV_NEXT_SEQ_ELEM (Elem_Size, Reader'Unchecked_Access);
+      end loop;
+   end Paint_Voronoi;
+
+   procedure Run is
+      Win                                                            : constant String := "Source";
+      Rect                                                           : constant Cv_Rect := (0, 0, 600, 600);
+      Storage                                                        : aliased Cv_Mem_Storage_P;
+      Subdiv                                                         : Cv_Subdiv_2d_P;
+      Img                                                            : aliased Ipl_Image_P;
+      Active_Facet_Color, Delaunay_Color, Voronoi_Color, Bkgnd_Color : Cv_Scalar;
+      subtype Ran is Integer range 5 .. Rect.Width - 5;
+      package Random_Num is new Ada.Numerics.Discrete_Random (Ran);
+      use Random_Num;
+
+      G : Generator;
+
+      Ret : Integer;
+      S_Ret : Cv_Subdiv_2D_Point_P;
+      Fp : Cv_Point_2d_32f;
+   begin
+      Reset (G);
+      Active_Facet_Color := CV_RGB ( 255, 0, 0 );
+      Delaunay_Color  := CV_RGB ( 0, 0, 0);
+      Voronoi_Color := CV_RGB (0, 180, 0);
+      Bkgnd_Color := CV_RGB (255, 255, 255);
+      Img := CvCreateImage (Rect.Width, Rect.Height, 8, 3);
+      CvSet (+Img, Bkgnd_Color, null);
+
+      Ret := CvNamedWindow (Win, 1);
+
+      Storage := CvCreateMemStorage (0);
+      Subdiv := Init_Delaunay (Storage, Rect);
+      Put_Line ("Delaunay triangulation will be build now interactively.");
+      Put_Line ("To stop the process, press any key");
+      New_Line;
+
+      for I in Integer range 0 .. 199
+      loop
+         Fp := (Float (Random (G)), Float (Random (G)));
+
+         Locate_Point (Subdiv, Fp, Img, Active_Facet_Color);
+         CvShowImage (Win, +Img);
+
+         exit when Character'Pos (CvWaitKey (100)) >= 0;
+
+         S_Ret := CvSubdivDelaunay2dInsert (Subdiv, Fp);
+         CvCalcSubdivVoronoi2d (Subdiv);
+         CvSet (+Img, Bkgnd_Color, null);
+         Draw_Subdiv (Img, Subdiv, Delaunay_Color, Voronoi_Color);
+         CvShowImage (Win, +Img);
+
+         exit when Character'Pos (CvWaitKey (100)) >= 0;
+      end loop;
+
+      CvSet (+Img, Bkgnd_Color, null);
+      Paint_Voronoi (Subdiv, Img);
+      CvShowImage (Win, +Img);
+
+      if Character'Pos (CvWaitKey (100)) >= 0 then
+         CvReleaseMemStorage (Storage'Access);
+         CvReleaseImage (Image => Img'Access);
+         CvDestroyWindow (Win);
+      end if;
+
+   end Run;
 begin
-   null;
+   Help;
+   Run;
 end Delaunay;

@@ -330,6 +330,10 @@ package Imgproc is
       end record;
    type Cv_Subdiv_2D_P is access Cv_Subdiv_2D;
 
+   function To_Arr is
+     new Ada.Unchecked_Conversion (Source => Cv_Subdiv_2d_P,
+                                   Target => Cv_Arr_P);
+
    type Cv_Subdiv_2D_Point_Location is range -2 .. 2;
    CV_PTLOC_ERROR : Cv_Subdiv_2D_Point_Location := -2;
    CV_PTLOC_OUTSIDE_RECT : Cv_Subdiv_2D_Point_Location := -1;
