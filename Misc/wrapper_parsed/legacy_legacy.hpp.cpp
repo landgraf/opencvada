@@ -1,3 +1,5 @@
+#include "legacy_legacy.hpp.hpp"
+
 double icvSqDist2D32f (CvPoint2D32f pt1 , CvPoint2D32f pt2 ){
 	return icvSqDist2D32f(/*CvPoint2D32f*/pt1 , /*CvPoint2D32f*/pt2);
 }

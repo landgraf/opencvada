@@ -1,0 +1,13 @@
+project Adaparser is
+
+   for Source_Dirs use ("source");
+   for Object_Dir use "build";
+   for Exec_Dir use "exec";
+   for Main use ("main.adb");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnat05");
+   end Compiler;
+
+end Adaparser;
+
