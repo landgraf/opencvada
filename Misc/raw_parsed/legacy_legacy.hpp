@@ -17,7 +17,7 @@
 
 
  Cv3dTrackerTrackedObject cv3dTrackerTrackedObject(int id, CvPoint3D32f p)
-;
+;                               
 
  int iplWidth( const IplImage* img )
 ;
