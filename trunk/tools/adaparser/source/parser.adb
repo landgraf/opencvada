@@ -380,7 +380,7 @@ package body Parser is
                                 Is_Start_Type => True) & " ";
             Position := Last_Index (Decl.Start);
          else
-
+            S := S & " ";
             if Temp.Use_Replacement then
                if Temp.T = Char then
                   S := S & "char";
@@ -389,10 +389,10 @@ package body Parser is
                else
                   S := S & "/* ERROR */";
                end if;
-               S := S & " ";
+--                 S := S & " ";
             else
                S := S & Temp.Name.Str;
-               S := S & " ";
+--                 S := S & " ";
             end if;
 
             Position := Position + 1;
@@ -401,7 +401,7 @@ package body Parser is
 
 
       -- Start of the params section
-      S := S & "(";
+      S := S & "_wrap(";
 
       Position := First_Index (Decl.Params);
       loop
