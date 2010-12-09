@@ -8,8 +8,8 @@
 
 
  CvSURFPoint cvSURFPoint( CvPoint2D32f pt, int laplacian,
-                                   int size, float dir CV_DEFAULT(0),
-                                   float hessian CV_DEFAULT(0))
+                                   int size, float dir =(0),
+                                   float hessian =(0))
 ;
 
 
@@ -21,9 +21,9 @@
 
 
  CvStarDetectorParams cvStarDetectorParams(
-    int maxSize CV_DEFAULT(45),
-    int responseThreshold CV_DEFAULT(30),
-    int lineThresholdProjected CV_DEFAULT(10),
-    int lineThresholdBinarized CV_DEFAULT(8),
-    int suppressNonmaxSize CV_DEFAULT(5))
+    int maxSize =(45),
+    int responseThreshold =(30),
+    int lineThresholdProjected =(10),
+    int lineThresholdBinarized =(8),
+    int suppressNonmaxSize =(5))
 ;

@@ -38,6 +38,6 @@
 ;
 
   void  cvCalcHist( IplImage** image, CvHistogram* hist,
-                             int accumulate CV_DEFAULT(0),
-                             const CvArr* mask CV_DEFAULT(NULL) )
+                             int accumulate =(0),
+                             const CvArr* mask =(NULL) )
 ;

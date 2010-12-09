@@ -1,4 +1,6 @@
- void cvDecRefData_wrap(CvArr * arr ){
+#include "core_core_c.h.hpp"
+
+void cvDecRefData_wrap(CvArr * arr ){
 	cvDecRefData(/*CvArr*//***/arr);
 }
  int cvIncRefData_wrap(CvArr * arr ){

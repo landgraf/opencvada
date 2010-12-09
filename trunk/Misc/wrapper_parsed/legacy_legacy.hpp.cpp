@@ -1,4 +1,6 @@
- double icvSqDist2D32f_wrap(CvPoint2D32f pt1 , CvPoint2D32f pt2 ){
+#include "legacy_legacy.hpp.hpp"
+
+double icvSqDist2D32f_wrap(CvPoint2D32f pt1 , CvPoint2D32f pt2 ){
 	return icvSqDist2D32f(/*CvPoint2D32f*/pt1 , /*CvPoint2D32f*/pt2);
 }
  Cv3dTracker2dTrackedObject cv3dTracker2dTrackedObject_wrap(int id , CvPoint2D32f p ){

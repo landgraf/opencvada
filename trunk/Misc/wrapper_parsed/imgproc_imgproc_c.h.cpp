@@ -1,4 +1,6 @@
- CvSubdiv2D * cvCreateSubdivDelaunay2D_wrap(CvRect rect , CvMemStorage * storage ){
+#include "imgproc_imgproc_c.h.hpp"
+
+CvSubdiv2D * cvCreateSubdivDelaunay2D_wrap(CvRect rect , CvMemStorage * storage ){
 	return cvCreateSubdivDelaunay2D(/*CvRect*/rect , /*CvMemStorage*//***/storage);
 }
  CvSubdiv2DEdge cvSubdiv2DNextEdge_wrap(CvSubdiv2DEdge edge ){
