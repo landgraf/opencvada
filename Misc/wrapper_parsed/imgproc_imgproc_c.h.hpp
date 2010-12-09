@@ -1,4 +1,6 @@
- CvSubdiv2D * cvCreateSubdivDelaunay2D_wrap(CvRect rect , CvMemStorage * storage );
+#include <opencv2/opencv.hpp>
+
+CvSubdiv2D * cvCreateSubdivDelaunay2D_wrap(CvRect rect , CvMemStorage * storage );
  CvSubdiv2DEdge cvSubdiv2DNextEdge_wrap(CvSubdiv2DEdge edge );
  CvSubdiv2DEdge cvSubdiv2DRotateEdge_wrap(CvSubdiv2DEdge edge , int rotate );
  CvSubdiv2DEdge cvSubdiv2DSymEdge_wrap(CvSubdiv2DEdge edge );

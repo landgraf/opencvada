@@ -1,4 +1,6 @@
- void cvDecRefData_wrap(CvArr * arr );
+#include <opencv2/opencv.hpp>
+
+void cvDecRefData_wrap(CvArr * arr );
  int cvIncRefData_wrap(CvArr * arr );
  CvMat * cvGetRow_wrap(const CvArr * arr , CvMat * submat , int row );
  CvMat * cvGetCol_wrap(const CvArr * arr , CvMat * submat , int col );
