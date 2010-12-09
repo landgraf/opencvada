@@ -18,5 +18,7 @@
 -----------------------------------------------------------------------
 
 package body Video.Blob_Track is
-   procedure Nulled is begin null; end Nulled;
+   procedure Bleh is begin
+      null;
+   end Bleh;
 end Video.Blob_Track;
