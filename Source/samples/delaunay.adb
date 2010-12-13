@@ -10,6 +10,12 @@ with Ada.Numerics;
 with Ada.Numerics.Discrete_Random;
 procedure Delaunay is
 
+   subtype Ran is Integer range 5 .. 600 - 5;
+   package Random_Num is new Ada.Numerics.Discrete_Random (Ran);
+   use Random_Num;
+
+   G : Generator;
+
    procedure Help is
    begin
       New_Line;
@@ -45,7 +51,7 @@ procedure Delaunay is
                                 Fp  : Cv_Point_2d_32f;
                                 Color : Cv_Scalar) is
    begin
-      CvCircle (+Img, CvPoint (CvRound (Long_Float(Fp.X)), CvRound (Long_Float(Fp.Y))), 3, Color, Cv_Filled, 8, 0);
+      CvCircle (+Img, CvPoint (CvRound (Long_Float (Fp.X)), CvRound (Long_Float (Fp.Y))), 3, Color, Cv_Filled, 8, 0);
    end Draw_Subdiv_Point;
 
    procedure Draw_Subdiv_Edge (Img : Ipl_Image_P;
@@ -55,17 +61,24 @@ procedure Delaunay is
       Org, Dst       : Cv_Point_2d_32F;
       Iorg, Idst     : Cv_Point;
    begin
+      --Put_Line("DRAW_SUBDIV_EDGE: " & Edge'Img);
       Org_Pt := CvSubdiv2dEdgeOrg (Edge);
       Dst_Pt := CvSubdiv2dEdgedst (Edge);
+
+      Put_Line ("Color:" & Color.Val(2)'img);
 
       if not (Dst_Pt = null) and not (Org_Pt = null) then
          Org := Org_Pt.all.Pt;
          Dst := Dst_Pt.all.Pt;
 
          IOrg := CvPoint (Cvround (Org.X), CvRound (Org.Y));
-         IDst := CvPoint (CvRound (Dst.X), CvRound (Org.Y));
+         IDst := CvPoint (CvRound (Dst.X), CvRound (Dst.Y));
 
+         Put_Line ("CvLine org:" & Org.X'Img & Iorg.Y'Img);
+         Put_Line ("CvLine dst:" & Idst.X'Img & Idst.Y'Img);
          CvLine (+Img, Iorg, Idst, Color, 1, Cv_Aa, 0);
+      else
+         Put_Line("Error");
       end if;
    end Draw_Subdiv_Edge;
 
@@ -82,24 +95,30 @@ procedure Delaunay is
       -- Conversions
       ---------
       function From_Arr is
-        new Ada.Unchecked_Conversion (Source => Cv_Arr_P,
+        new Ada.Unchecked_Conversion (Source => Cv_Arr_Pointer,
                                       Target => Imgproc.Cv_Quad_Edge_2d_P);
 
       function Quad_To_Subdiv is
         new Ada.Unchecked_Conversion (Source => Cv_Quad_Edge_2d_P,
                                       Target => Cv_Subdiv_2d_Edge);
+--        Temp      : Cv_Arr_Pointer;
+      Edge1     : Cv_Quad_Edge_2d_P;
    begin
       CvStartReadSeq (To_Seq (Subdiv.all.Edges), Reader'Unchecked_Access, 0);
 
-      for I in Integer range 0 .. Total - 1
+      for I in Integer range 0 .. Total-1
       loop
-         Edge := From_Arr (Value (Reader.Ptr) (0));
-         -- skipping an if here
-         -- if( CV_IS_SET_ELEM( edge ))
-         --{
-         Draw_Subdiv_Edge (Img, Quad_To_Subdiv(From_Arr (Value (Reader.Ptr + 1) (0))), Voronoi_Color);
-         Draw_Subdiv_Edge (Img, Quad_To_Subdiv (Edge), Delaunay_Color);
-         --}
+--             Put("draw_subdiv " & I'Img);
+         Edge := From_Arr (Reader.Ptr);
+         Edge1 := From_Arr(Reader.Ptr + 1);
+         if( Edge.all.Flags >= 0 ) then
+            Draw_Subdiv_Edge (Img, Quad_To_Subdiv (Edge1), Voronoi_Color);
+            Draw_Subdiv_Edge (Img, Quad_To_Subdiv (Edge), Delaunay_Color);
+         else
+            --              Put("skipping");
+            null;
+         end if;
+
          CV_NEXT_SEQ_ELEM( elem_size, Reader'Unchecked_Access );
       end loop;
    end Draw_Subdiv;
@@ -114,12 +133,12 @@ procedure Delaunay is
       Ret : Cv_Subdiv_2D_Point_Location;
    begin
       Ret := CvSubdiv2DLocate (Subdiv, Fp, E0'Unchecked_Access, P'Access);
-      if not (E0 = 0) then
+      if E0 > 0 then
          E := E0;
          loop
             Draw_Subdiv_Edge (Img, E, Active_Color);
             E := CvSubdiv2DGetEdge (E, CV_NEXT_AROUND_LEFT);
-            exit when not (E = E0);
+            exit when (E = E0);
          end loop;
       end if;
       Draw_Subdiv_Point (Img, Fp, Active_Color);
@@ -135,7 +154,8 @@ procedure Delaunay is
          loop
             Temp_Count := Temp_Count + 1;
             T := CvSubdiv2dGetEdge (T, CV_NEXT_AROUND_LEFT);
-            exit when not ( T = Edge);
+--              Put_Line("T="& T'Img);
+            exit when ( T = Edge);
          end loop;
          return Temp_Count;
       end Get_Count;
@@ -160,10 +180,11 @@ procedure Delaunay is
 
       if (N + 1 = Count) then
          Pt := CvSubdiv2dEdgedst (CvSubdiv2dRotateEdge (Edge, 1));
-         CvFillConvexPoly (+Img, Buf, Count, CV_RGB (43, 169, 102), CV_AA, 0);
+         CvFillConvexPoly (+Img, Buf, Count, CV_RGB (Random (G) mod 255, Random (G) mod 255, Random (G) mod 255), CV_AA, 0);
+--           Put_Line("count : " & Count'Img);
          Buf_2d (0) := Buf (0)'unchecked_access;
          Count_Arr(0) := Unsigned_32(Count);
-         CvPolyLine(+Img,Buf_2d,Count_Arr,1,1,Cv_Rgb(0,0,0),1,Cv_Aa,0);
+         CvPolyLine (+Img, Buf_2d, Count_Arr, 1, 1, Cv_Rgb (0, 0, 0), 1, Cv_Aa, 0);
       end if;
    end Draw_Subdiv_Facet;
 
@@ -181,7 +202,7 @@ procedure Delaunay is
                                       Target => Cv_Subdiv_2d_Edge);
 
       function From_Arr is
-        new Ada.Unchecked_Conversion (Source => Cv_Arr_P,
+        new Ada.Unchecked_Conversion (Source => Cv_Arr_Pointer,
                                       Target => Imgproc.Cv_Quad_Edge_2d_P);
 
    begin
@@ -190,17 +211,16 @@ procedure Delaunay is
 
       for I in Integer range 0  .. Total - 1
       loop
-         Edge := From_Arr (Value (Reader.Ptr) (0));
+--           Put_Line("test" & I'Img);
+         Edge := From_Arr (Reader.Ptr);
 
-         -- skipping if here
-         --if ( CV_IS_SET_ELEM ( Edge ))
-         --{
-         E := Quad_To_Subdiv (Edge);
-         -- left
-         Draw_Subdiv_Facet (Img, CvSubdiv2dRotateEdge (E, 1));
-         -- right
-         Draw_Subdiv_Facet (Img, CvSubdiv2dRotateEdge (E, 3));
-         --}
+         if( Edge.all.Flags >= 0 ) then
+            E := Quad_To_Subdiv (Edge);
+            -- left
+            Draw_Subdiv_Facet (Img, CvSubdiv2dRotateEdge (E, 1));
+            -- right
+            Draw_Subdiv_Facet (Img, CvSubdiv2dRotateEdge (E, 3));
+         end if;
          CV_NEXT_SEQ_ELEM (Elem_Size, Reader'Unchecked_Access);
       end loop;
    end Paint_Voronoi;
@@ -212,11 +232,7 @@ procedure Delaunay is
       Subdiv                                                         : Cv_Subdiv_2d_P;
       Img                                                            : aliased Ipl_Image_P;
       Active_Facet_Color, Delaunay_Color, Voronoi_Color, Bkgnd_Color : Cv_Scalar;
-      subtype Ran is Integer range 5 .. Rect.Width - 5;
-      package Random_Num is new Ada.Numerics.Discrete_Random (Ran);
-      use Random_Num;
 
-      G : Generator;
 
       Ret : Integer;
       S_Ret : Cv_Subdiv_2D_Point_P;
@@ -240,27 +256,31 @@ procedure Delaunay is
 
       for I in Integer range 0 .. 199
       loop
-         Fp := (Float (Random (G)), Float (Random (G)));
-
+         Fp := (Float (Random (G)),Float (Random (G)));
          Locate_Point (Subdiv, Fp, Img, Active_Facet_Color);
          CvShowImage (Win, +Img);
 
-         exit when Character'Pos (CvWaitKey (100)) >= 0;
+         exit when CvWaitKey (10) = Ascii.Esc;
+
+--           Put_Line("fp: " & Fp.X'Img & Fp.Y'Img);
 
          S_Ret := CvSubdivDelaunay2dInsert (Subdiv, Fp);
+--           Put_Line("s_ret: " & S_Ret.all.Id'Img);
          CvCalcSubdivVoronoi2d (Subdiv);
          CvSet (+Img, Bkgnd_Color, null);
          Draw_Subdiv (Img, Subdiv, Delaunay_Color, Voronoi_Color);
          CvShowImage (Win, +Img);
 
-         exit when Character'Pos (CvWaitKey (100)) >= 0;
+         exit when CvWaitKey (10) = Ascii.Esc;
       end loop;
+
+      Put("Here we are");
 
       CvSet (+Img, Bkgnd_Color, null);
       Paint_Voronoi (Subdiv, Img);
       CvShowImage (Win, +Img);
 
-      if Character'Pos (CvWaitKey (100)) >= 0 then
+      if CvWaitKey (0) = Ascii.Esc then
          CvReleaseMemStorage (Storage'Access);
          CvReleaseImage (Image => Img'Access);
          CvDestroyWindow (Win);
