@@ -148,7 +148,7 @@ package body Core is
    procedure CV_WRITE_SEQ_ELEM_VAR ( Elem_Ptr : Cv_Arr_Pointer;
                                     Writer   : Cv_Seq_Writer_P ) is
    begin
-      if (Writer.all.Ptr - Writer.all.Block_Max) <= 0 then
+      if (Writer.all.Ptr - Writer.all.Block_Max) >= 0 then
          CvCreateSeqBlock (Writer);
       end if;
       Memcpy (Writer.all.Ptr'Address, Elem_Ptr'Address, System.CRTL.Size_T (Writer.all.Seq.all.Elem_Size));
@@ -159,7 +159,7 @@ package body Core is
                                Reader    : Cv_Seq_Reader_P) is
    begin
       Reader.all.Ptr := Reader.all.Ptr + Ptrdiff_T (Elem_Size);
-      if (Reader.all.Ptr - Reader.all.BlockMax) <= 0 then
+      if (Reader.all.Ptr - Reader.all.BlockMax) >= 0 then
          CvChangeSeqBlock (To_Void (Reader), 1);
       end if;
    end CV_NEXT_SEQ_ELEM;
@@ -168,7 +168,7 @@ package body Core is
                                Reader    : Cv_Chain_Pt_Reader_P) is
    begin
       Reader.all.Ptr := Reader.all.Ptr + Ptrdiff_T (Elem_Size);
-      if (Reader.all.Ptr - Reader.all.BlockMax) <= 0 then
+      if (Reader.all.Ptr - Reader.all.BlockMax) >= 0 then
          CvChangeSeqBlock (To_Void (Reader), 1);
       end if;
    end CV_NEXT_SEQ_ELEM;
