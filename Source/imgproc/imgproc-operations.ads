@@ -70,15 +70,15 @@ package Imgproc.Operations is
                        Param4     : Long_Float := 0.0);
 
    -- Convolves the image with the kernel
-   procedure CvFilter2D (Src : Cv_Arr_P;
-                         Dst : Cv_Arr_P;
+   procedure CvFilter2D (Src    : Cv_Arr_P;
+                         Dst    : Cv_Arr_P;
                          Kernel : Cv_Mat_P;
                          Anchor : Cv_Point := (-1, -1));
 
    -- Finds integral image: SUM(X,Y) = sum(x<X,y<Y)I(x,y)
-   procedure CvIntegral (Image : Cv_Arr_P;
-                         Sum   : Cv_Arr_P;
-                         SqSum : Cv_Arr_P := null;
+   procedure CvIntegral (Image     : Cv_Arr_P;
+                         Sum       : Cv_Arr_P;
+                         SqSum     : Cv_Arr_P := null;
                          TitledSum : Cv_Arr_P := null);
 
    -- Smoothes the input image with gaussian kernel and then down-samples it.
@@ -110,21 +110,21 @@ package Imgproc.Operations is
                                Extra_Layers : Integer);
 
    -- Does meanshift image segmentation
-   procedure CvPyrMeanShiftFiltering (Src : Cv_Arr_P;
-                                      Dst : Cv_Arr_P;
-                                      Sp  : Long_Float;
-                                      Sr  : Long_Float;
+   procedure CvPyrMeanShiftFiltering (Src       : Cv_Arr_P;
+                                      Dst       : Cv_Arr_P;
+                                      Sp        : Long_Float;
+                                      Sr        : Long_Float;
                                       Max_Level : Integer := 1;
                                       Termcrit  : Cv_Term_Criteria := CvTermCriteria (CV_TERMCRIT_ITER + CV_TERMCRIT_EPS, 5, 1.0));
 
    -- Segments image using seed markers
-   procedure CvWatershed (Image : Cv_Arr_P;
+   procedure CvWatershed (Image   : Cv_Arr_P;
                           Markers : Cv_Arr_P);
 
    -- Inpaints the selected region in the image.
-   procedure CvInpaint (Src : Cv_Arr_P;
-                        Mask : Cv_Arr_P;
-                        Dst  : Cv_Arr_P;
+   procedure CvInpaint (Src           : Cv_Arr_P;
+                        Mask          : Cv_Arr_P;
+                        Dst           : Cv_Arr_P;
                         InpaintRadius : Long_Float;
                         Flags         : Integer);
 
@@ -146,46 +146,46 @@ package Imgproc.Operations is
                          Code : Color_Conversion);
 
    -- Resizes an image.
-   procedure CvResize (Src : Cv_Arr_P;
-                       Dst : Cv_Arr_P;
+   procedure CvResize (Src          : Cv_Arr_P;
+                       Dst          : Cv_Arr_P;
                        Interplation : Cv_Inter := CV_INTER_LINEAR);
 
    --Applies an affine transformation to an image.
-   procedure CvWarpAffine (Src : Cv_Arr_P;
-                           Dst : Cv_Arr_P;
+   procedure CvWarpAffine (Src       : Cv_Arr_P;
+                           Dst       : Cv_Arr_P;
                            MapMatrix : Cv_Mat_P;
-                           Flags     : Integer := Cv_Inter'Pos(CV_INTER_LINEAR) + Cv_Warp'Pos(CV_WARP_FILL_OUTLIERS);
+                           Flags     : Integer := Cv_Inter'Pos (CV_INTER_LINEAR) + Cv_Warp'Pos (CV_WARP_FILL_OUTLIERS);
                            Fillval   : Cv_Scalar := CvScalarAll (0.0));
 
    -- Calculates the affine transform from 3 corresponding points.
-   function CvGetAffineTransform (Src : Cv_Point_2D_32F_Array;
-                                  Dst : Cv_Point_2D_32F_Array;
+   function CvGetAffineTransform (Src       : Cv_Point_2D_32F_Array;
+                                  Dst       : Cv_Point_2D_32F_Array;
                                   MapMatrix : Cv_Mat_P) return Cv_Mat_P;
 
    -- Calculates the affine matrix of 2d rotation.
-   function Cv2DRotationMatrix (Center : Cv_Point_2D_32F;
-                                Angle  : Long_Float;
-                                Scale  : Long_Float;
+   function Cv2DRotationMatrix (Center    : Cv_Point_2D_32F;
+                                Angle     : Long_Float;
+                                Scale     : Long_Float;
                                 MapMatrix : Cv_Mat_P) return Cv_Mat_P;
 
    --Applies a perspective transformation to an image.
-   procedure CvWarpPerspective (Src : Cv_Arr_P;
-                                Dst : Cv_Arr_P;
+   procedure CvWarpPerspective (Src       : Cv_Arr_P;
+                                Dst       : Cv_Arr_P;
                                 MapMatrix : Cv_Mat_P;
-                                Flags     : Integer := Cv_Inter'Pos(CV_INTER_LINEAR) + Cv_Warp'Pos(CV_WARP_FILL_OUTLIERS);
+                                Flags     : Integer := Cv_Inter'Pos (CV_INTER_LINEAR) + Cv_Warp'Pos (CV_WARP_FILL_OUTLIERS);
                                 Fillval   : Cv_Scalar := CvScalarAll (0.0));
 
    -- Calculates the perspective transform from 4 corresponding points.
-   function CvGetPerspectiveTransform (Src : Cv_Point_2D_32F_Array;
-                                       Dst : Cv_Point_2D_32F_Array;
+   function CvGetPerspectiveTransform (Src       : Cv_Point_2D_32F_Array;
+                                       Dst       : Cv_Point_2D_32F_Array;
                                        MapMatrix : Cv_Mat_P) return Cv_Mat_P;
 
    -- Applies a generic geometrical transformation to the image.
-   procedure CvRemap (Src : Cv_Arr_P;
-                      Dst : Cv_Arr_P;
-                      Mapx : Cv_Arr_P;
-                      Mapy : Cv_Arr_P;
-                      Flags   : Integer := Cv_Inter'Pos(CV_INTER_LINEAR) + Cv_Warp'Pos(CV_WARP_FILL_OUTLIERS);
+   procedure CvRemap (Src     : Cv_Arr_P;
+                      Dst     : Cv_Arr_P;
+                      Mapx    : Cv_Arr_P;
+                      Mapy    : Cv_Arr_P;
+                      Flags   : Integer := Cv_Inter'Pos (CV_INTER_LINEAR) + Cv_Warp'Pos (CV_WARP_FILL_OUTLIERS);
                       Fillval : Cv_Scalar := CvScalarAll (0.0));
 
    -- Converts mapx & mapy from floating-point to integer formats for cvRemap
@@ -195,36 +195,40 @@ package Imgproc.Operations is
                             Mapalpha : Cv_Arr_P);
 
    -- Remaps an image to log-polar space.
-   procedure CvLogPolar (Src : Cv_Arr_P;
-                         Dst : Cv_Arr_P;
-                         Center : Cv_Point_2D_32F;
-                         M      : Long_Float;
-                         Flags  : Integer := Cv_Inter'Pos (CV_INTER_LINEAR) + Cv_Warp'Pos (CV_WARP_FILL_OUTLIERS));
+   procedure CvLogPolar (Src        : Cv_Arr_P;
+                         Dst        : Cv_Arr_P;
+                         --                           Center : Cv_Point_2D_32F;
+                         X          : Long_Float;
+                         Y          : Long_Float;
+                         M          : Long_Float;
+                         Flags      : Integer := Cv_Inter'Pos (CV_INTER_LINEAR) + Cv_Warp'Pos (CV_WARP_FILL_OUTLIERS));
 
    -- Performs forward or inverse linear-polar image transform
    procedure CvLinearPolar (Src        : Cv_Arr_P;
                             Dst        : Cv_Arr_P;
-                            Center     : Cv_Point_2d_32f;
+                            --                           Center : Cv_Point_2D_32F;
+                            X          : Long_Float;
+                            Y          : Long_Float;
                             Max_Radius : Long_Float;
                             Flags      : Integer := Cv_Inter'Pos (CV_INTER_LINEAR) + Cv_Warp'Pos (CV_WARP_FILL_OUTLIERS));
 
    -- Transforms an image to compensate for lens distortion.
-   procedure CvUndistort2 (Src : Cv_Arr_P;
-                           Dst : Cv_Arr_P;
-                           CameraMatrix : Cv_Mat_P;
-                           DistCoefs    : Cv_Mat_P;
+   procedure CvUndistort2 (Src             : Cv_Arr_P;
+                           Dst             : Cv_Arr_P;
+                           CameraMatrix    : Cv_Mat_P;
+                           DistCoefs       : Cv_Mat_P;
                            NewCameraMatrix : Cv_Mat_P);
 
-      -- Computes an undistortion map.
+   -- Computes an undistortion map.
    procedure CvInitUndistortMap (CameraMatrix : Cv_Mat_P;
                                  DistCoeffs   : Cv_Mat_P;
                                  Map1         : Cv_Arr_P;
                                  Map2         : Cv_Arr_P);
 
    -- Computes the undistortion and rectification transformation map.
-   procedure CvInitUndistortRectifyMap (CameraMatrix : Cv_Mat_P;
-                                        DistCoeffs   : Cv_Mat_P;
-                                        R            : Cv_Mat_P;
+   procedure CvInitUndistortRectifyMap (CameraMatrix    : Cv_Mat_P;
+                                        DistCoeffs      : Cv_Mat_P;
+                                        R               : Cv_Mat_P;
                                         NewCameraMatrix : Cv_Mat_P;
                                         Map1            : Cv_Arr_P;
                                         Map2            : Cv_Arr_P);
@@ -299,31 +303,31 @@ package Imgproc.Operations is
    -----------------------------------------------------------------------------
    -- Fetches pixels that belong to the specified line segment and stores them to the buffer.
    -- Returns the number of retrieved points.
-   function CvSampleLine (Image : Cv_Arr_P;
-                          Pt1   : Cv_Point;
-                          Pt2   : Cv_Point;
-                          Buffer : Cv_Void_P;
+   function CvSampleLine (Image        : Cv_Arr_P;
+                          Pt1          : Cv_Point;
+                          Pt2          : Cv_Point;
+                          Buffer       : Cv_Void_P;
                           Connectivity : Integer := 8) return Integer;
 
    -- Retrieves the rectangular image region with specified center from the input array.
    -- dst(x,y) <- src(x + center.x - dst_width/2, y + center.y - dst_height/2).
    -- Values of pixels with fractional coordinates are retrieved using bilinear interpolation
-   procedure CvGetRectSubPix (Src : Cv_Arr_P;
-                              Dst : Cv_Arr_P;
+   procedure CvGetRectSubPix (Src    : Cv_Arr_P;
+                              Dst    : Cv_Arr_P;
                               Center : CV_Point_2D_32F);
 
    --  Retrieves quadrangle from the input array.
    --   matrixarr = ( a11  a12 | b1 )   dst(x,y) <- src(A[x y]' + b)
    --               ( a21  a22 | b2 )   (bilinear interpolation is used to retrieve pixels
    --                                   with fractional coordinates)
-   procedure CvGetQuadrangleSubPix (Src : Cv_Arr_P;
-                                    Dst : Cv_Arr_P;
+   procedure CvGetQuadrangleSubPix (Src       : Cv_Arr_P;
+                                    Dst       : Cv_Arr_P;
                                     MapMatrix : Cv_Mat_P);
 
    -- Measures similarity between template and overlapped windows in the source image
    -- and fills the resultant image with the measurements
-   procedure CvMatchTemplate (Image : Cv_Arr_P;
-                              Templ : Cv_Arr_P;
+   procedure CvMatchTemplate (Image  : Cv_Arr_P;
+                              Templ  : Cv_Arr_P;
                               Result : Cv_Arr_P;
                               Method : Integer);
 
@@ -385,7 +389,7 @@ package Imgproc.Operations is
    procedure CvStartReadChainPoints (Chain  : Cv_Chain_P;
                                      Reader : Cv_Chain_Pt_Reader_P);
 
-      -- Gets the next chain point.
+   -- Gets the next chain point.
    function CvReadChainPoint (Reader : Cv_Chain_Pt_Reader_P) return Cv_Point;
 
    -----------------------------------------------------------------------------
@@ -396,9 +400,9 @@ package Imgproc.Operations is
                                      Rect   : Cv_Rect);
 
    -- Creates new subdivision
-   function CvCreateSubdiv2D (Subdiv_Type : Integer;
-                              Header_Size : Integer;
-                              Vtx_Size    : Integer;
+   function CvCreateSubdiv2D (Subdiv_Type   : Integer;
+                              Header_Size   : Integer;
+                              Vtx_Size      : Integer;
                               Quadedge_Size : Integer;
                               Storage       : Cv_Mem_Storage_P) return Cv_Subdiv_2D_P;
 
@@ -437,7 +441,7 @@ package Imgproc.Operations is
    function CvSubdiv2DNextEdge (Edge : Cv_Subdiv_2D_Edge) return Cv_Subdiv_2D_Edge;
 
    -- Returns another edge of the same quad-edge.
-   function CvSubdiv2DRotateEdge (Edge : Cv_Subdiv_2D_Edge;
+   function CvSubdiv2DRotateEdge (Edge   : Cv_Subdiv_2D_Edge;
                                   Rotate : Integer) return Cv_Subdiv_2D_Edge;
 
    function CvSubdiv2DSymEdge (Edge : Cv_Subdiv_2D_Edge) return CV_Subdiv_2D_Edge;
@@ -553,7 +557,7 @@ package Imgproc.Operations is
                           Ranges   : Cv_32F_Pointer_Array := Cv_32F_Array_NULL;
                           Uniform  : Integer := 1) return Cv_Histogram_P;
 
-    --Sets the bounds of the histogram bins.
+   --Sets the bounds of the histogram bins.
    procedure CvSetHistBinRanges (Hist     : Cv_Histogram_P;
                                  Ranges   : Cv_32F_Pointer_Array;
                                  Uniforrm : Integer);
@@ -626,11 +630,11 @@ package Imgproc.Operations is
 
    --Locates a template within an image by using a histogram comparison.
    procedure CvCalcArrBackProjectPatch (Images    : Cv_Arr_P_Array;
-                                     Dst       : Cv_Arr_P;
-                                     PatchSize : Cv_Size;
-                                     Hist      : Cv_Histogram_P;
-                                     Method    : Hist_Compare_Method;
-                                     Factor    : Float);
+                                        Dst       : Cv_Arr_P;
+                                        PatchSize : Cv_Size;
+                                        Hist      : Cv_Histogram_P;
+                                        Method    : Hist_Compare_Method;
+                                        Factor    : Float);
 
    --Locates a template within an image by using a histogram comparison.
    procedure CvCalcBackProjectPatch (Images    : Cv_Arr_P_Array;
@@ -659,10 +663,10 @@ package Imgproc.Operations is
                               Labels       : Cv_Arr_P := null);
 
    -- Applies a fixed-level threshold to array elements.
-   procedure CvThreshold (Src : Cv_Arr_P;
-                          Dst : Cv_Arr_P;
-                          Threshold : Long_Float;
-                          MaxValue  : Long_Float;
+   procedure CvThreshold (Src           : Cv_Arr_P;
+                          Dst           : Cv_Arr_P;
+                          Threshold     : Long_Float;
+                          MaxValue      : Long_Float;
                           ThresholdType : Threshold_Type);
 
    -- Applies adaptive threshold to grayscale image.
@@ -679,7 +683,7 @@ package Imgproc.Operations is
                                   Param1          : Long_Float := 5.0);
 
    -- Fills the connected component until the color difference gets large enough
-   procedure CvFloodFill (Image : Cv_Arr_P;
+   procedure CvFloodFill (Image     : Cv_Arr_P;
                           SeedPoint : Cv_Point;
                           NewValue  : Cv_Scalar;
                           LoDiff    : Cv_Scalar := CvScalarAll (0.0);
@@ -692,30 +696,30 @@ package Imgproc.Operations is
    -- Feature detection
    -----------------------------------------------------------------------------
    -- Runs canny edge detector
-   procedure CvCanny ( Image : Cv_Arr_P;
-                      Edges : Cv_Arr_P;
-                      Threshold1 : Long_Float;
-                      Threshold2 : Long_Float;
+   procedure CvCanny ( Image        : Cv_Arr_P;
+                      Edges         : Cv_Arr_P;
+                      Threshold1    : Long_Float;
+                      Threshold2    : Long_Float;
                       Aperture_Size : Integer := 3);
 
    -- Calculates constraint image for corner detection
    -- Dx^2 * Dyy + Dxx * Dy^2 - 2 * Dx * Dy * Dxy.
    -- Applying threshold to the result gives coordinates of corners
-   procedure CvPreCornerDetect ( Image : Cv_Arr_P;
-                                Corners : Cv_Arr_P;
+   procedure CvPreCornerDetect ( Image       : Cv_Arr_P;
+                                Corners      : Cv_Arr_P;
                                 ApertureSize : Integer := 3);
 
    -- Calculates eigenvalues and eigenvectors of image blocks for corner detection.
-   procedure CvCornerEigenValsAndVecs (Image : Cv_Arr_P;
-                                       Eigenvv : Cv_Arr_P;
-                                       BlockSize : Integer;
+   procedure CvCornerEigenValsAndVecs (Image         : Cv_Arr_P;
+                                       Eigenvv       : Cv_Arr_P;
+                                       BlockSize     : Integer;
                                        Aperture_Size : Integer := 3);
 
    -- Calculates the minimal eigenvalue of gradient matrices for corner detection.
-   procedure CvCornerMinEigenVal(Image : Cv_Arr_P;
-                                 Eigenval : Cv_Arr_P;
-                                 BlockSize : Integer;
-                                 Aperture_Size : Integer := 3);
+   procedure CvCornerMinEigenVal (Image         : Cv_Arr_P;
+                                  Eigenval      : Cv_Arr_P;
+                                  BlockSize     : Integer;
+                                  Aperture_Size : Integer := 3);
 
    --Harris edge detector.
    procedure CvCornerHarris (Image         : Cv_Arr_P;
@@ -725,10 +729,10 @@ package Imgproc.Operations is
                              K             : Long_Float := 0.04);
 
    --Refines the corner locations.
-   procedure CvFindCornerSubPix (Image : Cv_Arr_P;
-                                 Corners : Cv_Point_2D_32F; -- fixa
-                                 Count   : Integer;
-                                 Win     : Cv_Size;
+   procedure CvFindCornerSubPix (Image    : Cv_Arr_P;
+                                 Corners  : Cv_Point_2D_32F; -- fixa
+                                 Count    : Integer;
+                                 Win      : Cv_Size;
                                  ZeroZone : Cv_Size;
                                  Criteria : Cv_Term_Criteria);
 
@@ -746,17 +750,17 @@ package Imgproc.Operations is
                                     K            : Long_Float := 0.04);
 
    --Finds lines in a binary image using a Hough transform.
-   function CvHoughLines2 (Image : Cv_Arr_P;
-                           Storage : Cv_Void_P;
-                           Method  : Integer;
-                           Rho     : Long_Float;
-                           Theta   : Long_Float;
+   function CvHoughLines2 (Image     : Cv_Arr_P;
+                           Storage   : Cv_Void_P;
+                           Method    : Integer;
+                           Rho       : Long_Float;
+                           Theta     : Long_Float;
                            Threshold : Integer;
                            Param1    : Long_Float := 0.0;
                            Param2    : Long_Float := 0.0) return Cv_Seq_P;
 
    -- Finds circles in the image
-   function CvHoughCircles (Image : Cv_Arr_P;
+   function CvHoughCircles (Image          : Cv_Arr_P;
                             Circle_Storage : Cv_Void_P;
                             Method         : Integer;
                             Dp             : Long_Float;

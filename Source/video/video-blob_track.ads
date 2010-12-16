@@ -23,6 +23,8 @@ with Core; use Core;
 
 package Video.Blob_Track is
 
+   procedure Bleh;
+
    -- Cv_Blob ------------------------------------------------------------------
    -----------------------------------------------------------------------------
    type Cv_Blob is record
