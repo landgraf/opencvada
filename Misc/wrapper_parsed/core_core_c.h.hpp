@@ -20,3 +20,5 @@ void cvDecRefData_wrap(CvArr * arr );
  const char * cvReadString_wrap(const CvFileNode * node , const char * default_value );
  const char * cvReadStringByName_wrap(const CvFileStorage * fs , const CvFileNode * map , const char * name , const char * default_value );
  void * cvReadByName_wrap(CvFileStorage * fs , const CvFileNode * map , const char * name , CvAttrList * attributes );
+
+ CvPoint2D32f cvMatElem_wrap(CvMat *mat, int elemType, int row, int col);

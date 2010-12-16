@@ -117,7 +117,7 @@ package Video.Tracking is
                                          Iterations : Integer;
                                          Poly_N     : Integer;
                                          Poly_Sigma : Long_Float;
-                                         Flags      : Unsigned_32);
+                                         Flags      : Integer);
 
    -----------------------------------------------------------------------------
    -- motion templates

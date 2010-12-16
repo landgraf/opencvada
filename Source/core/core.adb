@@ -664,7 +664,7 @@ package body Core is
                          Row      : Integer;
                          Col      : Integer) return Cv_8u_Pointer is
    begin
-      return CV_MAT_ELEM_PTR_FAST (Mat, Row, Col, Elemtype'Size / 8);
+      return CV_MAT_ELEM_PTR_FAST (Mat, Row, Col, Elemtype);
    end CV_MAT_ELEM;
 
 
