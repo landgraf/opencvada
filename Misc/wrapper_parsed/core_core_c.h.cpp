@@ -63,4 +63,4 @@ void cvDecRefData_wrap(CvArr * arr ){
 
  CvPoint2D32f cvMatElem_wrap(CvMat *mat, int elemType, int row, int col) {
 	 return CV_MAT_ELEM(*mat, CvPoint2D32f, row, col);
- }
+}
