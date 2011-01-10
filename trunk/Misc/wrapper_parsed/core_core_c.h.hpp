@@ -25,4 +25,6 @@ extern "C" {
 
   CvPoint2D32f cvMatElem_wrap(CvMat *mat, int elemType, int row, int col);
 
+
+
 }
