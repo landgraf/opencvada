@@ -789,7 +789,7 @@ package body Core is
    function CV_IS_IMAGE (Img : IPL_IMAGE_P) return Integer is
    begin
       if CV_IS_IMAGE_HDR (Img) = 1 then
-         if not (Img.all.Image_Data = Null_Ptr) then
+         if not (Img.all.Image_Data = null) then
             return 1;
          end if;
       end if;

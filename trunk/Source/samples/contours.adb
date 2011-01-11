@@ -9,7 +9,8 @@ with Ada.Numerics.Generic_Elementary_Functions; use Core.Long_Float_Numerics;
 
 
 procedure Contours is
-   W        : constant := 500;
+--     W        : constant := 500;
+   Size     : constant Cv_Size := CvSize (500, 500);
    Levels   : aliased Integer := 3;
    Contours : aliased Cv_Seq_P := null;
 
@@ -18,7 +19,7 @@ procedure Contours is
 
    procedure On_Trackbar (Position : Integer) is
 
-      Cnt_Img        : aliased Ipl_Image_P := CvCreateImage (W, W, 8, 3);
+      Cnt_Img        : aliased Ipl_Image_P := CvCreateImage (Size, 8, 3);
       Contours_Local : Cv_Seq_P := Contours;
       Levels_Local   : constant Integer := Levels - 3;
    begin
@@ -33,7 +34,7 @@ procedure Contours is
 
 
    Storage  : aliased Cv_Mem_Storage_P := CvCreateMemStorage (0);
-   Img      : aliased Ipl_Image_P := CvCreateImage (W, W, 8, 1);
+   Img      : aliased Ipl_Image_P := CvCreateImage (Size, 8, 1);
 
    Dx, Dy   : Long_Float;
    White, Black : Cv_Scalar;

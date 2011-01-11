@@ -417,11 +417,13 @@ package Core is
       Image_ID          : Void_P;
       Tile_Info         : Ipl_Tile_Info_P;
       Image_Size        : Integer;
-      Image_Data        : C_Strings.Chars_Ptr; -- Test with a cv_8u_array later, same with Data_Origin
+      Image_Data        : Cv_8u_Pointer;
+--        Image_Data        : C_Strings.Chars_Ptr; -- Test with a cv_8u_array later, same with Data_Origin
       Width_Step        : Integer;
       Border_Model      : Cv_32s_Array (1 .. 4);
       Border_Const      : Cv_32s_Array (1 .. 4);
-      Image_Data_Origin : C_Strings.Chars_Ptr; -- This might require some wrapper function to return a proper Ada string
+      Image_Data_Origin : Cv_8u_Pointer;
+--        Image_Data_Origin : C_Strings.Chars_Ptr; -- This might require some wrapper function to return a proper Ada string
    end record;
    pragma Convention (C_Pass_By_Copy, Ipl_Image);
    --   type Ipl_Image_Array is array (Integer range <>) of aliased Ipl_Image;
@@ -1592,6 +1594,13 @@ package Core is
    ------------ Arr conversions ------------------------------------------------
    pragma Warnings (Off);
    function To_Arr is
+     new Ada.Unchecked_Conversion (Source => Cv_8u_Array_P,
+                                   Target => Cv_Arr_P);
+   function To_Arr is
+     new Ada.Unchecked_Conversion (Source => Cv_Contour_P,
+                                   Target => Cv_Arr_P);
+
+   function To_Arr is
      new Ada.Unchecked_Conversion (Source => Ipl_Image_P,
                                    Target => Cv_Arr_P);
 
@@ -1634,6 +1643,18 @@ package Core is
 
    -- Unchecked Conversions ----------------------------------------------------
    ------------ Void conversions -----------------------------------------------
+   function From_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+                                   Target => Cv_Point_P);
+
+   function From_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+                                   Target => Cv_Seq_P);
+
+   function From_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+                                   Target => Cv_Contour_P);
+
    function From_Void is
      new Ada.Unchecked_Conversion (Source => Cv_Void_P,
                                    Target => Ipl_Image_P);
@@ -1816,6 +1837,15 @@ package Core is
    --       new Interfaces.C.Pointers (Integer, Cv_Size_P, Cv_Size_P_Array, null);
    --     use type C_Size_P_Arr_Ptr.Pointer;
    --     subtype C_Size_P_Ptr is C_Size_P_Arr_Ptr.Pointer;
+
+
+   function CvMatElem (Mat       : Cv_Mat_P;
+                       Elem_Size : Integer;
+                       Row       : Integer;
+                       Col       : Integer)
+                       return Cv_Void_P;
+      pragma Import (C, CvMatElem, "cvMatElem_wrap");
+
 
    -----------------------------------------------------------------------------
    -- Fix for Interfaces.C.Pointers
