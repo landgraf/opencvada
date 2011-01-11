@@ -12,7 +12,21 @@ with Interfaces; use Interfaces;
 with Interfaces.C; use Interfaces.C;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
+with Ada.Unchecked_Conversion;
+
 procedure Mser is
+
+   type Cv_Seq_P_P is access Cv_Seq_P;
+   type Cv_Contour_P_P is access Cv_Contour_P;
+
+   function From_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+                                   Target => Cv_Contour_P_P);
+
+   function From_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+                                   Target => Cv_Seq_P_P);
+
    procedure Help is
    begin
       Put_Line ("This program demonstrated the Maximal Extermal Region interest point detector.");
@@ -49,7 +63,7 @@ procedure Mser is
    Rsp_Array : Cv_8u_Array_P;
    Ellipses : aliased Ipl_Image_P;
    Contours : aliased Cv_Seq_P := new Cv_Seq;
-   Storage  : constant Cv_Mem_Storage_P := CvCreateMemStorage;
+   Storage  : Cv_Mem_Storage_P;
    Hsv      : Ipl_Image_P;
    Params   : Cv_MSER_Params;
 
@@ -58,6 +72,8 @@ procedure Mser is
 
    Contour  : Cv_Contour_P;
    Box      : Cv_Box_2d;
+
+   Iterator : Cv_8u_Pointer;
 
    Use_Debug : constant Boolean := False;
 begin
@@ -75,6 +91,8 @@ begin
       return;
    end if;
 
+   Storage := CvCreateMemStorage;
+
    Rsp := CvLoadImage (To_String (Path), CV_LOAD_IMAGE_COLOR);
    Ellipses := CvCloneImage (Rsp);
    Hsv := CvCreateImage (CvGetSize (To_Arr (Rsp)), IPL_DEPTH_8U, 3);
@@ -85,14 +103,12 @@ begin
    Rsp_Array := new Cv_8u_Array (1 .. (Rsp.all.Width * Rsp.all.Height * 3));
    Rsp_Array.all := Cv_8u_Pointer_Pkg.Value(Rsp.all.Image_Data, Ptrdiff_T(Rsp.all.Width * Rsp.all.Height * 3));
 
-   for I in reverse 1 .. Contours.all.Total loop
-      R := From_Void (CvGetSeqElem (Contours, I));
-      for J in Integer range 1 .. R.all.Total - 1 loop
-         Pt := From_Void (CvGetSeqElem (R, J));
+   Iterator := Rsp.all.Image_Data;
 
-         Put_Line ("I, J:" & I'Img & J'Img);
-         Put_Line ("pt: (" & Pt.all.X'Img & "," & Pt.all.Y'Img & ")");
-         New_Line;
+   for I in reverse 0 .. Contours.all.Total - 1 loop
+      R := From_Void (CvGetSeqElem (Contours, I)).all;
+      for J in Integer range 0 .. R.all.Total - 1 loop
+         Pt := From_Void (CvGetSeqElem (R, J));
 
          if Use_Debug then
             Debug_Windows :
@@ -132,7 +148,7 @@ begin
    end loop;
 
    for I in Integer range 1 .. Contours.all.Total loop
-      Contour := From_Void (CvGetSeqElem (Contours, I));
+      Contour := From_Void (CvGetSeqElem (Contours, I)).all;
       Box := CvFitEllipse2 (To_Arr (Contour));
       Box.Angle := Float (CV_PI / 2.0 - Box.Angle);
 
