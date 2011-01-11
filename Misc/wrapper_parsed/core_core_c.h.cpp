@@ -61,6 +61,10 @@ void cvDecRefData_wrap(CvArr * arr ){
 	return cvReadByName(/*CvFileStorage*//***/fs , /*const*//*CvFileNode*//***/map , /*const*//*char*//***/name , /*CvAttrList*//***/attributes);
 }
 
- CvPoint2D32f cvMatElem_wrap(CvMat *mat, int elemType, int row, int col) {
-	 return CV_MAT_ELEM(*mat, CvPoint2D32f, row, col);
+#define CV_MAT_ELEM_WITH_SIZE( mat, elemsize, row, col )           \
+    ((void *)CV_MAT_ELEM_PTR_FAST( (mat), (row), (col), (elemsize)))
+
+
+ void *cvMatElem_wrap(CvMat *mat, int elemSize, int row, int col) {
+	 return CV_MAT_ELEM_WITH_SIZE(*mat, elemSize / 8, row, col);
 }

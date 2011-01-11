@@ -243,7 +243,7 @@ procedure Delaunay is
       Delaunay_Color  := CV_RGB ( 0, 0, 0);
       Voronoi_Color := CV_RGB (0, 180, 0);
       Bkgnd_Color := CV_RGB (255, 255, 255);
-      Img := CvCreateImage (Rect.Width, Rect.Height, 8, 3);
+      Img := CvCreateImage (CvSize(Rect.Width, Rect.Height), 8, 3);
       CvSet (+Img, Bkgnd_Color, null);
 
       Ret := CvNamedWindow (Win, 1);

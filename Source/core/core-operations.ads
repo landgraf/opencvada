@@ -38,8 +38,7 @@ package Core.Operations is
    procedure CvFree (Ptr : access Cv_Void_P);
 
    --     Creates an image header but does not allocate the image data.
-   function CvCreateImageHeader (Width   : Integer;
-                                 Height  : Integer;
+   function CvCreateImageHeader (Size    : Cv_Size;
                                  Depth   : Unsigned_32;
                                  Channel : Integer)
                                  return Ipl_Image_P;
@@ -54,8 +53,7 @@ package Core.Operations is
                                return Ipl_Image_P;
 
    --     Creates an image header and allocates the image data.
-   function CvCreateImage (Width    : Integer;
-                           Height   : Integer;
+   function CvCreateImage (Size     : Cv_Size;
                            Depth    : Unsigned_32;
                            Channels : Integer)
                            return Ipl_Image_P;
