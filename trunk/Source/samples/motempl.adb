@@ -56,7 +56,7 @@ procedure Motempl is
       if Mhi = null or else Mhi.all.Width /= Size.Width or else Mhi.all.Height /= Size.Height then
          for I in Integer range Buf'Range loop
             CvReleaseImage (Buf (I)'Access);
-            Buf (I) := CvCreateImage (Size.Width, Size.Height, IPL_DEPTH_8U, 1);
+            Buf (I) := CvCreateImage (CvSize(Size.Width, Size.Height), IPL_DEPTH_8U, 1);
             CvZero (+Buf (I));
          end loop;
          CvReleaseImage (Mhi'Access);
@@ -64,11 +64,11 @@ procedure Motempl is
          CvReleaseImage (Segmask'Access);
          CvReleaseImage (Mask'Access);
 
-         Mhi := CvCreateImage (Size.Width, Size.Height, IPL_DEPTH_32F, 1);
+         Mhi := CvCreateImage (CvSize(Size.Width, Size.Height), IPL_DEPTH_32F, 1);
          CvZero (+Mhi);
-         Orient := CvCreateImage (Size.Width, Size.Height, IPL_DEPTH_32F, 1);
-         Segmask := CvCreateImage (Size.Width, Size.Height, IPL_DEPTH_32F, 1);
-         Mask := CvCreateImage (Size.Width, Size.Height, IPL_DEPTH_8u, 1);
+         Orient := CvCreateImage (CvSize(Size.Width, Size.Height), IPL_DEPTH_32F, 1);
+         Segmask := CvCreateImage (CvSize(Size.Width, Size.Height), IPL_DEPTH_32F, 1);
+         Mask := CvCreateImage (CvSize(Size.Width, Size.Height), IPL_DEPTH_8u, 1);
       end if;
 
       CvCvtColor (+Img, +Buf (Last), CV_Bgr2gray);
@@ -104,7 +104,7 @@ procedure Motempl is
             Color := Cv_Rgb (255, 255, 255);
             Magnitude := 100.0;
          else
-            Comp_Rect := From_Void (CvGEtSeqElem (Seq, I)).all.Rect;
+            Comp_Rect := Imgproc.From_Void (CvGEtSeqElem (Seq, I)).all.Rect;
             if Comp_Rect.Width + Comp_Rect.Height < 100 then
                Skip := True;
             else
@@ -160,7 +160,7 @@ begin
          Put_Line("168: Image = null");
       else
          if Motion = null then
-            Motion := CvCreateImage (Image.all.Width, Image.all.Height, 8, 3);
+            Motion := CvCreateImage (CvSize(Image.all.Width, Image.all.Height), 8, 3);
             CvZero (+Motion);
             Motion.all.Origin := Image.all.Origin;
          end if;
