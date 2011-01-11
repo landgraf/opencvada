@@ -1,3 +1,4 @@
+with Ada.Text_IO; use Ada.Text_IO;
 -----------------------------------------------------------------------
 -- Ada bindings for OpenCV 2.1.1 (from SVN 3 October 2010, rev. 3703)
 -- Developed as a master thesis project at Mälardalens Högskola

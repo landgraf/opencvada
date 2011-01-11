@@ -14,6 +14,10 @@ procedure Delaunay is
    package Random_Num is new Ada.Numerics.Discrete_Random (Ran);
    use Random_Num;
 
+   procedure CvNextSeqElem (Elem_Size : Integer;
+                            Reader    : Cv_Seq_Reader_P);
+   pragma Import(C, CvNextSeqElem, "cvNextSeqElem");
+
    G : Generator;
 
    procedure Help is
@@ -119,7 +123,7 @@ procedure Delaunay is
             null;
          end if;
 
-         CV_NEXT_SEQ_ELEM( elem_size, Reader'Unchecked_Access );
+         CvNextSeqElem( elem_size, Reader'Unchecked_Access );
       end loop;
    end Draw_Subdiv;
 
@@ -221,7 +225,7 @@ procedure Delaunay is
             -- right
             Draw_Subdiv_Facet (Img, CvSubdiv2dRotateEdge (E, 3));
          end if;
-         CV_NEXT_SEQ_ELEM (Elem_Size, Reader'Unchecked_Access);
+         CvNextSeqElem (Elem_Size, Reader'Unchecked_Access);
       end loop;
    end Paint_Voronoi;
 

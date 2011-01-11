@@ -189,11 +189,10 @@ package Core is
 
    -----------------------------------------------------------------------------
 
-   --   /* CvArr* is used to pass arbitrary
-   --   * array-like data structures
-   --   * into functions where the particular
-   --   * array type is recognized at runtime:
-   --   */
+   --    CvArr* is used to pass arbitrary
+   --    array-like data structures
+   --    into functions where the particular
+   --    array type is recognized at runtime:
    type Cv_Arr is new Integer;
    type Cv_Arr_P is access all Cv_Arr;
    type Cv_Void_P is access all Cv_Arr;
@@ -993,6 +992,7 @@ package Core is
       First       : Cv_Seq_Block_P;
    end record;
 
+   type Cv_Seq_P_Array is array (Integer range <>) of aliased Cv_Seq_P;
 
    CV_TYPE_NAME_SEQ : constant String := "opencv-sequence";
    CV_TYPE_NAME_SEQ_TREE : constant String := "opencv-sequence-tree";
@@ -1400,6 +1400,7 @@ package Core is
       Attr : Cv_String_Pointer;
       Next : Cv_Attr_List_P;
    end record;
+   pragma Convention(C_Pass_By_Copy, Cv_Attr_List);
 
 
    function CvAttrList (Attr : Cv_String_Pointer := null;
@@ -1674,6 +1675,10 @@ package Core is
    function From_Void is
      new Ada.Unchecked_Conversion (Source => Cv_Void_P,
                                    Target => Float_P);
+
+--     function From_Void is
+--       new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+--                                     Target => Cv_Seq_P);
 
    function To_Void is
      new Ada.Unchecked_Conversion (Source => Ipl_Image_P,
