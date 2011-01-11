@@ -1713,7 +1713,8 @@ package Core.Operations is
                              HoleColor     : Cv_Scalar;
                              MaxLevel      : Integer;
                              Thickness     : Integer := 1;
-                             LineType      : Integer := 8);
+                             LineType      : Integer := 8;
+                             Offset        : Cv_Point := CvPoint (0, 0));
 
    --     Performs a look-up table transform of an array.
    procedure CvLUT (Src : access Cv_Arr;
@@ -2055,7 +2056,7 @@ package Core.Operations is
    --     Loads an object from a file.
    function CvLoad (Filename  : String_C;
                     Storage   : access Cv_Mem_Storage := null;
-                    Name      : String_C := Null_String_C;
+                    Name      : Interfaces.C.Strings.Chars_Ptr := Null_Ptr;
                     Real_Name : access Interfaces.C.Strings.Chars_Ptr := null)
                     return Cv_Void_P;
 

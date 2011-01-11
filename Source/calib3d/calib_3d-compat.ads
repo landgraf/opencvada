@@ -1,3 +1,4 @@
+with Interfaces; use Interfaces;
 -----------------------------------------------------------------------
 -- Ada bindings for OpenCV 2.1.1 (from SVN 3 October 2010, rev. 3703)
 -- Developed as a master thesis project at Mälardalens Högskola
@@ -40,7 +41,7 @@ package Calib_3D.Compat is
                                 Object_Points       : Cv_Point_3d_32f_Array;
                                 Distortion_Coeffs   : Cv_32f_Array;
                                 Camera_Matrix       : Cv_32f_Array;
-                                Translation_Vectors : Cv_32f_Array,
+                                Translation_Vectors : Cv_32f_Array;
                                 Rotation_Matrices   : Cv_32f_Array;
                                 Flags               : Unsigned_32);
 
@@ -106,11 +107,13 @@ package Calib_3D.Compat is
                                     Object_Points      : Cv_Point_3d_64f_Array;
                                     Rotation_Matrix    : Cv_64f_Array;
                                     Translation_Vector : Cv_64f_Array;
-                                    Camera_Matrix      : Cv_64f_Arrray;
+                                    Camera_Matrix      : Cv_64f_Array;
                                     Distortion         : Cv_64f_Array;
                                     Image_Points       : Cv_Point_2d_64f_Array);
 
 private
+    procedure Nulled;
+
    pragma Import (C, CvFindFundamentalMatrix, "CvFindFundamentalMatrix");
    pragma Import (C, CvCalibrateCamera, "cvCalibrateCamera");
    pragma Import (C, CvFindChessBoardCornerGuesses, "cvFindChessBoardCornerGuesses");

@@ -32,7 +32,7 @@ package body Core.Operations is
                          NewDims  : Integer;
                          NewSizes : Cv_32s_Array) return Cv_Arr_P is
    begin
-      return Cv_Arr_P (CvReshapeMatND (Arr, Header'Size, Header, NewCn, NewDims, NewSizes));
+      return Cv_Arr_P (CvReshapeMatND (Arr, Header'Size/8, Header, NewCn, NewDims, NewSizes));
    end CvReshapeND;
 
    procedure CvConvert (Src : Cv_Arr_P;

@@ -109,6 +109,18 @@ package Imgproc.Operations is
    procedure CvReleasePyramid (Pyramid      : access Cv_Mat_P_Pointer;
                                Extra_Layers : Integer);
 
+   -- Splits color or grayscale image into multiple connected components
+   -- of nearly the same color/brightness using modification of Burt algorithm.
+   -- comp with contain a pointer to sequence (CvSeq)
+   -- of connected components (CvConnectedComp)
+   procedure CvPyrSegmentation (Src : Ipl_Image_P;
+                                Dst : Ipl_Image_P;
+                                Storage : Cv_Mem_Storage_P;
+                                Comp    : Cv_Seq_P_Array;
+                                Level   : Integer;
+                                Threshold1 : Long_Float;
+                                Threshold2 : Long_Float);
+
    -- Does meanshift image segmentation
    procedure CvPyrMeanShiftFiltering (Src       : Cv_Arr_P;
                                       Dst       : Cv_Arr_P;
@@ -197,18 +209,18 @@ package Imgproc.Operations is
    -- Remaps an image to log-polar space.
    procedure CvLogPolar (Src        : Cv_Arr_P;
                          Dst        : Cv_Arr_P;
-                         --                           Center : Cv_Point_2D_32F;
-                         X          : Long_Float;
-                         Y          : Long_Float;
+                         Center     : Cv_Point_2D_32F;
+                         --X          : Long_Float;
+                         --Y          : Long_Float;
                          M          : Long_Float;
                          Flags      : Integer := Cv_Inter'Pos (CV_INTER_LINEAR) + Cv_Warp'Pos (CV_WARP_FILL_OUTLIERS));
 
    -- Performs forward or inverse linear-polar image transform
    procedure CvLinearPolar (Src        : Cv_Arr_P;
                             Dst        : Cv_Arr_P;
-                            --                           Center : Cv_Point_2D_32F;
-                            X          : Long_Float;
-                            Y          : Long_Float;
+                            Center     : Cv_Point_2D_32F;
+--                              X          : Long_Float;
+--                              Y          : Long_Float;
                             Max_Radius : Long_Float;
                             Flags      : Integer := Cv_Inter'Pos (CV_INTER_LINEAR) + Cv_Warp'Pos (CV_WARP_FILL_OUTLIERS));
 
@@ -871,6 +883,7 @@ private
    pragma Import (C, CvCreatePyramid, "cvCreatePyramid");
    pragma Import (C, CvReleasePyramid, "cvReleasePyramid");
    pragma Import (C, CvPyrMeanShiftFiltering, "cvPyrMeanShiftFiltering");
+   pragma Import (C, CvPyrSegmentation, "cvPyrSegmentation");
    pragma Import (C, CvWatershed, "cvWatershed");
    pragma Import (C, CvInpaint, "cvInpaint");
    pragma Import (C, CvSobel, "cvSobel");
