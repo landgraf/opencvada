@@ -265,9 +265,9 @@ package Highgui is
 
    CV_LOAD_IMAGE_UNCHANGED : constant := -1; --8bit, color or not
    CV_LOAD_IMAGE_GRAYSCALE : constant := 0; -- 8bit, gray
-   CV_LOAD_IMAGE_COLOR : constant := 1; -- ?, color
-   CV_LOAD_IMAGE_ANYDEPTH : constant := 2; -- any depth, ?
-   CV_LOAD_IMAGE_ANYCOLOR : constant := 4; -- ?, any color
+   CV_LOAD_IMAGE_COLOR     : constant := 1; -- ?, color
+   CV_LOAD_IMAGE_ANYDEPTH  : constant := 2; -- any depth, ?
+   CV_LOAD_IMAGE_ANYCOLOR  : constant := 4; -- ?, any color
 
    -- Load image from file
    -- iscolor can be a combination of above flags where CV_LOAD_IMAGE_UNCHANGED

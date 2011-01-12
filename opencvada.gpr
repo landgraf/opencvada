@@ -28,12 +28,10 @@ with "Lib220\opencv_video220";
 
 project OpenCVAda is
 
-   for Source_Dirs use ("Source", "Source\Samples", "Source\legacy", "Source\core", "Source\calib3d", "Source\imgproc", "Source\video", "Source\highgui", "Source\objdetect", "Source\features_2d", "Source\ffmpeg", "Misc\wrapper_parsed", 
-"Misc\test");
+   for Source_Dirs use ("Source", "Source\Samples", "Source\legacy", "Source\core", "Source\calib3d", "Source\imgproc", "Source\video", "Source\highgui", "Source\objdetect", "Source\features_2d", "Source\ffmpeg", "Misc\wrapper_parsed");
    for Object_Dir use "Build";
    for Exec_Dir use "Exec";
-   for Main use ("Main.adb", "motempl.adb", "chess_demo.adb", "contours.adb", "convert_cascade.adb", "delaunay.adb", "farneback_optical_flow.adb", "polar_transforms.adb", "morphology.adb", "pyramid_segmentation.adb", "mser.adb", 
-"polar_transforms_C.cpp");
+   for Main use ("Main.adb", "motempl.adb", "chess_demo.adb", "contours.adb", "convert_cascade.adb", "delaunay.adb", "farneback_optical_flow.adb", "polar_transforms.adb", "morphology.adb", "pyramid_segmentation.adb", "mser.adb");
    for Languages use ("Ada", "C++");
 
    package Builder is
