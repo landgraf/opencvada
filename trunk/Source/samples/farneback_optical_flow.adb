@@ -10,7 +10,7 @@ with Video.Tracking; use Video.Tracking;
 
 procedure Farneback_Optical_Flow is
 
-   function From_Void1 is new
+   function From_Void is new
      Ada.Unchecked_Conversion (Source => Cv_Void_P,
                                Target => Cv_Point_2d_32f_P);
 
@@ -32,7 +32,7 @@ procedure Farneback_Optical_Flow is
    begin
       while Y < C_Flow_Map.all.Rows loop
          while X < C_Flow_Map.all.Cols loop
-            Fxy_P := From_Void1(CvMatElem(Flow, Cv_Point_2d_32f'Size, Y, X));
+            Fxy_P := From_Void(CvMatElem(Flow, Cv_Point_2d_32f'Size, Y, X));
 --              Fxy := CvMatElem (Flow, Cv_Point_2d_32f'Size, Y, X);
             CvLine (To_Arr(C_Flow_Map), CvPoint (X, Y), CvPoint (CvRound (Float(X) + Fxy_P.all.X), CvRound (Float(Y) + Fxy_P.all.Y)), Color, 1, 8, 0);
             CvCircle (To_Arr(C_Flow_Map), CvPoint (X, Y), 2, Color, -1, 8, 0);

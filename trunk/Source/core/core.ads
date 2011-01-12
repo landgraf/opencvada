@@ -874,6 +874,7 @@ package Core is
          Size   : Cv_Size_2D_32F;
          Angle  : Float;
       end record;
+   pragma Convention (C_Pass_By_Copy, Cv_Box_2d);
    type Cv_Box_2D_P is access Cv_Box_2D;
 
    type Cv_Line_Iterator is
@@ -885,6 +886,7 @@ package Core is
          Plus_Step   : Integer;
          Minus_Step  : Integer;
       end record;
+   pragma Convention (C_Pass_By_Copy, Cv_Line_Iterator);
    type Cv_Line_Iterator_P is access Cv_Line_Iterator;
 
    -----------------------------------------------------------------------------

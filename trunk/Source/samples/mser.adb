@@ -34,34 +34,35 @@ procedure Mser is
       Put_Line ("Call: ./mser < path_and_image_filename, Default is 'puzzle.png'>");
    end Help;
 
-   Colors : constant array (0 .. 10) of Cv_Scalar := (CvScalar (0.0, 0.0, 244.0),
-                                             CvScalar (0.0, 128.0, 255.0),
-                                             CvScalar (0.0, 255.0, 255.0),
-                                             CvScalar (0.0, 255.0, 0.0),
-                                             CvScalar (255.0, 128.0, 0.0),
-                                             CvScalar (255.0, 255.0, 0.0),
-                                             CvScalar (255.0, 0.0, 0.0),
-                                             CvScalar (255.0, 0.0, 255.0),
-                                             CvScalar (255.0, 255.0, 255.0),
-                                             CvScalar (196.0, 255.0, 255.0),
-                                             CvScalar (255.0, 255.0, 196.0));
+   Colors : constant array (0 .. 10) of Cv_Scalar := (CvScalar (0.0, 0.0, 255.0),
+                                                      CvScalar (0.0, 128.0, 255.0),
+                                                      CvScalar (0.0, 255.0, 255.0),
+                                                      CvScalar (0.0, 255.0, 0.0),
+                                                      CvScalar (255.0, 128.0, 0.0),
+                                                      CvScalar (255.0, 255.0, 0.0),
+                                                      CvScalar (255.0, 0.0, 0.0),
+                                                      CvScalar (255.0, 0.0, 255.0),
+                                                      CvScalar (255.0, 255.0, 255.0),
+                                                      CvScalar (196.0, 255.0, 255.0),
+                                                      CvScalar (255.0, 255.0, 196.0));
 
    B_Colors : constant array (0 .. 8, 0 .. 2) of Unsigned_8 := ((0, 0, 255),
-                                                      (0, 128, 255),
-                                                      (0, 255, 255),
-                                                      (0, 255, 0),
-                                                      (255, 128, 0),
-                                                      (255, 255, 0),
-                                                      (255, 0, 0),
-                                                      (255, 0, 255),
-                                                       (255, 255, 255));
+                                                                (0, 128, 255),
+                                                                (0, 255, 255),
+                                                                (0, 255, 0),
+                                                                (255, 128, 0),
+                                                                (255, 255, 0),
+                                                                (255, 0, 0),
+                                                                (255, 0, 255),
+                                                                (255, 255, 255));
 
    Path     : Unbounded_String;
-   Img      : aliased Ipl_Image_P;
 
+   Img      : aliased Ipl_Image_P;
    Rsp      : aliased Ipl_Image_P;
    Rsp_Array : Cv_8u_Array_P;
    Ellipses : aliased Ipl_Image_P;
+
    Contours : aliased Cv_Seq_P := new Cv_Seq;
    Storage  : Cv_Mem_Storage_P;
    Hsv      : Ipl_Image_P;
@@ -72,10 +73,6 @@ procedure Mser is
 
    Contour  : Cv_Contour_P;
    Box      : Cv_Box_2d;
-
-   Iterator : Cv_8u_Pointer;
-
-   Use_Debug : constant Boolean := False;
 begin
    Help;
    if Ada.Command_Line.Argument_Count = 0 then
@@ -95,6 +92,7 @@ begin
 
    Rsp := CvLoadImage (To_String (Path), CV_LOAD_IMAGE_COLOR);
    Ellipses := CvCloneImage (Rsp);
+   CvCvtColor (To_Arr (Img), To_Arr(Ellipses), CV_GRAY2BGR);
    Hsv := CvCreateImage (CvGetSize (To_Arr (Rsp)), IPL_DEPTH_8U, 3);
    CvCvtColor (To_Arr (Rsp), To_Arr (Hsv), CV_BGR2YCrCb);
    Params := CvMserParams;
@@ -103,54 +101,23 @@ begin
    Rsp_Array := new Cv_8u_Array (1 .. (Rsp.all.Width * Rsp.all.Height * 3));
    Rsp_Array.all := Cv_8u_Pointer_Pkg.Value(Rsp.all.Image_Data, Ptrdiff_T(Rsp.all.Width * Rsp.all.Height * 3));
 
-   Iterator := Rsp.all.Image_Data;
-
    for I in reverse 0 .. Contours.all.Total - 1 loop
       R := From_Void (CvGetSeqElem (Contours, I)).all;
       for J in Integer range 0 .. R.all.Total - 1 loop
          Pt := From_Void (CvGetSeqElem (R, J));
 
-         if Use_Debug then
-            Debug_Windows :
-            declare
-               I_Ret : Integer;
-               C_Ret : Character;
-               Debug : aliased constant Ipl_Image_P := CvCloneImage (Rsp);
-               Iter  : Cv_8u_Pointer := Debug.all.Image_Data;
-            begin
-
-               for X in 1 .. Rsp.all.Width * Rsp.all.Height * 3 loop
-                  Iter.all := (Rsp_Array.all (X) + 128) mod 255;
-                  Cv_8u_Pointer_Pkg.Increment (Iter);
-               end loop;
-
-               I_Ret := CvNamedWindow ("original", 0);
-               CvShowImage ("original", To_Arr (Img));
-
-               I_Ret := CvNamedWindow ("response", 0);
-               CvShowImage ("response", To_Arr (Rsp));
-
-               I_Ret := CvNamedWindow ("debug", 0);
-               CvShowImage ("debug", To_Arr (Debug));
-
-               C_Ret := CvWaitKey (0);
-
-               CvDestroyWindow ("original");
-               CvDestroyWindow ("response");
-               CvDestroyWindow ("debug");
-            end Debug_Windows;
-         end if;
-
-         Rsp_Array.all (Pt.all.X * 3 + Pt.all.Y * Rsp.all.Width_Step) := B_Colors ((I mod 9), 2);
+         Rsp_Array.all (Pt.all.X * 3 + 0 + Pt.all.Y * Rsp.all.Width_Step) := B_Colors ((I mod 9), 2);
          Rsp_Array.all (Pt.all.X * 3 + 1 + Pt.all.Y * Rsp.all.Width_Step) := B_Colors ((I mod 9), 1);
          Rsp_Array.all (Pt.all.X * 3 + 2 + Pt.all.Y * Rsp.all.Width_Step) := B_Colors ((I mod 9), 0);
       end loop;
    end loop;
 
-   for I in Integer range 1 .. Contours.all.Total loop
+   Rsp.all.Image_Data := Rsp_Array.all (1)'Access;
+
+   for I in Integer range 0 .. Contours.all.Total - 1 loop
       Contour := From_Void (CvGetSeqElem (Contours, I)).all;
       Box := CvFitEllipse2 (To_Arr (Contour));
-      Box.Angle := Float (CV_PI / 2.0 - Box.Angle);
+      Box.Angle := CV_PI / 2.0 - Box.Angle;
 
       if Contour.all.Color > 0 then
          CvEllipseBox (To_Arr (Ellipses), Box, Colors (9), 2);
@@ -164,6 +131,8 @@ begin
       I_Ret : Integer;
       C_Ret : Character;
    begin
+--        Put_Line ("n_channels:" & Ellipses.all.N_Channels'Img);
+
       I_Ret := CvSaveImage ("rsp.png", To_Arr (Rsp));
 
       I_Ret := CvNamedWindow ("original", 0);
