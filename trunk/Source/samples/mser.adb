@@ -98,7 +98,7 @@ begin
    Params := CvMserParams;
 
    CvExtractMSER (To_Arr (Hsv), null, Contours'Access, Storage, Params);
-   Rsp_Array := new Cv_8u_Array (1 .. (Rsp.all.Width * Rsp.all.Height * 3));
+   Rsp_Array := new Cv_8u_Array (0 .. (Rsp.all.Width * Rsp.all.Height * 3 - 1));
    Rsp_Array.all := Cv_8u_Pointer_Pkg.Value(Rsp.all.Image_Data, Ptrdiff_T(Rsp.all.Width * Rsp.all.Height * 3));
 
    for I in reverse 0 .. Contours.all.Total - 1 loop
@@ -106,13 +106,13 @@ begin
       for J in Integer range 0 .. R.all.Total - 1 loop
          Pt := From_Void (CvGetSeqElem (R, J));
 
-         Rsp_Array.all (Pt.all.X * 3 + 0 + Pt.all.Y * Rsp.all.Width_Step) := B_Colors ((I mod 9), 2);
+         Rsp_Array.all (Pt.all.X * 3 + Pt.all.Y * Rsp.all.Width_Step) := B_Colors ((I mod 9), 2);
          Rsp_Array.all (Pt.all.X * 3 + 1 + Pt.all.Y * Rsp.all.Width_Step) := B_Colors ((I mod 9), 1);
          Rsp_Array.all (Pt.all.X * 3 + 2 + Pt.all.Y * Rsp.all.Width_Step) := B_Colors ((I mod 9), 0);
       end loop;
    end loop;
 
-   Rsp.all.Image_Data := Rsp_Array.all (1)'Access;
+   Rsp.all.Image_Data := Rsp_Array.all (0)'Access;
 
    for I in Integer range 0 .. Contours.all.Total - 1 loop
       Contour := From_Void (CvGetSeqElem (Contours, I)).all;
