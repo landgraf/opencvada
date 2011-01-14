@@ -1,18 +1,18 @@
 -- OpenCV 2.2 libs
-with "Lib220/opencv_calib3d220";
-with "Lib220/opencv_contrib220";
-with "Lib220/opencv_core220";
-with "Lib220/opencv_features2d220";
+with "Lib220-linux/opencv_calib3d220";
+with "Lib220-linux/opencv_contrib220";
+with "Lib220-linux/opencv_core220";
+with "Lib220-linux/opencv_features2d220";
 --with "Lib220/opencv_ffmpeg220";
-with "Lib220/opencv_gpu220";
-with "Lib220/opencv_highgui220";
-with "Lib220/opencv_imgproc220";
-with "Lib220/opencv_legacy220";
-with "Lib220/opencv_ml220";
-with "Lib220/opencv_objdetect220";
-with "Lib220/opencv_video220";
+with "Lib220-linux/opencv_gpu220";
+with "Lib220-linux/opencv_highgui220";
+with "Lib220-linux/opencv_imgproc220";
+with "Lib220-linux/opencv_legacy220";
+with "Lib220-linux/opencv_ml220";
+with "Lib220-linux/opencv_objdetect220";
+with "Lib220-linux/opencv_video220";
 
-project OpenCVAda is
+project OpenCVAda-linux is
 
    for Source_Dirs use ("Source", "Source/samples", "Source/legacy", "Source/core", "Source/calib3d", "Source/imgproc", "Source/video", "Source/highgui", "Source/objdetect", "Source/features_2d", "Source/ffmpeg", "Misc/wrapper_parsed");
    for Object_Dir use "Build";
@@ -33,5 +33,5 @@ project OpenCVAda is
       for Specification_Suffix ("c++") use ".hpp";
    end Naming;
 
-end OpenCVAda;
+end OpenCVAda-linux;
 
