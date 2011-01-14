@@ -1,0 +1,7 @@
+Project opencv_features2d220 is
+   for Externally_Built use "true";
+   for Source_Files use ();
+   for Library_Dir use ".";
+   for Library_Name use "opencv_features2d";
+   for Library_Kind use "dynamic";
+end opencv_features2d220;
