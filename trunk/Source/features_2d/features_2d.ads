@@ -31,6 +31,7 @@ package Features_2D is
          Dir       : Float;
          Hessian   : Float;
       end record;
+   type Cv_SURF_Point_P is access Cv_SURF_Point;
 
    function CvSURFPoint (Pt        : Cv_Point_2d_32f;
                          Laplacian : Integer;

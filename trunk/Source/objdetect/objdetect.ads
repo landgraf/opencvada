@@ -233,7 +233,7 @@ package Objdetect is
    -- INPUT
    -- detector				- CvLatentSvmDetector structure to be released
    -- OUTPUT
-   procedure CvReleaseLatentSvmDetector (Detector : access Cv_Latent_Svm_Detector);
+   procedure CvReleaseLatentSvmDetector (Detector : access Cv_Latent_Svm_Detector_P);
 
    -- find rectangular regions in the given image that are likely
    -- to contain objects and corresponding confidence levels
@@ -253,7 +253,7 @@ package Objdetect is
    -- OUTPUT
    -- sequence of detected objects (bounding boxes and confidence levels stored in CvObjectDetection structures
    function CvLatentSvmDetectObjects (Image : Ipl_Image_P;
-                                      Detector : Cv_Latent_Svm_Detector;
+                                      Detector : Cv_Latent_Svm_Detector_P;
                                       Storage  : Cv_Mem_Storage_P;
                                       Overlap_Threshold : Float := 0.5) return Cv_Seq_P;
 private

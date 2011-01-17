@@ -14,9 +14,7 @@ procedure Delaunay is
    package Random_Num is new Ada.Numerics.Discrete_Random (Ran);
    use Random_Num;
 
-   procedure CvNextSeqElem (Elem_Size : Integer;
-                            Reader    : Cv_Seq_Reader_P);
-   pragma Import(C, CvNextSeqElem, "cvNextSeqElem");
+
 
    G : Generator;
 

@@ -1346,10 +1346,9 @@ package Core is
                                 Writer   : Cv_Seq_Writer_P ) renames CV_WRITE_SEQ_ELEM_VAR;
 
    --  /* Move reader position forward: */
-   procedure CV_NEXT_SEQ_ELEM (Elem_Size : Integer;
-                               Reader    : Cv_Seq_Reader_P);
-   procedure CV_NEXT_SEQ_ELEM (Elem_Size : Integer;
-                               Reader    : Cv_Chain_Pt_Reader_P);
+   procedure CvNextSeqElem (Elem_Size : Integer;
+                            Reader    : Cv_Seq_Reader_P);
+
 
    --  /* Move reader position backward: */
    procedure CV_PREV_SEQ_ELEM ( Elem_Size : Integer;
@@ -1873,6 +1872,7 @@ private
    pragma Import (C, CvmSet, "cvmSet");
    pragma Import (C, CvCreateSeqBlock, "cvCreateSeqBlock");
    pragma Import (C, CvChangeSeqBlock, "cvChangeSeqBlock");
+   pragma Import(C, CvNextSeqElem, "cvNextSeqElem");
 
 
 end Core;
