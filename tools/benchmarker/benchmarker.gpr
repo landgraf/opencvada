@@ -1,0 +1,13 @@
+project Benchmarker is
+
+   for Source_Dirs use ("Source");
+   for Object_Dir use "Build";
+   for Exec_Dir use "Exec";
+   for Main use ("benchmarker.adb");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnat05");
+   end Compiler;
+
+end Benchmarker;
+
