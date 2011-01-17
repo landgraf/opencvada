@@ -98,6 +98,13 @@ begin
 
          if Nframes - 1 = Nframes_To_Learn_Bg then
             CvBgCodeBookClearStale (Model, Model.all.T / 2);
+
+            Put_Line (Nframes'Img);
+            CvReleaseCapture (Capture'Access);
+            CvDestroyWindow ( "Raw" );
+            CvDestroyWindow ( "ForegroundCodeBook");
+            CvDestroyWindow ( "CodeBook_ConnectComp");
+            return;
          end if;
 
          if Nframes - 1 >= Nframes_To_Learn_Bg then
@@ -113,7 +120,7 @@ begin
       end if;
 
       Char := CvWaitKey (10);
-      Put (Char);
+      --Put (Char);
       Char:=Ada.Characters.Handling.To_Lower (Char);
       exit when Char = Ascii.Esc or Char = 'q';
 

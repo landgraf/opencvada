@@ -316,7 +316,7 @@ package Video.Background_Segm is
                               Roi    : Cv_Rect := CvRect (0, 0, 0, 0))
                               return Integer;
 
-   procedure CvBGCodeBookClearStale (Model : Cv_Bg_Code_Book_Model;
+   procedure CvBGCodeBookClearStale (Model : Cv_Bg_Code_Book_Model_P;
                                      Stale_Thresh : Integer;
                                      Roi          : Cv_Rect := CvRect (0, 0, 0, 0);
                                      Mask         : Cv_Arr_P := null);

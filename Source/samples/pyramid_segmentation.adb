@@ -18,7 +18,7 @@ procedure Pyramid_Segmentation is
 
    Threshold1, Threshold2 : aliased Integer;
 
-   Level : constant Integer := 3; -- possible error try with 3
+   Level : constant Integer := 4; -- possible error try with 3
 
    Block_Size : constant Integer := 1000;
    Result : Integer;
