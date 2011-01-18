@@ -70,17 +70,17 @@ begin
       CvLogPolar (+Frame, +Log_Polar_Img,
                   Center,
                   70.0,
-                  Cv_Inter'Pos (CV_INTER_LINEAR) + Cv_Warp'Pos (CV_WARP_FILL_OUTLIERS));
+                 1+ 8);
 
       CvLinearPolar (+Frame, +Lin_Polar_Img,
                      Center,
                      70.0,
-                     Cv_Inter'Pos (CV_INTER_LINEAR) + Cv_Warp'Pos (CV_WARP_FILL_OUTLIERS));
+                     1 + 8);
 
-      CvLogPolar (+Log_Polar_Img, +Recovered_Img,
+      CvLinearPolar (+Lin_Polar_Img, +Recovered_Img,
                      Center,
                      70.0,
-                     Cv_Inter'Pos (CV_INTER_LINEAR) + Cv_Warp'Pos (CV_WARP_FILL_OUTLIERS)+ Cv_Warp'Pos (CV_WARP_INVERSE_MAP));
+                     16 + 1 + 8);
 
       CvShowImage ("Log-Polar", +Log_Polar_Img );
       CvShowImage ("Linear-Polar", +Lin_Polar_Img );
