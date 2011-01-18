@@ -21,7 +21,7 @@ with Toolkit; use Toolkit;
 -- 1: app ("args") (#) (output.csv)
 -- 2: input.list (output.csv)
 -- list file format:
--- app "(args)" (#)
+-- app "(args)" #
 procedure Benchmarker is
    Debug        : constant Boolean := True;
    App          : Unbounded_String := To_Unbounded_String ("");
