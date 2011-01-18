@@ -98,8 +98,8 @@ begin
 
    Dst := CvCloneImage (Src);
 
-   Ret := CvNamedWindow ("Open/Close", 1);
-   Ret := CvNamedWindow ("Erode/Dilate", 1);
+   Ret := CvNamedWindow ("Open/Close", 0);
+   Ret := CvNamedWindow ("Erode/Dilate", 0);
 
    Open_Close_Pos := Max_Iters;
    Erode_Dilate_Pos := Max_Iters;
