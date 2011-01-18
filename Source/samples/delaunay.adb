@@ -76,8 +76,8 @@ procedure Delaunay is
          IOrg := CvPoint (Cvround (Org.X), CvRound (Org.Y));
          IDst := CvPoint (CvRound (Dst.X), CvRound (Dst.Y));
 
-         Put_Line ("CvLine org:" & Org.X'Img & Iorg.Y'Img);
-         Put_Line ("CvLine dst:" & Idst.X'Img & Idst.Y'Img);
+--           Put_Line ("CvLine org:" & Org.X'Img & Iorg.Y'Img);
+--           Put_Line ("CvLine dst:" & Idst.X'Img & Idst.Y'Img);
          CvLine (+Img, Iorg, Idst, Color, 1, Cv_Aa, 0);
       else
          Put_Line("Error");
@@ -256,7 +256,7 @@ procedure Delaunay is
       Put_Line ("To stop the process, press any key");
       New_Line;
 
-      for I in Integer range 0 .. 199
+      for I in Integer range 0 .. 50
       loop
          Fp := (Float (Random (G)),Float (Random (G)));
          Locate_Point (Subdiv, Fp, Img, Active_Facet_Color);
@@ -276,17 +276,17 @@ procedure Delaunay is
          exit when CvWaitKey (10) = Ascii.Esc;
       end loop;
 
-      Put("Here we are");
+--        Put("Here we are");
 
       CvSet (+Img, Bkgnd_Color, null);
       Paint_Voronoi (Subdiv, Img);
       CvShowImage (Win, +Img);
 
-      if CvWaitKey (0) = Ascii.Esc then
+--        if CvWaitKey (0) = Ascii.Esc then
          CvReleaseMemStorage (Storage'Access);
          CvReleaseImage (Image => Img'Access);
          CvDestroyWindow (Win);
-      end if;
+--        end if;
 
    end Run;
 begin
