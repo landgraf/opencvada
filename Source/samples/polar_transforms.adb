@@ -77,7 +77,7 @@ begin
                      70.0,
                      Cv_Inter'Pos (CV_INTER_LINEAR) + Cv_Warp'Pos (CV_WARP_FILL_OUTLIERS));
 
-      CvLinearPolar (+Lin_Polar_Img, +Recovered_Img,
+      CvLogPolar (+Log_Polar_Img, +Recovered_Img,
                      Center,
                      70.0,
                      Cv_Inter'Pos (CV_INTER_LINEAR) + Cv_Warp'Pos (CV_WARP_FILL_OUTLIERS)+ Cv_Warp'Pos (CV_WARP_INVERSE_MAP));
