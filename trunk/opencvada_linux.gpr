@@ -34,7 +34,7 @@ project OpenCVAda_linux is
 
    for Library_Name use "OpenCVAda";
    for Library_Dir use "Lib";
-   for Library_Ali_Dir use "Build\Ali";
-   for Library_Version use "2.2"
+   for Library_Ali_Dir use "Build/Ali";
+   for Library_Version use "2.2";
 end OpenCVAda_linux;
 
