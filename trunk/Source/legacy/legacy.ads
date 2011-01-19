@@ -37,7 +37,7 @@ package Legacy is
 
    --------------------------------------------------------------------------------
 
-   function CvSegmentImage (Src             : Cv_Arr_P;
+   function Cv_SegmentImage (Src             : Cv_Arr_P;
                             Dst             : Cv_Arr_P;
                             Canny_Threshold : Long_Float;
                             Ffill_Threshold : Long_Float;
@@ -71,7 +71,7 @@ package Legacy is
    CV_EIGOBJ_BOTH_CALLBACK   : constant := 3;
 
    --     Calculates covariation matrix of a set of arrays
-   procedure CvCalcCovarMatrixEx (N_Objects    : Integer;
+   procedure Cv_Calc_Covar_Matrix_Ex (N_Objects    : Integer;
                                   Input        : Cv_Void_P;
                                   Io_Flags     : Integer;
                                   Io_Buf_Size  : Integer;
