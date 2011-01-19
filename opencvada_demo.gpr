@@ -1,0 +1,22 @@
+with "OpenCvAda";
+
+-- A demo application to show how to use OpenCvAda
+project OpenCVAda_Demo is
+
+   for Source_Dirs use ("Source\Demo");
+   for Object_Dir use "Build";
+   for Exec_Dir use "Exec";
+   for Languages use ("Ada");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-s", "-m");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatw.hkd", "-gnat05");
+   end Compiler;
+
+   for Main use ("demo.adb");
+
+end OpenCVAda_Demo;
+
