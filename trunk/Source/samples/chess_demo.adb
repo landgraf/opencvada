@@ -4,7 +4,7 @@ with Calib_3D;
 use Calib_3D;
 
 procedure Chess_Demo is
-   Capture : Cv_Capture_P;
+   Capture : aliased Cv_Capture_P;
    Image   : Ipl_Image_P;
    Retval  : Integer;
    Corners : Cv_Point_2D_32F_Array (1 .. 49);
@@ -27,5 +27,8 @@ begin
 
       exit when CvWaitKey(30) = ASCII.ESC;
    end loop;
+
+   CvReleaseCapture (Capture'Access);
+   CvDestroyWindow ("Chess Demo");
 
 end Chess_Demo;

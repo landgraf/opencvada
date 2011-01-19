@@ -30,7 +30,6 @@ pragma Warnings (On);
 with Ada.Numerics.Generic_Elementary_Functions;
 limited with Imgproc;
 
-
 package Core is
 --
 
@@ -1860,7 +1859,6 @@ package Core is
 
 private
    pragma Import (C, CvIplDepth, "cvIplDepth");
-   --     pragma Import (C, CvRound, "cvRound"); -- implemented as an ada function
    pragma Import (C, CvFloor, "cvFloor");
    pragma Import (C, CvCeil, "cvCeil");
    pragma Import (C, CvIsInf, "cvIsInf");
