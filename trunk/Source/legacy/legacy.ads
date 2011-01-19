@@ -321,15 +321,12 @@ package Legacy is
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Graph_Weighted_Edge);
 
-   type Cv_Graph_Weight_Type is (CV_NOT_WEIGHTED,
-                                 CV_WEIGHTED_VTX,
-                                 CV_WEIGTHED_EDGE,
-                                 CV_WEIGHTED_ALL);
+   type Cv_Graph_Weight_Type is new Integer;
 
-   for Cv_Graph_Weight_Type use (CV_NOT_WEIGHTED  => 0,
-                                 CV_WEIGHTED_VTX  => 1,
-                                 CV_WEIGTHED_EDGE => 2,
-                                 CV_WEIGHTED_ALL  => 3);
+   CV_NOT_WEIGHTED : constant Cv_Graph_Weight_Type := 0;
+   CV_WEIGHTED_VTX : constant Cv_Graph_Weight_Type :=  1;
+   CV_WEIGTHED_EDGE : constant Cv_Graph_Weight_Type := 2;
+   CV_WEIGHTED_ALL : constant Cv_Graph_Weight_Type := 3;
 
    --     Calculates histogram of a contour
    procedure CvCalcPGH (Contour : Cv_Seq_P;
@@ -881,12 +878,10 @@ package Legacy is
    pragma Convention (C_Pass_By_Copy, Cv_Face_Tracker);
    type Cv_Face_Tracker_P is access Cv_Face_Tracker;
 
-   type Cv_Face_Elements is (Cv_Face_Mouth,
-                             Cv_Face_Left_Eye,
-                             Cv_Face_Right_Eye);
-   for Cv_Face_Elements use (Cv_Face_Mouth     => 0,
-                             Cv_Face_Left_Eye  => 1,
-                             Cv_Face_Right_Eye => 2);
+   type Cv_Face_Elements is new Integer;
+   Cv_Face_Mouth : constant Cv_Face_Elements := 0;
+   Cv_Face_Left_Eye : constant Cv_Face_Elements := 1;
+   Cv_Face_Right_Eye : constant Cv_Face_Elements := 2;
 
    function CvInitFaceTracker (P_Face_Tracking : Cv_Face_Tracker_P;
                                Img_Gray        : Ipl_Image_P;

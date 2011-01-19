@@ -35,13 +35,10 @@ package Highgui is
    type Cv_Capture is null record;
    type Cv_Capture_P is access Cv_Capture;
 
-   type Compression_Type is ( CV_IMWRITE_JPEG_QUALITY,
-                             CV_IMWRITE_PNG_COMPRESSION,
-                             CV_IMWRITE_PXM_BINARY );
-   for Compression_Type use
-     (CV_IMWRITE_JPEG_QUALITY    => 1,
-      CV_IMWRITE_PNG_COMPRESSION => 16,
-      CV_IMWRITE_PXM_BINARY      => 32);
+   type Compression_Type is new Integer;
+   CV_IMWRITE_JPEG_QUALITY:constant Compression_Type:=1;
+   CV_IMWRITE_PNG_COMPRESSION : constant Compression_Type := 16;
+   CV_IMWRITE_PXM_BINARY : constant Compression_Type := 32;
 
    type File_Settings is record
       Compression                         : Compression_Type;
@@ -60,23 +57,17 @@ package Highgui is
    -----------------------------------------------------------------------------
 
    --// new font for QT
-   type Cv_Font_Weight is (CV_FONT_LIGHT,
-                           CV_FONT_NORMAL,
-                           CV_FONT_DEMIBOLD,
-                           CV_FONT_BOLD,
-                           CV_FONT_BLACK);
-   for Cv_Font_Weight use (CV_FONT_LIGHT    => 25,
-                           CV_FONT_NORMAL   => 50,
-                           CV_FONT_DEMIBOLD => 63,
-                           CV_FONT_BOLD     => 75,
-                           CV_FONT_BLACK    => 87);
+   type Cv_Font_Weight is new Integer;
+   CV_FONT_LIGHT : constant Cv_Font_Weight := 25;
+   CV_FONT_NORMAL : constant Cv_Font_Weight := 50;
+   CV_FONT_DEMIBOLD : constant Cv_Font_Weight := 63;
+   CV_FONT_BOLD : constant Cv_Font_Weight := 75;
+   CV_FONT_BLACK : constant Cv_Font_Weight := 87;
 
-   type Cv_Font_Style is (CV_STYLE_NORMAL,
-                          CV_STYLE_ITALIC,
-                          CV_STYLE_OBLIQUE);
-   for Cv_Font_Style  use (CV_STYLE_NORMAL  => 0,
-                           CV_STYLE_ITALIC  => 1,
-                           CV_STYLE_OBLIQUE => 2);
+   type Cv_Font_Style is new Integer;
+   CV_STYLE_NORMAL : constant Cv_Font_Style := 0;
+   CV_STYLE_ITALIC : constant Cv_Font_Style := 1;
+   CV_STYLE_OBLIQUE : constant Cv_Font_Style := 2;
 
    --  //for color cvScalar(blue_component, green_component, red\_component[, alpha_component])
    --  //and alpha= 0 <-> 0xFF (not transparent <-> transparent)
@@ -128,12 +119,10 @@ package Highgui is
                                                 User_Data : Cv_Void_P);
    pragma Convention (C, Cv_Button_Callback);
 
-   type Cv_Button_Type is (CV_PUSH_BUTTON,
-                           CV_CHECKBOX,
-                           CV_RADIOBOX);
-   for Cv_Button_Type use (CV_PUSH_BUTTON => 0,
-                           CV_CHECKBOX    => 1,
-                           CV_RADIOBOX    => 2);
+   type Cv_Button_Type is new Integer;
+   CV_PUSH_BUTTON:constant Cv_Button_Type:=0;
+   CV_CHECKBOX : constant Cv_Button_Type := 1;
+   CV_RADIOBOX : constant Cv_Button_Type := 2;
 
    function CvCreateButton (Button_Name         : String;
                             On_Change           : Cv_Button_Callback := null;
@@ -296,9 +285,9 @@ package Highgui is
                            Image  : Cv_Arr_P;
                            Params : File_Settings) return Cv_Mat_P;
 
-   type Convert_Image_Flags is (CV_CVTIMG_FLIP, CV_CVTIMG_SWAP_RB);
-   for Convert_Image_Flags use (CV_CVTIMG_FLIP    => 1,
-                                CV_CVTIMG_SWAP_RB => 2);
+   type Convert_Image_Flags is new Integer;
+   CV_CVTIMG_FLIP : constant Convert_Image_Flags := 1;
+   CV_CVTIMG_SWAP_RB : constant Convert_Image_Flags := 2;
    -- utility function: convert one image to another with optional vertical flip
    procedure CvConvertImage (Src   : Cv_Arr_P;
                              Dst   : Cv_Arr_P;
@@ -355,45 +344,26 @@ package Highgui is
    -- stop capturing/reading and free resources
    procedure CvReleaseCapture ( Capture : access Cv_Capture_P );
 
-   type Capture_Property is (CV_CAP_PROP_POS_MSEC,
-                             CV_CAP_PROP_POS_FRAMES,
-                             CV_CAP_PROP_POS_AVI_RATIO,
-                             CV_CAP_PROP_FRAME_WIDTH,
-                             CV_CAP_PROP_FRAME_HEIGHT,
-                             CV_CAP_PROP_FPS,
-                             CV_CAP_PROP_FOURCC,
-                             CV_CAP_PROP_FRAME_COUNT,
-                             CV_CAP_PROP_FORMAT,
-                             CV_CAP_PROP_MODE,
-                             CV_CAP_PROP_BRIGHTNESS,
-                             CV_CAP_PROP_CONTRAST,
-                             CV_CAP_PROP_SATURATION,
-                             CV_CAP_PROP_HUE,
-                             CV_CAP_PROP_GAIN,
-                             CV_CAP_PROP_EXPOSURE,
-                             CV_CAP_PROP_CONVERT_RGB,
-                             CV_CAP_PROP_WHITE_BALANCE,
-                             CV_CAP_PROP_RECTIFICATION);
-   for Capture_Property use
-     (CV_CAP_PROP_POS_MSEC      => 0,
-      CV_CAP_PROP_POS_FRAMES    => 1,
-      CV_CAP_PROP_POS_AVI_RATIO => 2,
-      CV_CAP_PROP_FRAME_WIDTH   => 3,
-      CV_CAP_PROP_FRAME_HEIGHT  => 4,
-      CV_CAP_PROP_FPS           => 5,
-      CV_CAP_PROP_FOURCC        => 6,
-      CV_CAP_PROP_FRAME_COUNT   => 7,
-      CV_CAP_PROP_FORMAT        => 8,
-      CV_CAP_PROP_MODE          => 9,
-      CV_CAP_PROP_BRIGHTNESS    => 10,
-      CV_CAP_PROP_CONTRAST      => 11,
-      CV_CAP_PROP_SATURATION    => 12,
-      CV_CAP_PROP_HUE           => 13,
-      CV_CAP_PROP_GAIN          => 14,
-      CV_CAP_PROP_EXPOSURE      => 15,
-      CV_CAP_PROP_CONVERT_RGB   => 16,
-      CV_CAP_PROP_WHITE_BALANCE => 17,
-      CV_CAP_PROP_RECTIFICATION => 18);
+   type Capture_Property is new Integer;
+   CV_CAP_PROP_POS_MSEC : constant Capture_Property := 0;
+   CV_CAP_PROP_POS_FRAMES : constant Capture_Property := 1;
+   CV_CAP_PROP_POS_AVI_RATIO : constant Capture_Property := 2;
+   CV_CAP_PROP_FRAME_WIDTH : constant Capture_Property := 3;
+   CV_CAP_PROP_FRAME_HEIGHT : constant Capture_Property := 4;
+   CV_CAP_PROP_FPS : constant Capture_Property := 5;
+   CV_CAP_PROP_FOURCC : constant Capture_Property := 6;
+   CV_CAP_PROP_FRAME_COUNT : constant Capture_Property := 7;
+   CV_CAP_PROP_FORMAT : constant Capture_Property := 8;
+   CV_CAP_PROP_MODE : constant Capture_Property := 9;
+   CV_CAP_PROP_BRIGHTNESS : constant Capture_Property := 10;
+   CV_CAP_PROP_CONTRAST : constant Capture_Property := 11;
+   CV_CAP_PROP_SATURATION : constant Capture_Property := 12;
+   CV_CAP_PROP_HUE : constant Capture_Property := 13;
+   CV_CAP_PROP_GAIN : constant Capture_Property := 14;
+   CV_CAP_PROP_EXPOSURE : constant Capture_Property := 15;
+   CV_CAP_PROP_CONVERT_RGB : constant Capture_Property := 16;
+   CV_CAP_PROP_WHITE_BALANCE : constant Capture_Property := 17;
+   CV_CAP_PROP_RECTIFICATION : constant Capture_Property := 18;
 
    -- retrieve or set capture properties
    function CvGetCaptureProperty ( Capture    : Cv_Capture_P;
