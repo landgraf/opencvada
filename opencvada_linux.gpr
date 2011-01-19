@@ -14,10 +14,9 @@ with "Lib220-linux/opencv_video220";
 
 project OpenCVAda_linux is
 
-   for Source_Dirs use ("Source", "Source/samples", "Source/legacy", "Source/core", "Source/calib3d", "Source/imgproc", "Source/video", "Source/highgui", "Source/objdetect", "Source/features_2d", "Source/ffmpeg", "Misc/wrapper_parsed");
+   for Source_Dirs use ("Source", "Source/legacy", "Source/core", "Source/calib3d", "Source/imgproc", "Source/video", "Source/highgui", "Source/objdetect", "Source/features_2d", "Source/ffmpeg", "Misc/wrapper_parsed");
    for Object_Dir use "Build";
    for Exec_Dir use "Exec";
-   for Main use ("motempl.adb", "chess_demo.adb", "contours.adb", "convert_cascade.adb", "delaunay.adb", "farneback_optical_flow.adb", "polar_transforms.adb", "morphology.adb", "pyramid_segmentation.adb", "mser.adb");
    for Languages use ("Ada", "C++");
 
    package Builder is
@@ -33,5 +32,9 @@ project OpenCVAda_linux is
       for Specification_Suffix ("c++") use ".hpp";
    end Naming;
 
+   for Library_Name use "OpenCVAda";
+   for Library_Dir use "Lib";
+   for Library_Ali_Dir use "Build\Ali";
+   for Library_Version use "2.2"
 end OpenCVAda_linux;
 
