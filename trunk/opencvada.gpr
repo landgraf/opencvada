@@ -32,7 +32,7 @@ project OpenCVAda is
    for Object_Dir use "Build";
    for Exec_Dir use "Exec";
    for Main use ("Main.adb", "motempl.adb", "chess_demo.adb", "contours.adb", "convert_cascade.adb", "delaunay.adb", "farneback_optical_flow.adb", "polar_transforms.adb", "morphology.adb", "pyramid_segmentation.adb", "mser.adb", 
-"bgfg_codebook.adb", "latentsvmdetect.adb", "find_obj.adb");
+"bgfg_codebook.adb", "latentsvmdetect.adb", "find_obj.adb", "camera_test.adb");
    for Languages use ("Ada", "C++");
 
    package Builder is

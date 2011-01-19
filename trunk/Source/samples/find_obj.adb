@@ -129,7 +129,7 @@ procedure Find_Obj is
                                   Src_Corners        : Cv_Point_Array ;
                                   Dst_Corners        : Cv_Point_Array ) return Integer is
       H : Cv_64f_Array (0 .. 8);
-      Mat_H : Cv_Mat := CvMat (3, 3, Cv_64f, H);
+--        Mat_H : Cv_Mat := CvMat (3, 3, Cv_64f, H);
    begin
       return 1;
    end Locate_Planar_Object;
