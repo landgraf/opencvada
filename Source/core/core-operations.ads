@@ -664,12 +664,15 @@ package Core.Operations is
                          Upper : Cv_Scalar;
                          Dst   : access Cv_Arr);
 
-   type Compare_Op is (Cv_Cmp_Eq, Cv_Cmp_Gt,
-                       Cv_Cmp_Ge, Cv_Cmp_Lt,
-                       Cv_Cmp_Le, Cv_Cmp_Ne);
-   for Compare_Op use (Cv_Cmp_Eq => 0, Cv_Cmp_Gt => 1,
-                       Cv_Cmp_Ge => 2, Cv_Cmp_Lt => 3,
-                       Cv_Cmp_Le => 4, Cv_Cmp_Ne => 5);
+   type Compare_Op is new Integer;-- (Cv_Cmp_Eq, Cv_Cmp_Gt,
+--                         Cv_Cmp_Ge, Cv_Cmp_Lt,
+--                         Cv_Cmp_Le, Cv_Cmp_Ne);
+   Cv_Cmp_Eq : constant Compare_Op := 0 ;
+   Cv_Cmp_Gt :   constant Compare_Op := 1;
+   Cv_Cmp_Ge : constant Compare_Op := 2;
+   Cv_Cmp_Lt : constant Compare_Op := 3;
+   Cv_Cmp_Le : constant Compare_Op :=  4;
+   Cv_Cmp_Ne : constant Compare_Op :=  5;
 
    --     Performs per-element comparison of two arrays.
    procedure CvCmp (Src1   : access Cv_Arr;
@@ -1623,22 +1626,15 @@ package Core.Operations is
    procedure CV_NEXT_LINE_POINT (LineIterator : Cv_Line_Iterator_P);
 
    -- Fonts
-   type Cv_Font_Face is (CV_FONT_HERSHEY_SIMPLEX,
-                         CV_FONT_HERSHEY_PLAIN,
-                         CV_FONT_HERSHEY_DUPLEX,
-                         CV_FONT_HERSHEY_COMPLEX,
-                         CV_FONT_HERSHEY_TRIPLEX,
-                         CV_FONT_HERSHEY_COMPLEX_SMALL,
-                         CV_FONT_HERSHEY_SCRIPT_SIMPLEX,
-                         CV_FONT_HERSHEY_SCRIPT_COMPLEX);
-   for Cv_Font_Face use (CV_FONT_HERSHEY_SIMPLEX        => 0,
-                         CV_FONT_HERSHEY_PLAIN          => 1,
-                         CV_FONT_HERSHEY_DUPLEX         => 2,
-                         CV_FONT_HERSHEY_COMPLEX        => 3,
-                         CV_FONT_HERSHEY_TRIPLEX        => 4,
-                         CV_FONT_HERSHEY_COMPLEX_SMALL  => 5,
-                         CV_FONT_HERSHEY_SCRIPT_SIMPLEX => 6,
-                         CV_FONT_HERSHEY_SCRIPT_COMPLEX => 7);
+   type Cv_Font_Face is new Integer;
+   CV_FONT_HERSHEY_SIMPLEX  : constant Cv_Font_Face := 0;
+   CV_FONT_HERSHEY_PLAIN  : constant Cv_Font_Face := 1;
+   CV_FONT_HERSHEY_DUPLEX  : constant Cv_Font_Face :=  2;
+   CV_FONT_HERSHEY_COMPLEX  : constant Cv_Font_Face := 3;
+   CV_FONT_HERSHEY_TRIPLEX  : constant Cv_Font_Face := 4;
+   CV_FONT_HERSHEY_COMPLEX_SMALL  : constant Cv_Font_Face := 5;
+   CV_FONT_HERSHEY_SCRIPT_SIMPLEX  : constant Cv_Font_Face := 6;
+   CV_FONT_HERSHEY_SCRIPT_COMPLEX  : constant Cv_Font_Face := 7;
 
    CV_FONT_ITALIC : constant := 16;
 
