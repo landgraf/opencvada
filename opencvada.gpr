@@ -12,20 +12,6 @@ with "Lib220\opencv_ml220";
 with "Lib220\opencv_objdetect220";
 with "Lib220\opencv_video220";
 
--- OpenCV 2.1.1 libs
---with "Lib211\opencv_calib3d211";
---with "Lib211\opencv_contrib211";
---with "Lib211\opencv_core211";
---with "Lib211\opencv_features2d211";
---with "Lib211\opencv_ffmpeg211";
---with "Lib211\opencv_gpu211";
---with "Lib220\opencv_highgui220";
---with "Lib211\opencv_imgproc211";
---with "Lib211\opencv_legacy211";
---with "Lib211\opencv_ml211";
---with "Lib211\opencv_objdetect211";
---with "Lib211\opencv_video211";
-
 project OpenCVAda is
 
    for Source_Dirs use ("Source", "Source\legacy", "Source\core", "Source\calib3d", "Source\imgproc", "Source\video", "Source\highgui", "Source\objdetect", "Source\features_2d", "Source\ffmpeg", "Misc\wrapper_parsed");
