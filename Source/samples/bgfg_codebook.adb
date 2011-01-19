@@ -145,7 +145,7 @@ begin
    end loop;
 
 
-   Put_Line(Nframes'Img);
+--     Put_Line(Nframes'Img);
    CvReleaseCapture (Capture'Access);
    CvDestroyWindow ( "Raw" );
    CvDestroyWindow ( "ForegroundCodeBook");

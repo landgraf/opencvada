@@ -67,7 +67,7 @@ procedure Delaunay is
       Org_Pt := CvSubdiv2dEdgeOrg (Edge);
       Dst_Pt := CvSubdiv2dEdgedst (Edge);
 
-      Put_Line ("Color:" & Color.Val(2)'img);
+--        Put_Line ("Color:" & Color.Val(2)'img);
 
       if not (Dst_Pt = null) and not (Org_Pt = null) then
          Org := Org_Pt.all.Pt;
@@ -80,7 +80,7 @@ procedure Delaunay is
 --           Put_Line ("CvLine dst:" & Idst.X'Img & Idst.Y'Img);
          CvLine (+Img, Iorg, Idst, Color, 1, Cv_Aa, 0);
       else
-         Put_Line("Error");
+         null;--Put_Line("Error");
       end if;
    end Draw_Subdiv_Edge;
 
@@ -252,9 +252,9 @@ procedure Delaunay is
 
       Storage := CvCreateMemStorage (0);
       Subdiv := Init_Delaunay (Storage, Rect);
-      Put_Line ("Delaunay triangulation will be build now interactively.");
-      Put_Line ("To stop the process, press any key");
-      New_Line;
+--        Put_Line ("Delaunay triangulation will be build now interactively.");
+--        Put_Line ("To stop the process, press any key");
+--        New_Line;
 
       for I in Integer range 0 .. 50
       loop
