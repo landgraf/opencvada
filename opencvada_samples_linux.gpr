@@ -1,0 +1,26 @@
+with "opencvada_linux";
+
+project OpenCVAda_Samples_Linux is
+
+   for Source_Dirs use ("Source/samples");
+   for Object_Dir use "Build";
+   for Exec_Dir use "Exec";
+   for Languages use ("Ada", "C++");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-s", "-m");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatw.hkd", "-gnat05");
+      for Default_Switches ("c++") use ("-IC:\OpenCV2.2\include");
+   end Compiler;
+
+   package Naming is
+      for Specification_Suffix ("c++") use ".hpp";
+   end Naming;
+
+   for Main use ("chess_demo.adb");
+
+end OpenCVAda_Samples_Linux;
+
