@@ -20,50 +20,50 @@ with Highgui; use Highgui;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with Core; use Core;
 package Ff_Opencv is
-   function CvCreateFileCapture_FFMPEG (Filename : String)
+   function Cv_Create_File_Capture_Ffmpeg (Filename : String)
                                         return Cv_Capture_P;
 
-   procedure CvReleaseCapture_FFMPEG (Capture : access Cv_Capture_P);
+   procedure Cv_Release_Capture_Ffmpeg (Capture : access Cv_Capture_P);
 
-   function CvSetCaptureProperty_FFMPEG (Capture : Cv_Capture_P;
+   function Cv_Set_Capture_Property_Ffmpeg (Capture : Cv_Capture_P;
                                          Prop_Id : Highgui.Capture_Property;
                                          Value   : Long_Float)
                                          return Integer;
 
-   function CvGetCaptureProperty_FFMPEG (Capture : Cv_Capture_P;
+   function Cv_Get_Capture_Property_Ffmpeg (Capture : Cv_Capture_P;
                                          Prop_Id : Highgui.Capture_Property)
                                          return Long_Float;
 
-   function CvGrabFrame_FFMPEG (Capture : Cv_Capture_P)
+   function Cv_Grab_Frame_Ffmpeg (Capture : Cv_Capture_P)
                                 return Integer;
 
-   function CvRetrieveFrame_FFMPEG (Capture : Cv_Capture_P;
+   function Cv_Retrieve_Frame_Ffmpeg (Capture : Cv_Capture_P;
                                     Stream_Idx : Integer)
                                     return Ipl_Image_P;
 
-   function CvCreateVideoWriter_FFMPEG (Filename : String;
+   function Cv_Create_Video_Writer_Ffmpeg (Filename : String;
                                         Fourcc   : Integer;
                                         Fps      : Long_Float;
                                         Frame_Size : Cv_Size;
                                         Is_Color   : Integer)
                                         return Cv_Video_Writer_P;
 
-   procedure CvReleaseVideoWriter_FFMPEG (Writer : access Cv_Video_Writer_P);
+   procedure Cv_Release_Video_Writer_Ffmpeg (Writer : access Cv_Video_Writer_P);
 
-   function CvWriteFrame_FFMPEG (Writer : Cv_Video_Writer_P;
+   function Cv_Write_Frame_Ffmpeg (Writer : Cv_Video_Writer_P;
                                  Image  : Ipl_Image_P)
                                  return Integer;
 private
-   function WCvCreateFileCapture_FFMPEG (Filename : Chars_Ptr)
+   function W_Cv_Create_File_Capture_Ffmpeg (Filename : Chars_Ptr)
                                          return Cv_Capture_P;
 
-   pragma Import (C, WCvCreateFileCapture_FFMPEG, "cvCreateFileCapture");
-   pragma Import (C, CvReleaseCapture_FFMPEG, "cvReleaseCapture_FFMPEG");
-   pragma Import (C, CvSetCaptureProperty_FFMPEG, "cvSetCaptureProperty_FFMPEG");
-   pragma Import (C, CvGetCaptureProperty_FFMPEG, "cvGetCaptureProperty_FFMPEG");
-   pragma Import (C, CvGrabFrame_FFMPEG, "cvGrabFrame_FFMPEG");
-   pragma Import (C, CvRetrieveFrame_FFMPEG, "cvRetrieveFrame_FFMPEG");
-   pragma Import (C, CvCreateVideoWriter_FFMPEG, "cvCreateVideoWriter_FFMPEG");
-   pragma Import (C, CvReleaseVideoWriter_FFMPEG, "cvReleaseVideoWriter_FFMPEG");
-   pragma Import (C, CvWriteFrame_FFMPEG, "cvWriteFrame_FFMPEG");
+   pragma Import (C, W_Cv_Create_File_Capture_Ffmpeg, "cvCreateFileCapture");
+   pragma Import (C, Cv_Release_Capture_Ffmpeg, "cvReleaseCapture_FFMPEG");
+   pragma Import (C, Cv_Set_Capture_Property_Ffmpeg, "cvSetCaptureProperty_FFMPEG");
+   pragma Import (C, Cv_Get_Capture_Property_Ffmpeg, "cvGetCaptureProperty_FFMPEG");
+   pragma Import (C, Cv_Grab_Frame_Ffmpeg, "cvGrabFrame_FFMPEG");
+   pragma Import (C, Cv_Retrieve_Frame_Ffmpeg, "cvRetrieveFrame_FFMPEG");
+   pragma Import (C, Cv_Create_Video_Writer_Ffmpeg, "cvCreateVideoWriter_FFMPEG");
+   pragma Import (C, Cv_Release_Video_Writer_Ffmpeg, "cvReleaseVideoWriter_FFMPEG");
+   pragma Import (C, Cv_Write_Frame_Ffmpeg, "cvWriteFrame_FFMPEG");
 end Ff_Opencv;

@@ -22,71 +22,71 @@ package body Highgui is
 
    --  //for color cvScalar(blue_component, green_component, red\_component[, alpha_component])
    --  //and alpha= 0 <-> 0xFF (not transparent <-> transparent)
-   function CvFontQt (Name_Font  : String;
-                      Point_Size : Integer := -1;
-                      Color      : Cv_Scalar := Core.CvScalarAll (0.0);
-                      Weight     : Cv_Font_Weight := CV_FONT_NORMAL;
-                      Style      : Cv_Font_Style :=  CV_STYLE_NORMAL;
-                      Spacing    : Integer := 0) return Cv_Font is
+   function Cv_Font_Qt (Name_Font  : String;
+                        Point_Size : Integer := -1;
+                        Color      : Cv_Scalar := Core.Cvscalarall (0.0);
+                        Weight     : Cv_Font_Weight := Cv_Font_Normal;
+                        Style      : Cv_Font_Style :=  Cv_Style_Normal;
+                        Spacing    : Integer := 0) return Cv_Font is
    begin
-      return WCvFontQt (Name_Font  => +Name_Font,
-                        Point_Size => Point_Size,
-                        Color      => Color,
-                        Weight     => Weight,
-                        Style      => Style,
-                        Spacing    => Spacing);
-   end CvFontQt;
+      return W_Cv_Font_Qt (Name_Font  => +Name_Font,
+                           Point_Size => Point_Size,
+                           Color      => Color,
+                           Weight     => Weight,
+                           Style      => Style,
+                           Spacing    => Spacing);
+   end Cv_Font_Qt;
 
-   procedure CvAddText (Img  : Cv_Arr_P;
-                        Text : String;
-                        Org  : Cv_Point;
-                        Arg2 : Cv_Font_P) is
+   procedure Cv_Add_Text (Img  : Cv_Arr_P;
+                          Text : String;
+                          Org  : Cv_Point;
+                          Arg2 : Cv_Font_P) is
    begin
-      WcvAddText (Img, +Text, Org, Arg2);
-   end CvAddText;
+      W_Cv_Add_Text (Img, +Text, Org, Arg2);
+   end Cv_Add_Text;
 
-   procedure CvDisplayOverlay (Name     : String;
-                               Text     : String;
-                               Delay_Ms : Integer) is
-   begin
-      WCvDisplayOverlay (+Name, +Text, Delay_Ms);
-   end CvDisplayOverlay;
-
-   procedure CvDisplayStatusBar (Name     : String;
+   procedure Cv_Display_Overlay (Name     : String;
                                  Text     : String;
                                  Delay_Ms : Integer) is
    begin
-      WCvDisplayStatusBar (+Name, +Text, Delay_Ms);
-   end CvDisplayStatusBar;
+      W_Cv_Display_Overlay (+Name, +Text, Delay_Ms);
+   end Cv_Display_Overlay;
 
-   procedure CvCreateOpenGLCallback (Window_Name     : String;
-                                     Callback_OpenGL : Cv_OpenGL_Callback;
-                                     User_DAta       : Cv_Void_P := null;
-                                     Angle           : Long_Float := -1.0;
-                                     Zmin            : Long_Float := -1.0;
-                                     Zmax            : Long_Float := -1.0) is
+   procedure Cv_Display_Status_Bar (Name     : String;
+                                    Text     : String;
+                                    Delay_Ms : Integer) is
    begin
-      WCvCreateOpenGLCallback (+Window_Name, Callback_OpenGL, User_Data, Angle, Zmin, Zmax);
-   end CvCreateOpenGLCallback;
+      W_Cv_Display_Status_Bar (+Name, +Text, Delay_Ms);
+   end Cv_Display_Status_Bar;
 
-   procedure CvSaveWindowParameters (Name : String) is
+   procedure Cv_Create_Opengl_Callback (Window_Name     : String;
+                                        Callback_Opengl : Cv_Opengl_Callback;
+                                        User_Data       : Cv_Void_P := null;
+                                        Angle           : Long_Float := -1.0;
+                                        Zmin            : Long_Float := -1.0;
+                                        Zmax            : Long_Float := -1.0) is
    begin
-      WCvSaveWindowParameters (+Name);
-   end CvSaveWindowParameters;
+      W_Cv_Create_Opengl_Callback (+Window_Name, Callback_Opengl, User_Data, Angle, Zmin, Zmax);
+   end Cv_Create_Opengl_Callback;
 
-   procedure CvLoadWindowParameters (Name : String) is
+   procedure Cv_Save_Window_Parameters (Name : String) is
    begin
-      WCVLoadWindowParameters (+Name);
-   end CVLoadWindowParameters;
+      W_Cv_Save_Window_Parameters (+Name);
+   end Cv_Save_Window_Parameters;
 
-   function CvCreateButton (Button_Name         : String;
-                            On_Change           : Cv_Button_Callback := null;
-                            User_Data           : Cv_Void_P := null;
-                            Button_Type         : Cv_Button_Type := CV_PUSH_BUTTON;
-                            Intial_Button_State : Integer := 0) return Integer is
+   procedure Cv_Load_Window_Parameters (Name : String) is
    begin
-      return WcvCreateButton (+Button_Name, On_Change, User_Data, Button_Type, Intial_Button_State);
-   end CvCreateButton;
+      W_Cv_Load_Window_Parameters (+Name);
+   end Cv_Load_Window_Parameters;
+
+   function Cv_Create_Button (Button_Name         : String;
+                              On_Change           : Cv_Button_Callback := null;
+                              User_Data           : Cv_Void_P := null;
+                              Button_Type         : Cv_Button_Type := Cv_Push_Button;
+                              Intial_Button_State : Integer := 0) return Integer is
+   begin
+      return W_Cv_Create_Button (+Button_Name, On_Change, User_Data, Button_Type, Intial_Button_State);
+   end Cv_Create_Button;
 
    -----------------------------------------------------------------------------
    --
@@ -94,156 +94,156 @@ package body Highgui is
 
    -- Initialisez HighGUI
    -- Not used in Windows.
-   function CvInitSystem (Argc : Integer;
-                          Argv : Cv_String_Pointer) return Integer is
+   function Cv_Init_System (Argc : Integer;
+                            Argv : Cv_String_Pointer) return Integer is
    begin
-      return WCvInitSystem (Argc, Argv);
-   end CvInitSystem;
+      return W_Cv_Init_System (Argc, Argv);
+   end Cv_Init_System;
 
    -- Creates a Window.
    -- Name : Identifier of the window, and titlebar name.
    -- Flags : CV_WINDOW_AUTOSIZE or 0
    -- Return : ?
-   function CvNamedWindow (WindowName  : String;
-                           Flags       : Highgui_Window_Params := CV_WINDOW_AUTOSIZE) return Integer is
+   function Cv_Named_Window (Windowname  : String;
+                             Flags       : Highgui_Window_Params := Cv_Window_Autosize) return Integer is
    begin
-      return WCvNamedWindow (+WindowName, Flags);
-   end CvNamedWindow;
+      return W_Cv_Named_Window (+Windowname, Flags);
+   end Cv_Named_Window;
 
-   procedure CvSetWindowProperty (Name       : String;
-                                  Prop_Id    : Highgui_Window_Params;
-                                  Prop_Value : Long_Float) is
+   procedure Cv_Set_Window_Property (Name       : String;
+                                     Prop_Id    : Highgui_Window_Params;
+                                     Prop_Value : Long_Float) is
    begin
-      WCvSetWindowProperty (+Name, Prop_Id, Prop_Value);
-   end CvSetWindowProperty;
+      W_Cv_Set_Window_Property (+Name, Prop_Id, Prop_Value);
+   end Cv_Set_Window_Property;
 
-   function CvGetWindowProperty (Name    : String;
-                                 Prop_Id : Highgui_Window_Params) return Long_Float is
+   function Cv_Get_Window_Property (Name    : String;
+                                    Prop_Id : Highgui_Window_Params) return Long_Float is
    begin
-      return WCvGetWindowProperty (+Name, Prop_Id);
-   end CvGetWindowProperty;
+      return W_Cv_Get_Window_Property (+Name, Prop_Id);
+   end Cv_Get_Window_Property;
 
-   procedure CvShowImage (WindowName  : String;
-                          Image       : Cv_Arr_P) is
+   procedure Cv_Show_Image (Windowname  : String;
+                            Image       : Cv_Arr_P) is
    begin
-      WCvShowImage (+WindowName, Image);
-   end CvShowImage;
+      W_Cv_Show_Image (+Windowname, Image);
+   end Cv_Show_Image;
 
-   procedure CvResizeWindow (WindowName   : String;
-                             Width        : Integer;
-                             Height       : Integer ) is
+   procedure Cv_Resize_Window (Windowname   : String;
+                               Width        : Integer;
+                               Height       : Integer ) is
    begin
-      WCvResizeWindow (+WindowName, Width, Height);
-   end CvREsizeWindow;
+      W_Cv_Resize_Window (+Windowname, Width, Height);
+   end Cv_Resize_Window;
 
-   procedure CvMoveWindow (WindowName : String;
-                           X          : Integer;
-                           Y          : Integer) is
+   procedure Cv_Move_Window (Windowname : String;
+                             X          : Integer;
+                             Y          : Integer) is
    begin
-      WCvMoveWindow (+WindowName, X, Y);
-   end CvMoveWindow;
+      W_Cv_Move_Window (+Windowname, X, Y);
+   end Cv_Move_Window;
 
-   procedure CvDestroyWindow (WindowName : String ) is
+   procedure Cv_Destroy_Window (Windowname : String ) is
    begin
-      WCvDestroyWindow (WindowName & ASCII.NUL);
-   end CvDestroyWindow;
+      W_Cv_Destroy_Window (Windowname & Ascii.Nul);
+   end Cv_Destroy_Window;
 
-   function CvGetWindowHandle (Window_Name : String)
-                               return Cv_Void_P is
+   function Cv_Get_Window_Handle (Window_Name : String)
+                                  return Cv_Void_P is
    begin
-      return WCvGetWindowHandle (+Window_Name);
-   end CvGetWindowHandle;
+      return W_Cv_Get_Window_Handle (+Window_Name);
+   end Cv_Get_Window_Handle;
 
-   function CvCreateTrackbar (Trackbar_Name : String;
-                              Window_Name   : String;
-                              Value         : access Integer;
-                              Count         : Integer;
-                              On_Change     : Cv_Trackbar_Callback) return Integer is
+   function Cv_Create_Trackbar (Trackbar_Name : String;
+                                Window_Name   : String;
+                                Value         : access Integer;
+                                Count         : Integer;
+                                On_Change     : Cv_Trackbar_Callback) return Integer is
    begin
-      return WCvCreateTrackbar ( +Trackbar_Name, +Window_Name, Value, Count, On_Change);
-   end CvCreateTrackbar;
+      return W_Cv_Create_Trackbar ( +Trackbar_Name, +Window_Name, Value, Count, On_Change);
+   end Cv_Create_Trackbar;
 
-   function CvCreateTrackbar2 (Trackbar_Name : String;
-                               Window_Name   : String;
-                               Value         : Integer;
-                               Count         : Integer;
-                               On_Change     : Cv_Trackbar_Callback2 := null;
-                               User_Data     : Cv_Void_P) return Integer is
+   function Cv_Create_Trackbar2 (Trackbar_Name : String;
+                                 Window_Name   : String;
+                                 Value         : Integer;
+                                 Count         : Integer;
+                                 On_Change     : Cv_Trackbar_Callback2 := null;
+                                 User_Data     : Cv_Void_P) return Integer is
    begin
-      return WCvCreateTrackbar2 (+Trackbar_Name, +Window_Name, Value, Count, On_Change, User_Data);
-   end CvCreateTrackbar2;
+      return W_Cv_Create_Trackbar2 (+Trackbar_Name, +Window_Name, Value, Count, On_Change, User_Data);
+   end Cv_Create_Trackbar2;
 
-   function CvGetTrackbarPos (Trackbar_Name : String;
-                              Window_Name   : String) return Integer is
+   function Cv_Get_Trackbar_Pos (Trackbar_Name : String;
+                                 Window_Name   : String) return Integer is
    begin
-      return WCvGetTrackbarPos (+Trackbar_Name, +Window_Name);
-   end CvGetTrackbarPos;
+      return W_Cv_Get_Trackbar_Pos (+Trackbar_Name, +Window_Name);
+   end Cv_Get_Trackbar_Pos;
 
-   procedure CvSetTrackbarPos (Trackbar_Name : String;
-                               Window_Name   : String;
-                               Pos           : Integer) is
+   procedure Cv_Set_Trackbar_Pos (Trackbar_Name : String;
+                                  Window_Name   : String;
+                                  Pos           : Integer) is
    begin
-      Wcvsettrackbarpos (+Trackbar_Name,
-                         +Window_Name,
-                         Pos);
-   end CvSetTrackbarPos;
+      W_Cv_Set_Trackbar_Pos (+Trackbar_Name,
+                             +Window_Name,
+                             Pos);
+   end Cv_Set_Trackbar_Pos;
 
-   function CvLoadImage (Filename : String;
-                         Iscolor  : Integer := CV_LOAD_IMAGE_COLOR) return Ipl_Image_P is
+   function Cv_Load_Image (Filename : String;
+                           Iscolor  : Integer := Cv_Load_Image_Color) return Ipl_Image_P is
    begin
-      return WCvLoadImage (+Filename, Iscolor);
-   end CvLoadImage;
+      return W_Cv_Load_Image (+Filename, Iscolor);
+   end Cv_Load_Image;
 
-   function CvLoadImageM ( Filename : String;
-                          Iscolor  : Integer := CV_LOAD_IMAGE_COLOR) return Cv_Mat_P is
+   function Cv_Load_Image_M ( Filename : String;
+                             Iscolor  : Integer := Cv_Load_Image_Color) return Cv_Mat_P is
    begin
-      return WCvLoadImageM (+Filename, Iscolor);
-   end CvLoadImageM;
+      return W_Cv_Load_Image_M (+Filename, Iscolor);
+   end Cv_Load_Image_M;
 
-   function CvSaveImage (Filename      : String;
-                         Image         : Cv_Arr_P;
-                         Settings      : File_Settings := CreateFileSettings (CV_IMWRITE_JPEG_QUALITY, 95)) return Integer is
+   function Cv_Save_Image (Filename      : String;
+                           Image         : Cv_Arr_P;
+                           Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer is
    begin
-      return WCvSaveImage (+Filename, Image, Settings);
-   end CvSaveImage;
+      return W_Cv_Save_Image (+Filename, Image, Settings);
+   end Cv_Save_Image;
 
-   function CreateFileSettings ( Compression     : Compression_Type;
-                                Compression_Rate : Integer;
-                                Not_Used         : Integer := 0) return File_Settings is
+   function Create_File_Settings ( Compression     : Compression_Type;
+                                  Compression_Rate : Integer;
+                                  Not_Used         : Integer := 0) return File_Settings is
    begin
       return File_Settings'( Compression, Compression_Rate, Not_Used );
-   end CreateFileSettings;
+   end Create_File_Settings;
 
-   function CvEncodeImage (Ext    : String;
-                           Image  : Cv_Arr_P;
-                           Params : File_Settings) return Cv_Mat_P is
+   function Cv_Encode_Image (Ext    : String;
+                             Image  : Cv_Arr_P;
+                             Params : File_Settings) return Cv_Mat_P is
    begin
-      return WCvEncodeImage (+Ext, Image, Params);
-   end CvEncodeImage;
+      return W_Cv_Encode_Image (+Ext, Image, Params);
+   end Cv_Encode_Image;
 
-   function CvCreateFileCapture ( Name : String ) return Cv_Capture_P is
+   function Cv_Create_File_Capture ( Name : String ) return Cv_Capture_P is
    begin
-      return WCvCreateFileCapture (+Name);
-   end CvCreateFileCapture;
+      return W_Cv_Create_File_Capture (+Name);
+   end Cv_Create_File_Capture;
 
    -- C Macro #define CV_FOURCC(c1,c2,c3,c4) (((c1)&255) + (((c2)&255)<<8) + (((c3)&255)<<16) + (((c4)&255)<<24))
-   function CV_FOURCC ( C1 : Character; C2 : Character ; C3 : Character; C4 : Character) return Integer is
+   function Cv_Fourcc ( C1 : Character; C2 : Character ; C3 : Character; C4 : Character) return Integer is
       Result : Unsigned_32 := 0;
    begin
       Result := (Unsigned_32 (Character'Pos (C1)) and 255) + (Shift_Left (Unsigned_32 (Character'Pos (C2)) and 255, 8)) + Shift_Left (Unsigned_32 (Character'Pos (C3)) and 255, 16) + Shift_Left (Unsigned_32 (Character'Pos (C4)) and 255, 24);
       --Result := Unsigned_32 (Character'Pos (C1)) + (Shift_Left (Unsigned_32 (Character'Pos (C2)), 8)) + Shift_Left (Unsigned_32 (Character'Pos (C3)), 16) + Shift_Left (Unsigned_32 (Character'Pos (C4)), 24);
       --Ada.Text_IO.Put_Line ("Result: " & Result'Img & Shift_Left (Unsigned_32 (Character'Pos (C2))and 255, 8)'Img);
       return Integer (Result);
-   end CV_FOURCC;
+   end Cv_Fourcc;
 
-   function CvCreateVideoWriter (Filename       : String;
-                                 Fourcc         : Integer;
-                                 Fps            : Long_Float;
-                                 Width          : Integer;
-                                 Height         : Integer;
-                                 Is_Color       : Integer) return Cv_Video_Writer_P is
+   function Cv_Create_Video_Writer (Filename       : String;
+                                    Fourcc         : Integer;
+                                    Fps            : Long_Float;
+                                    Width          : Integer;
+                                    Height         : Integer;
+                                    Is_Color       : Integer) return Cv_Video_Writer_P is
    begin
-      return WCvCreateVideoWriter (+Filename, Fourcc, Fps, Width, Height, Is_Color);
-   end CvCreateVideoWriter;
+      return W_Cv_Create_Video_Writer (+Filename, Fourcc, Fps, Width, Height, Is_Color);
+   end Cv_Create_Video_Writer;
 
 end Highgui;

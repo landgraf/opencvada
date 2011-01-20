@@ -18,224 +18,224 @@
 -----------------------------------------------------------------------
 package body Core.Operations is
 -- CvFree
-   procedure CvFree (Ptr : access Cv_Void_P) is
+   procedure Cv_Free (Ptr : access Cv_Void_P) is
       Temp_Ptr : constant access Cv_Void_P := Ptr;
    begin
-      CvFree_Wrapper (Temp_Ptr);
+      Cv_Free_Wrapper (Temp_Ptr);
       Temp_Ptr.all := null;
-   end CvFree;
+   end Cv_Free;
 
    -- CvReshapeMatND wrapper?
-   function CvReshapeND (Arr      : Cv_Arr_P;
-                         Header   : Cv_Arr_P;
-                         NewCn    : Integer;
-                         NewDims  : Integer;
-                         NewSizes : Cv_32s_Array) return Cv_Arr_P is
+   function Cv_Reshape_Nd (Arr      : Cv_Arr_P;
+                           Header   : Cv_Arr_P;
+                           Newcn    : Integer;
+                           Newdims  : Integer;
+                           Newsizes : Cv_32s_Array) return Cv_Arr_P is
    begin
-      return Cv_Arr_P (CvReshapeMatND (Arr, Header'Size/8, Header, NewCn, NewDims, NewSizes));
-   end CvReshapeND;
+      return Cv_Arr_P (Cvreshapematnd (Arr, Header'Size / 8, Header, Newcn, Newdims, Newsizes));
+   end Cv_Reshape_Nd;
 
-   procedure CvConvert (Src : Cv_Arr_P;
-                        Dst : Cv_Arr_P) is
+   procedure Cv_Convert (Src : Cv_Arr_P;
+                         Dst : Cv_Arr_P) is
    begin
-      CvConvertScale (Src, Dst, 1.0, 0.0);
-   end CvConvert;
+      Cv_Convert_Scale (Src, Dst, 1.0, 0.0);
+   end Cvconvert;
 
    -- wrapper to cvScaleAdd
-   procedure CvAXPY (Src1  : Cv_Arr_P;
-                     Scale : Long_Float;
-                     Src2  : Cv_Arr_P;
-                     Dst   : Cv_Arr_P) is
+   procedure Cv_Axpy (Src1  : Cv_Arr_P;
+                      Scale : Long_Float;
+                      Src2  : Cv_Arr_P;
+                      Dst   : Cv_Arr_P) is
    begin
-      CvScaleAdd (Src1, CvRealScalar (Scale), Src2, Dst);
-   end CvAXPY;
+      Cv_Scale_Add (Src1, Cvrealscalar (Scale), Src2, Dst);
+   end Cv_Axpy;
 
-   procedure CvMatMulAdd (Src1  : access Cv_Arr;
-                          Src2  : access Cv_Arr;
-                          Src3  : access Cv_Arr;
-                          Dst   : access Cv_Arr) is
+   procedure Cv_Mat_Mul_Add (Src1  : access Cv_Arr;
+                             Src2  : access Cv_Arr;
+                             Src3  : access Cv_Arr;
+                             Dst   : access Cv_Arr) is
    begin
-      CvGEMM (Src1, Src2, 1.0, Src3, 1.0, Dst, 0);
-   end CvMatMulAdd;
+      Cv_Gemm (Src1, Src2, 1.0, Src3, 1.0, Dst, 0);
+   end Cv_Mat_Mul_Add;
 
-   procedure CvMatMul (Src1 : access Cv_Arr;
-                       Src2 : access Cv_Arr;
-                       Dst  : access Cv_Arr) is
+   procedure Cv_Mat_Mul (Src1 : access Cv_Arr;
+                         Src2 : access Cv_Arr;
+                         Dst  : access Cv_Arr) is
    begin
-      CvMatMulAdd (Src1, Src2, null, Dst);
-   end CvMatMul;
+      Cv_Mat_Mul_Add (Src1, Src2, null, Dst);
+   end Cv_Mat_Mul;
 
-      -- Allocates a memory buffer in a storage block.
-   function CvMemStorageAllocString (Storage : Cv_Mem_Storage_P;
-                                     Ptr     : String;
-                                     Len     : Integer := -1) return Cv_String is
+   -- Allocates a memory buffer in a storage block.
+   function Cv_Mem_Storage_Alloc_String (Storage : Cv_Mem_Storage_P;
+                                         Ptr     : String;
+                                         Len     : Integer := -1) return Cv_String is
    begin
-      return WCvMemStorageAllocString (Storage => Storage,
-                                       Ptr     => +Ptr,
-                                       Len     => Len);
-   end CvMemStorageAllocString;
+      return W_Cv_Mem_Storage_Alloc_String (Storage => Storage,
+                                            Ptr     => +Ptr,
+                                            Len     => Len);
+   end Cv_Mem_Storage_Alloc_String;
 
    -- Returns the index of a graph vertex.
-   function CvGraphVtxIdx (Graph : Cv_Graph_P;
-                           Vtx   : Cv_Graph_Vtx_P) return Integer is
+   function Cv_Graph_Vtx_Idx (Graph : Cv_Graph_P;
+                              Vtx   : Cv_Graph_Vtx_P) return Integer is
       pragma Unreferenced (Graph);
    begin
-      return Integer(Unsigned_32(Vtx.all.Flags) and CV_SET_ELEM_IDX_MASK);
-   end CvGraphVtxIdx;
+      return Integer (Unsigned_32 (Vtx.all.Flags) and Cv_Set_Elem_Idx_Mask);
+   end Cv_Graph_Vtx_Idx;
 
-      -- Returns the index of a graph edge.
-   function CvGraphEdgeIdx (Graph : Cv_Graph_P;
-                            Edge  : Cv_Graph_Edge_P) return Integer is
+   -- Returns the index of a graph edge.
+   function Cv_Graph_Edge_Idx (Graph : Cv_Graph_P;
+                               Edge  : Cv_Graph_Edge_P) return Integer is
       pragma Unreferenced (Graph);
    begin
-      return Integer(Unsigned_32(Edge.all.Flags) and CV_SET_ELEM_IDX_MASK);
-   end CvGraphEdgeIdx;
+      return Integer (Unsigned_32 (Edge.all.Flags) and Cv_Set_Elem_Idx_Mask);
+   end Cv_Graph_Edge_Idx;
 
-      --#define cvGraphGetVtxCount( graph ) ((graph)->active_count)
-   function CvGraphGetVtxCount (Graph : Cv_Graph_P) return Integer is
+   --#define cvGraphGetVtxCount( graph ) ((graph)->active_count)
+   function Cv_Graph_Get_Vtx_Count (Graph : Cv_Graph_P) return Integer is
    begin
       return Graph.all.Active_Count;
-   end CvGraphGetVtxCount;
+   end Cv_Graph_Get_Vtx_Count;
 
    --#define cvGraphGetEdgeCount( graph ) ((graph)->edges->active_count)
-   function CvGraphGetEdgeCount (Graph : Cv_Graph_P) return Integer is
+   function Cv_Graph_Get_Edge_Count (Graph : Cv_Graph_P) return Integer is
    begin
       return Graph.all.Edges.all.Active_Count;
-   end CvGraphGetEdgeCount;
+   end Cv_Graph_Get_Edge_Count;
 
-      --     #define  CV_IS_GRAPH_VERTEX_VISITED(vtx) \
+   --     #define  CV_IS_GRAPH_VERTEX_VISITED(vtx) \
    --      (((CvGraphVtx*)(vtx))->flags & CV_GRAPH_ITEM_VISITED_FLAG)
-   function CV_IS_GRAPH_VERTEX_VISISTED (Vtx : Cv_Graph_Vtx_P) return Integer is
+   function Cv_Is_Graph_Vertex_Visisted (Vtx : Cv_Graph_Vtx_P) return Integer is
    begin
-      return Integer (Unsigned_32 (Vtx.all.Flags) and Unsigned_32 (CV_GRAPH_ITEM_VISITED_FLAG));
-   end CV_IS_GRAPH_VERTEX_VISISTED;
+      return Integer (Unsigned_32 (Vtx.all.Flags) and Unsigned_32 (Cv_Graph_Item_Visited_Flag));
+   end Cv_Is_Graph_Vertex_Visisted;
 
    --   #define  CV_IS_GRAPH_EDGE_VISITED(edge) \
    --      (((CvGraphEdge*)(edge))->flags & CV_GRAPH_ITEM_VISITED_FLAG)
-   function CV_IS_GRAPH_EDGE_VISITED (Edge : Cv_Graph_Edge_P) return Integer is
+   function Cv_Is_Graph_Edge_Visited (Edge : Cv_Graph_Edge_P) return Integer is
    begin
-      return Integer (Unsigned_32 (Edge.all.Flags) and Unsigned_32 (CV_GRAPH_ITEM_VISITED_FLAG));
-   end CV_IS_GRAPH_EDGE_VISITED;
+      return Integer (Unsigned_32 (Edge.all.Flags) and Unsigned_32 (Cv_Graph_Item_Visited_Flag));
+   end Cv_Is_Graph_Edge_Visited;
 
-      -- Creates a Cv_Scalar color from RGB values
-   function CV_RGB (R : Integer;
+   -- Creates a Cv_Scalar color from RGB values
+   function Cv_Rgb (R : Integer;
                     G : Integer;
                     B : Integer) return Cv_Scalar is
    begin
-      return CvScalar (Long_Float (B),
-                       Long_Float (G),
-                       Long_Float (R),
-                       0.0);
-   end CV_RGB;
+      return Cv_Scalar (Long_Float (B),
+                        Long_Float (G),
+                        Long_Float (R),
+                        0.0);
+   end Cv_Rgb;
 
-   procedure CV_NEXT_LINE_POINT (LineIterator : Cv_Line_Iterator_P) is
-      LineIterator_Temp : constant Cv_Line_Iterator_P := LineIterator;
+   procedure Cv_Next_Line_Point (Lineiterator : Cv_Line_Iterator_P) is
+      Lineiterator_Temp  : constant Cv_Line_Iterator_P := Lineiterator;
       Line_Iterator_Mask : Integer;
       Diff               : Ptrdiff_T ;
 
       use Core.Cv_Point_Pointer_Pkg;
    begin
-      if (LineIterator.all.Err < 0) then
+      if (Lineiterator.all.Err < 0) then
          Line_Iterator_Mask := -1;
       else
          Line_Iterator_Mask := 0;
       end if;
 
-      LineIterator_Temp.all.Err := LineIterator.all.Err + LineIterator.all.Minus_Delta + Integer (Unsigned_32 (LineIterator.all.Plus_Delta) and Unsigned_32 (Line_Iterator_Mask));
+      Lineiterator_Temp.all.Err := Lineiterator.all.Err + Lineiterator.all.Minus_Delta + Integer (Unsigned_32 (Lineiterator.all.Plus_Delta) and Unsigned_32 (Line_Iterator_Mask));
 
-      diff :=  ptrdiff_t (LineIterator.all.Minus_Step + Integer (Unsigned_32 (LineIterator.all.Plus_Step) and Unsigned_32 (Line_Iterator_Mask))) ;
-      LineIterator_Temp.all.Ptr :=LineIterator.all.Ptr + Diff;
+      Diff :=  Ptrdiff_T (Lineiterator.all.Minus_Step + Integer (Unsigned_32 (Lineiterator.all.Plus_Step) and Unsigned_32 (Line_Iterator_Mask))) ;
+      Lineiterator_Temp.all.Ptr := Lineiterator.all.Ptr + Diff;
 
-   end CV_NEXT_LINE_POINT;
+   end Cv_Next_Line_Point;
 
    -- Draws a text string.
-   procedure CvPutText (Img : Cv_Arr_P;
-                        Text : String;
-                        Org  : Cv_Point;
-                        Font : access Cv_Font;
-                        Color : Cv_Scalar) is
+   procedure Cv_Put_Text (Img   : Cv_Arr_P;
+                          Text  : String;
+                          Org   : Cv_Point;
+                          Font  : access Cv_Font;
+                          Color : Cv_Scalar) is
    begin
-      WCvPutText (Img, +Text, Org, Font, Color);
-   end CvPutText;
+      W_Cv_Put_Text (Img, +Text, Org, Font, Color);
+   end Cv_Put_Text;
 
-      -- Retrieves the width and height of a text string.
-   procedure CvGetTextSize (TextString : String;
-                            Font       : Cv_Font;
-                            TextSize   : access Cv_Size;
-                            Baseline   : access Integer) is
+   -- Retrieves the width and height of a text string.
+   procedure Cv_Get_Text_Size (Textstring : String;
+                               Font       : Cv_Font;
+                               Textsize   : access Cv_Size;
+                               Baseline   : access Integer) is
    begin
-      WCvGetTextSize (+TextString, Font, Textsize, Baseline);
-   end CvGetTextSize;
+      W_Cv_Get_Text_Size (+Textstring, Font, Textsize, Baseline);
+   end Cv_Get_Text_Size;
 
-   procedure CV_TURN_ON_IPL_COMPATIBILITY is
+   procedure Cv_Turn_On_Ipl_Compatibility is
    begin
       null; -- We dont have this...
-   end CV_TURN_ON_IPL_COMPATIBILITY;
+   end Cv_Turn_On_Ipl_Compatibility;
 
    -- use this for func: Enclosing_Entity
-   procedure OPENCV_ERROR (Status  : Integer;
-                           Func    : String := GNAT.Source_Info.Enclosing_Entity;
-                           Context : String := GNAT.Source_Info.Enclosing_Entity;
-                           File    : String := GNAT.Source_Info.File;
-                           Line    : Integer := GNAT.Source_Info.Line) is
+   procedure Opencv_Error (Status  : Integer;
+                           Func    : String := Gnat.Source_Info.Enclosing_Entity;
+                           Context : String := Gnat.Source_Info.Enclosing_Entity;
+                           File    : String := Gnat.Source_Info.File;
+                           Line    : Integer := Gnat.Source_Info.Line) is
       Retval : Integer;
       pragma Unreferenced (Retval);
    begin
-      Retval := CvError (Status,
-                         Interfaces.C.Strings.New_String (Func),
-                         Interfaces.C.Strings.New_String (Context),
-                         Interfaces.C.Strings.New_String (File),
-                         Line);
-   end OPENCV_ERROR;
+      Retval := Cv_Error (Status,
+                          Interfaces.C.Strings.New_String (Func),
+                          Interfaces.C.Strings.New_String (Context),
+                          Interfaces.C.Strings.New_String (File),
+                          Line);
+   end Opencv_Error;
 
-   procedure OPENCV_ERRCHK (Func : String := GNAT.Source_Info.Enclosing_Entity;
-                            Context : String := GNAT.Source_Info.Enclosing_Entity;
-                            File    : String := GNAT.Source_Info.File;
-                            Line    : Integer := GNAT.Source_Info.Line) is
+   procedure Opencv_Errchk (Func    : String := Gnat.Source_Info.Enclosing_Entity;
+                            Context : String := Gnat.Source_Info.Enclosing_Entity;
+                            File    : String := Gnat.Source_Info.File;
+                            Line    : Integer := Gnat.Source_Info.Line) is
    begin
-      if (CvGetErrStatus >= 0) then
-         OPENCV_ERROR (Integer(CV_StsBackTrace),
+      if (Cvgeterrstatus >= 0) then
+         Opencv_Error (Integer (Cv_Stsbacktrace),
                        (Func),
                        (Context),
                        File,
                        Line);
       end if;
-   end OPENCV_ERRCHK;
+   end Opencv_Errchk;
 
-   procedure OPENCV_ASSERT (Expression : Boolean;
-                            Func       : String := GNAT.Source_Info.Enclosing_Entity;
-                            Context    : String := GNAT.Source_Info.Enclosing_Entity;
-                            File       : String := GNAT.Source_Info.File;
-                            Line       : Integer := GNAT.Source_Info.Line) is
+   procedure Opencv_Assert (Expression : Boolean;
+                            Func       : String := Gnat.Source_Info.Enclosing_Entity;
+                            Context    : String := Gnat.Source_Info.Enclosing_Entity;
+                            File       : String := Gnat.Source_Info.File;
+                            Line       : Integer := Gnat.Source_Info.Line) is
    begin
       if not Expression then
-         OPENCV_ERROR (Integer(CV_StsInternal),
+         Opencv_Error (Integer (Cv_Stsinternal),
                        Func,
                        Context,
                        File,
                        Line);
       end if;
-   end OPENCV_ASSERT;
+   end Opencv_Assert;
 
    --(cvSetErrStatus(CV_StsOk))
-   procedure OPENCV_RSTERR is
+   procedure Opencv_Rsterr is
    begin
-      CvSetErrStatus (Integer(CV_StsOk));
-   end OPENCV_RSTERR;
+      Cv_Set_Err_Status (Integer (Cv_Stsok));
+   end Opencv_Rsterr;
 
-   procedure CV_CHECK (Func    : String := GNAT.Source_Info.Enclosing_Entity;
-                       Context : String := GNAT.Source_Info.Enclosing_Entity;
-                       File    : String := GNAT.Source_Info.File;
-                       Line    : Integer := GNAT.Source_Info.Line) is
+   procedure Cv_Check (Func    : String := Gnat.Source_Info.Enclosing_Entity;
+                       Context : String := Gnat.Source_Info.Enclosing_Entity;
+                       File    : String := Gnat.Source_Info.File;
+                       Line    : Integer := Gnat.Source_Info.Line) is
       pragma Unreferenced (Func, Context, File, Line);
    begin
-      if CvGetErrStatus < 0 then
-         CV_ERROR (Integer(CV_StsBackTrace), "Inner function failed.");
+      if Cv_Get_Err_Status < 0 then
+         Cv_Error (Integer (Cv_Stsbacktrace), "Inner function failed.");
       end if;
-   end CV_CHECK;
+   end Cv_Check;
 
-   procedure OPENCV_CALL is
+   procedure Opencv_Call is
    begin
       null;
-   end OPENCV_CALL;
+   end Opencv_Call;
 end Core.Operations;

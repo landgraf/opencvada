@@ -18,9 +18,9 @@
 -----------------------------------------------------------------------
 
 package body Imgproc.Operations is
-   function CvContourPerimeter (Curve : Cv_Void_P)
+   function Cv_Contour_Perimeter (Curve : Cv_Void_P)
                                 return Long_Float is
    begin
-      return CvArcLength (Curve, CvSlice (0), 1);
-   end CvContourPerimeter;
+      return Cv_Arc_Length (Curve, CvSlice (0), 1);
+   end Cv_Contour_Perimeter;
 end Imgproc.Operations;

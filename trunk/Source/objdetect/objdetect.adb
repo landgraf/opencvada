@@ -31,7 +31,7 @@ package body Objdetect is
          return 1;
       else return 0;
       end if;
-   end CV_IS_HAAR_CLASSIFIER;
+   end Cv_Is_Haar_Classifier;
 
    function Cv_Load_Haar_Classifier_Cascade (Directory      : String;
                                          OrigWindowSize : Cv_Size) return Cv_Haar_Classifier_Cascade_P is

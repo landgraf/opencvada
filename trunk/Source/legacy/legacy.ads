@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- Ada bindings for OpenCV 2.1.1 (from SVN 3 October 2010, rev. 3703)
+-- ada Bindings for OpenCV 2.1.1 (from SVN 3 October 2010, rev. 3703)
 -- Developed as a master thesis project at Mälardalens Högskola
 -- OpenCV: http://opencv.willowgarage.com/
 -- Ada bindings : http://not_available.nope/
@@ -30,19 +30,19 @@ package Legacy is
    end record;
 
    type Cv_Rand_State is record
-      State    : Cv_RNG;
+      State    : Cv_Rng;
       Disttype : Integer;
       Param    : Cv_Scalar_Array (1 .. 2);
    end record;
 
    --------------------------------------------------------------------------------
 
-   function Cv_SegmentImage (Src             : Cv_Arr_P;
-                            Dst             : Cv_Arr_P;
-                            Canny_Threshold : Long_Float;
-                            Ffill_Threshold : Long_Float;
-                            Storage         : Cv_Mem_Storage)
-                            return Cv_Seq_P;
+   function Cv_Segment_Image (Src             : Cv_Arr_P;
+                              Dst             : Cv_Arr_P;
+                              Canny_Threshold : Long_Float;
+                              Ffill_Threshold : Long_Float;
+                              Storage         : Cv_Mem_Storage)
+                              return Cv_Seq_P;
 
    -----------------------------------------------------------------------------
    -- Eigen objects ------------------------------------------------------------
@@ -65,57 +65,57 @@ package Legacy is
    pragma Unchecked_Union (Cv_Input);
    pragma Convention (C_Pass_By_Copy, Cv_Input);
 
-   CV_EIGOBJ_NO_CALLBACK     : constant := 0;
-   CV_EIGOBJ_INPUT_CALLBACK  : constant := 1;
-   CV_EIGOBJ_OUTPUT_CALLBACK : constant := 2;
-   CV_EIGOBJ_BOTH_CALLBACK   : constant := 3;
+   Cv_Eigobj_No_Callback     : constant := 0;
+   Cv_Eigobj_Input_Callback  : constant := 1;
+   Cv_Eigobj_Output_Callback : constant := 2;
+   Cv_Eigobj_Both_Callback   : constant := 3;
 
    --     Calculates covariation matrix of a set of arrays
    procedure Cv_Calc_Covar_Matrix_Ex (N_Objects    : Integer;
-                                  Input        : Cv_Void_P;
-                                  Io_Flags     : Integer;
-                                  Io_Buf_Size  : Integer;
-                                  Buffer       : Cv_8u_Array;
-                                  User_Data    : Cv_Void_P;
-                                  Avg          : Ipl_Image_P;
-                                  Covar_Matrix : Cv_32f_Array);
+                                      Input        : Cv_Void_P;
+                                      Io_Flags     : Integer;
+                                      Io_Buf_Size  : Integer;
+                                      Buffer       : Cv_8u_Array;
+                                      User_Data    : Cv_Void_P;
+                                      Avg          : Ipl_Image_P;
+                                      Covar_Matrix : Cv_32f_Array);
 
    --     Calculates eigen values and vectors of covariation matrix of a set of
    --     arrays
-   procedure CvCalcEigenObjects (N_Objects   : Integer;
-                                 Input       : Cv_Void_P;
-                                 Output      : Cv_Void_P;
-                                 Io_Flags    : Integer;
-                                 Op_Buf_Size : Integer;
-                                 User_Data   : Cv_Void_P;
-                                 Calc_Limit  : Cv_Term_Criteria_P;
-                                 Avg         : Ipl_Image_P;
-                                 Eig_Vals    : Cv_32f_Array);
+   procedure Cv_Calc_Eigen_Objects (N_Objects   : Integer;
+                                    Input       : Cv_Void_P;
+                                    Output      : Cv_Void_P;
+                                    Io_Flags    : Integer;
+                                    Op_Buf_Size : Integer;
+                                    User_Data   : Cv_Void_P;
+                                    Calc_Limit  : Cv_Term_Criteria_P;
+                                    Avg         : Ipl_Image_P;
+                                    Eig_Vals    : Cv_32f_Array);
    --     Calculates dot product (obj - avg) * eigObj (i.e. projects image to
    --     eigen vector)
-   function CvCalcDecompCoeff (Obj        : Ipl_Image_P;
-                               N_Eig_Objs : Integer;
-                               Avg        : Ipl_Image_P)
-                               return Long_Float;
+   function Cv_Calc_Decomp_Coeff (Obj        : Ipl_Image_P;
+                                  N_Eig_Objs : Integer;
+                                  Avg        : Ipl_Image_P)
+                                  return Long_Float;
 
    --     Projects image to eigen space (finds all decomposion coefficients
-   procedure CvEigenDecomposite (Obj        : Ipl_Image_P;
-                                 N_Eig_Objs : Integer;
-                                 Eig_Input  : Cv_Void_P;
-                                 Io_Flags   : Integer;
-                                 User_Data  : Cv_Void_P;
-                                 Avg        : Ipl_Image_P;
-                                 Eig_Vals   : Cv_32f_Array);
+   procedure Cv_Eigen_Decomposite (Obj        : Ipl_Image_P;
+                                   N_Eig_Objs : Integer;
+                                   Eig_Input  : Cv_Void_P;
+                                   Io_Flags   : Integer;
+                                   User_Data  : Cv_Void_P;
+                                   Avg        : Ipl_Image_P;
+                                   Eig_Vals   : Cv_32f_Array);
 
    --     Projects original objects used to calculate eigen space basis to that
    --     space
-   procedure CvEigenProjection (Eig_Input  : Cv_Void_P;
-                                N_Eig_Objs : Integer;
-                                Io_Flags   : Integer;
-                                User_Data  : Cv_Void_P;
-                                Coeffs     : Cv_32f_Array;
-                                Avg        : Ipl_Image_P;
-                                Eig_Vals   : Cv_32f_Array);
+   procedure Cv_Eigen_Projection (Eig_Input  : Cv_Void_P;
+                                  N_Eig_Objs : Integer;
+                                  Io_Flags   : Integer;
+                                  User_Data  : Cv_Void_P;
+                                  Coeffs     : Cv_32f_Array;
+                                  Avg        : Ipl_Image_P;
+                                  Eig_Vals   : Cv_32f_Array);
 
    -- 1D/2D HMM ----------------------------------------------------------------
    -----------------------------------------------------------------------------
@@ -130,180 +130,180 @@ package Legacy is
       Mix      : Cv_32s_Array_P;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Img_Obs_Info);
-   type Cv_1D_Obs_Info is new Cv_Img_Obs_Info;
-   pragma Convention (C_Pass_By_Copy, Cv_1D_Obs_Info);
+   type Cv_1d_Obs_Info is new Cv_Img_Obs_Info;
+   pragma Convention (C_Pass_By_Copy, Cv_1d_Obs_Info);
 
    type Cv_Img_Obs_Info_P is access all Cv_Img_Obs_Info;
-   type Cv_1D_Obs_Info_P is access all Cv_1D_Obs_Info;
+   type Cv_1d_Obs_Info_P is access all Cv_1d_Obs_Info;
 
    type Cv_Img_Obs_Info_P_Array is array (Integer range <>) of aliased Cv_Img_Obs_Info_P;
 
    -- Cv_EHMM_State ------------------------------------------------------------
-   type Cv_EHMM_State is record
+   type Cv_Ehmm_State is record
       Num_Mix     : Integer;
       Mu          : Cv_32f_Array_P;
       Inv_Var     : Cv_32f_Array_P;
       Log_Var_Val : Cv_32f_Array_P;
       Weight      : Cv_32f_Array_P;
    end record;
-   pragma Convention (C_Pass_By_Copy, Cv_EHMM_State);
-   type Cv_EHMM_State_P is access all Cv_EHMM_State;
+   pragma Convention (C_Pass_By_Copy, Cv_Ehmm_State);
+   type Cv_Ehmm_State_P is access all Cv_Ehmm_State;
 
    -- Cv_EHMM ------------------------------------------------------------------
-   type Cv_EHMM;
-   type Cv_EHMM_P is access all Cv_EHMM;
+   type Cv_Ehmm;
+   type Cv_Ehmm_P is access all Cv_Ehmm;
 
-   type Cv_EHMM_Union_Type is (State, Ehmm);
-   type Cv_EHMM_Union (Union_Type : Cv_EHMM_Union_Type := State) is record
+   type Cv_Ehmm_Union_Type is (State, Ehmm);
+   type Cv_Ehmm_Union (Union_Type : Cv_Ehmm_Union_Type := State) is record
       case Union_Type is
          when State =>
-            State : Cv_EHMM_State_P;
+            State : Cv_Ehmm_State_P;
          when Ehmm =>
-            Ehmm  : Cv_EHMM_P;
+            Ehmm  : Cv_Ehmm_P;
       end case;
    end record;
-   pragma Unchecked_Union (Cv_EHMM_Union);
-   pragma Convention (C_Pass_By_Copy, Cv_EHMM_Union);
+   pragma Unchecked_Union (Cv_Ehmm_Union);
+   pragma Convention (C_Pass_By_Copy, Cv_Ehmm_Union);
 
-   type Cv_EHMM is record
+   type Cv_Ehmm is record
       Level      : Integer;
       Num_States : Integer;
       Trans_P    : Cv_32f_Array_P;    -- float *
       Obs_Prob   : Cv_32f_Pointer_Array_P; -- float **
-      U          : Cv_EHMM_Union;
+      U          : Cv_Ehmm_Union;
    end record;
-   pragma Convention (C_Pass_By_Copy, Cv_EHMM);
+   pragma Convention (C_Pass_By_Copy, Cv_Ehmm);
 
    -- Embedded HMMs ------------------------------------------------------------
    --     Creates 2D HMM
-   function CvCreate2DHMM (State_Number : Cv_32s_Array;
-                           Num_Mix      : Cv_32s_Array;
-                           Obs_Size     : Integer)
-                           return Cv_EHMM_P;
+   function Cv_Create_2d_Hmm (State_Number : Cv_32s_Array;
+                              Num_Mix      : Cv_32s_Array;
+                              Obs_Size     : Integer)
+                              return Cv_Ehmm_P;
 
    --     Releases HMM
-   procedure CvRelease2DHMM (Hmm : access Cv_EHMM_P);
+   procedure Cv_Release_2d_Hmm (Hmm : access Cv_Ehmm_P);
 
-   procedure CV_COUNT_OBS (Roi       : Cv_Size;
+   procedure Cv_Count_Obs (Roi       : Cv_Size;
                            Win       : Cv_Size;
                            Delta_Obs : Cv_Size;
                            Num_Obs   : out Cv_Size);
 
    --     Creates storage for observation vectors
-   function CvCreateObsInfo (Num_Obs  : Cv_Size;
-                             Obs_Size : Integer)
-                             return Cv_Img_Obs_Info_P;
+   function Cv_Create_Obs_Info (Num_Obs  : Cv_Size;
+                                Obs_Size : Integer)
+                                return Cv_Img_Obs_Info_P;
 
    --     Releases storage for observation vectors
-   procedure CvReleaseObsInfo (Obs_Info : access Cv_Img_Obs_Info_P);
+   procedure Cv_Release_Obs_Info (Obs_Info : access Cv_Img_Obs_Info_P);
 
    --     The function takes an image on input and and returns the sequnce of
    --     Observations to be used with an embedded HMM; Each observation is
    --     top-left block of DCT coefficient matrix
-   procedure CvImgToObs_DCT (Arr        : Cv_Arr_P;
-                             Obs        : Cv_32f_Array;
-                             Dct_Size   : Cv_Size;
-                             Obs_Size   : Cv_Size;
-                             Delta_Size : Cv_Size);
+   procedure Cv_Img_To_Obs_Dct (Arr        : Cv_Arr_P;
+                                Obs        : Cv_32f_Array;
+                                Dct_Size   : Cv_Size;
+                                Obs_Size   : Cv_Size;
+                                Delta_Size : Cv_Size);
 
    --     Uniformly segments all observation vectors extracted from image
-   procedure CvUniformImgSegm (Obs_Info : Cv_Img_Obs_Info_P;
-                               Ehmm     : Cv_EHMM_P);
+   procedure Cv_Uniform_Img_Segm (Obs_Info : Cv_Img_Obs_Info_P;
+                                  Ehmm     : Cv_Ehmm_P);
 
    --     Does mixture segmentation of the states of embedded HMM
-   procedure CvInitMixSegm (Obs_Info_Array : Cv_Img_Obs_Info_P_Array;
-                            Num_Img        : Integer;
-                            Hmm            : Cv_EHMM_P);
+   procedure Cv_Init_Mix_Segm (Obs_Info_Array : Cv_Img_Obs_Info_P_Array;
+                               Num_Img        : Integer;
+                               Hmm            : Cv_Ehmm_P);
 
    --     Function calculates means, variances, weights of every Gaussian
    --     Mixture of every low-level state of embedded HMM
-   procedure CvEstimateHMMStateParams (Obs_Info_Array : Cv_Img_Obs_Info_P_Array;
-                                       Num_Img        : Integer;
-                                       Hmm            : Cv_EHMM_P);
+   procedure Cv_Estimate_Hmm_State_Params (Obs_Info_Array : Cv_Img_Obs_Info_P_Array;
+                                           Num_Img        : Integer;
+                                           Hmm            : Cv_Ehmm_P);
 
    --     Function computes transition probability matrices of embedded HMM
    --     given observations segmentation
-   procedure CvEstimateTransProb (Obs_Info_Array : Cv_Img_Obs_Info_P_Array;
-                                  Num_Img        : Integer;
-                                  Hmm            : Cv_EHMM_P);
+   procedure Cv_Estimate_Trans_Prob (Obs_Info_Array : Cv_Img_Obs_Info_P_Array;
+                                     Num_Img        : Integer;
+                                     Hmm            : Cv_Ehmm_P);
 
    --     Function computes probabilities of appearing observations at any state
    --     (i.e. computes P(obs|state) for every pair(obs,state))
-   procedure CvEstimateObsProb (Obs_Info : Cv_Img_Obs_Info_P;
-                                Hmm      : Cv_EHMM_P);
+   procedure Cv_Estimate_Obs_Prob (Obs_Info : Cv_Img_Obs_Info_P;
+                                   Hmm      : Cv_Ehmm_P);
 
    --     Runs Viterbi algorithm for embedded HMM
-   function CvEViterbi (Obs_Info : Cv_Img_Obs_Info_P;
-                        Hmm      : Cv_EHMM_P)
-                        return Float;
+   function Cv_E_Viterbi (Obs_Info : Cv_Img_Obs_Info_P;
+                          Hmm      : Cv_Ehmm_P)
+                          return Float;
 
    --     Function clusters observation vectors from several images
    --     given observations segmentation.
    --     Euclidean distance used for clustering vectors.
    --     Centers of clusters are given means of every mixture
-   procedure CvMixSegmL2 (Obs_Info_Array : Cv_Img_Obs_Info_P_Array;
-                          Num_Img        : Integer;
-                          Hmm            : Cv_EHMM_P);
+   procedure Cv_Mix_Segm_L2 (Obs_Info_Array : Cv_Img_Obs_Info_P_Array;
+                             Num_Img        : Integer;
+                             Hmm            : Cv_Ehmm_P);
 
    -- A few function from old stereo gesture recognition demonstrations---------
    -----------------------------------------------------------------------------
    --     Creates hand mask image given several points on the hand
-   procedure CvCreateHandMask (Hand_Points : Cv_Seq_P;
-                               Img_Mask    : Ipl_Image_P;
-                               Roi         : Cv_Rect_P);
+   procedure Cv_Create_Hand_Mask (Hand_Points : Cv_Seq_P;
+                                  Img_Mask    : Ipl_Image_P;
+                                  Roi         : Cv_Rect_P);
 
    --     Finds hand region in range image data
-   procedure CvFindHandRegion (Points  : Cv_Point_3d_32f_Array;
-                               Count   : Integer;
-                               Indexs  : Cv_Seq_P;
-                               Line    : Cv_32f_Array;
-                               Size    : Cv_Size_2d_32f;
-                               Flag    : Integer;
-                               Center  : Cv_Point_3d_32f_Array;
-                               Storage : Cv_Mem_Storage_P;
-                               Numbers : access Cv_Seq_P);
+   procedure Cv_Find_Hand_Region (Points  : Cv_Point_3d_32f_Array;
+                                  Count   : Integer;
+                                  Indexs  : Cv_Seq_P;
+                                  Line    : Cv_32f_Array;
+                                  Size    : Cv_Size_2d_32f;
+                                  Flag    : Integer;
+                                  Center  : Cv_Point_3d_32f_Array;
+                                  Storage : Cv_Mem_Storage_P;
+                                  Numbers : access Cv_Seq_P);
 
    --     Finds hand region in range image data (advanced version)
-   procedure CvFindHandRegionA (Points  : Cv_Point_3d_32f_Array;
-                                Count   : Integer;
-                                Indexs  : Cv_Seq_P;
-                                Line    : Cv_32f_Array;
-                                Size    : Cv_Size_2d_32f;
-                                Jc      : Integer;
-                                Center  : Cv_Point_3d_32f_Array;
-                                Storage : Cv_Mem_Storage_P;
-                                Numbers : access Cv_Seq_P);
+   procedure Cv_Find_Hand_Region_A (Points  : Cv_Point_3d_32f_Array;
+                                    Count   : Integer;
+                                    Indexs  : Cv_Seq_P;
+                                    Line    : Cv_32f_Array;
+                                    Size    : Cv_Size_2d_32f;
+                                    Jc      : Integer;
+                                    Center  : Cv_Point_3d_32f_Array;
+                                    Storage : Cv_Mem_Storage_P;
+                                    Numbers : access Cv_Seq_P);
 
    --     Calculates the cooficients of the homography matrix
-   procedure CvCalcImageHomography (Line       : Cv_32f_Array;
-                                    Center     : Cv_Point_3d_32f_Array;
-                                    Intrinsic  : Cv_32f_Array;
-                                    Homography : Cv_32f_Array);
+   procedure Cv_Calc_Image_Homography (Line       : Cv_32f_Array;
+                                       Center     : Cv_Point_3d_32f_Array;
+                                       Intrinsic  : Cv_32f_Array;
+                                       Homography : Cv_32f_Array);
 
    -- Additional operations on Subdivisions ------------------------------------
    -----------------------------------------------------------------------------
    --     paints voronoi diagram: just demo function
-   procedure IcvDrawMosaic (Subdiv : Cv_Subdiv_2d_P;
-                            Src    : Ipl_Image_P;
-                            Dst    : Ipl_Image_P);
+   procedure Icv_Draw_Mosaic (Subdiv : Cv_Subdiv_2d_P;
+                              Src    : Ipl_Image_P;
+                              Dst    : Ipl_Image_P);
 
    --     checks planar subdivision for correctness. It is not an absolute
    --     check, but it verifies some relations between quad-edges
-   function IcvSubdiv2DCheck (Subdiv : Cv_Subdiv_2d_P)
-                              return Integer;
+   function Icv_Subdiv_2d_Check (Subdiv : Cv_Subdiv_2d_P)
+                                 return Integer;
 
    --     returns squared distance between two 2D points with floating-point
    --     coordinates.
-   function IcvSqDist2D32f (Pt1 : Cv_Point_3d_32f;
-                            Pt2 : Cv_Point_3d_32f)
-                            return Long_Float;
+   function Icv_Sq_Dist_2d_32f (Pt1 : Cv_Point_3d_32f;
+                                Pt2 : Cv_Point_3d_32f)
+                                return Long_Float;
 
    -- More operations on sequences ---------------------------------------------
    -----------------------------------------------------------------------------
-   function CV_CURRENT_INT (Reader : Cv_Seq_Reader_P)
+   function Cv_Current_Int (Reader : Cv_Seq_Reader_P)
                             return Integer;
 
-   function CV_PREV_INT (Reader : Cv_Seq_Reader_P)
+   function Cv_Prev_Int (Reader : Cv_Seq_Reader_P)
                          return Integer;
 
    type Cv_Graph_Weighted_Vtx is record
@@ -323,26 +323,26 @@ package Legacy is
 
    type Cv_Graph_Weight_Type is new Integer;
 
-   CV_NOT_WEIGHTED : constant Cv_Graph_Weight_Type := 0;
-   CV_WEIGHTED_VTX : constant Cv_Graph_Weight_Type :=  1;
-   CV_WEIGTHED_EDGE : constant Cv_Graph_Weight_Type := 2;
-   CV_WEIGHTED_ALL : constant Cv_Graph_Weight_Type := 3;
+   Cv_Not_Weighted : constant Cv_Graph_Weight_Type := 0;
+   Cv_Weighted_Vtx : constant Cv_Graph_Weight_Type :=  1;
+   Cv_Weigthed_Edge : constant Cv_Graph_Weight_Type := 2;
+   Cv_Weighted_All : constant Cv_Graph_Weight_Type := 3;
 
    --     Calculates histogram of a contour
-   procedure CvCalcPGH (Contour : Cv_Seq_P;
-                        Hist    : Cv_Histogram_P);
+   procedure Cv_Calc_Pgh (Contour : Cv_Seq_P;
+                          Hist    : Cv_Histogram_P);
 
-   CV_DOMINANT_IPAN : constant := 1;
+   Cv_Dominant_Ipan : constant := 1;
 
    --     Finds high-curvature points of the contour
-   function CvFindDominantPoints (Contour    : Cv_Seq_P;
-                                  Storage    : CV_Mem_Storage_P;
-                                  Method     : Integer := CV_DOMINANT_IPAN;
-                                  Parameter1 : Long_Float := 0.0;
-                                  Parameter2 : Long_Float := 0.0;
-                                  Parameter3 : Long_Float := 0.0;
-                                  Parameter4 : Long_Float := 0.0)
-                                  return Cv_Seq_P;
+   function Cv_Find_Dominant_Points (Contour    : Cv_Seq_P;
+                                     Storage    : Cv_Mem_Storage_P;
+                                     Method     : Integer := Cv_Dominant_Ipan;
+                                     Parameter1 : Long_Float := 0.0;
+                                     Parameter2 : Long_Float := 0.0;
+                                     Parameter3 : Long_Float := 0.0;
+                                     Parameter4 : Long_Float := 0.0)
+                                     return Cv_Seq_P;
 
    -- Stereo Correspondence ----------------------------------------------------
    type Cv_Clique_Finder is record
@@ -373,53 +373,51 @@ package Legacy is
       Cand_Weight    : Cv_32f_Pointer;
    end record;
 
-   CLIQUE_TIME_OFF : constant := 2;
-   CLIQUE_FOUND    : constant := 1;
-   CLIQUE_END      : constant := 0;
+   Clique_Time_Off : constant := 2;
+   Clique_Found    : constant := 1;
+   Clique_End      : constant := 0;
 
-   CV_UNDEF_SC_PARAM    : constant := 12345;
-   CV_UNDEF_SC_PARAM_F  : constant Float := 12345.0;
-   CV_UNDEF_SC_PARAM_LF : constant Long_Float := 12345.0;
+   Cv_Undef_Sc_Param    : constant := 12345;
+   Cv_Undef_Sc_Param_F  : constant Float := 12345.0;
+   Cv_Undef_Sc_Param_Lf : constant Long_Float := 12345.0;
 
-   CV_IDP_BIRCHFIELD_PARAM1 : constant := 25;
-   CV_IDP_BIRCHFIELD_PARAM2 : constant := 5;
-   CV_IDP_BIRCHFIELD_PARAM3 : constant := 12;
-   CV_IDP_BIRCHFIELD_PARAM4 : constant := 15;
-   CV_IDP_BIRCHFIELD_PARAM5 : constant := 25;
+   Cv_Idp_Birchfield_Param1 : constant := 25;
+   Cv_Idp_Birchfield_Param2 : constant := 5;
+   Cv_Idp_Birchfield_Param3 : constant := 12;
+   Cv_Idp_Birchfield_Param4 : constant := 15;
+   Cv_Idp_Birchfield_Param5 : constant := 25;
 
-   CV_DISPARITY_BIRCHFIELD : constant := 0;
+   Cv_Disparity_Birchfield : constant := 0;
 
    --     find stereo correspondence on stereo-pair
-   procedure CvFindStereoCorrespondence (Left_Image    : Cv_Arr_P;
-                                         Right_Image   : Cv_Arr_P;
-                                         Mode          : Integer;
-                                         Disp_Image    : Cv_Arr_P;
-                                         Max_Disparity : Integer;
-                                         Param1        : Long_Float := CV_UNDEF_SC_PARAM_LF;
-                                         Param2        : Long_Float := CV_UNDEF_SC_PARAM_LF;
-                                         Param3        : Long_Float := CV_UNDEF_SC_PARAM_LF;
-                                         Param4        : Long_Float := CV_UNDEF_SC_PARAM_LF;
-                                         Param5        : Long_Float := CV_UNDEF_SC_PARAM_LF);
+   procedure Cv_Find_Stereo_Correspondence (Left_Image    : Cv_Arr_P;
+                                            Right_Image   : Cv_Arr_P;
+                                            Mode          : Integer;
+                                            Disp_Image    : Cv_Arr_P;
+                                            Max_Disparity : Integer;
+                                            Param1        : Long_Float := Cv_Undef_Sc_Param_Lf;
+                                            Param2        : Long_Float := Cv_Undef_Sc_Param_Lf;
+                                            Param3        : Long_Float := Cv_Undef_Sc_Param_Lf;
+                                            Param4        : Long_Float := Cv_Undef_Sc_Param_Lf;
+                                            Param5        : Long_Float := Cv_Undef_Sc_Param_Lf);
 
-
-   pragma Import (C, CvFindStereoCorrespondence, "cvFindStereoCorrespondence");
 
    -- Epiline Functions --------------------------------------------------------
    type Cv_Stereo_Line_Coeff is record
       Xcoef    : Long_Float;
       Xcoef_A  : Long_Float;
       Xcoef_B  : Long_Float;
-      Xcoef_AB : Long_Float;
+      Xcoef_Ab : Long_Float;
 
       Ycoef    : Long_Float;
       Ycoef_A  : Long_Float;
       Ycoef_B  : Long_Float;
-      Ycoef_AB : Long_Float;
+      Ycoef_Ab : Long_Float;
 
       Zcoef    : Long_Float;
       Zcoef_A  : Long_Float;
       Zcoef_B  : Long_Float;
-      Zcoef_AB : Long_Float;
+      Zcoef_Ab : Long_Float;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Stereo_Line_Coeff);
    type Cv_Stereo_Line_Coeff_P is access all Cv_Stereo_Line_Coeff;
@@ -444,11 +442,11 @@ package Legacy is
 
    subtype Cv_Point_3d_32f_Array_2 is Cv_Point_3d_32f_Array (1 .. 2);
 
-   type Cv_Point_2d_32f_Array_AxB is array (Integer range <>, Integer range <>) of aliased Cv_Point_2d_32f;
-   subtype Cv_Point_2d_32f_Array_2x4 is Cv_Point_2d_32f_Array_AxB (1 .. 2, 1 .. 4);
+   type Cv_Point_2d_32f_Array_Axb is array (Integer range <>, Integer range <>) of aliased Cv_Point_2d_32f;
+   subtype Cv_Point_2d_32f_Array_2x4 is Cv_Point_2d_32f_Array_Axb (1 .. 2, 1 .. 4);
 
-   type Cv_64f_Array_AxBxC is array (Integer range <>, Integer range <>, Integer range <>) of aliased Long_Float;
-   subtype Cv_64f_Array_2x3x3 is Cv_64f_Array_AxBxC (1 .. 2, 1 .. 3, 1 .. 3);
+   type Cv_64f_Array_Axbxc is array (Integer range <>, Integer range <>, Integer range <>) of aliased Long_Float;
+   subtype Cv_64f_Array_2x3x3 is Cv_64f_Array_Axbxc (1 .. 2, 1 .. 3, 1 .. 3);
 
 
    subtype Cv_64f_Array_3x3 is Cv_64f_2d_Array (1 .. 3, 1 .. 3);
@@ -484,239 +482,239 @@ package Legacy is
    pragma Convention (C_Pass_By_Copy, Cv_Contour_Orientation);
    type Cv_Contour_Orientation_P is access all Cv_Contour_Orientation;
 
-   CV_CAMERA_TO_WARP : constant := 1;
-   CV_WARP_TO_CAMERA : constant := 2;
+   Cv_Camera_To_Warp : constant := 1;
+   Cv_Warp_To_Camera : constant := 2;
 
-   function IcvConvertWarpCoordinates (Coeffs       : Cv_64f_Array_3x3;
-                                       Camera_Point : Cv_Point_2d_32f_P;
-                                       Warp_Point   : Cv_Point_2d_32f_P;
-                                       Direction    : Integer)
-                                       return Integer;
+   function Icv_Convert_Warp_Coordinates (Coeffs       : Cv_64f_Array_3x3;
+                                          Camera_Point : Cv_Point_2d_32f_P;
+                                          Warp_Point   : Cv_Point_2d_32f_P;
+                                          Direction    : Integer)
+                                          return Integer;
 
-   function IcvGetSymPoint3D (Point_Corner : Cv_Point_3d_64f;
-                              Point1       : Cv_Point_3d_64f;
-                              Point2       : Cv_Point_3d_64f;
-                              Point_Sym2   : Cv_Point_3d_64f_P)
-                              return Integer;
+   function Icv_Get_Sympoint_3d (Point_Corner : Cv_Point_3d_64f;
+                                 Point1       : Cv_Point_3d_64f;
+                                 Point2       : Cv_Point_3d_64f;
+                                 Point_Sym2   : Cv_Point_3d_64f_P)
+                                 return Integer;
 
-   procedure IcvGetPieceLength3D (Point1 : Cv_Point_3d_64f;
-                                  Point2 : Cv_Point_3d_64f;
-                                  Dist   : access Long_Float);
+   procedure Icv_Get_Piece_Length_3d (Point1 : Cv_Point_3d_64f;
+                                      Point2 : Cv_Point_3d_64f;
+                                      Dist   : access Long_Float);
 
-   function IcvCompute3DPoint (Alpha  : Long_Float;
-                               Beta   : Long_Float;
-                               Coeffs : Cv_Stereo_Line_Coeff_P;
-                               Point  : Cv_Point_3d_64f_P)
-                               return Integer;
-
-   function IcvCreateConvertMatrVect (Rot_Matr1        : Cv_64f_Array;
-                                      Trans_Vect1      : Cv_64f_Array;
-                                      Rot_Matr2        : Cv_64f_Array;
-                                      Trans_Vect2      : Cv_64f_Array;
-                                      Conv_Rot_Matr    : Cv_64f_Array;
-                                      Conv_Transv_Vect : Cv_64f_Array)
-                                      return Integer;
-
-   function IcvConvertPointSystem (M2         : Cv_Point_3d_64f;
-                                   M1         : Cv_Point_3d_64f_P;
-                                   Rot_Matr   : Cv_64f_Array;
-                                   Trans_Vect : Cv_64f_Array)
-                                   return Integer;
-
-   function IcvComputeCoeffForStereo (Stereo_Camera : Cv_Stereo_Camera_P)
-                                      return Integer;
-
-   function IcvGetCrossPieceVector (P1_Start : Cv_Point_2d_32f;
-                                    P1_End   : Cv_Point_2d_32f;
-                                    V2_Start : Cv_Point_2d_32f;
-                                    V2_End   : Cv_Point_2d_32f;
-                                    Cross    : Cv_Point_2d_32f_P)
-                                    return Integer;
-
-   function IcvGetCrossLineDirect (P1    : Cv_Point_2d_32f;
-                                   P2    : Cv_Point_2d_32f;
-                                   A     : Float;
-                                   B     : Float;
-                                   C     : Float;
-                                   Cross : Cv_Point_2d_32f_P)
-                                   return Integer;
-
-   function IcvDefinePointPosition (Point1 : Cv_Point_2d_32f;
-                                    Point2 : Cv_Point_2d_32f;
-                                    Point  : Cv_Point_2d_32f)
-                                    return Float;
-
-   function IcvStereoCalibration (Num_Images    : Integer;
-                                  Nums          : Cv_32s_Array;
-                                  Image_Size    : Cv_Size;
-                                  Image_Points1 : Cv_Point_2d_32f;
-                                  Image_Points2 : Cv_Point_2d_32f;
-                                  Object_Points : Cv_Point_3d_32f_P;
-                                  Stereoparams  : Cv_Stereo_Camera_P)
+   function Icv_Compute_3d_Point (Alpha  : Long_Float;
+                                  Beta   : Long_Float;
+                                  Coeffs : Cv_Stereo_Line_Coeff_P;
+                                  Point  : Cv_Point_3d_64f_P)
                                   return Integer;
 
-   function IcvComputeRestStereoParams (Stereoparams : Cv_Stereo_Camera_P)
+   function Icv_Create_Convert_Matr_Vect (Rot_Matr1        : Cv_64f_Array;
+                                          Trans_Vect1      : Cv_64f_Array;
+                                          Rot_Matr2        : Cv_64f_Array;
+                                          Trans_Vect2      : Cv_64f_Array;
+                                          Conv_Rot_Matr    : Cv_64f_Array;
+                                          Conv_Transv_Vect : Cv_64f_Array)
+                                          return Integer;
+
+   function Icv_Convert_Point_System (M2         : Cv_Point_3d_64f;
+                                      M1         : Cv_Point_3d_64f_P;
+                                      Rot_Matr   : Cv_64f_Array;
+                                      Trans_Vect : Cv_64f_Array)
+                                      return Integer;
+
+   function Icv_Compute_Coeff_For_Stereo (Stereo_Camera : Cv_Stereo_Camera_P)
+                                          return Integer;
+
+   function Icv_Get_Cross_Piece_Vector (P1_Start : Cv_Point_2d_32f;
+                                        P1_End   : Cv_Point_2d_32f;
+                                        V2_Start : Cv_Point_2d_32f;
+                                        V2_End   : Cv_Point_2d_32f;
+                                        Cross    : Cv_Point_2d_32f_P)
                                         return Integer;
 
-   procedure CvComputePerspectiveMap (Coeffs     : Cv_64f_Array_3x3;
-                                      Rect_Map_X : Cv_Arr_P;
-                                      Rect_Map_Y : Cv_Arr_P);
+   function Icv_Get_Cross_Line_Direct (P1    : Cv_Point_2d_32f;
+                                       P2    : Cv_Point_2d_32f;
+                                       A     : Float;
+                                       B     : Float;
+                                       C     : Float;
+                                       Cross : Cv_Point_2d_32f_P)
+                                       return Integer;
 
-   function IcvComCoeffForLine (Point1           : Cv_Point_2d_64f;
-                                Point2           : Cv_Point_2d_64f;
-                                Point3           : Cv_Point_2d_64f;
-                                Point4           : Cv_Point_2d_64f;
-                                Can_Matr1        : Cv_64f_Array;
-                                Rot_Matr1        : Cv_64f_Array;
-                                Trans_Vect1      : Cv_64f_Array;
-                                Cam_Matr2        : Cv_64f_Array;
-                                Rot_Matr2        : Cv_64f_Array;
-                                Trans_Vect2      : Cv_64f_Array;
-                                Coeffs           : Cv_Stereo_Line_Coeff_P;
-                                Need_Swap_Camera : access Integer)
+   function Icv_Define_Point_Position (Point1 : Cv_Point_2d_32f;
+                                       Point2 : Cv_Point_2d_32f;
+                                       Point  : Cv_Point_2d_32f)
+                                       return Float;
+
+   function Icv_Stereo_Calibration (Num_Images    : Integer;
+                                    Nums          : Cv_32s_Array;
+                                    Image_Size    : Cv_Size;
+                                    Image_Points1 : Cv_Point_2d_32f;
+                                    Image_Points2 : Cv_Point_2d_32f;
+                                    Object_Points : Cv_Point_3d_32f_P;
+                                    Stereoparams  : Cv_Stereo_Camera_P)
+                                    return Integer;
+
+   function Icv_Compute_Rest_Stereo_Params (Stereoparams : Cv_Stereo_Camera_P)
+                                            return Integer;
+
+   procedure Cv_Compute_Perspective_Map (Coeffs     : Cv_64f_Array_3x3;
+                                         Rect_Map_X : Cv_Arr_P;
+                                         Rect_Map_Y : Cv_Arr_P);
+
+   function Icv_Com_Coeff_For_Line (Point1           : Cv_Point_2d_64f;
+                                    Point2           : Cv_Point_2d_64f;
+                                    Point3           : Cv_Point_2d_64f;
+                                    Point4           : Cv_Point_2d_64f;
+                                    Can_Matr1        : Cv_64f_Array;
+                                    Rot_Matr1        : Cv_64f_Array;
+                                    Trans_Vect1      : Cv_64f_Array;
+                                    Cam_Matr2        : Cv_64f_Array;
+                                    Rot_Matr2        : Cv_64f_Array;
+                                    Trans_Vect2      : Cv_64f_Array;
+                                    Coeffs           : Cv_Stereo_Line_Coeff_P;
+                                    Need_Swap_Camera : access Integer)
+                                    return Integer;
+
+   function Icv_Get_Direction_For_Point (Point    : Cv_Point_2d_64f;
+                                         Cam_Matr : Cv_64f_Array;
+                                         Direct   : Cv_Point_3d_64f_P)
+                                         return Integer;
+
+   function Icv_Get_Cross_Lines (Point11   : Cv_Point_3d_64f;
+                                 Point12   : Cv_Point_3d_64f;
+                                 Point21   : Cv_Point_3d_64f;
+                                 Point22   : Cv_Point_3d_64f;
+                                 Mid_Point : Cv_Point_3d_64f_P)
+                                 return Integer;
+
+   function Icv_Compute_Stereo_Line_Coeffs (Point_A    : Cv_Point_3d_64f;
+                                            Point_B    : Cv_Point_3d_64f;
+                                            Point_Cam1 : Cv_Point_3d_64f;
+                                            Gamma      : Long_Float;
+                                            Coeffs     : Cv_Stereo_Line_Coeff_P)
+                                            return Integer;
+
+   function Icv_Get_Angle_Line (Start_Point : Cv_Point_2d_64f;
+                                Image_Size  : Cv_Size;
+                                Point1      : Cv_Point_2d_64f_P;
+                                Point2      : Cv_Point_2d_64f_P)
                                 return Integer;
 
-   function IcvGetDirectionForPoint (Point    : Cv_Point_2d_64f;
-                                     Cam_Matr : Cv_64f_Array;
-                                     Direct   : Cv_Point_3d_64f_P)
-                                     return Integer;
-
-   function IcvGetCrossLines (Point11   : Cv_Point_3d_64f;
-                              Point12   : Cv_Point_3d_64f;
-                              Point21   : Cv_Point_3d_64f;
-                              Point22   : Cv_Point_3d_64f;
-                              Mid_Point : Cv_Point_3d_64f_P)
-                              return Integer;
-
-   function IcvComputeStereoLineCoeffs (Point_A    : Cv_Point_3d_64f;
-                                        Point_B    : Cv_Point_3d_64f;
-                                        Point_Cam1 : Cv_Point_3d_64f;
-                                        Gamma      : Long_Float;
-                                        Coeffs     : Cv_Stereo_Line_Coeff_P)
-                                        return Integer;
-
-   function IcvGetAngleLine (Start_Point : Cv_Point_2d_64f;
-                             Image_Size  : Cv_Size;
-                             Point1      : Cv_Point_2d_64f_P;
-                             Point2      : Cv_Point_2d_64f_P)
-                             return Integer;
-
-   procedure IcvGetCoefForPiece (P_Start : Cv_Point_2d_64f;
-                                 P_End   : Cv_Point_2d_64f;
-                                 A       : access Long_Float;
-                                 B       : access Long_Float;
-                                 C       : access Long_Float;
-                                 Result  : access Integer);
-
-   procedure IcvComputeeInfiniteProject1 (Rot_Matr  : Cv_64f_Array;
-                                          Cam_Matr1 : Cv_64f_Array;
-                                          Cam_Matr2 : Cv_64f_Array;
-                                          Point1    : Cv_Point_2d_32f;
-                                          Point2    : Cv_Point_2d_32f_P);
-
-   procedure IcvComputeeInfiniteProject2 (Rot_Matr  : Cv_64f_Array;
-                                          Cam_Matr1 : Cv_64f_Array;
-                                          Cam_Matr2 : Cv_64f_Array;
-                                          Point1    : Cv_Point_2d_32f_P;
-                                          Point2    : Cv_Point_2d_32f);
-
-   procedure IcvGetCrossDirectDirect (Direct1 : Cv_64f_Array;
-                                      Direct2 : Cv_64f_Array;
-                                      Cross   : Cv_Point_2d_64f_P;
-                                      Result  : access Integer);
-
-   procedure IcvGetCrossPieceDirect (P_Start : Cv_Point_2d_64f;
+   procedure Icv_Get_Coef_For_Piece (P_Start : Cv_Point_2d_64f;
                                      P_End   : Cv_Point_2d_64f;
-                                     A       : Long_Float;
-                                     B       : Long_Float;
-                                     C       : Long_Float;
-                                     Cross   : Cv_Point_2d_64f_P;
+                                     A       : access Long_Float;
+                                     B       : access Long_Float;
+                                     C       : access Long_Float;
                                      Result  : access Integer);
 
-   procedure IcvGetCrossPiecePiece (P1_Start : Cv_Point_2d_64f;
-                                    P1_End   : Cv_Point_2d_64f;
-                                    P2_Start : Cv_Point_2d_64f;
-                                    P2_End   : Cv_Point_2d_64f;
-                                    Cross    : Cv_Point_2d_64f_P;
-                                    Result   : access Integer);
+   procedure Icv_Computee_Infinite_Project1 (Rot_Matr  : Cv_64f_Array;
+                                             Cam_Matr1 : Cv_64f_Array;
+                                             Cam_Matr2 : Cv_64f_Array;
+                                             Point1    : Cv_Point_2d_32f;
+                                             Point2    : Cv_Point_2d_32f_P);
 
-   procedure IcvGetPieceLength (Point1 : Cv_Point_2d_64f;
-                                Point2 : Cv_Point_2d_64f;
-                                Dist   : access Long_Float);
+   procedure Icv_Computee_Infinite_Project2 (Rot_Matr  : Cv_64f_Array;
+                                             Cam_Matr1 : Cv_64f_Array;
+                                             Cam_Matr2 : Cv_64f_Array;
+                                             Point1    : Cv_Point_2d_32f_P;
+                                             Point2    : Cv_Point_2d_32f);
 
-   procedure IcvGetCrossRectDirect (Image_Size  : Cv_Size;
-                                    A           : Long_Float;
-                                    B           : Long_Float;
-                                    C           : Long_Float;
-                                    Point_Start : Cv_Point_2d_64f_P;
-                                    Point_End   : Cv_Point_2d_64f_P;
-                                    Result      : access Integer);
+   procedure Icv_Get_Cross_Direct_Direct (Direct1 : Cv_64f_Array;
+                                          Direct2 : Cv_64f_Array;
+                                          Cross   : Cv_Point_2d_64f_P;
+                                          Result  : access Integer);
 
-   procedure IcvProjectPointToImage (Point      : Cv_Point_3d_64f;
-                                     Cam_Matr   : Cv_64f_Array;
-                                     Rot_Matr   : Cv_64f_Array;
-                                     Trans_Vect : Cv_64f_Array;
-                                     Proj_Point : Cv_Point_2d_64f_P);
+   procedure Icv_Get_Cross_Piece_Direct (P_Start : Cv_Point_2d_64f;
+                                         P_End   : Cv_Point_2d_64f;
+                                         A       : Long_Float;
+                                         B       : Long_Float;
+                                         C       : Long_Float;
+                                         Cross   : Cv_Point_2d_64f_P;
+                                         Result  : access Integer);
 
-   procedure IcvGetQuadsTransform (Image_Size   : Cv_Size;
-                                   Cam_Matr1    : Cv_64f_Array;
-                                   Rot_Matr1    : Cv_64f_Array;
-                                   Trans_Vect1  : Cv_64f_Array;
-                                   Cam_Matr2    : Cv_64f_Array;
-                                   Rot_Matr2    : Cv_64f_Array;
-                                   Trans_Vect2  : Cv_64f_Array;
-                                   Warp_Size    : Cv_Size_P;
-                                   Quad1        : Cv_64f_Array_4x2;
-                                   Quad2        : Cv_64f_Array_4x2;
-                                   Fund_Matr    : Cv_64f_Array;
-                                   Epipole1     : Cv_Point_3d_64f_P;
-                                   Epipole2     : Cv_Point_3d_64f_P);
+   procedure Icv_Get_Cross_Piece_Piece (P1_Start : Cv_Point_2d_64f;
+                                        P1_End   : Cv_Point_2d_64f;
+                                        P2_Start : Cv_Point_2d_64f;
+                                        P2_End   : Cv_Point_2d_64f;
+                                        Cross    : Cv_Point_2d_64f_P;
+                                        Result   : access Integer);
 
-   procedure IcvGetQuadsTransformStruct (Stereo_Camera : Cv_Stereo_Camera_P);
+   procedure Icv_Get_Piece_Length (Point1 : Cv_Point_2d_64f;
+                                   Point2 : Cv_Point_2d_64f;
+                                   Dist   : access Long_Float);
 
-   procedure IcvComputeStereoParamsForCameras (Stereo_Camera : Cv_Stereo_Camera_P);
+   procedure Icv_Get_Cross_Rect_Direct (Image_Size  : Cv_Size;
+                                        A           : Long_Float;
+                                        B           : Long_Float;
+                                        C           : Long_Float;
+                                        Point_Start : Cv_Point_2d_64f_P;
+                                        Point_End   : Cv_Point_2d_64f_P;
+                                        Result      : access Integer);
 
-   procedure IcvGetCutPiece (Area_Line_Coef1 : Cv_64f_Array;
-                             Area_Line_Coef2 : Cv_64f_Array;
-                             Epipole         : Cv_Point_2d_64f;
-                             Image_Size      : Cv_Size;
-                             Point11         : Cv_Point_2d_64f_P;
-                             Point12         : Cv_Point_2d_64f_P;
-                             Point21         : Cv_Point_2d_64f_P;
-                             Point22         : Cv_Point_2d_64f_P;
-                             Result          : access Integer);
+   procedure Icv_Project_Point_To_Image (Point      : Cv_Point_3d_64f;
+                                         Cam_Matr   : Cv_64f_Array;
+                                         Rot_Matr   : Cv_64f_Array;
+                                         Trans_Vect : Cv_64f_Array;
+                                         Proj_Point : Cv_Point_2d_64f_P);
 
-   procedure IcvGetMiddleAnglePoint (Base_Point : Cv_Point_2d_64f;
-                                     Point1     : Cv_Point_2d_64f;
-                                     Point2     : Cv_Point_2d_64f;
-                                     Mid_Point  : Cv_Point_2d_64f_P);
+   procedure Icv_Get_Quads_Transform (Image_Size   : Cv_Size;
+                                      Cam_Matr1    : Cv_64f_Array;
+                                      Rot_Matr1    : Cv_64f_Array;
+                                      Trans_Vect1  : Cv_64f_Array;
+                                      Cam_Matr2    : Cv_64f_Array;
+                                      Rot_Matr2    : Cv_64f_Array;
+                                      Trans_Vect2  : Cv_64f_Array;
+                                      Warp_Size    : Cv_Size_P;
+                                      Quad1        : Cv_64f_Array_4x2;
+                                      Quad2        : Cv_64f_Array_4x2;
+                                      Fund_Matr    : Cv_64f_Array;
+                                      Epipole1     : Cv_Point_3d_64f_P;
+                                      Epipole2     : Cv_Point_3d_64f_P);
 
-   procedure IcvGetNormalDirect (Direct      : Cv_64f_Array;
-                                 Point       : Cv_Point_2d_64f;
-                                 Norm_Direct : CV_64f_Array);
+   procedure Icv_Get_Quads_Transform_Struct (Stereo_Camera : Cv_Stereo_Camera_P);
 
-   function IcvGetVect (Base_Point : Cv_Point_2d_64f;
-                        Point1     : Cv_Point_2d_64f;
-                        Point      : Cv_Point_2d_64f)
-                        return Long_Float;
+   procedure Icv_Compute_Stereo_Params_For_Cameras (Stereo_Camera : Cv_Stereo_Camera_P);
 
-   procedure IcvProjectPointToDirect (Point         : Cv_Point_2d_64f;
-                                      Line_Coeff    : Cv_64f_Array;
-                                      Project_Point : Cv_Point_2d_64f_P);
+   procedure Icv_Get_Cut_Piece (Area_Line_Coef1 : Cv_64f_Array;
+                                Area_Line_Coef2 : Cv_64f_Array;
+                                Epipole         : Cv_Point_2d_64f;
+                                Image_Size      : Cv_Size;
+                                Point11         : Cv_Point_2d_64f_P;
+                                Point12         : Cv_Point_2d_64f_P;
+                                Point21         : Cv_Point_2d_64f_P;
+                                Point22         : Cv_Point_2d_64f_P;
+                                Result          : access Integer);
 
-   procedure IcvGetDistanceFromPointToDirect (Point     : Cv_Point_2d_64f;
-                                              Line_Coef : Cv_64f_Array;
-                                              Dist      : access Long_Float);
+   procedure Icv_Get_Middle_Angle_Point (Base_Point : Cv_Point_2d_64f;
+                                         Point1     : Cv_Point_2d_64f;
+                                         Point2     : Cv_Point_2d_64f;
+                                         Mid_Point  : Cv_Point_2d_64f_P);
 
-   function IcvCreateIsometricImage (Src                  : Ipl_Image_P;
-                                     Dst                  : Ipl_Image_P;
-                                     Desired_Depth        : Unsigned_32;
-                                     Desired_Num_Channels : Integer)
-                                     return Ipl_Image_P;
+   procedure Icv_Get_Normal_Direct (Direct      : Cv_64f_Array;
+                                    Point       : Cv_Point_2d_64f;
+                                    Norm_Direct : Cv_64f_Array);
 
-   procedure CvDeInterlace (Frame      : Cv_Arr_P;
-                            Field_Even : Cv_Arr_P;
-                            Field_Odd  : Cv_Arr_P);
+   function Icv_Get_Vect (Base_Point : Cv_Point_2d_64f;
+                          Point1     : Cv_Point_2d_64f;
+                          Point      : Cv_Point_2d_64f)
+                          return Long_Float;
+
+   procedure Icv_Project_Point_To_Direct (Point         : Cv_Point_2d_64f;
+                                          Line_Coeff    : Cv_64f_Array;
+                                          Project_Point : Cv_Point_2d_64f_P);
+
+   procedure Icv_Get_Distance_From_Point_To_Direct (Point     : Cv_Point_2d_64f;
+                                                    Line_Coef : Cv_64f_Array;
+                                                    Dist      : access Long_Float);
+
+   function Icv_Create_Isometric_Image (Src                  : Ipl_Image_P;
+                                        Dst                  : Ipl_Image_P;
+                                        Desired_Depth        : Unsigned_32;
+                                        Desired_Num_Channels : Integer)
+                                        return Ipl_Image_P;
+
+   procedure Cv_De_Interlace (Frame      : Cv_Arr_P;
+                              Field_Even : Cv_Arr_P;
+                              Field_Odd  : Cv_Arr_P);
 
    -- Contour Tree -------------------------------------------------------------
    -----------------------------------------------------------------------------
@@ -747,132 +745,132 @@ package Legacy is
    type Cv_Contour_Tree_P is access Cv_Contour_Tree;
 
    --     Creates a hierarchical representation of a contour.
-   function CvCreateContourTree (Contour   : Cv_Seq_P;
-                                 Storage   : Cv_Mem_Storage_P;
-                                 Threshold : Long_Float) return Cv_Contour_Tree_P;
+   function Cv_Create_Contour_Tree (Contour   : Cv_Seq_P;
+                                    Storage   : Cv_Mem_Storage_P;
+                                    Threshold : Long_Float) return Cv_Contour_Tree_P;
 
    --     Reconstruct (completelly or partially) contour a from contour tree
-   function CvContourFromContourTree (Tree     : access Cv_Contour_Tree;
-                                      Storage  : access Cv_Mem_Storage;
-                                      Criteria : Cv_Term_Criteria)
-                                      return access Cv_Seq;
+   function Cv_Contour_From_Contour_Tree (Tree     : access Cv_Contour_Tree;
+                                          Storage  : access Cv_Mem_Storage;
+                                          Criteria : Cv_Term_Criteria)
+                                          return access Cv_Seq;
 
-   CV_CONTOUR_TREES_MATCH_I1 : constant := 1;
+   Cv_Contour_Trees_Match_I1 : constant := 1;
 
    --     Compares two contours using their tree representations.
-   function CvMatchContourTrees (Tree1     : Cv_Contour_Tree_P;
-                                 Tree2     : Cv_Contour_Tree_P;
-                                 Method    : Integer;
-                                 Threshold : Long_Float) return Long_Float;
+   function Cv_Match_Contour_Trees (Tree1     : Cv_Contour_Tree_P;
+                                    Tree2     : Cv_Contour_Tree_P;
+                                    Method    : Integer;
+                                    Threshold : Long_Float) return Long_Float;
 
    -- Contour Morphing ---------------------------------------------------------
    -----------------------------------------------------------------------------
 
    --     finds correspondence between two contours
-   function CvCalcContoursCorrespondence (Contour1 : Cv_Seq_P;
-                                          Contour2 : Cv_Seq_P;
-                                          Storage  : Cv_Mem_Storage_P)
-                                          return Cv_Seq_P;
+   function Cv_Calc_Contours_Correspondence (Contour1 : Cv_Seq_P;
+                                             Contour2 : Cv_Seq_P;
+                                             Storage  : Cv_Mem_Storage_P)
+                                             return Cv_Seq_P;
 
    --     morphs contours using the pre-calculated correspondence:
    --     alpha=0 ~ contour1, alpha=1 ~ contour2
-   function CvMorphContours (Contour1 : Cv_Seq_P;
-                             Contour2 : Cv_Seq_P;
-                             Corr     : Cv_Seq_P;
-                             Alpha    : Long_Float;
-                             Storage  : Cv_Mem_Storage_P)
-                             return Cv_Seq_P;
+   function Cv_Morph_Contours (Contour1 : Cv_Seq_P;
+                               Contour2 : Cv_Seq_P;
+                               Corr     : Cv_Seq_P;
+                               Alpha    : Long_Float;
+                               Storage  : Cv_Mem_Storage_P)
+                               return Cv_Seq_P;
 
-   CV_VALUE : constant := 1;
-   CV_ARRAY : constant := 2;
+   Cv_Value : constant := 1;
+   Cv_Array : constant := 2;
 
    --     Changes the contour position to minimize its energy.
-   procedure CvSnakeImage (Image        : Ipl_Image_P;
-                           Points       : Cv_Point_Array;
-                           Length       : Integer;
-                           Alpha        : Cv_32F_Array;
-                           Beta         : Cv_32F_Array;
-                           Gamma        : Cv_32F_Array;
-                           CoeffUsage   : Integer;
-                           Win          : Cv_Size;
-                           Criteria     : Cv_Term_Criteria;
-                           CalcGradient : Integer := 1);
+   procedure Cv_Snake_Image (Image        : Ipl_Image_P;
+                             Points       : Cv_Point_Array;
+                             Length       : Integer;
+                             Alpha        : Cv_32f_Array;
+                             Beta         : Cv_32f_Array;
+                             Gamma        : Cv_32f_Array;
+                             Coeffusage   : Integer;
+                             Win          : Cv_Size;
+                             Criteria     : Cv_Term_Criteria;
+                             Calcgradient : Integer := 1);
 
    -- Texture Descriptors ------------------------------------------------------
    -----------------------------------------------------------------------------
 
-   CV_GLCM_OPTIMIZATION_NONE      : constant  := -2;
-   CV_GLCM_OPTIMIZATION_LUT       : constant := -1;
-   CV_GLCM_OPTIMIZATION_HISTOGRAM : constant := 0;
+   Cv_Glcm_Optimization_None      : constant  := -2;
+   Cv_Glcm_Optimization_Lut       : constant := -1;
+   Cv_Glcm_Optimization_Histogram : constant := 0;
 
-   CV_GLCMDESC_OPTIMIZATION_ALLOWDOUBLENEST : constant := 10;
-   CV_GLCMDESC_OPTIMIZATION_ALLOWTRIPLENEST : constant := 11;
-   CV_GLCMDESC_OPTIMIZATION_HISTOGRAM       : constant := 4;
+   Cv_Glcmdesc_Optimization_Allowdoublenest : constant := 10;
+   Cv_Glcmdesc_Optimization_Allowtriplenest : constant := 11;
+   Cv_Glcmdesc_Optimization_Histogram       : constant := 4;
 
-   CV_GLCMDESC_ENTROPY            : constant := 0;
-   CV_GLCMDESC_ENERGY             : constant := 1;
-   CV_GLCMDESC_HOMOGENITY         : constant := 2;
-   CV_GLCMDESC_CONTRAST           : constant := 3;
-   CV_GLCMDESC_CLUSTERTENDENCY    : constant := 4;
-   CV_GLCMDESC_CLUSTERSHADE       : constant := 5;
-   CV_GLCMDESC_CORRELATION        : constant := 6;
-   CV_GLCMDESC_CORRELATIONINFO1   : constant := 7;
-   CV_GLCMDESC_CORRELATIONINFO2   : constant := 8;
-   CV_GLCMDESC_MAXIMUMPROBABILITY : constant := 9;
+   Cv_Glcmdesc_Entropy            : constant := 0;
+   Cv_Glcmdesc_Energy             : constant := 1;
+   Cv_Glcmdesc_Homogenity         : constant := 2;
+   Cv_Glcmdesc_Contrast           : constant := 3;
+   Cv_Glcmdesc_Clustertendency    : constant := 4;
+   Cv_Glcmdesc_Clustershade       : constant := 5;
+   Cv_Glcmdesc_Correlation        : constant := 6;
+   Cv_Glcmdesc_Correlationinfo1   : constant := 7;
+   Cv_Glcmdesc_Correlationinfo2   : constant := 8;
+   Cv_Glcmdesc_Maximumprobability : constant := 9;
 
-   CV_GLCM_ALL  : constant := 0;
-   CV_GLCM_GLCM : constant := 1;
-   CV_GLCM_DESC : constant := 2;
+   Cv_Glcm_All  : constant := 0;
+   Cv_Glcm_Glcm : constant := 1;
+   Cv_Glcm_Desc : constant := 2;
 
-   CV_MAX_NUM_GREY_LEVELS_8U : constant := 256;
+   Cv_Max_Num_Grey_Levels_8u : constant := 256;
 
-   type Cv_GLCM is record
+   type Cv_Glcm is record
       Matrix_Side_Length           : Integer;
       Num_Matrices                 : Integer;
-      Matrices                     : access Cv_64F_Pointer_Array_P; -- double***
+      Matrices                     : access Cv_64f_Pointer_Array_P; -- double***
 
       Num_Lookup_Table_Elements    : Integer;
-      Forward_Lookup_Table         : Cv_32s_Array (1 .. CV_MAX_NUM_GREY_LEVELS_8U);
-      Reverse_Lookup_Table         : Cv_32s_Array (1 .. CV_MAX_NUM_GREY_LEVELS_8U);
-      Descriptors                  : Cv_64F_Pointer_Array_P; -- double**
+      Forward_Lookup_Table         : Cv_32s_Array (1 .. Cv_Max_Num_Grey_Levels_8u);
+      Reverse_Lookup_Table         : Cv_32s_Array (1 .. Cv_Max_Num_Grey_Levels_8u);
+      Descriptors                  : Cv_64f_Pointer_Array_P; -- double**
       Num_Descriptors              : Integer;
       Descriptor_Optimization_Type : Integer;
       Optimization_Type            : Integer;
    end record;
-   pragma Convention (C_Pass_By_Copy, Cv_GLCM);
-   type Cv_GLCM_P is access all Cv_GLCM;
+   pragma Convention (C_Pass_By_Copy, Cv_Glcm);
+   type Cv_Glcm_P is access all Cv_Glcm;
 
-   function CvCreateGLCM (Src_Image           : Ipl_Image_P;
-                          Step_Magnitude      : Integer;
-                          Step_Direction      : Cv_32s_Pointer := null;
-                          Num_Step_Directions : Integer := 0;
-                          Optimization_Type   : Integer := CV_GLCM_OPTIMIZATION_NONE)
-                          return Cv_GLCM_P;
+   function Cv_Create_Glcm (Src_Image           : Ipl_Image_P;
+                            Step_Magnitude      : Integer;
+                            Step_Direction      : Cv_32s_Pointer := null;
+                            Num_Step_Directions : Integer := 0;
+                            Optimization_Type   : Integer := Cv_Glcm_Optimization_None)
+                            return Cv_Glcm_P;
 
-   procedure CvReleaseGLCM (GLCM : access Cv_GLCM_P;
-                            Flag : Integer := CV_GLCM_ALL);
+   procedure Cv_Release_Glcm (Glcm : access Cv_Glcm_P;
+                              Flag : Integer := Cv_Glcm_All);
 
-   procedure CvCreateGLCMDescriptors (Dest_GLCM                    : Cv_GLCM_P;
-                                      Descriptor_Optimization_Type : Integer := CV_GLCMDESC_OPTIMIZATION_ALLOWDOUBLENEST);
+   procedure Cv_Create_Glcm_Descriptors (Dest_Glcm                    : Cv_Glcm_P;
+                                         Descriptor_Optimization_Type : Integer := Cv_Glcmdesc_Optimization_Allowdoublenest);
 
-   function CvGetGLCMDescriptor (GLCM       : Cv_GLCM_P;
-                                 Step       : Integer;
-                                 Descriptor : Integer)
-                                 return Long_Float;
+   function Cv_Get_Glcm_Descriptor (Glcm       : Cv_Glcm_P;
+                                    Step       : Integer;
+                                    Descriptor : Integer)
+                                    return Long_Float;
 
-   procedure CvGetGLCMDescriptorStatistics (GLCM               : Cv_GLCM_P;
-                                            Descriptor         : Integer;
-                                            Average            : access Long_Float;
-                                            Standard_Deviation : access Long_Float);
+   procedure Cv_Get_Glcm_Descriptor_Statistics (Glcm               : Cv_Glcm_P;
+                                                Descriptor         : Integer;
+                                                Average            : access Long_Float;
+                                                Standard_Deviation : access Long_Float);
 
-   function CvCreateGLCMImage (GLCM : Cv_GLCM_P;
-                               Step : Integer)
-                               return Ipl_Image_P;
+   function Cv_Create_Glcm_Image (Glcm : Cv_Glcm_P;
+                                  Step : Integer)
+                                  return Ipl_Image_P;
 
    -- Face, eyes and mouth tracking --------------------------------------------
    -----------------------------------------------------------------------------
 
-   NUM_FACE_ELEMENTS : constant := 3;
+   Num_Face_Elements : constant := 3;
 
    type Cv_Face_Tracker is null record; -- Locally declared class in .cpp file
    pragma Convention (C_Pass_By_Copy, Cv_Face_Tracker);
@@ -883,21 +881,21 @@ package Legacy is
    Cv_Face_Left_Eye : constant Cv_Face_Elements := 1;
    Cv_Face_Right_Eye : constant Cv_Face_Elements := 2;
 
-   function CvInitFaceTracker (P_Face_Tracking : Cv_Face_Tracker_P;
-                               Img_Gray        : Ipl_Image_P;
-                               P_Rects         : Cv_Rect_Array;
-                               N_Rects         : Integer)
-                               return Cv_Face_Tracker_P;
+   function Cv_Init_Face_Tracker (P_Face_Tracking : Cv_Face_Tracker_P;
+                                  Img_Gray        : Ipl_Image_P;
+                                  P_Rects         : Cv_Rect_Array;
+                                  N_Rects         : Integer)
+                                  return Cv_Face_Tracker_P;
 
-   function CvTrackFace (P_Face_Tracker  : Cv_Face_Tracker_P;
-                         Img_Gray        : Ipl_Image_P;
-                         P_Rects         : Cv_Rect_Array;
-                         N_Rects         : Integer;
-                         Pt_Rotate       : Cv_Point_P;
-                         Db_Angle_Rotate : access Long_Float)
-                         return Integer;
+   function Cv_Track_Face (P_Face_Tracker  : Cv_Face_Tracker_P;
+                           Img_Gray        : Ipl_Image_P;
+                           P_Rects         : Cv_Rect_Array;
+                           N_Rects         : Integer;
+                           Pt_Rotate       : Cv_Point_P;
+                           Db_Angle_Rotate : access Long_Float)
+                           return Integer;
 
-   procedure CvReleaseFaceTracker (PP_Face_Tracker : access Cv_Face_Tracker_P);
+   procedure Cv_Release_Face_Tracker (Pp_Face_Tracker : access Cv_Face_Tracker_P);
 
    type Cv_Face_Data is record
       Mouth_Rect     : Cv_Rect;
@@ -906,13 +904,13 @@ package Legacy is
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Face_Data);
 
-   function CvFindFace (Image   : Ipl_Image_P;
-                        Storage : Cv_Mem_Storage_P)
-                        return Cv_Seq_P;
+   function Cv_Find_Face (Image   : Ipl_Image_P;
+                          Storage : Cv_Mem_Storage_P)
+                          return Cv_Seq_P;
 
-   function CvPostBoostingFindFace (Image   : Ipl_Image_P;
-                                    Storage : Cv_Mem_Storage_P)
-                                    return Cv_Seq_P;
+   function Cv_Post_Boosting_Find_Face (Image   : Ipl_Image_P;
+                                        Storage : Cv_Mem_Storage_P)
+                                        return Cv_Seq_P;
 
    -- 3D Tracker ---------------------------------------------------------------
    -----------------------------------------------------------------------------
@@ -926,9 +924,9 @@ package Legacy is
    type Cv_3d_Tracker_2d_Tracked_Object_P is access Cv_3d_Tracker_2d_Tracked_Object;
    type Cv_3d_Tracker_2d_Tracked_Object_Array is array (Integer range <>) of aliased Cv_3d_Tracker_2d_Tracked_Object;
 
-   function Cv3dTracker2dTrackedObject (Id : Integer;
-                                        P  : Cv_Point_2d_32f)
-                                        return Cv_3d_Tracker_2d_Tracked_Object;
+   function Cv_Create_3d_Tracker_2d_Tracked_Object (Id : Integer;
+                                                    P  : Cv_Point_2d_32f)
+                                                    return Cv_3d_Tracker_2d_Tracked_Object;
 
    type Cv_3d_Tracker_Tracked_Object is record
       Id : Integer;
@@ -938,9 +936,9 @@ package Legacy is
    type Cv_3d_Tracker_Tracked_Object_P is access Cv_3d_Tracker_Tracked_Object;
    type Cv_3d_Tracker_Tracked_Object_Array is array (Integer range <>) of aliased Cv_3d_Tracker_Tracked_Object;
 
-   function Cv3dTrackerTrackedObject (Id : Integer;
-                                      P  : Cv_Point_3d_32f)
-                                      return Cv_3d_Tracker_Tracked_Object;
+   function Cv_Create_3d_Tracker_Tracked_Object (Id : Integer;
+                                                 P  : Cv_Point_3d_32f)
+                                                 return Cv_3d_Tracker_Tracked_Object;
 
    type Cv_3d_Tracker_Camera_Info is record
       Valid           : Cv_Bool;
@@ -960,20 +958,20 @@ package Legacy is
    type Cv_3d_Tracker_Camera_Intrinsics_P is access Cv_3d_Tracker_Camera_Intrinsics;
    type Cv_3d_Tracker_Camera_Intrinsics_Array is array (Integer range <>) of aliased Cv_3d_Tracker_Camera_Intrinsics;
 
-   function Cv3dTrackerCalibrateCameras (Num_Cameras       : Integer;
-                                         Camera_Intrinsics : Cv_3d_Tracker_Camera_Intrinsics_Array; -- size = num_cameras
-                                         Etalon_Size       : Cv_Size;
-                                         Square_Size       : Float;
-                                         Samples           : Ipl_Image_P_Array; -- size = num_cameras
-                                         Camera_Info       : Cv_3d_Tracker_Camera_Info_Array) -- size = num_cameras
-                                         return Cv_Bool;
+   function Cv_3d_Tracker_Calibrate_Cameras (Num_Cameras       : Integer;
+                                             Camera_Intrinsics : Cv_3d_Tracker_Camera_Intrinsics_Array; -- size = num_cameras
+                                             Etalon_Size       : Cv_Size;
+                                             Square_Size       : Float;
+                                             Samples           : Ipl_Image_P_Array; -- size = num_cameras
+                                             Camera_Info       : Cv_3d_Tracker_Camera_Info_Array) -- size = num_cameras
+                                             return Cv_Bool;
 
-   function Cv3dTrackerLocateObjects (Num_Cameras     : Integer;
-                                      Num_Objects     : Integer;
-                                      Camera_Info     : Cv_3d_Tracker_Camera_Info_Array; -- size = num_cameras
-                                      Tracking_Info   : Cv_3d_Tracker_2d_Tracked_Object_Array; -- size = num_objects*num_cameras
-                                      Tracked_Objects : Cv_3d_Tracker_Tracked_Object_Array) -- size = num_objects
-                                      return Integer;
+   function Cv_3d_Tracker_Locate_Objects (Num_Cameras     : Integer;
+                                          Num_Objects     : Integer;
+                                          Camera_Info     : Cv_3d_Tracker_Camera_Info_Array; -- size = num_cameras
+                                          Tracking_Info   : Cv_3d_Tracker_2d_Tracked_Object_Array; -- size = num_objects*num_cameras
+                                          Tracked_Objects : Cv_3d_Tracker_Tracked_Object_Array) -- size = num_objects
+                                          return Integer;
    --   tracking_info is a rectangular array; one row per camera, num_objects
    --   elements per row. The id field of any unused slots must be -1. Ids need
    --   not be ordered or consecutive. On completion, the return value is the
@@ -984,21 +982,21 @@ package Legacy is
    -- Skeletons and Linear_Contour Models --------------------------------------
    -----------------------------------------------------------------------------
    --     Lee Parameters
-   CV_LEE_INT    : constant := 0;
-   CV_LEE_FLOAT  : constant := 1;
-   CV_LEE_DOUBLE : constant := 2;
-   CV_LEE_AUTO   : constant := -1;
-   CV_LEE_ERODE  : constant := 0;
-   CV_LEE_ZOOM   : constant := 1;
-   CV_LEE_NON    : constant := 2;
+   Cv_Lee_Int    : constant := 0;
+   Cv_Lee_Float  : constant := 1;
+   Cv_Lee_Double : constant := 2;
+   Cv_Lee_Auto   : constant := -1;
+   Cv_Lee_Erode  : constant := 0;
+   Cv_Lee_Zoom   : constant := 1;
+   Cv_Lee_Non    : constant := 2;
 
-   CV_LEE_INT_F    : constant := 0.0;
-   CV_LEE_FLOAT_F  : constant := 1.0;
-   CV_LEE_DOUBLE_F : constant := 2.0;
-   CV_LEE_AUTO_F   : constant := -1.0;
-   CV_LEE_ERODE_F  : constant := 0.0;
-   CV_LEE_ZOOM_F   : constant := 1.0;
-   CV_LEE_NON_F    : constant := 2.0;
+   Cv_Lee_Int_F    : constant := 0.0;
+   Cv_Lee_Float_F  : constant := 1.0;
+   Cv_Lee_Double_F : constant := 2.0;
+   Cv_Lee_Auto_F   : constant := -1.0;
+   Cv_Lee_Erode_F  : constant := 0.0;
+   Cv_Lee_Zoom_F   : constant := 1.0;
+   Cv_Lee_Non_F    : constant := 2.0;
 
    --     #define CV_VORONOISITE2D_FIELDS() \
    --      struct CvVoronoiNode2D *node[2]; \
@@ -1071,19 +1069,19 @@ package Legacy is
    type Cv_Voronoi_Diagram_2d is record
    -- CV_VORONOIDIAGRAM2D_FIELDS()
       Flags           : Integer;       --CV_TREE_NODE_FIELDS(CvSeq);
-      HeaderSize      : Integer;
-      HPrev           : Cv_Seq_P;
-      HNext           : Cv_Seq_P;
-      VPrev           : Cv_Seq_P;
-      VNext           : Cv_Seq_P;
+      Headersize      : Integer;
+      Hprev           : Cv_Seq_P;
+      Hnext           : Cv_Seq_P;
+      Vprev           : Cv_Seq_P;
+      Vnext           : Cv_Seq_P;
 
       Total           : Integer; --CV_SEQUENCE_FIELDS
-      ElemSize        : Integer;
-      BlockMax        : Cv_Void_P;
+      Elemsize        : Integer;
+      Blockmax        : Cv_Void_P;
       Ptr             : Cv_Void_P;
-      DeltaElems      : Integer;
+      Deltaelems      : Integer;
       Storage         : Cv_Mem_Storage_P;
-      FreeBlocks      : Cv_Seq_Block_P;
+      Freeblocks      : Cv_Seq_Block_P;
       First           : Cv_Seq_Block_P;
 
       Free_Elems      : Cv_Set_Elem_Pointer;
@@ -1095,30 +1093,30 @@ package Legacy is
    type Cv_Voronoi_Diagram_2d_Array is array (Integer range <>) of aliased Cv_Voronoi_Diagram_2d;
 
    --     Computes Voronoi Diagram for given polygons with holes
-   function CvVoronoiDiagramFromContour (Contour_Seq         : Cv_Seq_P;
-                                         Voronoi_Diagram     : access Cv_Voronoi_Diagram_2d_P;
-                                         Voronoi_Storage     : Cv_Mem_Storage_P;
-                                         Contour_Type        : Integer := Cv_Lee_Int;
-                                         Contour_Orientation : Integer := -1;
-                                         Attempt_Number      : Integer := 10)
-                                         return Integer;
+   function Cv_Voronoi_Diagram_From_Contour (Contour_Seq         : Cv_Seq_P;
+                                             Voronoi_Diagram     : access Cv_Voronoi_Diagram_2d_P;
+                                             Voronoi_Storage     : Cv_Mem_Storage_P;
+                                             Contour_Type        : Integer := Cv_Lee_Int;
+                                             Contour_Orientation : Integer := -1;
+                                             Attempt_Number      : Integer := 10)
+                                             return Integer;
 
    --     Computes Voronoi Diagram for domains in given image
-   function CvVoronoiDiagramFromImage (P_Image               : Ipl_Image_P;
-                                       Contour_Seq           : access Cv_Seq_P;
-                                       Voronoi_Diagram       : access Cv_Voronoi_Diagram_2d_P;
-                                       Voronoi_Storage       : Cv_Mem_Storage_P;
-                                       Regularization_Method : Integer := Cv_Lee_Non;
-                                       Approx_Precision      : Float := Cv_Lee_Auto_F)
-                                       return Integer;
+   function Cv_Voronoi_Diagram_From_Image (P_Image               : Ipl_Image_P;
+                                           Contour_Seq           : access Cv_Seq_P;
+                                           Voronoi_Diagram       : access Cv_Voronoi_Diagram_2d_P;
+                                           Voronoi_Storage       : Cv_Mem_Storage_P;
+                                           Regularization_Method : Integer := Cv_Lee_Non;
+                                           Approx_Precision      : Float := Cv_Lee_Auto_F)
+                                           return Integer;
 
    --     Deallocates the storage
-   procedure CvReleaseVoronoiStorage (Voronoi_Diagram   : Cv_Voronoi_Diagram_2d_P;
-                                      P_Voronoi_Storage : access Cv_Mem_Storage_P);
+   procedure Cv_Release_Voronoi_Storage (Voronoi_Diagram   : Cv_Voronoi_Diagram_2d_P;
+                                         P_Voronoi_Storage : access Cv_Mem_Storage_P);
 
 
    -- Linear-Contour Model -----------------------------------------------------
-   type Cv_LCM_Edge is record
+   type Cv_Lcm_Edge is record
       Flags  : Integer;
       Weight : Float;
       Next   : Cv_Graph_Edge_P_Array;
@@ -1129,26 +1127,26 @@ package Legacy is
       Index2 : Integer;
    end record;
 
-   type Cv_LCM_Node is record
+   type Cv_Lcm_Node is record
       Flags   : Integer;
       First   : Cv_Graph_Edge_P;
       Contour : Cv_Contour_P;
    end record;
 
    --     Computes hybrid model from Voronoi Diagram
-   function CvLinearContorModelFromVoronoiDiagram (Voronoi_Diagram : Cv_Voronoi_Diagram_2d_P;
-                                                   Max_Width       : Float)
-                                                   return Cv_Graph_P;
+   function Cv_Linear_Contor_Model_From_Voronoi_Diagram (Voronoi_Diagram : Cv_Voronoi_Diagram_2d_P;
+                                                         Max_Width       : Float)
+                                                         return Cv_Graph_P;
 
    --     Releases hybrid model storage
-   procedure CvReleaseLinearContorModelStorage (Graph : access Cv_Graph_P);
+   procedure Cv_Release_Linear_Contor_Model_Storage (Graph : access Cv_Graph_P);
 
    subtype Cv_Point_2d_32f_Array_4 is Cv_Point_2d_32f_Array (1 .. 4);
 
-   procedure CvInitPerspectiveTransform (Size     : Cv_Size;
-                                         Vertex   : Cv_Point_2d_32f_Array_4;
-                                         Matrix   : Cv_64f_Array_3x3;
-                                         Rect_Map : Cv_Arr_P);
+   procedure Cv_Init_Perspective_Transform (Size     : Cv_Size;
+                                            Vertex   : Cv_Point_2d_32f_Array_4;
+                                            Matrix   : Cv_64f_Array_3x3;
+                                            Rect_Map : Cv_Arr_P);
 
    -- View Morphing Functions --------------------------------------------------
    --     The order of the function corresponds to the order they should appear
@@ -1156,221 +1154,222 @@ package Legacy is
 
    --     Finds ending points of scanlines on left and right images of
    --     stereo-pair
-   procedure CvMakeScanlines (Matrix     : Cv_Matrix_3;
-                              Img_Size   : Cv_Size;
-                              Scanlines1 : Cv_32s_Pointer;
-                              Scanlines2 : Cv_32s_Pointer;
-                              Lengths1   : Cv_32s_Pointer;
-                              Lengths2   : Cv_32s_Pointer;
-                              Line_Count : access Integer);
+   procedure Cv_Make_Scanlines (Matrix     : Cv_Matrix_3;
+                                Img_Size   : Cv_Size;
+                                Scanlines1 : Cv_32s_Pointer;
+                                Scanlines2 : Cv_32s_Pointer;
+                                Lengths1   : Cv_32s_Pointer;
+                                Lengths2   : Cv_32s_Pointer;
+                                Line_Count : access Integer);
 
    --     Grab pixel values from scanlines and stores them sequentially
    --     (some sort of perspective image transform)
-   procedure CvPreWarpImage (Line_Count : Integer;
-                             Img        : Ipl_Image_P;
-                             Dst        : Cv_8u_Pointer;
-                             Dst_Nums   : Cv_32s_Pointer;
-                             Scan_Lines : Cv_32s_Pointer);
+   procedure Cv_Pre_Warp_Image (Line_Count : Integer;
+                                Img        : Ipl_Image_P;
+                                Dst        : Cv_8u_Pointer;
+                                Dst_Nums   : Cv_32s_Pointer;
+                                Scan_Lines : Cv_32s_Pointer);
 
    --     Approximate each grabbed scanline by a sequence of runs
    --     (lossy run-length compression)
-   procedure CvFindRuns (Line_Count    : Integer;
-                         Prewarp1      : Cv_8u_Pointer;
-                         Prewarp2      : Cv_8u_Pointer;
-                         Line_Lengths1 : Cv_32s_Pointer;
-                         Line_Lengths2 : Cv_32s_Pointer;
-                         Runs1         : Cv_32s_Pointer;
-                         Runs2         : Cv_32s_Pointer;
-                         Num_Runs1     : Cv_32s_Pointer;
-                         Num_Runs2     : Cv_32s_Pointer);
+   procedure Cv_Find_Runs (Line_Count    : Integer;
+                           Prewarp1      : Cv_8u_Pointer;
+                           Prewarp2      : Cv_8u_Pointer;
+                           Line_Lengths1 : Cv_32s_Pointer;
+                           Line_Lengths2 : Cv_32s_Pointer;
+                           Runs1         : Cv_32s_Pointer;
+                           Runs2         : Cv_32s_Pointer;
+                           Num_Runs1     : Cv_32s_Pointer;
+                           Num_Runs2     : Cv_32s_Pointer);
 
    --     Compares two sets of compressed scanlines
-   procedure CvDynamicCorrespondMulti (Line_Count  : Integer;
-                                       First       : Cv_32s_Pointer;
-                                       First_Runs  : Cv_32s_Pointer;
-                                       Second      : Cv_32s_Pointer;
-                                       Second_Runs : Cv_32s_Pointer;
-                                       First_Corr  : Cv_32s_Pointer;
-                                       Second_Corr : Cv_32s_Pointer);
+   procedure Cv_Dynamic_Correspond_Multi (Line_Count  : Integer;
+                                          First       : Cv_32s_Pointer;
+                                          First_Runs  : Cv_32s_Pointer;
+                                          Second      : Cv_32s_Pointer;
+                                          Second_Runs : Cv_32s_Pointer;
+                                          First_Corr  : Cv_32s_Pointer;
+                                          Second_Corr : Cv_32s_Pointer);
 
    --     Finds scanline ending coordinates for some intermediate "virtual"
    --     camera position
-   procedure CvMakeAlphaScanlines (Scanlines1  : Cv_32s_Pointer;
-                                   Scanlines2  : Cv_32s_Pointer;
-                                   Scanlines_A : Cv_32s_Pointer;
-                                   Lengths     : Cv_32s_Pointer;
-                                   Line_Count  : Integer;
-                                   Alpha       : Float);
+   procedure Cv_Make_Alpha_Scanlines (Scanlines1  : Cv_32s_Pointer;
+                                      Scanlines2  : Cv_32s_Pointer;
+                                      Scanlines_A : Cv_32s_Pointer;
+                                      Lengths     : Cv_32s_Pointer;
+                                      Line_Count  : Integer;
+                                      Alpha       : Float);
 
    --     Blends data of the left and right image scanlines to get
    --     pixel values of "virtual" image scanlines
-   procedure CvMorphEpilinesMulti (Line_Count  : Integer;
-                                   First_Pix   : Cv_8u_Pointer;
-                                   First_Num   : Cv_32s_Pointer;
-                                   Second_Pix  : Cv_8u_Pointer;
-                                   Second_Num  : Cv_32s_Pointer;
-                                   Dst_Pix     : Cv_8u_Pointer;
-                                   Dst_Num     : Cv_32s_Pointer;
-                                   Alpha       : Float;
-                                   First       : Cv_32s_Pointer;
-                                   First_Runs  : Cv_32s_Pointer;
-                                   Second      : Cv_32s_Pointer;
-                                   Second_Runs : Cv_32s_Pointer;
-                                   First_Corr  : Cv_32s_Pointer;
-                                   Second_Corr : Cv_32s_Pointer);
+   procedure Cv_Morph_Epilines_Multi (Line_Count  : Integer;
+                                      First_Pix   : Cv_8u_Pointer;
+                                      First_Num   : Cv_32s_Pointer;
+                                      Second_Pix  : Cv_8u_Pointer;
+                                      Second_Num  : Cv_32s_Pointer;
+                                      Dst_Pix     : Cv_8u_Pointer;
+                                      Dst_Num     : Cv_32s_Pointer;
+                                      Alpha       : Float;
+                                      First       : Cv_32s_Pointer;
+                                      First_Runs  : Cv_32s_Pointer;
+                                      Second      : Cv_32s_Pointer;
+                                      Second_Runs : Cv_32s_Pointer;
+                                      First_Corr  : Cv_32s_Pointer;
+                                      Second_Corr : Cv_32s_Pointer);
 
    --     Does reverse warping of the morphing result to make
    --     it fill the destination image rectangle
-   procedure CvPostWarpImage (Line_Count : Integer;
-                              Src        : Cv_8u_Pointer;
-                              Src_Nums   : Cv_32s_Pointer;
-                              Img        : Ipl_Image_P;
-                              Scanlines  : Cv_32s_Pointer);
+   procedure Cv_Post_Warp_Image (Line_Count : Integer;
+                                 Src        : Cv_8u_Pointer;
+                                 Src_Nums   : Cv_32s_Pointer;
+                                 Img        : Ipl_Image_P;
+                                 Scanlines  : Cv_32s_Pointer);
 
    --     Deletes Moire (missed pixels that appear due to discretization)
-   procedure CvDeleteMoire (Img : Ipl_Image_P);
+   procedure Cv_Delete_Moire (Img : Ipl_Image_P);
 
    -- ConDenstation state.
    type Cv_Con_Densation is
       record
-         MP           : Integer;
-         DP           : Integer;
-         DynamMatr    : Cv_32F_Array_P;
-         State        : Cv_32F_Array_P;
-         SamplesNum   : Integer;
-         FlSamples    : access Cv_32F_Array_P;
-         FlNewSamples : access Cv_32F_Array_P;
-         FlConfidance : Cv_32F_Array_P;
-         FlCumulative : Cv_32F_Array_P;
-         Temp         : Cv_32F_Array_P;
-         RandomSample : Cv_32F_Array_P;
-         RandS        : Cv_Rand_State;
+         Mp           : Integer;
+         Dp           : Integer;
+         Dynammatr    : Cv_32f_Array_P;
+         State        : Cv_32f_Array_P;
+         Samplesnum   : Integer;
+         Flsamples    : access Cv_32f_Array_P;
+         Flnewsamples : access Cv_32f_Array_P;
+         Flconfidance : Cv_32f_Array_P;
+         Flcumulative : Cv_32f_Array_P;
+         Temp         : Cv_32f_Array_P;
+         Randomsample : Cv_32f_Array_P;
+         Rands        : Cv_Rand_State;
       end record;
 
    type Cv_Con_Densation_P is access Cv_Con_Densation;
 
    --     Allocates the ConDensation filter structure.
-   function CvCreateConDensation (DynamParams   : Integer;
-                                  MeasureParams : Integer;
-                                  SampleCount   : Integer) return Cv_Con_Densation_P;
+   function Cv_Create_Condensation (Dynamparams   : Integer;
+                                    Measureparams : Integer;
+                                    Samplecount   : Integer) return Cv_Con_Densation_P;
 
    --     Initializes the sample set for the ConDensation algorithm.
-   procedure CvConDensInitSampleSet (Condens    : Cv_Con_Densation_P;
-                                     LowerBound : Cv_Mat_P;
-                                     UpperBound : Cv_Mat_P);
+   procedure Cv_Condens_Init_Sample_Set (Condens    : Cv_Con_Densation_P;
+                                         Lowerbound : Cv_Mat_P;
+                                         Upperbound : Cv_Mat_P);
 
    --     Updates ConDensation filter by time (predict future state of the system)
-   procedure CvConDensUpdateByTime (Condens : Cv_Con_Densation_P);
+   procedure Cv_Condens_Update_By_Time (Condens : Cv_Con_Densation_P);
 
-   function IplWidth (Img : Ipl_Image_P)
-                      return Integer;
-
-   function IplHeight (Img : Ipl_Image_P)
+   function Ipl_Width (Img : Ipl_Image_P)
                        return Integer;
+
+   function Ipl_Height (Img : Ipl_Image_P)
+                        return Integer;
 
 private
 
-   pragma Import (C, CvSegmentImage, "cvSegmentImage");
-   pragma Import (C, CvCalcCovarMatrixEx, "cvCalcCovarMatrixEx");
-   pragma Import (C, CvCalcEigenObjects, "cvCalcEigenObjects");
-   pragma Import (C, CvCalcDecompCoeff, "cvCalcDecompCoeff");
-   pragma Import (C, CvEigenDecomposite, "CvEigenDecomposite");
-   pragma Import (C, CvEigenProjection, "cvEigenProjection");
-   pragma Import (C, CvCreate2DHMM, "cvCreate2DHMM");
-   pragma Import (C, CvRelease2DHMM, "cvRelease2DHMM");
-   pragma Import (C, CvCreateObsInfo, "cvCreateObsInfo");
-   pragma Import (C, CvReleaseObsInfo, "cvReleaseObsInfo");
-   pragma Import (C, CvImgToObs_DCT, "cvImgToObs_DCT");
-   pragma Import (C, CvUniformImgSegm, "cvUniformImgSegm");
-   pragma Import (C, CvInitMixSegm, "cvInitMixSegm");
-   pragma Import (C, CvEstimateHMMStateParams, "cvEstimateHMMStateParams");
-   pragma Import (C, CvEstimateTransProb, "cvEstimateTransProb");
-   pragma Import (C, CvEstimateObsProb, "cvEstimateObsProb");
-   pragma Import (C, CvEViterbi, "cvEViterbi");
-   pragma Import (C, CvMixSegmL2, "cvMixSegmL2");
-   pragma Import (C, CvCreateHandMask, "cvCreateHandMask");
-   pragma Import (C, CvFindHandRegion, "cvFindHandRegion");
-   pragma Import (C, CvFindHandRegionA, "cvFindHandRegionA");
-   pragma Import (C, CvCalcImageHomography, "cvCalcImageHomography");
-   pragma Import (C, IcvDrawMosaic, "icvDrawMosaic");
-   pragma Import (C, IcvSubdiv2DCheck, "icvSubdiv2DCheck");
-   pragma Import (C, IcvSqDist2D32f, "icvSqDist2D32f");
-   pragma Import (C, CvCalcPGH, "cvCalcPGH");
-   pragma Import (C, CvFindDominantPoints, "cvFindDominantPoints");
-   pragma Import (C, IcvConvertWarpCoordinates, "icvConvertWarpCoordinates");
-   pragma Import (C, IcvGetSymPoint3D, "icvGetSymPoint3D");
-   pragma Import (C, IcvGetPieceLength3D, "icvGetPieceLength3D");
-   pragma Import (C, IcvCompute3DPoint, "icvCompute3DPoint");
-   pragma Import (C, IcvCreateConvertMatrVect, "icvCreateConvertMatrVect");
-   pragma Import (C, IcvConvertPointSystem, "icvConvertPointSystem");
-   pragma Import (C, IcvComputeCoeffForStereo, "icvComputeCoeffForStereo");
-   pragma Import (C, IcvGetCrossPieceVector, "icvGetCrossPieceVector");
-   pragma Import (C, IcvGetCrossLineDirect, "icvGetCrossLineDirect");
-   pragma Import (C, IcvDefinePointPosition, "icvDefinePointPosition");
-   pragma Import (C, IcvStereoCalibration, "icvStereoCalibration");
-   pragma Import (C, IcvComputeRestStereoParams, "icvComputeRestStereoParams");
-   pragma Import (C, CvComputePerspectiveMap, "cvComputePerspectiveMap");
-   pragma Import (C, IcvComCoeffForLine, "icvComCoeffForLine");
-   pragma Import (C, IcvGetDirectionForPoint, "icvGetDirectionForPoint");
-   pragma Import (C, IcvGetCrossLines, "icvGetCrossLines");
-   pragma Import (C, IcvComputeStereoLineCoeffs, "icvComputeStereoLineCoeffs");
-   pragma Import (C, IcvGetAngleLine, "icvGetAngleLine");
-   pragma Import (C, IcvGetCoefForPiece, "icvGetCoefForPiece");
-   pragma Import (C, IcvComputeeInfiniteProject1, "icvComputeeInfiniteProject1");
-   pragma Import (C, IcvComputeeInfiniteProject2, "icvComputeeInfiniteProject2");
-   pragma Import (C, IcvGetCrossDirectDirect, "icvGetCrossDirectDirect");
-   pragma Import (C, IcvGetCrossPieceDirect, "icvGetCrossPieceDirect");
-   pragma Import (C, IcvGetCrossPiecePiece, "icvGetCrossPiecePiece");
-   pragma Import (C, IcvGetPieceLength, "icvGetPieceLength");
-   pragma Import (C, IcvGetCrossRectDirect, "icvGetCrossRectDirect");
-   pragma Import (C, IcvProjectPointToImage, "icvProjectPointToImage");
-   pragma Import (C, IcvGetQuadsTransform, "icvGetQuadsTransform");
-   pragma Import (C, IcvGetQuadsTransformStruct, "icvGetQuadsTransformStruct");
-   pragma Import (C, IcvComputeStereoParamsForCameras, "icvComputeStereoParamsForCameras");
-   pragma Import (C, IcvGetCutPiece, "icvGetCutPiece");
-   pragma Import (C, IcvGetMiddleAnglePoint, "icvGetMiddleAnglePoint");
-   pragma Import (C, IcvGetNormalDirect, "icvGetNormalDirect");
-   pragma Import (C, IcvGetVect, "icvGetVect");
-   pragma Import (C, IcvProjectPointToDirect, "icvProjectPointToDirect");
-   pragma Import (C, IcvGetDistanceFromPointToDirect, "icvGetDistanceFromPointToDirect");
-   pragma Import (C, IcvCreateIsometricImage, "icvCreateIsometricImage");
-   pragma Import (C, CvDeInterlace, "cvDeInterlace");
-   pragma Import (C, CvCreateContourTree, "cvCreateContourTree");
-   pragma Import (C, CvContourFromContourTree, "cvContourFromContourTree");
-   pragma Import (C, CvMatchContourTrees, "cvMatchContourTrees");
-   pragma Import (C, CvCalcContoursCorrespondence, "cvCalcContoursCorrespondence");
-   pragma Import (C, CvMorphContours, "cvMorphContours");
-   pragma Import (C, CvSnakeImage, "cvSnakeImage");
-   pragma Import (C, CvCreateGLCM, "cvCreateGLCM");
-   pragma Import (C, CvReleaseGLCM, "cvReleaseGLCM");
-   pragma Import (C, CvCreateGLCMDescriptors, "cvCreateGLCMDescriptors");
-   pragma Import (C, CvGetGLCMDescriptor, "cvGetGLCMDescriptor");
-   pragma Import (C, CvGetGLCMDescriptorStatistics, "cvGetGLCMDescriptorStatistics");
-   pragma Import (C, CvCreateGLCMImage, "cvCreateGLCMImage");
-   pragma Import (C, CvInitFaceTracker, "cvInitFaceTracker");
-   pragma Import (C, CvTrackFace, "cvTrackFace");
-   pragma Import (C, CvReleaseFaceTracker, "cvReleaseFaceTracker");
-   pragma Import (C, CvFindFace, "cvFindFace");
-   pragma Import (C, CvPostBoostingFindFace, "cvPostBoostingFindFace");
-   pragma Import (C, Cv3dTracker2dTrackedObject, "cv3dTracker2dTrackedObject");
-   pragma Import (C, Cv3dTrackerTrackedObject, "cv3dTrackerTrackedObject");
-   pragma Import (C, Cv3dTrackerCalibrateCameras, "cv3dTrackerCalibrateCameras");
-   pragma Import (C, Cv3dTrackerLocateObjects, "cv3dTrackerLocateObjects");
-   pragma Import (C, CvLinearContorModelFromVoronoiDiagram, "cvLinearContorModelFromVoronoiDiagram");
-   pragma Import (C, CvReleaseLinearContorModelStorage, "cvReleaseLinearContorModelStorage");
-   pragma Import (C, CvInitPerspectiveTransform, "cvInitPerspectiveTransform");
-   pragma Import (C, CvVoronoiDiagramFromContour, "cvVoronoiDiagramFromContour");
-   pragma Import (C, CvVoronoiDiagramFromImage, "cvVoronoiDiagramFromImage");
-   pragma Import (C, CvReleaseVoronoiStorage, "cvReleaseVoronoiStorage");
-   pragma Import (C, CvMakeScanlines, "cvMakeScanlines");
-   pragma Import (C, CvPreWarpImage, "cvPreWarpImage");
-   pragma Import (C, CvFindRuns, "CvFindRuns");
-   pragma Import (C, CvDynamicCorrespondMulti, "cvDynamicCorrespondMulti");
-   pragma Import (C, CvMakeAlphaScanlines, "cvMakeAlphaScanlines");
-   pragma Import (C, CvMorphEpilinesMulti, "cvMorphEpilinesMulti");
-   pragma Import (C, CvPostWarpImage, "cvPostWarpImage");
-   pragma Import (C, CvDeleteMoire, "cvDeleteMoire");
-   pragma Import (C, CvCreateConDensation, "cvCreateConDensation");
-   pragma Import (C, CvConDensInitSampleSet, "cvConDensInitSampleSet");
-   pragma Import (C, CvConDensUpdateByTime, "cvConDensUpdateByTime");
+   pragma Import (C, Cv_Segment_Image, "cvSegmentImage");
+   pragma Import (C, Cv_Calc_Covar_Matrix_Ex, "cvCalcCovarMatrixEx");
+   pragma Import (C, Cv_Calc_Eigen_Objects, "cvCalcEigenObjects");
+   pragma Import (C, Cv_Calc_Decomp_Coeff, "cvCalcDecompCoeff");
+   pragma Import (C, Cv_Eigen_Decomposite, "CvEigenDecomposite");
+   pragma Import (C, Cv_Eigen_Projection, "cvEigenProjection");
+   pragma Import (C, Cv_Create_2d_Hmm, "cvCreate2DHMM");
+   pragma Import (C, Cv_Release_2d_Hmm, "cvRelease2DHMM");
+   pragma Import (C, Cv_Create_Obs_Info, "cvCreateObsInfo");
+   pragma Import (C, Cv_Release_Obs_Info, "cvReleaseObsInfo");
+   pragma Import (C, Cv_Img_To_Obs_Dct, "cvImgToObs_DCT");
+   pragma Import (C, Cv_Uniform_Img_Segm, "cvUniformImgSegm");
+   pragma Import (C, Cv_Init_Mix_Segm, "cvInitMixSegm");
+   pragma Import (C, Cv_Estimate_Hmm_State_Params, "cvEstimateHMMStateParams");
+   pragma Import (C, Cv_Estimate_Trans_Prob, "cvEstimateTransProb");
+   pragma Import (C, Cv_Estimate_Obs_Prob, "cvEstimateObsProb");
+   pragma Import (C, Cv_E_Viterbi, "cvEViterbi");
+   pragma Import (C, Cv_Mix_Segm_L2, "cvMixSegmL2");
+   pragma Import (C, Cv_Create_Hand_Mask, "cvCreateHandMask");
+   pragma Import (C, Cv_Find_Hand_Region, "cvFindHandRegion");
+   pragma Import (C, Cv_Find_Hand_Region_A, "cvFindHandRegionA");
+   pragma Import (C, Cv_Calc_Image_Homography, "cvCalcImageHomography");
+   pragma Import (C, Icv_Draw_Mosaic, "icvDrawMosaic");
+   pragma Import (C, Icv_Subdiv_2d_Check, "icvSubdiv2DCheck");
+   pragma Import (C, Icv_Sq_Dist_2d_32f, "icvSqDist2D32f");
+   pragma Import (C, Cv_Calc_Pgh, "cvCalcPGH");
+   pragma Import (C, Cv_Find_Dominant_Points, "cvFindDominantPoints");
+   pragma Import (C, Icv_Convert_Warp_Coordinates, "icvConvertWarpCoordinates");
+   pragma Import (C, Icv_Get_Sympoint_3d, "icvGetSymPoint3D");
+   pragma Import (C, Icv_Get_Piece_Length_3d, "icvGetPieceLength3D");
+   pragma Import (C, Icv_Compute_3d_Point, "icvCompute3DPoint");
+   pragma Import (C, Icv_Create_Convert_Matr_Vect, "icvCreateConvertMatrVect");
+   pragma Import (C, Icv_Convert_Point_System, "icvConvertPointSystem");
+   pragma Import (C, Icv_Compute_Coeff_For_Stereo, "icvComputeCoeffForStereo");
+   pragma Import (C, Icv_Get_Cross_Piece_Vector, "icvGetCrossPieceVector");
+   pragma Import (C, Icv_Get_Cross_Line_Direct, "icvGetCrossLineDirect");
+   pragma Import (C, Icv_Define_Point_Position, "icvDefinePointPosition");
+   pragma Import (C, Icv_Stereo_Calibration, "icvStereoCalibration");
+   pragma Import (C, Icv_Compute_Rest_Stereo_Params, "icvComputeRestStereoParams");
+   pragma Import (C, Cv_Compute_Perspective_Map, "cvComputePerspectiveMap");
+   pragma Import (C, Icv_Com_Coeff_For_Line, "icvComCoeffForLine");
+   pragma Import (C, Icv_Get_Direction_For_Point, "icvGetDirectionForPoint");
+   pragma Import (C, Icv_Get_Cross_Lines, "icvGetCrossLines");
+   pragma Import (C, Icv_Compute_Stereo_Line_Coeffs, "icvComputeStereoLineCoeffs");
+   pragma Import (C, Icv_Get_Angle_Line, "icvGetAngleLine");
+   pragma Import (C, Icv_Get_Coef_For_Piece, "icvGetCoefForPiece");
+   pragma Import (C, Icv_Computee_Infinite_Project1, "icvComputeeInfiniteProject1");
+   pragma Import (C, Icv_Computee_Infinite_Project2, "icvComputeeInfiniteProject2");
+   pragma Import (C, Icv_Get_Cross_Direct_Direct, "icvGetCrossDirectDirect");
+   pragma Import (C, Icv_Get_Cross_Piece_Direct, "icvGetCrossPieceDirect");
+   pragma Import (C, Icv_Get_Cross_Piece_Piece, "icvGetCrossPiecePiece");
+   pragma Import (C, Icv_Get_Piece_Length, "icvGetPieceLength");
+   pragma Import (C, Icv_Get_Cross_Rect_Direct, "icvGetCrossRectDirect");
+   pragma Import (C, Icv_Project_Point_To_Image, "icvProjectPointToImage");
+   pragma Import (C, Icv_Get_Quads_Transform, "icvGetQuadsTransform");
+   pragma Import (C, Icv_Get_Quads_Transform_Struct, "icvGetQuadsTransformStruct");
+   pragma Import (C, Icv_Compute_Stereo_Params_For_Cameras, "icvComputeStereoParamsForCameras");
+   pragma Import (C, Icv_Get_Cut_Piece, "icvGetCutPiece");
+   pragma Import (C, Icv_Get_Middle_Angle_Point, "icvGetMiddleAnglePoint");
+   pragma Import (C, Icv_Get_Normal_Direct, "icvGetNormalDirect");
+   pragma Import (C, Icv_Get_Vect, "icvGetVect");
+   pragma Import (C, Icv_Project_Point_To_Direct, "icvProjectPointToDirect");
+   pragma Import (C, Icv_Get_Distance_From_Point_To_Direct, "icvGetDistanceFromPointToDirect");
+   pragma Import (C, Icv_Create_Isometric_Image, "icvCreateIsometricImage");
+   pragma Import (C, Cv_De_Interlace, "cvDeInterlace");
+   pragma Import (C, Cv_Create_Contour_Tree, "cvCreateContourTree");
+   pragma Import (C, Cv_Contour_From_Contour_Tree, "cvContourFromContourTree");
+   pragma Import (C, Cv_Match_Contour_Trees, "cvMatchContourTrees");
+   pragma Import (C, Cv_Calc_Contours_Correspondence, "cvCalcContoursCorrespondence");
+   pragma Import (C, Cv_Morph_Contours, "cvMorphContours");
+   pragma Import (C, Cv_Snake_Image, "cvSnakeImage");
+   pragma Import (C, Cv_Create_Glcm, "cvCreateGLCM");
+   pragma Import (C, Cv_Release_Glcm, "cvReleaseGLCM");
+   pragma Import (C, Cv_Create_Glcm_Descriptors, "cvCreateGLCMDescriptors");
+   pragma Import (C, Cv_Get_Glcm_Descriptor, "cvGetGLCMDescriptor");
+   pragma Import (C, Cv_Get_Glcm_Descriptor_Statistics, "cvGetGLCMDescriptorStatistics");
+   pragma Import (C, Cv_Create_Glcm_Image, "cvCreateGLCMImage");
+   pragma Import (C, Cv_Init_Face_Tracker, "cvInitFaceTracker");
+   pragma Import (C, Cv_Track_Face, "cvTrackFace");
+   pragma Import (C, Cv_Release_Face_Tracker, "cvReleaseFaceTracker");
+   pragma Import (C, Cv_Find_Face, "cvFindFace");
+   pragma Import (C, Cv_Post_Boosting_Find_Face, "cvPostBoostingFindFace");
+   pragma Import (C, Cv_Create_3d_Tracker_2d_Tracked_Object, "cv3dTracker2dTrackedObject");
+   pragma Import (C, Cv_Create_3d_Tracker_Tracked_Object, "cv3dTrackerTrackedObject");
+   pragma Import (C, Cv_3d_Tracker_Calibrate_Cameras, "cv3dTrackerCalibrateCameras");
+   pragma Import (C, Cv_3d_Tracker_Locate_Objects, "cv3dTrackerLocateObjects");
+   pragma Import (C, Cv_Linear_Contor_Model_From_Voronoi_Diagram, "cvLinearContorModelFromVoronoiDiagram");
+   pragma Import (C, Cv_Release_Linear_Contor_Model_Storage, "cvReleaseLinearContorModelStorage");
+   pragma Import (C, Cv_Init_Perspective_Transform, "cvInitPerspectiveTransform");
+   pragma Import (C, Cv_Voronoi_Diagram_From_Contour, "cvVoronoiDiagramFromContour");
+   pragma Import (C, Cv_Voronoi_Diagram_From_Image, "cvVoronoiDiagramFromImage");
+   pragma Import (C, Cv_Release_Voronoi_Storage, "cvReleaseVoronoiStorage");
+   pragma Import (C, Cv_Make_Scanlines, "cvMakeScanlines");
+   pragma Import (C, Cv_Pre_Warp_Image, "cvPreWarpImage");
+   pragma Import (C, Cv_Find_Runs, "CvFindRuns");
+   pragma Import (C, Cv_Dynamic_Correspond_Multi, "cvDynamicCorrespondMulti");
+   pragma Import (C, Cv_Make_Alpha_Scanlines, "cvMakeAlphaScanlines");
+   pragma Import (C, Cv_Morph_Epilines_Multi, "cvMorphEpilinesMulti");
+   pragma Import (C, Cv_Post_Warp_Image, "cvPostWarpImage");
+   pragma Import (C, Cv_Delete_Moire, "cvDeleteMoire");
+   pragma Import (C, Cv_Create_Condensation, "cvCreateConDensation");
+   pragma Import (C, Cv_Condens_Init_Sample_Set, "cvConDensInitSampleSet");
+   pragma Import (C, Cv_Condens_Update_By_Time, "cvConDensUpdateByTime");
+   pragma Import (C, Cv_Find_Stereo_Correspondence, "cvFindStereoCorrespondence");
 end Legacy;

@@ -36,9 +36,9 @@ package Highgui is
    type Cv_Capture_P is access Cv_Capture;
 
    type Compression_Type is new Integer;
-   CV_IMWRITE_JPEG_QUALITY:constant Compression_Type:=1;
-   CV_IMWRITE_PNG_COMPRESSION : constant Compression_Type := 16;
-   CV_IMWRITE_PXM_BINARY : constant Compression_Type := 32;
+   Cv_Imwrite_Jpeg_Quality : constant Compression_Type := 1;
+   Cv_Imwrite_Png_Compression : constant Compression_Type := 16;
+   Cv_Imwrite_Pxm_Binary : constant Compression_Type := 32;
 
    type File_Settings is record
       Compression                         : Compression_Type;
@@ -46,9 +46,10 @@ package Highgui is
       Not_Used                            : Integer;
    end record;
 
-   function CreateFileSettings ( Compression     : Compression_Type;
-                                Compression_Rate : Integer;
-                                Not_Used         : Integer := 0) return File_Settings;
+   -- Creates a new File_Settings struct
+   function Create_File_Settings ( Compression     : Compression_Type;
+                                  Compression_Rate : Integer;
+                                  Not_Used         : Integer := 0) return File_Settings;
 
 
 
@@ -58,187 +59,187 @@ package Highgui is
 
    --// new font for QT
    type Cv_Font_Weight is new Integer;
-   CV_FONT_LIGHT : constant Cv_Font_Weight := 25;
-   CV_FONT_NORMAL : constant Cv_Font_Weight := 50;
-   CV_FONT_DEMIBOLD : constant Cv_Font_Weight := 63;
-   CV_FONT_BOLD : constant Cv_Font_Weight := 75;
-   CV_FONT_BLACK : constant Cv_Font_Weight := 87;
+   Cv_Font_Light : constant Cv_Font_Weight := 25;
+   Cv_Font_Normal : constant Cv_Font_Weight := 50;
+   Cv_Font_Demibold : constant Cv_Font_Weight := 63;
+   Cv_Font_Bold : constant Cv_Font_Weight := 75;
+   Cv_Font_Black : constant Cv_Font_Weight := 87;
 
    type Cv_Font_Style is new Integer;
-   CV_STYLE_NORMAL : constant Cv_Font_Style := 0;
-   CV_STYLE_ITALIC : constant Cv_Font_Style := 1;
-   CV_STYLE_OBLIQUE : constant Cv_Font_Style := 2;
+   Cv_Style_Normal : constant Cv_Font_Style := 0;
+   Cv_Style_Italic : constant Cv_Font_Style := 1;
+   Cv_Style_Oblique : constant Cv_Font_Style := 2;
 
    --  //for color cvScalar(blue_component, green_component, red\_component[, alpha_component])
    --  //and alpha= 0 <-> 0xFF (not transparent <-> transparent)
-   function CvFontQt (Name_Font  : String;
-                      Point_Size : Integer := -1;
-                      Color      : Cv_Scalar := Core.CvScalarAll (0.0);
-                      Weight     : Cv_Font_Weight := CV_FONT_NORMAL;
-                      Style      : Cv_Font_Style :=  CV_STYLE_NORMAL;
-                      Spacing    : Integer := 0) return Cv_Font;
+   function Cv_Font_Qt (Name_Font  : String;
+                        Point_Size : Integer := -1;
+                        Color      : Cv_Scalar := Core.Cvscalarall (0.0);
+                        Weight     : Cv_Font_Weight := Cv_Font_Normal;
+                        Style      : Cv_Font_Style :=  Cv_Style_Normal;
+                        Spacing    : Integer := 0) return Cv_Font;
 
-   procedure CvAddText (Img  : Cv_Arr_P;
-                        Text : String;
-                        Org  : Cv_Point;
-                        Arg2 : Cv_Font_P);
+   procedure Cv_Add_Text (Img  : Cv_Arr_P;
+                          Text : String;
+                          Org  : Cv_Point;
+                          Arg2 : Cv_Font_P);
 
-   procedure CvDisplayOverlay (Name     : String;
-                               Text     : String;
-                               Delay_Ms : Integer);
-
-   procedure CvDisplayStatusBar (Name     : String;
+   procedure Cv_Display_Overlay (Name     : String;
                                  Text     : String;
                                  Delay_Ms : Integer);
 
-   type Cv_OpenGL_Callback is access procedure (User_Data : Cv_Void_P);
-   pragma Convention (C, Cv_OpenGL_Callback);
+   procedure Cv_Display_Status_Bar (Name     : String;
+                                    Text     : String;
+                                    Delay_Ms : Integer);
 
-   procedure CvCreateOpenGLCallback (Window_Name     : String;
-                                     Callback_OpenGL : Cv_OpenGL_Callback;
-                                     User_DAta       : Cv_Void_P := null;
-                                     Angle           : Long_Float := -1.0;
-                                     Zmin            : Long_Float := -1.0;
-                                     Zmax            : Long_Float := -1.0);
+   type Cv_Opengl_Callback is access procedure (User_Data : Cv_Void_P);
+   pragma Convention (C, Cv_Opengl_Callback);
 
-   procedure CvSaveWindowParameters (Name : String);
+   procedure Cv_Create_Opengl_Callback (Window_Name     : String;
+                                        Callback_Opengl : Cv_Opengl_Callback;
+                                        User_Data       : Cv_Void_P := null;
+                                        Angle           : Long_Float := -1.0;
+                                        Zmin            : Long_Float := -1.0;
+                                        Zmax            : Long_Float := -1.0);
 
-   procedure CvLoadWindowParameters (Name : String);
+   procedure Cv_Save_Window_Parameters (Name : String);
 
-   type CvStartLoop_Function is access function (Argc : Integer;
+   procedure Cv_Load_Window_Parameters (Name : String);
+
+   type Cvstartloop_Function is access function (Argc : Integer;
                                                  Argv : Cv_String_Pointer) return Integer;
-   pragma Convention (C, CvStartLoop_Function);
+   pragma Convention (C, Cvstartloop_Function);
 
-   function CvStartLoop (Pt2func : CvStartLoop_Function;
-                         Argc    : Integer;
-                         Argv    : Cv_String_Pointer) return Integer;
+   function Cv_Start_Loop (Pt2func : Cvstartloop_Function;
+                           Argc    : Integer;
+                           Argv    : Cv_String_Pointer) return Integer;
 
-   procedure CvStopLoop;
+   procedure Cv_Stop_Loop;
 
    type Cv_Button_Callback is access procedure (State     : Integer;
                                                 User_Data : Cv_Void_P);
    pragma Convention (C, Cv_Button_Callback);
 
    type Cv_Button_Type is new Integer;
-   CV_PUSH_BUTTON:constant Cv_Button_Type:=0;
-   CV_CHECKBOX : constant Cv_Button_Type := 1;
-   CV_RADIOBOX : constant Cv_Button_Type := 2;
+   Cv_Push_Button : constant Cv_Button_Type := 0;
+   Cv_Checkbox : constant Cv_Button_Type := 1;
+   Cv_Radiobox : constant Cv_Button_Type := 2;
 
-   function CvCreateButton (Button_Name         : String;
-                            On_Change           : Cv_Button_Callback := null;
-                            User_Data           : Cv_Void_P := null;
-                            Button_Type         : Cv_Button_Type := CV_PUSH_BUTTON;
-                            Intial_Button_State : Integer := 0) return Integer;
+   function Cv_Create_Button (Button_Name         : String;
+                              On_Change           : Cv_Button_Callback := null;
+                              User_Data           : Cv_Void_P := null;
+                              Button_Type         : Cv_Button_Type := Cv_Push_Button;
+                              Intial_Button_State : Integer := 0) return Integer;
 
    -----------------------------------------------------------------------------
    --
    -----------------------------------------------------------------------------
 
    -- this function is used to set some external parameters in case of X Window
-   function CvInitSystem (Argc : Integer;
-                          Argv : Cv_String_Pointer) return Integer;
+   function Cv_Init_System (Argc : Integer;
+                            Argv : Cv_String_Pointer) return Integer;
 
-   function CvStartWindowThread return Integer;
+   function Cv_Start_Window_Thread return Integer;
 
    type Highgui_Window_Params is new Short_Integer;
    -- These 3 flags are used by cvSet/GetWindowProperty
-   CV_WND_PROP_FULLSCREEN : constant Highgui_Window_Params := 0; -- To change/get window's fullscreen property
-   CV_WND_PROP_AUTOSIZE : constant Highgui_Window_Params := 1; -- To change/get window's autosize property
-   CV_WND_PROP_ASPECTRATIO : constant Highgui_Window_Params := 2; --To change/get window's aspectratio property
+   Cv_Wnd_Prop_Fullscreen : constant Highgui_Window_Params := 0; -- To change/get window's fullscreen property
+   Cv_Wnd_Prop_Autosize : constant Highgui_Window_Params := 1; -- To change/get window's autosize property
+   Cv_Wnd_Prop_Aspectratio : constant Highgui_Window_Params := 2; --To change/get window's aspectratio property
 
    -- These 2 flags are used by cvNamedWindow and cvSet/GetWindowProperty
-   CV_WINDOW_NORMAL : constant Highgui_Window_Params := 16#0000_0000#; -- The user can resize the window (no constraint)  / also use to switch a fullscreen window to a normal size
-   CV_WINDOW_AUTOSIZE : constant Highgui_Window_Params := 16#0000_0001#; -- The user cannot resize the window, the size is constrainted by the image displayed
+   Cv_Window_Normal : constant Highgui_Window_Params := 16#0000_0000#; -- The user can resize the window (no constraint)  / also use to switch a fullscreen window to a normal size
+   Cv_Window_Autosize : constant Highgui_Window_Params := 16#0000_0001#; -- The user cannot resize the window, the size is constrainted by the image displayed
 
    -- Those flags are only for Qt
-   CV_GUI_EXPANDED : constant Highgui_Window_Params := 16#0000_0000#; -- Status bar and tool bar
-   CV_GUI_NORMAL : constant Highgui_Window_Params := 16#0000_0010#; -- Old fashious way
+   Cv_Gui_Expanded : constant Highgui_Window_Params := 16#0000_0000#; -- Status bar and tool bar
+   Cv_Gui_Normal : constant Highgui_Window_Params := 16#0000_0010#; -- Old fashious way
 
    -- These 3 flags are used by cvNamedWindow and cvSet/GetWindowProperty
-   CV_WINDOW_FULLSCREEN : constant Highgui_Window_Params := 1; -- Change the window to fullscreen
-   CV_WINDOW_FREERATIO : constant Highgui_Window_Params := 16#0000_0100#; -- The image expends as much as it can (no ratio constraint)
-   CV_WINDOW_KEEPRATIO  : constant Highgui_Window_Params := 16#0000_0000#; -- The ration image is respected.
+   Cv_Window_Fullscreen : constant Highgui_Window_Params := 1; -- Change the window to fullscreen
+   Cv_Window_Freeratio : constant Highgui_Window_Params := 16#0000_0100#; -- The image expends as much as it can (no ratio constraint)
+   Cv_Window_Keepratio  : constant Highgui_Window_Params := 16#0000_0000#; -- The ration image is respected.
 
    -- create window
-   function CvNamedWindow (WindowName  : String;
-                           Flags       : Highgui_Window_Params := CV_WINDOW_AUTOSIZE) return Integer;
+   function Cv_Named_Window (Windowname  : String;
+                             Flags       : Highgui_Window_Params := Cv_Window_Autosize) return Integer;
 
    -- Set and Get Property of the window
-   procedure CvSetWindowProperty (Name       : String;
-                                  Prop_Id    : Highgui_Window_Params;
-                                  Prop_Value : Long_Float);
-   function CvGetWindowProperty (Name    : String;
-                                 Prop_Id : Highgui_Window_Params) return Long_Float;
+   procedure Cv_Set_Window_Property (Name       : String;
+                                     Prop_Id    : Highgui_Window_Params;
+                                     Prop_Value : Long_Float);
+   function Cv_Get_Window_Property (Name    : String;
+                                    Prop_Id : Highgui_Window_Params) return Long_Float;
 
    -- display image within window (highgui windows remember their content)
-   procedure CvShowImage (WindowName  : String;
-                          Image       : Cv_Arr_P);
+   procedure Cv_Show_Image (Windowname  : String;
+                            Image       : Cv_Arr_P);
 
    -- resize/move window
-   procedure CvResizeWindow (WindowName   : String;
-                             Width        : Integer;
-                             Height       : Integer );
-   procedure CvMoveWindow (WindowName : String;
-                           X          : Integer;
-                           Y          : Integer);
+   procedure Cv_Resize_Window (Windowname   : String;
+                               Width        : Integer;
+                               Height       : Integer );
+   procedure Cv_Move_Window (Windowname : String;
+                             X          : Integer;
+                             Y          : Integer);
 
    -- destroy window and all the trackers associated with it
-   procedure CvDestroyWindow (WindowName : String );
-   procedure CvDestroyAllWindows;
+   procedure Cv_Destroy_Window (Windowname : String );
+   procedure Cv_Destroy_All_Windows;
 
    -- get native window handle (HWND in case of Win32 and Widget in case of X Window)
-   function CvGetWindowHandle (Window_Name : String)
-                               return Cv_Void_P;
+   function Cv_Get_Window_Handle (Window_Name : String)
+                                  return Cv_Void_P;
 
-   function CvGetWindowName (Window_Handle : Cv_Void_P)
-                             return Interfaces.C.Strings.Chars_Ptr;
+   function Cv_Get_Window_Name (Window_Handle : Cv_Void_P)
+                                return Interfaces.C.Strings.Chars_Ptr;
 
    type Cv_Trackbar_Callback is access procedure ( Position : Integer ) ;
    pragma Convention (C, Cv_Trackbar_Callback);
 
    --create trackbar and display it on top of given window, set callback
-   function CvCreateTrackbar (Trackbar_Name : String;
-                              Window_Name   : String;
-                              Value         : access Integer;
-                              Count         : Integer;
-                              On_Change     : Cv_Trackbar_Callback) return Integer;
+   function Cv_Create_Trackbar (Trackbar_Name : String;
+                                Window_Name   : String;
+                                Value         : access Integer;
+                                Count         : Integer;
+                                On_Change     : Cv_Trackbar_Callback) return Integer;
 
    type Cv_Trackbar_Callback2 is access procedure (Position  : Integer;
                                                    User_Data : Cv_Void_P) ;
    pragma Convention (C, Cv_Trackbar_Callback2);
 
-   function CvCreateTrackbar2 (Trackbar_Name : String;
-                               Window_Name   : String;
-                               Value         : Integer;
-                               Count         : Integer;
-                               On_Change     : Cv_Trackbar_Callback2 := null;
-                               User_Data     : Cv_Void_P) return Integer;
+   function Cv_Create_Trackbar2 (Trackbar_Name : String;
+                                 Window_Name   : String;
+                                 Value         : Integer;
+                                 Count         : Integer;
+                                 On_Change     : Cv_Trackbar_Callback2 := null;
+                                 User_Data     : Cv_Void_P) return Integer;
 
    -- retrieve or set trackbar position
-   function CvGetTrackbarPos (Trackbar_Name : String;
-                              Window_Name   : String) return Integer;
+   function Cv_Get_Trackbar_Pos (Trackbar_Name : String;
+                                 Window_Name   : String) return Integer;
 
-   procedure CvSetTrackbarPos (Trackbar_Name : String;
-                               Window_Name   : String;
-                               Pos           : Integer);
+   procedure Cv_Set_Trackbar_Pos (Trackbar_Name : String;
+                                  Window_Name   : String;
+                                  Pos           : Integer);
 
-   CV_EVENT_MOUSEMOVE     : constant := 0;
-   CV_EVENT_LBUTTONDOWN   : constant := 1;
-   CV_EVENT_RBUTTONDOWN   : constant := 2;
-   CV_EVENT_MBUTTONDOWN   : constant := 3;
-   CV_EVENT_LBUTTONUP     : constant := 4;
-   CV_EVENT_RBUTTONUP     : constant := 5;
-   CV_EVENT_MBUTTONUP     : constant := 6;
-   CV_EVENT_LBUTTONDBLCLK : constant := 7;
-   CV_EVENT_RBUTTONDBLCLK : constant := 8;
-   CV_EVENT_MBUTTONDBLCLK : constant := 9;
+   Cv_Event_Mousemove     : constant := 0;
+   Cv_Event_Lbuttondown   : constant := 1;
+   Cv_Event_Rbuttondown   : constant := 2;
+   Cv_Event_Mbuttondown   : constant := 3;
+   Cv_Event_Lbuttonup     : constant := 4;
+   Cv_Event_Rbuttonup     : constant := 5;
+   Cv_Event_Mbuttonup     : constant := 6;
+   Cv_Event_Lbuttondblclk : constant := 7;
+   Cv_Event_Rbuttondblclk : constant := 8;
+   Cv_Event_Mbuttondblclk : constant := 9;
 
-   CV_EVENT_FLAG_LBUTTON  : constant := 1;
-   CV_EVENT_FLAG_RBUTTON  : constant := 2;
-   CV_EVENT_FLAG_MBUTTON  : constant := 4;
-   CV_EVENT_FLAG_CTRLKEY  : constant := 8;
-   CV_EVENT_FLAG_SHIFTKEY : constant := 16;
-   CV_EVENT_FLAG_ALTKEY   : constant := 32;
+   Cv_Event_Flag_Lbutton  : constant := 1;
+   Cv_Event_Flag_Rbutton  : constant := 2;
+   Cv_Event_Flag_Mbutton  : constant := 4;
+   Cv_Event_Flag_Ctrlkey  : constant := 8;
+   Cv_Event_Flag_Shiftkey : constant := 16;
+   Cv_Event_Flag_Altkey   : constant := 32;
 
    type Cv_Mouse_Callback is access procedure (Event : Integer;
                                                X     : Integer;
@@ -248,53 +249,53 @@ package Highgui is
    pragma Convention (C, Cv_Mouse_Callback);
 
    -- assign callback for mouse events
-   procedure CvSetMouseCallback (Window_Name : String_C;
-                                 On_Mouse    : Cv_Mouse_Callback;
-                                 Param       : Cv_Void_P := null);
+   procedure Cv_Set_Mouse_Callback (Window_Name : String_C;
+                                    On_Mouse    : Cv_Mouse_Callback;
+                                    Param       : Cv_Void_P := null);
 
-   CV_LOAD_IMAGE_UNCHANGED : constant := -1; --8bit, color or not
-   CV_LOAD_IMAGE_GRAYSCALE : constant := 0; -- 8bit, gray
-   CV_LOAD_IMAGE_COLOR     : constant := 1; -- ?, color
-   CV_LOAD_IMAGE_ANYDEPTH  : constant := 2; -- any depth, ?
-   CV_LOAD_IMAGE_ANYCOLOR  : constant := 4; -- ?, any color
+   Cv_Load_Image_Unchanged : constant := -1; --8bit, color or not
+   Cv_Load_Image_Grayscale : constant := 0; -- 8bit, gray
+   Cv_Load_Image_Color     : constant := 1; -- ?, color
+   Cv_Load_Image_Anydepth  : constant := 2; -- any depth, ?
+   Cv_Load_Image_Anycolor  : constant := 4; -- ?, any color
 
    -- Load image from file
    -- iscolor can be a combination of above flags where CV_LOAD_IMAGE_UNCHANGED
    -- overrides the other flags
    -- using CV_LOAD_IMAGE_ANYCOLOR alone is equivalent to CV_LOAD_IMAGE_UNCHANGED
    -- unless CV_LOAD_IMAGE_ANYDEPTH is specified images are converted to 8bit
-   function CvLoadImage (Filename : String;
-                         Iscolor  : Integer := CV_LOAD_IMAGE_COLOR) return Ipl_Image_P;
-   function CvLoadImageM ( Filename : String;
-                          Iscolor  : Integer
-                          := CV_LOAD_IMAGE_COLOR) return Cv_Mat_P;
+   function Cv_Load_Image (Filename : String;
+                           Iscolor  : Integer := Cv_Load_Image_Color) return Ipl_Image_P;
+   function Cv_Load_Image_M ( Filename : String;
+                             Iscolor  : Integer
+                             := Cv_Load_Image_Color) return Cv_Mat_P;
 
    -- save image to file
-   function CvSaveImage (Filename      : String;
-                         Image         : Cv_Arr_P;
-                         Settings      : File_Settings := CreateFileSettings (CV_IMWRITE_JPEG_QUALITY, 95)) return Integer;
+   function Cv_Save_Image (Filename      : String;
+                           Image         : Cv_Arr_P;
+                           Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer;
 
    -- decode image stored in the buffer
-   function CvDecodeImage (Buf      : Cv_Mat_P;
-                           Is_Color : Integer := Cv_Load_Image_Color) return Ipl_Image_P;
-   function CvDecodeImageM (Buf      : Cv_Mat_P;
-                            Is_Color : Integer := Cv_Load_Image_Color) return Cv_Mat_P;
+   function Cv_Decode_Image (Buf      : Cv_Mat_P;
+                             Is_Color : Integer := Cv_Load_Image_Color) return Ipl_Image_P;
+   function Cv_Decode_Image_M (Buf      : Cv_Mat_P;
+                               Is_Color : Integer := Cv_Load_Image_Color) return Cv_Mat_P;
 
    -- encode image and store the result as a byte vector (single-row 8uC1 matrix)
-   function CvEncodeImage (Ext    : String;
-                           Image  : Cv_Arr_P;
-                           Params : File_Settings) return Cv_Mat_P;
+   function Cv_Encode_Image (Ext    : String;
+                             Image  : Cv_Arr_P;
+                             Params : File_Settings) return Cv_Mat_P;
 
    type Convert_Image_Flags is new Integer;
-   CV_CVTIMG_FLIP : constant Convert_Image_Flags := 1;
-   CV_CVTIMG_SWAP_RB : constant Convert_Image_Flags := 2;
+   Cv_Cvtimg_Flip : constant Convert_Image_Flags := 1;
+   Cv_Cvtimg_Swap_Rb : constant Convert_Image_Flags := 2;
    -- utility function: convert one image to another with optional vertical flip
-   procedure CvConvertImage (Src   : Cv_Arr_P;
-                             Dst   : Cv_Arr_P;
-                             Flags : Convert_Image_Flags);
+   procedure Cv_Convert_Image (Src   : Cv_Arr_P;
+                               Dst   : Cv_Arr_P;
+                               Flags : Convert_Image_Flags);
 
    -- wait for key event infinitely (delay<=0) or for "delay" milliseconds
-   function CvWaitKey (Ms_Delay : Integer := 0 ) return Character;
+   function Cv_Wait_Key (Ms_Delay : Integer := 0 ) return Character;
 
    -----------------------------------------------------------------------------
    -- Working with Video Files and Cameras
@@ -302,78 +303,78 @@ package Highgui is
 
 
    -- start capturing frames from video file
-   function CvCreateFileCapture ( Name : String ) return Cv_Capture_P;
+   function Cv_Create_File_Capture ( Name : String ) return Cv_Capture_P;
 
    type Cv_Cap is new Integer;
-   CV_CAP_ANY : Cv_Cap := 0; --     /  / autodetect
-   CV_CAP_MIL : Cv_Cap := 100; --   // MIL proprietary drivers
-   CV_CAP_VFW : Cv_Cap := 200;   --// platform native
-   CV_CAP_FIREWARE : Cv_Cap := 300;   --// IEEE 1394 drivers
-   CV_CAP_FIREWIRE : Cv_Cap := CV_CAP_FIREWARE;
-   CV_CAP_IEEE1394 : Cv_Cap := CV_CAP_FIREWARE;
-   CV_CAP_DC1394   : Cv_Cap := CV_CAP_FIREWARE;
-   CV_CAP_CMU1394  : Cv_Cap := CV_CAP_FIREWARE;
-   CV_CAP_STEREO : Cv_Cap := 400;   --// TYZX proprietary Drivers
-   CV_CAP_TYZX     : Cv_Cap := CV_CAP_STEREO;
-   CV_TYZX_LEFT    : Cv_Cap := CV_CAP_STEREO;
-   CV_TYZX_RIGHT : Cv_Cap := 401;
-   CV_TYZX_COLOR : Cv_Cap := 402;
-   CV_TYZX_Z : Cv_Cap := 403;
-   CV_CAP_QT : Cv_Cap := 500; --   // QuickTime
-   CV_CAP_UNICAP : Cv_Cap := 600; --   // Unicap drivers
-   CV_CAP_DSHOW : Cv_Cap := 700;   --// DirectShow (via videoInput)
-   CV_CAP_PVAPI : Cv_Cap := 800;
-   CV_CAP_V4L : Cv_Cap := CV_CAP_VFW;
-   CV_CAP_V4L2  : Cv_Cap := CV_CAP_VFW;
+   Cv_Cap_Any : Cv_Cap := 0; --     /  / autodetect
+   Cv_Cap_Mil : Cv_Cap := 100; --   // MIL proprietary drivers
+   Cv_Cap_Vfw : Cv_Cap := 200;   --// platform native
+   Cv_Cap_Fireware : Cv_Cap := 300;   --// IEEE 1394 drivers
+   Cv_Cap_Firewire : Cv_Cap := Cv_Cap_Fireware;
+   Cv_Cap_Ieee1394 : Cv_Cap := Cv_Cap_Fireware;
+   Cv_Cap_Dc1394   : Cv_Cap := Cv_Cap_Fireware;
+   Cv_Cap_Cmu1394  : Cv_Cap := Cv_Cap_Fireware;
+   Cv_Cap_Stereo : Cv_Cap := 400;   --// TYZX proprietary Drivers
+   Cv_Cap_Tyzx     : Cv_Cap := Cv_Cap_Stereo;
+   Cv_Tyzx_Left    : Cv_Cap := Cv_Cap_Stereo;
+   Cv_Tyzx_Right : Cv_Cap := 401;
+   Cv_Tyzx_Color : Cv_Cap := 402;
+   Cv_Tyzx_Z : Cv_Cap := 403;
+   Cv_Cap_Qt : Cv_Cap := 500; --   // QuickTime
+   Cv_Cap_Unicap : Cv_Cap := 600; --   // Unicap drivers
+   Cv_Cap_Dshow : Cv_Cap := 700;   --// DirectShow (via videoInput)
+   Cv_Cap_Pvapi : Cv_Cap := 800;
+   Cv_Cap_V4l : Cv_Cap := Cv_Cap_Vfw;
+   Cv_Cap_V4l2  : Cv_Cap := Cv_Cap_Vfw;
 
    -- start capturing frames from camera: index = camera_index + domain_offset (CV_CAP_*)
-   function CvCreateCameraCapture ( Index : Cv_Cap ) return Cv_Capture_P ;
+   function Cv_Create_Camera_Capture ( Index : Cv_Cap ) return Cv_Capture_P ;
 
    -- grab a frame, return 1 on success, 0 on fail.
    -- this function is thought to be fast
-   function CvGrabFrame (Capture : Cv_Capture_P) return Integer;
+   function Cv_Grab_Frame (Capture : Cv_Capture_P) return Integer;
 
    -- get the frame grabbed with cvGrabFrame(..)
    -- This function may apply some frame processing like
    -- frame decompression, flipping etc.
-   function CvRetrieveFrame (Capture : Cv_Capture_P ) return Ipl_Image_P;
+   function Cv_Retrieve_Frame (Capture : Cv_Capture_P ) return Ipl_Image_P;
 
    --  Just a combination of cvGrabFrame and cvRetrieveFrame
-   function CvQueryFrame ( Capture : Cv_Capture_P ) return Ipl_Image_P;
+   function Cv_Query_Frame ( Capture : Cv_Capture_P ) return Ipl_Image_P;
 
    -- stop capturing/reading and free resources
-   procedure CvReleaseCapture ( Capture : access Cv_Capture_P );
+   procedure Cv_Release_Capture ( Capture : access Cv_Capture_P );
 
    type Capture_Property is new Integer;
-   CV_CAP_PROP_POS_MSEC : constant Capture_Property := 0;
-   CV_CAP_PROP_POS_FRAMES : constant Capture_Property := 1;
-   CV_CAP_PROP_POS_AVI_RATIO : constant Capture_Property := 2;
-   CV_CAP_PROP_FRAME_WIDTH : constant Capture_Property := 3;
-   CV_CAP_PROP_FRAME_HEIGHT : constant Capture_Property := 4;
-   CV_CAP_PROP_FPS : constant Capture_Property := 5;
-   CV_CAP_PROP_FOURCC : constant Capture_Property := 6;
-   CV_CAP_PROP_FRAME_COUNT : constant Capture_Property := 7;
-   CV_CAP_PROP_FORMAT : constant Capture_Property := 8;
-   CV_CAP_PROP_MODE : constant Capture_Property := 9;
-   CV_CAP_PROP_BRIGHTNESS : constant Capture_Property := 10;
-   CV_CAP_PROP_CONTRAST : constant Capture_Property := 11;
-   CV_CAP_PROP_SATURATION : constant Capture_Property := 12;
-   CV_CAP_PROP_HUE : constant Capture_Property := 13;
-   CV_CAP_PROP_GAIN : constant Capture_Property := 14;
-   CV_CAP_PROP_EXPOSURE : constant Capture_Property := 15;
-   CV_CAP_PROP_CONVERT_RGB : constant Capture_Property := 16;
-   CV_CAP_PROP_WHITE_BALANCE : constant Capture_Property := 17;
-   CV_CAP_PROP_RECTIFICATION : constant Capture_Property := 18;
+   Cv_Cap_Prop_Pos_Msec : constant Capture_Property := 0;
+   Cv_Cap_Prop_Pos_Frames : constant Capture_Property := 1;
+   Cv_Cap_Prop_Pos_Avi_Ratio : constant Capture_Property := 2;
+   Cv_Cap_Prop_Frame_Width : constant Capture_Property := 3;
+   Cv_Cap_Prop_Frame_Height : constant Capture_Property := 4;
+   Cv_Cap_Prop_Fps : constant Capture_Property := 5;
+   Cv_Cap_Prop_Fourcc : constant Capture_Property := 6;
+   Cv_Cap_Prop_Frame_Count : constant Capture_Property := 7;
+   Cv_Cap_Prop_Format : constant Capture_Property := 8;
+   Cv_Cap_Prop_Mode : constant Capture_Property := 9;
+   Cv_Cap_Prop_Brightness : constant Capture_Property := 10;
+   Cv_Cap_Prop_Contrast : constant Capture_Property := 11;
+   Cv_Cap_Prop_Saturation : constant Capture_Property := 12;
+   Cv_Cap_Prop_Hue : constant Capture_Property := 13;
+   Cv_Cap_Prop_Gain : constant Capture_Property := 14;
+   Cv_Cap_Prop_Exposure : constant Capture_Property := 15;
+   Cv_Cap_Prop_Convert_Rgb : constant Capture_Property := 16;
+   Cv_Cap_Prop_White_Balance : constant Capture_Property := 17;
+   Cv_Cap_Prop_Rectification : constant Capture_Property := 18;
 
    -- retrieve or set capture properties
-   function CvGetCaptureProperty ( Capture    : Cv_Capture_P;
-                                  Property_Id :  Capture_Property ) return Float;
-   function CvSetCaptureProperty ( Capture    : Cv_Capture_P;
-                                  Property_Id :  Capture_Property;
-                                  Value       : Float) return Integer;
+   function Cv_Get_Capture_Property ( Capture    : Cv_Capture_P;
+                                     Property_Id :  Capture_Property ) return Float;
+   function Cv_Set_Capture_Property ( Capture    : Cv_Capture_P;
+                                     Property_Id :  Capture_Property;
+                                     Value       : Float) return Integer;
 
    -- Return the type of the capturer (eg, CV_CAP_V4W, CV_CAP_UNICAP), which is unknown if created with CV_CAP_ANY
-   function CvGetCaptureDomain (Capture : Cv_Capture) return Cv_Cap;
+   function Cv_Get_Capture_Domain (Capture : Cv_Capture) return Cv_Cap;
 
    -- "black box" video file writer structure
    type Cv_Video_Writer is null record;
@@ -382,188 +383,188 @@ package Highgui is
    -- Video codec
    -- C Macro #define CV_FOURCC(c1,c2,c3,c4) (((c1)&255) + (((c2)&255)<<8) + (((c3)&255)<<16) + (((c4)&255)<<24))
    -- ('F','F','D','S') - works under windows
-   function CV_FOURCC (C1 : Character;
+   function Cv_Fourcc (C1 : Character;
                        C2 : Character ;
                        C3 : Character;
                        C4 : Character) return Integer;
 
    -- Open Codec Selection Dialog (Windows only)
-   CV_FOURCC_PROMPT : Integer := -1;
+   Cv_Fourcc_Prompt : Integer := -1;
 
    -- Use default codec for specified filename (Linux only)
-   function CV_FOURCC_DEFAULT (C1 : Character := 'I';
+   function Cv_Fourcc_Default (C1 : Character := 'I';
                                C2 : Character := 'Y';
                                C3 : Character := 'U';
-                               C4 : Character := 'V') return Integer renames CV_FOURCC;
+                               C4 : Character := 'V') return Integer renames Cv_Fourcc;
 
    -- initialize video file writer
-   function CvCreateVideoWriter (Filename       : String;
-                                 Fourcc         : Integer;
-                                 Fps            : Long_Float;
-                                 Width          : Integer;
-                                 Height         : Integer;
-                                 Is_Color       : Integer) return Cv_Video_Writer_P;
+   function Cv_Create_Video_Writer (Filename       : String;
+                                    Fourcc         : Integer;
+                                    Fps            : Long_Float;
+                                    Width          : Integer;
+                                    Height         : Integer;
+                                    Is_Color       : Integer) return Cv_Video_Writer_P;
 
    -- write frame to video file
-   function CvWriteFrame ( Writer : Cv_Video_Writer_P;
-                          Image  : Ipl_Image_P) return Integer;
+   function Cv_Write_Frame ( Writer : Cv_Video_Writer_P;
+                            Image  : Ipl_Image_P) return Integer;
 
    --- close video file writer
-   procedure CvReleaseVideoWriter (Writer : access Cv_Video_Writer_P);
+   procedure Cv_Release_Video_Writer (Writer : access Cv_Video_Writer_P);
 
 private
-   function WCvFontQt (Name_Font  : String_C;
-                       Point_Size : Integer;
-                       Color      : Cv_Scalar;
-                       Weight     : Cv_Font_Weight;
-                       Style      : Cv_Font_Style;
-                       Spacing    : Integer) return Cv_Font;
+   function W_Cv_Font_Qt (Name_Font  : String_C;
+                          Point_Size : Integer;
+                          Color      : Cv_Scalar;
+                          Weight     : Cv_Font_Weight;
+                          Style      : Cv_Font_Style;
+                          Spacing    : Integer) return Cv_Font;
 
-   procedure WCvAddText (Img  : Cv_Arr_P;
-                         Text : String_C;
-                         Org  : Cv_Point;
-                         Arg2 : Cv_Font_P);
+   procedure W_Cv_Add_Text (Img  : Cv_Arr_P;
+                            Text : String_C;
+                            Org  : Cv_Point;
+                            Arg2 : Cv_Font_P);
 
-   procedure WCvDisplayOverlay (Name     : String_C;
-                                Text     : String_C;
-                                Delay_Ms : Integer);
+   procedure W_Cv_Display_Overlay (Name     : String_C;
+                                   Text     : String_C;
+                                   Delay_Ms : Integer);
 
-   procedure WCvDisplayStatusBar (Name     : String_C;
-                                  Text     : String_C;
-                                  Delay_Ms : Integer);
+   procedure W_Cv_Display_Status_Bar (Name     : String_C;
+                                      Text     : String_C;
+                                      Delay_Ms : Integer);
 
-   procedure WCvCreateOpenGLCallback (Window_Name     : String_C;
-                                      Callback_OpenGL : Cv_OpenGL_Callback;
-                                      User_DAta       : Cv_Void_P;
-                                      Angle           : Long_Float;
-                                      Zmin            : Long_Float;
-                                      Zmax            : Long_Float);
+   procedure W_Cv_Create_Opengl_Callback (Window_Name     : String_C;
+                                          Callback_Opengl : Cv_Opengl_Callback;
+                                          User_Data       : Cv_Void_P;
+                                          Angle           : Long_Float;
+                                          Zmin            : Long_Float;
+                                          Zmax            : Long_Float);
 
-   procedure WCvSaveWindowParameters (Name : String_C);
+   procedure W_Cv_Save_Window_Parameters (Name : String_C);
 
-   procedure WCVLoadWindowParameters (Name : String_C);
+   procedure W_Cv_Load_Window_Parameters (Name : String_C);
 
-   function WCvCreateButton (Button_Name         : String_C;
-                             On_Change           : Cv_Button_Callback;
-                             User_Data           : Cv_Void_P;
-                             Button_Type         : Cv_Button_Type;
-                             Intial_Button_State : Integer) return Integer;
+   function W_Cv_Create_Button (Button_Name         : String_C;
+                                On_Change           : Cv_Button_Callback;
+                                User_Data           : Cv_Void_P;
+                                Button_Type         : Cv_Button_Type;
+                                Intial_Button_State : Integer) return Integer;
    --
-   function WCvInitSystem (Argc : Integer;
-                           Argv : Cv_String_Pointer) return Integer;
+   function W_Cv_Init_System (Argc : Integer;
+                              Argv : Cv_String_Pointer) return Integer;
 
-   function WCvNamedWindow (WindowName  : String_C;
-                            Flags       : Highgui_Window_Params := CV_WINDOW_AUTOSIZE) return Integer;
+   function W_Cv_Named_Window (Windowname  : String_C;
+                               Flags       : Highgui_Window_Params := Cv_Window_Autosize) return Integer;
 
-   procedure WCvSetWindowProperty (Name       : String_C;
-                                   Prop_Id    : Highgui_Window_Params;
-                                   Prop_Value : Long_Float);
-   function WCvGetWindowProperty (Name    : String_C;
-                                  Prop_Id : Highgui_Window_Params) return Long_Float;
+   procedure W_Cv_Set_Window_Property (Name       : String_C;
+                                       Prop_Id    : Highgui_Window_Params;
+                                       Prop_Value : Long_Float);
+   function W_Cv_Get_Window_Property (Name    : String_C;
+                                      Prop_Id : Highgui_Window_Params) return Long_Float;
 
-   procedure WCvShowImage (WindowName  : String_C;
-                           Image       : Cv_Arr_P);
+   procedure W_Cv_Show_Image (Windowname  : String_C;
+                              Image       : Cv_Arr_P);
 
-   procedure WCvResizeWindow (WindowName   : String_C;
-                              Width        : Integer;
-                              Height       : Integer );
+   procedure W_Cv_Resize_Window (Windowname   : String_C;
+                                 Width        : Integer;
+                                 Height       : Integer );
 
-   procedure WCvMoveWindow (WindowName : String_C;
-                            X          : Integer;
-                            Y          : Integer);
+   procedure W_Cv_Move_Window (Windowname : String_C;
+                               X          : Integer;
+                               Y          : Integer);
 
-   procedure WCvDestroyWindow (WindowName : String );
+   procedure W_Cv_Destroy_Window (Windowname : String );
 
-   function WCvGetWindowHandle (Window_Name : String_C)
-                                return Cv_Void_P;
+   function W_Cv_Get_Window_Handle (Window_Name : String_C)
+                                    return Cv_Void_P;
 
-   function WCvCreateTrackbar (Trackbar_Name : String_C;
-                               Window_Name   : String_C;
-                               Value         : access Integer;
-                               Count         : Integer;
-                               On_Change     : Cv_Trackbar_Callback) return Integer;
+   function W_Cv_Create_Trackbar (Trackbar_Name : String_C;
+                                  Window_Name   : String_C;
+                                  Value         : access Integer;
+                                  Count         : Integer;
+                                  On_Change     : Cv_Trackbar_Callback) return Integer;
 
-   function WCvCreateTrackbar2 (Trackbar_Name : String_C;
-                                Window_Name   : String_C;
-                                Value         : Integer;
-                                Count         : Integer;
-                                On_Change     : Cv_Trackbar_Callback2 := null;
-                                User_Data     : Cv_Void_P) return Integer;
+   function W_Cv_Create_Trackbar2 (Trackbar_Name : String_C;
+                                   Window_Name   : String_C;
+                                   Value         : Integer;
+                                   Count         : Integer;
+                                   On_Change     : Cv_Trackbar_Callback2 := null;
+                                   User_Data     : Cv_Void_P) return Integer;
 
    -- retrieve or set trackbar position
-   function WCvGetTrackbarPos (Trackbar_Name : String_C;
-                               Window_Name   : String_C) return Integer;
+   function W_Cv_Get_Trackbar_Pos (Trackbar_Name : String_C;
+                                   Window_Name   : String_C) return Integer;
 
-   procedure WCvSetTrackbarPos (Trackbar_Name : String_C;
-                                Window_Name   : String_C;
-                                Pos           : Integer);
-   function WCvLoadImage ( Filename : String_C; Iscolor : Integer) return Ipl_Image_P;
-   function WCvLoadImageM ( Filename : String_C; Iscolor : Integer) return Cv_Mat_P;
+   procedure W_Cv_Set_Trackbar_Pos (Trackbar_Name : String_C;
+                                    Window_Name   : String_C;
+                                    Pos           : Integer);
+   function W_Cv_Load_Image ( Filename : String_C; Iscolor : Integer) return Ipl_Image_P;
+   function W_Cv_Load_Image_M ( Filename : String_C; Iscolor : Integer) return Cv_Mat_P;
 
-   function WCvSaveImage (Filename      : String_C;
-                          Image         : Cv_Arr_P;
-                          Settings      : File_Settings) return Integer;
+   function W_Cv_Save_Image (Filename      : String_C;
+                             Image         : Cv_Arr_P;
+                             Settings      : File_Settings) return Integer;
 
-   function WCvEncodeImage (Ext    : String_C;
-                            Image  : Cv_Arr_P;
-                            Params : File_Settings) return Cv_Mat_P;
+   function W_Cv_Encode_Image (Ext    : String_C;
+                               Image  : Cv_Arr_P;
+                               Params : File_Settings) return Cv_Mat_P;
 
-   function WCvCreateFileCapture ( Name : String_C ) return Cv_Capture_P;
+   function W_Cv_Create_File_Capture ( Name : String_C ) return Cv_Capture_P;
 
-   function WCvCreateVideoWriter (Filename       : String_C;
-                                  Fourcc         : Integer;
-                                  Fps            : Long_Float;
-                                  Width          : Integer;
-                                  Height         : Integer;
-                                  Is_Color       : Integer
-                                 ) return Cv_Video_Writer_P;
+   function W_Cv_Create_Video_Writer (Filename       : String_C;
+                                      Fourcc         : Integer;
+                                      Fps            : Long_Float;
+                                      Width          : Integer;
+                                      Height         : Integer;
+                                      Is_Color       : Integer
+                                     ) return Cv_Video_Writer_P;
 
-   pragma Import (C, WCvFontQt, "cvFontQt");
-   pragma Import (C, WCvAddText, "cvAddText");
-   pragma Import (C, WCvDisplayOverlay, "cvDisplayOverlay");
-   pragma Import (C, WCVDisplayStatusBar, "cvDisplayStatusBar");
-   pragma Import (C, WCvCreateOpenGLCallback, "cvCreateOpenGLCallback");
-   pragma Import (C, WcvSaveWindowParameters, "cvSaveWindowParameters");
-   pragma Import (C, WCVLoadWindowParameters, "cvLoadWindowParameters");
-   pragma Import (C, CvStartLoop, "cvStartLoop");
-   pragma Import (C, CvStopLoop, "cvStopLoop");
-   pragma Import (C, WCvCreateButton, "cvCreateButton");
+   pragma Import (C, W_Cv_Font_Qt, "cvFontQt");
+   pragma Import (C, W_Cv_Add_Text, "cvAddText");
+   pragma Import (C, W_Cv_Display_Overlay, "cvDisplayOverlay");
+   pragma Import (C, W_Cv_Display_Status_Bar, "cvDisplayStatusBar");
+   pragma Import (C, W_Cv_Create_Opengl_Callback, "cvCreateOpenGLCallback");
+   pragma Import (C, W_Cv_Save_Window_Parameters, "cvSaveWindowParameters");
+   pragma Import (C, W_Cv_Load_Window_Parameters, "cvLoadWindowParameters");
+   pragma Import (C, Cv_Start_Loop, "cvStartLoop");
+   pragma Import (C, Cv_Stop_Loop, "cvStopLoop");
+   pragma Import (C, W_Cv_Create_Button, "cvCreateButton");
    --
-   pragma Import (C, WCvInitSystem, "cvInitSystem");
-   pragma Import (C, CvStartWindowThread, "cvStartWindowThread");
-   pragma Import (C, WCvNamedWindow, "cvNamedWindow");
-   pragma Import (C, WCvSetWindowProperty, "cvSetWindowProperty");
-   pragma Import (C, WCvGetWindowProperty, "cvGetWindowProperty");
-   pragma Import (C, WCvShowImage, "cvShowImage");
-   pragma Import (C, WCvResizeWindow, "cvResizeWindow");
-   pragma Import (C, WCvMoveWindow, "cvMoveWindow");
-   pragma Import (C, WCvDestroyWindow, "cvDestroyWindow");
-   pragma Import (C, CvDestroyAllWindows, "cvDestroyAllWindows");
-   pragma Import (C, WCvGetWindowHandle, "cvGetWindowHandle");
-   pragma Import (C, CvGetWindowName, "cvGetWindowName");
-   pragma Import (C, WCvCreateTrackbar, "cvCreateTrackbar");
-   pragma Import (C, WCvCreateTrackbar2, "cvCreateTrackbar2");
-   pragma Import (C, WCvGetTrackbarPos, "cvGetTrackbarPos");
-   pragma Import (C, WCvSetTrackbarPos, "cvSetTrackbarPos");
-   pragma Import (C, CvSetMouseCallback, "cvSetMouseCallback");
-   pragma Import (C, WCvLoadImage, "cvLoadImage");
-   pragma Import (C, WCvLoadImageM, "cvLoadImageM");
-   pragma Import (C, WCvSaveImage, "cvSaveImage");
-   pragma Import (C, CvDecodeImage, "cvDecodeImage");
-   pragma Import (C, CvDecodeImageM, "cvDecodeImageM");
-   pragma Import (C, WCvEncodeImage, "cvEncodeImage");
-   pragma Import (C, CvConvertImage, "cvConvertImage");
-   pragma Import (C, CvWaitKey, "cvWaitKey");
-   pragma Import (C, WCvCreateFileCapture, "cvCreateFileCapture");
-   pragma Import (C, CvCreateCameraCapture, "cvCreateCameraCapture");
-   pragma Import (C, CvGrabFrame, "cvGrabFrame");
-   pragma Import (C, CvRetrieveFrame, "cvRetrieveFrame");
-   pragma Import (C, CvQueryFrame, "cvQueryFrame");
-   pragma Import (C, CvReleaseCapture, "cvReleaseCapture");
-   pragma Import (C, CvGetCaptureProperty, "cvGetCaptureProperty");
-   pragma Import (C, CvSetCaptureProperty, "cvSetCaptureProperty");
-   pragma Import (C, CvGetCaptureDomain, "cvGetCaptureDomain");
-   pragma Import (C, WCvCreateVideoWriter, "cvCreateVideoWriter");
-   pragma Import (C, CvWriteFrame, "cvWriteFrame");
-   pragma Import (C, CvReleaseVideoWriter, "cvReleaseVideoWriter");
+   pragma Import (C, W_Cv_Init_System, "cvInitSystem");
+   pragma Import (C, Cv_Start_Window_Thread, "cvStartWindowThread");
+   pragma Import (C, W_Cv_Named_Window, "cvNamedWindow");
+   pragma Import (C, W_Cv_Set_Window_Property, "cvSetWindowProperty");
+   pragma Import (C, W_Cv_Get_Window_Property, "cvGetWindowProperty");
+   pragma Import (C, W_Cv_Show_Image, "cvShowImage");
+   pragma Import (C, W_Cv_Resize_Window, "cvResizeWindow");
+   pragma Import (C, W_Cv_Move_Window, "cvMoveWindow");
+   pragma Import (C, W_Cv_Destroy_Window, "cvDestroyWindow");
+   pragma Import (C, Cv_Destroy_All_Windows, "cvDestroyAllWindows");
+   pragma Import (C, W_Cv_Get_Window_Handle, "cvGetWindowHandle");
+   pragma Import (C, Cv_Get_Window_Name, "cvGetWindowName");
+   pragma Import (C, W_Cv_Create_Trackbar, "cvCreateTrackbar");
+   pragma Import (C, W_Cv_Create_Trackbar2, "cvCreateTrackbar2");
+   pragma Import (C, W_Cv_Get_Trackbar_Pos, "cvGetTrackbarPos");
+   pragma Import (C, W_Cv_Set_Trackbar_Pos, "cvSetTrackbarPos");
+   pragma Import (C, Cv_Set_Mouse_Callback, "cvSetMouseCallback");
+   pragma Import (C, W_Cv_Load_Image, "cvLoadImage");
+   pragma Import (C, W_Cv_Load_Image_M, "cvLoadImageM");
+   pragma Import (C, W_Cv_Save_Image, "cvSaveImage");
+   pragma Import (C, Cv_Decode_Image, "cvDecodeImage");
+   pragma Import (C, Cv_Decode_Image_M, "cvDecodeImageM");
+   pragma Import (C, W_Cv_Encode_Image, "cvEncodeImage");
+   pragma Import (C, Cv_Convert_Image, "cvConvertImage");
+   pragma Import (C, Cv_Wait_Key, "cvWaitKey");
+   pragma Import (C, W_Cv_Create_File_Capture, "cvCreateFileCapture");
+   pragma Import (C, Cv_Create_Camera_Capture, "cvCreateCameraCapture");
+   pragma Import (C, Cv_Grab_Frame, "cvGrabFrame");
+   pragma Import (C, Cv_Retrieve_Frame, "cvRetrieveFrame");
+   pragma Import (C, Cv_Query_Frame, "cvQueryFrame");
+   pragma Import (C, Cv_Release_Capture, "cvReleaseCapture");
+   pragma Import (C, Cv_Get_Capture_Property, "cvGetCaptureProperty");
+   pragma Import (C, Cv_Set_Capture_Property, "cvSetCaptureProperty");
+   pragma Import (C, Cv_Get_Capture_Domain, "cvGetCaptureDomain");
+   pragma Import (C, W_Cv_Create_Video_Writer, "cvCreateVideoWriter");
+   pragma Import (C, Cv_Write_Frame, "cvWriteFrame");
+   pragma Import (C, Cv_Release_Video_Writer, "cvReleaseVideoWriter");
 end Highgui;

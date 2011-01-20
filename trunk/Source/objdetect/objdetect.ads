@@ -23,10 +23,10 @@ with Interfaces.C.Pointers;
 
 package Objdetect is
 
-   CV_HAAR_MAGIC_VAL : constant := 16#42500000#;
-   CV_TYPE_NAME_HAAR : constant String := "opencv-haar-classifier";
+   Cv_Haar_Magic_Val : constant := 16#42500000#;
+   Cv_Type_Name_Haar : constant String := "opencv-haar-classifier";
 
-      CV_HAAR_FEATURE_MAX : constant := 3;
+   Cv_Haar_Feature_Max : constant := 3;
 
    -----------------------------------------------------------------------------
    -- Types
@@ -36,11 +36,11 @@ package Objdetect is
 
    type Haar_Rect is
       record
-         R : Cv_Rect;
+         R      : Cv_Rect;
          Weight : Float;
       end record;
 
-   type Haar_Rect_Arr is array (Integer range 1 .. CV_HAAR_FEATURE_MAX) of Haar_Rect;
+   type Haar_Rect_Arr is array (Integer range 1 .. Cv_Haar_Feature_Max) of Haar_Rect;
    type Cv_Haar_Feature is
       record
          Tilted : Integer;
@@ -51,18 +51,18 @@ package Objdetect is
    type Cv_Haar_Classifier is
       record
          Count       : Integer;
-         HaarFeature : Cv_Haar_Feature;
-         Threshold   : Cv_32F_Array_P;
-         Left        : Cv_32S_Array_P;
-         Right       : Cv_32S_Array_P;
-         Alpha       : Cv_32F_Array_P;
+         Haarfeature : Cv_Haar_Feature;
+         Threshold   : Cv_32f_Array_P;
+         Left        : Cv_32s_Array_P;
+         Right       : Cv_32s_Array_P;
+         Alpha       : Cv_32f_Array_P;
       end record;
    type Cv_Haar_Classifier_P is access Cv_Haar_Classifier;
 
    type Cv_Haar_Stage_Classifier is
       record
-         Count : Integer;
-         Threshold : Float;
+         Count      : Integer;
+         Threshold  : Float;
          Classifier : Cv_Haar_Classifier_P;
          Next       : Integer;
          Child      : Integer;
@@ -78,11 +78,11 @@ package Objdetect is
       record
          Flags           : Integer;
          Count           : Integer;
-         OrigWindowSize  : Cv_Size;
-         RealWindowSize  : Cv_Size;
+         Origwindowsize  : Cv_Size;
+         Realwindowsize  : Cv_Size;
          Scale           : Long_Float;
-         StageClassifier : Cv_Haar_Stage_Classifier_Arr_P;
-         HidCascade      : Cv_Hid_Haar_Classifier_Cascade;
+         Stageclassifier : Cv_Haar_Stage_Classifier_Arr_P;
+         Hidcascade      : Cv_Hid_Haar_Classifier_Cascade;
       end record;
 
    type Cv_Avg_Comp is
@@ -99,37 +99,37 @@ package Objdetect is
 
    -- Loads haar classifier cascade from a directory.
    -- It is obsolete: convert your cascade to xml and use cvLoad instead
-   function Cv_Load_Haar_Classifier_Cascade (Directory : String;
-                                         OrigWindowSize : Cv_Size) return Cv_Haar_Classifier_Cascade_P;
+   function Cv_Load_Haar_Classifier_Cascade (Directory      : String;
+                                             Origwindowsize : Cv_Size) return Cv_Haar_Classifier_Cascade_P;
 
    -- Releases the haar classifier cascade.
    procedure Cv_Release_Haar_Classifier_Cascade (Cascade : access Cv_Haar_Classifier_Cascade_P);
 
-   CV_HAAR_DO_CANNY_PRUNING    : constant := 1;
-   CV_HAAR_SCALE_IMAGE         : constant := 2;
-   CV_HAAR_FIND_BIGGEST_OBJECT : constant := 4;
-   CV_HAAR_DO_ROUGH_SEARCH     : constant := 8;
+   Cv_Haar_Do_Canny_Pruning    : constant := 1;
+   Cv_Haar_Scale_Image         : constant := 2;
+   Cv_Haar_Find_Biggest_Object : constant := 4;
+   Cv_Haar_Do_Rough_Search     : constant := 8;
 
    -- Detects objects in the image.
    function Cv_Haar_Detect_Objects (Image        : Cv_Arr_P;
-                                 Cascade      : Cv_Haar_Classifier_Cascade_P;
-                                 Storage      : Cv_Mem_Storage_P;
-                                 ScaleFactor  : Long_Float := 1.1;
-                                 MinNeighbors : Integer := 3;
-                                 Flags        : Integer := 0;
-                                 MinSize      : Cv_Size := CvSize (0, 0)) return Cv_Seq_P;
+                                    Cascade      : Cv_Haar_Classifier_Cascade_P;
+                                    Storage      : Cv_Mem_Storage_P;
+                                    Scalefactor  : Long_Float := 1.1;
+                                    Minneighbors : Integer := 3;
+                                    Flags        : Integer := 0;
+                                    Minsize      : Cv_Size := Cvsize (0, 0)) return Cv_Seq_P;
 
    -- Assigns images to the hidden cascade.
    procedure Cv_Set_Images_For_Haar_Classifier_Cascade (Cascade   : Cv_Haar_Classifier_Cascade_P;
-                                                  Sum       : Cv_Arr_P;
-                                                  Sqsum     : Cv_Arr_P;
-                                                  TiltedSum : Cv_Arr_P;
-                                                  Scale     : Long_Float);
+                                                        Sum       : Cv_Arr_P;
+                                                        Sqsum     : Cv_Arr_P;
+                                                        Tiltedsum : Cv_Arr_P;
+                                                        Scale     : Long_Float);
 
    -- Runs a cascade of boosted classifiers at the given image location.
-   function Cv_Run_Haar_Classifier_Cascade (Cascade : Cv_Haar_Classifier_Cascade_P;
-                                        Pt      : Cv_Point;
-                                        StartStage : Integer := 0) return Integer;
+   function Cv_Run_Haar_Classifier_Cascade (Cascade    : Cv_Haar_Classifier_Cascade_P;
+                                            Pt         : Cv_Point;
+                                            Startstage : Integer := 0) return Integer;
 
    -----------------------------------------------------------------------------
    -- Latent SVM Object Detection functions.
@@ -139,13 +139,13 @@ package Objdetect is
    -- Structure describes the position of the filter in the feature pyramid
    -- l - level in the feature pyramid
    -- (x, y) - coordinate in level l
-   type Cv_LSVM_Filter_Position is
+   type Cv_Lsvm_Filter_Position is
       record
          X : Unsigned_32;
          Y : Unsigned_32;
          L : Unsigned_32;
       end record;
-   pragma Convention (C_Pass_By_Copy, Cv_LSVM_Filter_Position);
+   pragma Convention (C_Pass_By_Copy, Cv_Lsvm_Filter_Position);
 
    -- DataType: STRUCT filterObject
    -- Description of the filter, which corresponds to the part of the object
@@ -164,9 +164,9 @@ package Objdetect is
    -- xp              - auxillary parameter for internal use
    --                   size of row in feature vectors
    --                   (yp = (int) (p / xp); p = xp * yp)
-   type Cv_LSVM_Filter_Object is
+   type Cv_Lsvm_Filter_Object is
       record
-         V : Cv_LSVM_Filter_Position;
+         V             : Cv_Lsvm_Filter_Position;
          Fine_Function : Core.Cv_32f_Array (1 .. 4);
          Size_X        : Unsigned_32;
          Size_Y        : Unsigned_32;
@@ -174,15 +174,15 @@ package Objdetect is
          Xp            : Unsigned_32;
          H             : Core.Cv_32f_Array_P;
       end record;
-   pragma Convention (C_Pass_By_Copy, Cv_LSVM_Filter_Object);
-   type Cv_LSVM_Filter_Object_Array is array (Integer range <>) of aliased Cv_LSVM_Filter_Object;
-   Null_Cv_LSVM_Filter_Object : Cv_LSVM_Filter_Object;
+   pragma Convention (C_Pass_By_Copy, Cv_Lsvm_Filter_Object);
+   type Cv_Lsvm_Filter_Object_Array is array (Integer range <>) of aliased Cv_Lsvm_Filter_Object;
+   Null_Cv_Lsvm_Filter_Object : Cv_Lsvm_Filter_Object;
    -- C style pointer
-   package Cv_LSVM_Filter_Object_Pointer_Pkg is new Interfaces.C.Pointers (Integer, Cv_LSVM_Filter_Object, Cv_LSVM_Filter_Object_Array, Null_Cv_LSVM_Filter_Object);
-   type Cv_LSVM_Filter_Object_Pointer is new Cv_LSVM_Filter_Object_Pointer_Pkg.Pointer;
+   package Cv_Lsvm_Filter_Object_Pointer_Pkg is new Interfaces.C.Pointers (Integer, Cv_Lsvm_Filter_Object, Cv_Lsvm_Filter_Object_Array, Null_Cv_Lsvm_Filter_Object);
+   type Cv_Lsvm_Filter_Object_Pointer is new Cv_Lsvm_Filter_Object_Pointer_Pkg.Pointer;
    -- C type equal **
-   type Cv_LSVM_Filter_Object_2D_Array is array (Integer range <>) of Cv_LSVM_Filter_Object_Pointer;
-   type Cv_LSVM_Filter_Object_2D_Array_P is access Cv_LSVM_Filter_Object_2D_Array;
+   type Cv_Lsvm_Filter_Object_2d_Array is array (Integer range <>) of Cv_Lsvm_Filter_Object_Pointer;
+   type Cv_Lsvm_Filter_Object_2d_Array_P is access Cv_Lsvm_Filter_Object_2d_Array;
 
    -- data type: STRUCT CvLatentSvmDetector
    -- structure contains internal representation of trained Latent SVM detector
@@ -194,10 +194,10 @@ package Objdetect is
    -- score_threshold		- confidence level threshold
    type Cv_Latent_Svm_Detector is
       record
-         Num_Filters : Integer;
-         Num_Components : Integer;
+         Num_Filters      : Integer;
+         Num_Components   : Integer;
          Num_Part_Filters : Core.Cv_32s_Array_P;
-         Filters          : Cv_LSVM_Filter_Object_2D_Array_P;
+         Filters          : Cv_Lsvm_Filter_Object_2d_Array_P;
          B                : Core.Cv_32f_Array_P;
          Score_Threshold  : Float;
       end record;
@@ -209,7 +209,7 @@ package Objdetect is
    -- score				- confidence level
    type Cv_Object_Detection is
       record
-         Rect : Core.Cv_Rect;
+         Rect  : Core.Cv_Rect;
          Score : Float;
       end record;
    type Cv_Object_Detection_P is access Cv_Object_Detection;
@@ -252,16 +252,16 @@ package Objdetect is
    -- = 0.5f [Here Will Be The Reference To Original Paper]
    -- OUTPUT
    -- sequence of detected objects (bounding boxes and confidence levels stored in CvObjectDetection structures
-   function Cv_Latent_Svm_Detect_Objects (Image : Ipl_Image_P;
-                                      Detector : Cv_Latent_Svm_Detector_P;
-                                      Storage  : Cv_Mem_Storage_P;
-                                      Overlap_Threshold : Float := 0.5) return Cv_Seq_P;
+   function Cv_Latent_Svm_Detect_Objects (Image             : Ipl_Image_P;
+                                          Detector          : Cv_Latent_Svm_Detector_P;
+                                          Storage           : Cv_Mem_Storage_P;
+                                          Overlap_Threshold : Float := 0.5) return Cv_Seq_P;
 private
    -- Wrapper due to String.
-   function W_Cv_Load_Haar_Classifier_Cascade (Directory : String_C;
-                                         OrigWindowSize : Cv_Size) return Cv_Haar_Classifier_Cascade_P;
+   function W_Cv_Load_Haar_Classifier_Cascade (Directory      : String_C;
+                                               Origwindowsize : Cv_Size) return Cv_Haar_Classifier_Cascade_P;
 
-   function W_Cv_Load_Latent_Svm_Detector(Filename : String_C) return Cv_Latent_Svm_Detector_P;
+   function W_Cv_Load_Latent_Svm_Detector (Filename : String_C) return Cv_Latent_Svm_Detector_P;
 
    pragma Import (C, W_Cv_Load_Haar_Classifier_Cascade, "cvLoadHaarClassifierCascade");
    pragma Import (C, Cv_Haar_Detect_Objects, "cvHaarDetectObjects");
