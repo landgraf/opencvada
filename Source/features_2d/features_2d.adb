@@ -17,34 +17,34 @@
 -- Comments, Information, Other
 -----------------------------------------------------------------------
 
-package body Features_2D is
+package body Features_2d is
 --
 
    --              // returns default parameters
-   function CvSURFParams (Threshold        : Long_Float;
-                          Extended         : Integer := 0) return Cv_SURF_Params is
-      Params : Cv_SURF_Params;
+   function Cv_Create_Surf_Params (Threshold        : Long_Float;
+                                   Extended         : Integer := 0) return Cv_Surf_Params is
+      Params : Cv_Surf_Params;
    begin
       Params.Extended := Extended;
-      Params.HessianThreshold := Threshold;
-      Params.NOctaves := 4;
-      Params.NOctaveLayers := 2;
+      Params.Hessianthreshold := Threshold;
+      Params.Noctaves := 4;
+      Params.Noctavelayers := 2;
       return Params;
-   end CvSURFParams;
+   end Cv_Create_Surf_Params;
 
    -- Constructor for Cv_Star_Detector_Params with default values.
-   function CvStarDetectorParams (MaxSize                : Integer := 45;
-                                  ResponeThreshold       : Integer := 30;
-                                  LineThresholdProjected : Integer := 10;
-                                  LineThresholdBinarized : Integer := 8;
-                                  SuppressNonmaxSize     : Integer := 5) return Cv_Star_Detector_Params is
+   function Cv_Create_Star_Detector_Params (Maxsize                : Integer := 45;
+                                            Responethreshold       : Integer := 30;
+                                            Linethresholdprojected : Integer := 10;
+                                            Linethresholdbinarized : Integer := 8;
+                                            Suppressnonmaxsize     : Integer := 5) return Cv_Star_Detector_Params is
       Params : Cv_Star_Detector_Params;
    begin
-      Params.MaxSize := MaxSize;
-      Params.ResponeThreshold := ResponeThreshold;
-      Params.LineThresholdProjected := LineThresholdProjected;
-      Params.LineThresholdBinarized := LineThresholdBinarized;
-      Params.SuppressNonmaxSize := SuppressNonmaxSize;
+      Params.Maxsize := Maxsize;
+      Params.Responethreshold := Responethreshold;
+      Params.Linethresholdprojected := Linethresholdprojected;
+      Params.Linethresholdbinarized := Linethresholdbinarized;
+      Params.Suppressnonmaxsize := Suppressnonmaxsize;
       return Params;
-   end CvStarDetectorParams;
-end Features_2D;
+   end Cv_Create_Star_Detector_Params;
+end Features_2d;

@@ -23,8 +23,6 @@ with Core; use Core;
 
 package Video.Blob_Track is
 
-   procedure Bleh;
-
    -- Cv_Blob ------------------------------------------------------------------
    -----------------------------------------------------------------------------
    type Cv_Blob is record
@@ -285,8 +283,8 @@ package Video.Blob_Track is
    -- Cv_Blob_Tracker_Param_MS -------------------------------------------------
    -----------------------------------------------------------------------------
    -- Some declarations for specific MeanShift trackers
-   PROFILE_EPANECHNIKOV : constant := 0;
-   PROFILE_DOG          : constant := 1;
+   Profile_Epanechnikov : constant := 0;
+   Profile_Dog          : constant := 1;
 
    type Cv_Blob_Tracker_Param_MS is record
       No_Of_Sig_Bits     : Integer;

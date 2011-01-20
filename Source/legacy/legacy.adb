@@ -18,49 +18,54 @@
 -----------------------------------------------------------------------
 
 package body Legacy is
-   procedure CV_COUNT_OBS (Roi       : Cv_Size;
+   --
+   procedure Cv_Count_Obs (Roi       : Cv_Size;
                            Win       : Cv_Size;
                            Delta_Obs : Cv_Size;
                            Num_Obs   : out Cv_Size) is
    begin
       Num_Obs.Width := (Roi.Width - Win.Width + Delta_Obs.Width) / Delta_Obs.Width;
       Num_Obs.Height := (Roi.Height - Win.Height + Delta_Obs.Height) / Delta_Obs.Height;
-   end CV_COUNT_OBS;
+   end Cv_Count_Obs;
 
-   function CV_CURRENT_INT (Reader : Cv_Seq_Reader_P)
+   --
+   function Cv_Current_Int (Reader : Cv_Seq_Reader_P)
                             return Integer is
    begin
       return Character'Pos (From_Arr (Value (Reader.all.Ptr) (1)));
-   end CV_CURRENT_INT;
+   end Cv_Current_Int;
 
-   function CV_PREV_INT (Reader : Cv_Seq_Reader_P)
+   --
+   function Cv_Prev_Int (Reader : Cv_Seq_Reader_P)
                          return Integer is
    begin
-      return Character'Pos (From_Arr (Value (Reader.all.PrevElem) (1)));
-   end CV_PREV_INT;
+      return Character'Pos (From_Arr (Value (Reader.all.Prevelem) (1)));
+   end Cv_Prev_Int;
 
-   function IplWidth (Img : Ipl_Image_P)
+   --
+   function Ipl_Width (Img : Ipl_Image_P)
                       return Integer is
    begin
       if Img = null then
          return 0;
-      elsif Img.all.ROI = null then
+      elsif Img.all.Roi = null then
          return Img.all.Width;
       else
-         return Img.all.ROI.all.Width;
+         return Img.all.Roi.all.Width;
       end if;
-   end IplWidth;
+   end Ipl_Width;
 
-   function IplHeight (Img : Ipl_Image_P)
+   --
+   function Ipl_Height (Img : Ipl_Image_P)
                        return Integer is
    begin
       if Img = null then
          return 0;
-      elsif Img.all.ROI = null then
+      elsif Img.all.Roi = null then
          return Img.all.Height;
       else
-         return Img.all.ROI.all.Height;
+         return Img.all.Roi.all.Height;
       end if;
-   end IplHeight;
+   end Ipl_Height;
 
 end Legacy;

@@ -21,7 +21,7 @@ package body Imgproc is
 --
 
    -- /* initializes 8-element array for fast access to 3x3 neighborhood of a pixel */
-   procedure CV_INIT_3X3_DELTAS (Deltas : in out Cv_32S_Array;
+   procedure Cv_Init_3x3_Deltas (Deltas : in out Cv_32s_Array;
                                 Step          : Integer;
                                  Nch           : Integer) is
    begin
@@ -38,14 +38,14 @@ package body Imgproc is
       else
          null;
       end if;
-   end CV_INIT_3X3_DELTAS;
+   end Cv_Init_3x3_Deltas;
 
-   function CV_SUBDIV2D_NEXT_EDGE (Edge : Cv_Quad_Edge_2D) return Cv_Quad_Edge_2D_P is
+   function Cv_Subdiv2d_Next_Edge (Edge : Cv_Quad_Edge_2d) return Cv_Quad_Edge_2d_P is
       pragma Unreferenced (Edge);
    begin
       -- #define  CV_SUBDIV2D_NEXT_EDGE( edge )  (((CvQuadEdge2D*)((edge) & ~3))->next[(edge)&3])
       return null;
-   end CV_SUBDIV2D_NEXT_EDGE;
+   end Cv_Subdiv2d_Next_Edge;
 
 
 end Imgproc;
