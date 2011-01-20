@@ -292,24 +292,24 @@ package body Core is
       return 0;
    end CV_IS_SET;
 
-   function CV_SEQ_ELTYPE_POINT return Integer is  --/* (x,y) */
+   function CV_SEQ_ELTYPE_POINT return Unsigned_32 is  --/* (x,y) */ -- used to be Integer
    begin
       return CV_MAKETYPE (CV_32S, 2);  --/* (x,y) */
    end CV_SEQ_ELTYPE_POINT;
 
-   function CV_SEQ_ELTYPE_CODE return Integer is
+   function CV_SEQ_ELTYPE_CODE return Unsigned_32 is -- used to be Integer
    begin
       return CV_MAKETYPE (CV_8U, 1);
    end CV_SEQ_ELTYPE_CODE;
 
-   function CV_SEQ_ELTYPE_INDEX return Integer is
+   function CV_SEQ_ELTYPE_INDEX return Unsigned_32 is -- used to be Integer
    begin
       return CV_MAKETYPE (CV_32S, 1);  --/* #(x,y) */
    end CV_SEQ_ELTYPE_INDEX;
 
-   function CV_SEQ_ELTYPE_POINT3D return Integer is
+   function CV_SEQ_ELTYPE_POINT3D return Unsigned_32 is
    begin
-      return CV_MAKETYPE (CV_32F, 3);  --/* (x,y,z)  */
+      return CV_MAKETYPE (CV_32F, 3);  --/* (x,y,z)  */ -- used to be Integer
    end CV_SEQ_ELTYPE_POINT3D;
 
    function CV_SEQ_POINT_SET return Integer is
@@ -362,9 +362,9 @@ package body Core is
       return Integer (CV_SEQ_KIND_GENERIC or Unsigned_32 (CV_SEQ_ELTYPE_INDEX));
    end CV_SEQ_INDEX;
 
-   function  CV_SEQ_ELTYPE ( Seq : Cv_Seq_P ) return Integer is
+   function  CV_SEQ_ELTYPE ( Seq : Cv_Seq_P ) return Unsigned_32 is
    begin
-      return Integer (Seq.all.Flags and CV_SEQ_ELTYPE_MASK);
+      return Seq.all.Flags and CV_SEQ_ELTYPE_MASK;
    end CV_SEQ_ELTYPE;
 
    function CV_SEQ_KIND ( Seq : Cv_Seq_P ) return Integer is
@@ -591,6 +591,9 @@ package body Core is
             if (Mat.all.Cols > 0) and (Mat.all.Rows > 0) then
                return 1;
             end if;
+         else
+            Put_Line ("CV_IS_MAT_HDR: Mat magic val invalid, is" & Unsigned_32'Image (Unsigned_32 (Mat.all.Mat_Type) and Unsigned_32 (Cv_Magic_Mask)));
+            Put_Line ("CV_IS_MAT_HDR: Should be" & Cv_Mat_Magic_Val'Img);
          end if;
       end if;
       return 0;
@@ -661,7 +664,7 @@ package body Core is
    end CV_MAT_ELEM_PTR;
 
    function CV_MAT_ELEM (Mat      : Cv_Mat_P;
-                         Elemtype : Integer;
+                         Elemtype : Unsigned_32; -- used to be Integer
                          Row      : Integer;
                          Col      : Integer) return Cv_8u_Pointer is
    begin
@@ -690,52 +693,60 @@ package body Core is
       return 0;
    end CV_IS_SPARSE_MAT_HDR;
 
-   function CvMat (Rows   : Integer;
-                   Cols   : Integer;
-                   M_Type : Integer;
-                   Data   : Mat_Data)
-                   return Cv_Mat is
-      Mat      : Cv_Mat;
-      Mat_Type : Integer;
+--     function CvMat (Rows   : Integer;
+--                     Cols   : Integer;
+--                     M_Type : Unsigned_32;
+--                     Data   : Mat_Data_P)
+--                     return Cv_Mat is
+--        Mat      : Cv_Mat;
+--        Mat_Type : Unsigned_32;
+--     begin
+--        Mat_Type := CV_MAT_TYPE (M_Type);
+--
+--        Mat.Mat_Type := CV_MAT_MAGIC_VAL or CV_MAT_CONT_FLAG or Unsigned_32 (Mat_Type);
+--        Put_Line ("Mat_Type:" & Unsigned_32'Image (Mat_Type));
+--        Put_Line ("mat.Mat_Type:" & Mat.Mat_Type'Img);
+--        Put_Line ("CV_MAT_MAGIC_VAL:" & Cv_Mat_Magic_Val'Img);
+--        Put_Line ("CV_MAT_CONT_FLAG:" & Cv_Mat_Cont_Flag'Img);
+--  --        Mat.Mat_Type := CV_MAT_MAGIC_VAL or Unsigned_32 (Mat_Type);
+--        Mat.Cols := Cols;
+--        Mat.Rows := Rows;
+--        Mat.Step := Mat.Cols * Integer(CV_ELEM_SIZE (Mat_Type));
+--        if not (Data = null) then
+--           Put_Line ("Data not null, adding...");
+--           Mat.Data := Data.all;
+--        end if;
+--        Mat.Refcount := null;
+--        Mat.Hdr_Refcount := 0;
+--
+--        return Mat;
+--     end CvMat;
+
+   function CV_MAT_CN_MASK return Unsigned_32 is
    begin
-      Mat_Type := CV_MAT_TYPE (M_Type);
-
-      Mat.Mat_Type := Integer (CV_MAT_MAGIC_VAL or CV_MAT_CONT_FLAG or Unsigned_32 (Mat_Type));
-      Mat.Cols := Cols;
-      Mat.Rows := Rows;
-      Mat.Step := Mat.Cols * CV_ELEM_SIZE (Mat_Type);
-      Mat.Data := Data;
-      Mat.Refcount := null;
-      Mat.Hdr_Refcount := 0;
-
-      return Mat;
-   end CvMat;
-
-   function CV_MAT_CN_MASK return Integer is
-   begin
-      return Integer (Shift_Left ((Unsigned_32 (CV_CN_MAX - 1)), CV_CN_SHIFT));
+      return Shift_Left ((CV_CN_MAX - 1), Integer (CV_CN_SHIFT));
    end CV_MAT_CN_MASK;
 
-   function CV_MAT_CN (Flags : Integer) return Integer is
+   function CV_MAT_CN (Flags : Unsigned_32) return Unsigned_32 is -- used to be Integer
    begin
-      return Integer (Shift_Left (Unsigned_32 (Flags) and Unsigned_32 (CV_MAT_CN_MASK), CV_CN_SHIFT)) + 1;
+      return Shift_Left (Unsigned_32 (Flags) and Unsigned_32 (CV_MAT_CN_MASK), Integer(CV_CN_SHIFT)) + 1;
    end CV_MAT_CN;
 
-   function CV_ELEM_SIZE_1 (E_Type : Integer) return Integer is
+   function CV_ELEM_SIZE_1 (E_Type : Unsigned_32) return Unsigned_32 is -- used to be Integer
    begin
       -- ((((sizeof(size_t)<<28)|0x8442211) >> CV_MAT_DEPTH(type)*4) & 15)
-      return Integer (Shift_Right (
+      return Shift_Right (
         (Shift_Left (
         Unsigned_32 (Interfaces.C.Size_T'Size), 28) or Unsigned_32 (16#8442211#)),
-        CV_MAT_DEPTH (E_Type) * 4) and Unsigned_32 (15));
+        Integer(CV_MAT_DEPTH (E_Type) * 4)) and Unsigned_32 (15);
    end CV_ELEM_SIZE_1;
 
-   function CV_ELEM_SIZE (E_Type : Integer) return Integer is
+   function CV_ELEM_SIZE (E_Type : Unsigned_32) return Unsigned_32 is -- used to be Integer
    begin
       -- (CV_MAT_CN(type) << ((((sizeof(size_t)/4+1)*16384|0x3a50) >> CV_MAT_DEPTH(type)*2) & 3))
-      return Integer (Shift_Left (Unsigned_32 (CV_MAT_CN (E_Type)),
+      return Shift_Left (Unsigned_32 (CV_MAT_CN (E_Type)),
         Integer (Shift_Right ((Unsigned_32 ((Interfaces.C.Size_T'Size / 32 + 1) * 16384) or Unsigned_32 (16#3a50#)),
-          (CV_MAT_DEPTH (E_Type) * 2)) and Unsigned_32 (3))));
+          Integer((CV_MAT_DEPTH (E_Type) * 2))) and Unsigned_32 (3)));
    end CV_ELEM_SIZE;
 
    function CV_IS_MAT_CONT (Flags : Integer) return Boolean is
@@ -756,23 +767,23 @@ package body Core is
       end if;
    end CV_IS_TEMP_MAT;
 
-   function CV_MAT_TYPE (Flags : Integer) return Integer is
+   function CV_MAT_TYPE (Flags : Unsigned_32) return Unsigned_32 is
    begin
-      return Integer (Unsigned_32 (Flags) and Unsigned_32 (CV_MAT_TYPE_MASK));
+      return Flags and CV_MAT_TYPE_MASK;
    end CV_MAT_TYPE;
 
-   function CV_MAKETYPE (Depth : Integer; Cn : Integer) return Integer is
+   function CV_MAKETYPE (Depth : Integer; Cn : Integer) return Unsigned_32 is
    begin
-      return CV_MAT_DEPTH (Depth) + Integer (Shift_Left (Unsigned_32 (Cn - 1), CV_CN_SHIFT));
+      return CV_MAT_DEPTH (Unsigned_32(Depth)) + Shift_Left (Unsigned_32 (Cn - 1), Integer(CV_CN_SHIFT));
    end CV_MAKETYPE;
 
-   function CV_MAT_DEPTH (M_Type : Integer) return Integer is
+   function CV_MAT_DEPTH (M_Type : Unsigned_32) return Unsigned_32 is
    begin
-      return Integer (Unsigned_32 (M_Type) and Unsigned_32 (CV_MAT_DEPTH_MASK));
+      return M_Type and CV_MAT_DEPTH_MASK;
    end CV_MAT_DEPTH;
 
 
-   function CV_MAT_DEPTH_MASK return Integer is
+   function CV_MAT_DEPTH_MASK return Unsigned_32 is
    begin
       return CV_DEPTH_MAX - 1;
    end CV_MAT_DEPTH_MASK;
@@ -962,10 +973,16 @@ package body Core is
 
    function CV_IS_MAT (Mat : Cv_Mat_P) return Integer is
    begin
-      if not ( MAt = null) then
-         if (CV_IS_MAT_HDR (Mat) = 1) and Mat.all.Data.Cv_8u /= null then
+      if not ( Mat = null) then
+         if (CV_IS_MAT_HDR (Mat) > 0) and Mat.all.Data.Cv_8u /= null then
             return 1;
+         elsif CV_IS_MAT_HDR (Mat) = 0 then
+            Put_Line ("CV_IS_MAT: Header for Mat invalid");
+         elsif Mat.all.Data.Cv_8u = null then
+            Put_Line ("CV_IS_MAT: Data in Mat is (null)");
          end if;
+      else
+         Put_Line ("CV_IS_MAT: Mat is (null)");
       end if;
       return 0;
    end CV_IS_MAT;
@@ -974,9 +991,9 @@ package body Core is
    function CV_MAT_ELEM_PTR_FAST (Mat      : Cv_Mat_P;
                                   Row      : Integer;
                                   Col      : Integer;
-                                  Pix_Size : Integer) return Cv_8u_Pointer is
+                                  Pix_Size : Unsigned_32) return Cv_8u_Pointer is
    begin
-      return Mat.all.Data.Cv_8u + Interfaces.C.Ptrdiff_T (Mat.all.Step * (Row) + (Pix_Size) * (Col));
+      return Mat.all.Data.Cv_8u + Interfaces.C.Ptrdiff_T (Mat.all.Step * (Row) + Integer(Pix_Size) * (Col));
    end CV_MAT_ELEM_PTR_FAST;
 
    function "+" (Right : String) return String_C is

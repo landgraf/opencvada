@@ -101,7 +101,7 @@ package Core.Operations is
                              Cols  : Integer;
                              Mat_T : Integer;
                              Data  : access Mat_Data := null; -- void*
-                             Step  : Integer := CV_AUTOSTEP)
+                             Step  : Unsigned_32 := CV_AUTOSTEP)
                              return Cv_Mat_P;
 
    --     Creates a matrix header and allocates the matrix data.
@@ -614,10 +614,7 @@ package Core.Operations is
 
    --     Calculates per-element bit-wise conjunction of an array and a scalar.
    procedure CvAndS (Src   : access Cv_Arr;
-                     S1    : Long_Float;
-                     S2    : Long_Float;
-                     S3    : Long_Float;
-                     S4    : Long_Float;
+                     Value : Cv_Scalar;
                      Dst   : access Cv_Arr;
                      Mask  : access Cv_Arr := null);
 

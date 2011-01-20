@@ -507,9 +507,9 @@ package Imgproc.Operations is
                             Storage : Cv_Mem_Storage_P := null) return Cv_Box_2D;
 
    -- Finds the circumscribed circle of minimal area for a given 2D point set.
-   function CvMinEnclosingCircle (Points : Cv_Point_Array;
+   function CvMinEnclosingCircle (Points : Cv_Arr_P;
                                   Center : access Cv_Point_2D_32F;
-                                  Radius : access Long_Float) return Integer;
+                                  Radius : access Float) return Integer;
 
    -- Compares two shapes.
    function CvMatchShapes (Object1   : Cv_Void_P;
@@ -828,7 +828,7 @@ package Imgproc.Operations is
                          D       : Integer;
                          L       : Integer := 10;
                          K       : Integer := 10;
-                         Table_T : Integer := Cv_Maketype (Cv_64f, 1);
+                         Table_T : Unsigned_32 := Cv_Maketype (Cv_64f, 1); -- used to be Integer
                          R       : Long_Float := 4.0;
                          Seed    : Interfaces.Integer_64 := -1)
                          return Cv_LSH_P;
@@ -838,7 +838,7 @@ package Imgproc.Operations is
                                N       : Integer;
                                L       : Integer := 10;
                                K       : Integer := 10;
-                               Table_T : Integer := Cv_Maketype (Cv_64f, 1);
+                               Table_T : Unsigned_32 := Cv_Maketype (Cv_64f, 1); -- used to be Integer
                                R       : Long_Float := 4.0;
                                Seed    : Integer_64 := -1)
                                return Cv_LSH_P;

@@ -467,26 +467,26 @@ package Core is
    -----------------------------------------------------------------------------
    -- Matrix type Cv_Mat
    -----------------------------------------------------------------------------
-   CV_CN_MAX        : constant := 512;
-   CV_CN_SHIFT      : constant := 3;
-   CV_DEPTH_MAX     : constant := 8; -- 1 << CV_CN_SHIFT
+   CV_CN_MAX        : constant Unsigned_32 := 512;
+   CV_CN_SHIFT      : constant Unsigned_32 := 3;
+   CV_DEPTH_MAX     : constant Unsigned_32 := 8; -- 1 << CV_CN_SHIFT
 
-   function CV_MAT_DEPTH_MASK return Integer;
-   function CV_MAT_DEPTH (M_Type : Integer) return Integer;
+   function CV_MAT_DEPTH_MASK return Unsigned_32;
+   function CV_MAT_DEPTH (M_Type : Unsigned_32) return Unsigned_32; -- used to be Integer
 
-   function CV_MAKETYPE (Depth : Integer; Cn : Integer) return Integer;
-   function CV_MAKE_TYPE (Depth : Integer; Cn : Integer) return Integer
+   function CV_MAKETYPE (Depth : Integer; Cn : Integer) return Unsigned_32; -- used to be Integer
+   function CV_MAKE_TYPE (Depth : Integer; Cn : Integer) return Unsigned_32 -- used to be Integer
                           renames CV_MAKETYPE;
 
-   CV_AUTOSTEP : constant := 16#7fff_Ffff#;
-   CV_AUTO_STEP : constant := 16#7fffffff#;
+   CV_AUTOSTEP : constant Unsigned_32 := 16#7fff_Ffff#;
+   CV_AUTO_STEP : constant Unsigned_32 := 16#7fffffff#;
 
-   function CV_MAT_CN_MASK return Integer;
-   function CV_MAT_CN (Flags : Integer) return Integer;
-   CV_MAT_TYPE_MASK : constant := CV_DEPTH_MAX * CV_CN_MAX - 1;
-   function CV_MAT_TYPE (Flags : Integer) return Integer;
+   function CV_MAT_CN_MASK return Unsigned_32;
+   function CV_MAT_CN (Flags : Unsigned_32) return Unsigned_32; -- used to be Integer
+   CV_MAT_TYPE_MASK : constant Unsigned_32 := CV_DEPTH_MAX * CV_CN_MAX - 1;
+   function CV_MAT_TYPE (Flags : Unsigned_32) return Unsigned_32; -- used to be Integer
    CV_MAT_CONT_FLAG_SHIFT : constant Unsigned_32 := 14;
-   CV_MAT_CONT_FLAG : constant := 16#0100_0000#; -- 1 << CV_MAT_CONT_FLAG_SHIFT
+   CV_MAT_CONT_FLAG : constant Unsigned_32 := 16#0100_0000#; -- 1 << CV_MAT_CONT_FLAG_SHIFT
    function CV_IS_MAT_CONT (Flags : Integer) return Boolean;
    function CV_IS_CONT_MAT (Flags : Integer) return Boolean
                             renames CV_IS_MAT_CONT;
@@ -494,8 +494,8 @@ package Core is
    CV_MAT_TEMP_FLAG       : constant := 16#1000_0000#; -- 1 << CV_MAT_TEMP_FLAG_SHIFT
    function CV_IS_TEMP_MAT (Flags : Integer) return Boolean;
 
-   CV_MAGIC_MASK    : constant := 16#FFFF_0000#;
-   CV_MAT_MAGIC_VAL : constant := 16#4242_0000#;
+   CV_MAGIC_MASK    : constant Unsigned_32 := 16#FFFF_0000#;
+   CV_MAT_MAGIC_VAL : constant Unsigned_32 := 16#4242_0000#;
    CV_TYPE_NAME_MAT : constant String := "opencv-matrix";
 
    type Mat_Type is (Cv_Mat_8u, Cv_Mat_8s, Cv_Mat_16u, Cv_Mat_16s, Cv_Mat_32s, Cv_Mat_32f, Cv_Mat_64f);
@@ -519,9 +519,10 @@ package Core is
    end record;
    pragma Unchecked_Union (Mat_Data);
    pragma Convention (C_Pass_By_Copy, Mat_Data);
+   type Mat_Data_P is access Mat_Data;
 
    type Cv_Mat is record
-      Mat_Type     : Integer;
+      Mat_Type     : Unsigned_32; -- used to be Integer
       Step         : Integer;
       Refcount     : access Integer := null;
       Hdr_Refcount : Integer := 0;
@@ -553,28 +554,29 @@ package Core is
 
    function CV_IS_MAT_CONST (Mat : Cv_Mat_P) return Integer;
 
-   function CV_ELEM_SIZE_1 (E_Type : Integer) return Integer;
-   function CV_ELEM_SIZE (E_Type : Integer) return Integer;
+   function CV_ELEM_SIZE_1 (E_Type : Unsigned_32) return Unsigned_32; -- used to be Integer
+   function CV_ELEM_SIZE (E_Type : Unsigned_32) return Unsigned_32; -- used to be Integer
 
    function IPL2CV_DEPTH (Depth : Unsigned_32) return Integer;
 
    function CvMat (Rows   : Integer;
                    Cols   : Integer;
-                   M_Type : Integer;
-                   Data   : Mat_Data)
+                   M_Type : Unsigned_32; -- used to be Integer
+                   Data   : Cv_Void_P)
                    return Cv_Mat;
+   pragma Import (C, CvMat, "CvMat_wrap");
 
    function CV_MAT_ELEM_PTR_FAST (Mat      : Cv_Mat_P;
                                   Row      : Integer;
                                   Col      : Integer;
-                                  Pix_Size : Integer) return Cv_8u_Pointer;
+                                  Pix_Size : Unsigned_32) return Cv_8u_Pointer;
 
    function CV_MAT_ELEM_PTR (Mat : Cv_Mat_P;
                              Row : Integer;
                              Col : Integer) return Cv_8u_Pointer;
 
    function CV_MAT_ELEM (Mat      : Cv_Mat_P;
-                         Elemtype : Integer;
+                         Elemtype : Unsigned_32; -- used to be Integer
                          Row      : Integer;
                          Col      : Integer) return Cv_8u_Pointer;
 
@@ -1197,17 +1199,17 @@ package Core is
 
    CV_SEQ_ELTYPE_MASK : constant := (16#1000# - 1); --(16#200# - 1);
 
-   function CV_SEQ_ELTYPE_POINT return Integer;  --/* (x,y) */
-   function CV_SEQ_ELTYPE_CODE return Integer;
+   function CV_SEQ_ELTYPE_POINT return Unsigned_32;  --/* (x,y) */ -- used to be Integer
+   function CV_SEQ_ELTYPE_CODE return Unsigned_32; -- used to be Integer
    CV_SEQ_ELTYPE_GENERIC : constant := 0;
    CV_SEQ_ELTYPE_PTR : constant := CV_USRTYPE1;
    CV_SEQ_ELTYPE_PPOINT : constant := CV_SEQ_ELTYPE_PTR;  --/* &(x,y) */
-   function CV_SEQ_ELTYPE_INDEX return Integer;
+   function CV_SEQ_ELTYPE_INDEX return Unsigned_32; -- used to be Integer
    CV_SEQ_ELTYPE_GRAPH_EDGE : constant := 0;  --/* &next_o, &next_d, &vtx_o, &vtx_d */
    CV_SEQ_ELTYPE_GRAPH_VERTEX : constant := 0;  --/* first_edge, &(x,y) */
    CV_SEQ_ELTYPE_TRIAN_ATR : constant := 0;  --/* vertex of the binary tree   */
    CV_SEQ_ELTYPE_CONNECTED_COMP : constant := 0;  --/* connected component  */
-   function CV_SEQ_ELTYPE_POINT3D return Integer;
+   function CV_SEQ_ELTYPE_POINT3D return Unsigned_32; -- used to be Integer
 
    CV_SEQ_KIND_BITS : constant := 2;
    CV_SEQ_KIND_MASK : constant := (16#4000#); --(4 >> 12)
@@ -1257,7 +1259,7 @@ package Core is
    --/* sequence of the integer numbers */
    function CV_SEQ_INDEX return Integer; --(CV_SEQ_KIND_GENERIC  | CV_SEQ_ELTYPE_INDEX)
 
-   function  CV_SEQ_ELTYPE ( Seq : Cv_Seq_P ) return Integer;  -- ((Seq)- > Flags & CV_SEQ_ELTYPE_MASK)
+   function  CV_SEQ_ELTYPE ( Seq : Cv_Seq_P ) return Unsigned_32;  -- ((Seq)- > Flags & CV_SEQ_ELTYPE_MASK) -- used to be Integer
    function CV_SEQ_KIND ( Seq : Cv_Seq_P ) return Integer;    --((Seq)- > Flags & CV_SEQ_KIND_MASK )
 
    --/* flag checking */
@@ -1644,6 +1646,62 @@ package Core is
 
    -- Unchecked Conversions ----------------------------------------------------
    ------------ Void conversions -----------------------------------------------
+   function From_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+                                   Target => Cv_8u_Pointer);
+
+   function From_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+                                   Target => Cv_8s_Pointer);
+
+   function From_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+                                   Target => Cv_16u_Pointer);
+
+   function From_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+                                   Target => Cv_16s_Pointer);
+
+   function From_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+                                   Target => Cv_32s_Pointer);
+
+   function From_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+                                   Target => Cv_32f_Pointer);
+
+   function From_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+                                   Target => Cv_64f_Pointer);
+
+   function To_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_8u_Pointer,
+                                   Target => Cv_Void_P);
+
+   function To_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_8s_Pointer,
+                                   Target => Cv_Void_P);
+
+   function To_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_16u_Pointer,
+                                   Target => Cv_Void_P);
+
+   function To_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_16s_Pointer,
+                                   Target => Cv_Void_P);
+
+   function To_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_32s_Pointer,
+                                   Target => Cv_Void_P);
+
+   function To_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_32f_Pointer,
+                                   Target => Cv_Void_P);
+
+   function To_Void is
+     new Ada.Unchecked_Conversion (Source => Cv_64f_Pointer,
+                                   Target => Cv_Void_P);
+
    function From_Void is
      new Ada.Unchecked_Conversion (Source => Cv_Void_P,
                                    Target => Cv_Point_P);

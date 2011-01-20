@@ -25,6 +25,8 @@ extern "C" {
 
   void *cvMatElem_wrap(CvMat *mat, int elemSize, int row, int col);
 
-   CvPoint2D32f cvPoint2D32f_wrap(double x, double y);
+  CvPoint2D32f cvPoint2D32f_wrap(double x, double y);
+
+  CvMat CvMat_wrap(int rows, int cols, int type, void *data);
 
 }

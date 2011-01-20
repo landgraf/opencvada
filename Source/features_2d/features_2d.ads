@@ -114,6 +114,8 @@ package Features_2D is
          LineThresholdBinarized : Integer;
          SuppressNonmaxSize     : Integer;
       end record;
+   pragma Convention (C_Pass_By_Copy, Cv_Star_Detector_Params);
+   type Cv_Star_Detector_Params_P is access Cv_Star_Detector_Params;
 
    -- Constructor for Cv_Star_Detector_Params with default values.
    function CvStarDetectorParams (MaxSize                : Integer := 45;
