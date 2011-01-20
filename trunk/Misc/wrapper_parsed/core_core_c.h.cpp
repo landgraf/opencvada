@@ -72,3 +72,7 @@ void cvDecRefData_wrap(CvArr * arr ){
  CvPoint2D32f cvPoint2D32f_wrap(double x, double y) {
 	 return cvPoint2D32f(x,y);
 }
+
+CvMat CvMat_wrap(int rows, int cols, int type, void *data) {
+  return cvMat(rows, cols, type, data);
+}
