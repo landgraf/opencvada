@@ -31,16 +31,16 @@ procedure Morphology is
       else
          An := -N;
       end if;
-      Element := CvCreateStructuringElementEx (An * 2 + 1, An * 2 + 1, An, An, Element_Shape, null);
+      Element := Cv_Create_Structuring_Element_Ex (An * 2 + 1, An * 2 + 1, An, An, Element_Shape, null);
       if (N < 0) then
-         CvErode (+Src, +Dst, Element, 1);
-         CvDilate (+Src, +Dst, Element, 1);
+         Cv_Erode (+Src, +Dst, Element, 1);
+         Cv_Dilate (+Src, +Dst, Element, 1);
       else
-         CvDilate (+Src, +Dst, Element, 1);
-         CvErode (+Src, +Dst, Element, 1);
+         Cv_Dilate (+Src, +Dst, Element, 1);
+         Cv_Erode (+Src, +Dst, Element, 1);
       end if;
-      CvReleaseStructuringElement (Element'Access);
-      CvShowImage("Open/Close",+Dst);
+      Cv_Release_Structuring_Element (Element'Access);
+      Cv_Show_Image("Open/Close",+Dst);
    end Open_Close;
 
 
@@ -53,14 +53,14 @@ procedure Morphology is
       else
          An := -N;
       end if;
-      Element := CvCreateStructuringElementEx (An * 2 + 1, An * 2 + 1, An, An, Element_Shape, null);
+      Element := Cv_Create_Structuring_Element_Ex (An * 2 + 1, An * 2 + 1, An, An, Element_Shape, null);
       if (N < 0) then
-         CvErode (+Src, +Dst, Element, 1);
+         Cv_Erode (+Src, +Dst, Element, 1);
       else
-         CvDilate (+Src, +Dst, Element, 1);
+         Cv_Dilate (+Src, +Dst, Element, 1);
       end if;
-      CvReleaseStructuringElement (Element'Access);
-      CvShowImage("Erode/Dilate",+Dst);
+      Cv_Release_Structuring_Element (Element'Access);
+      Cv_Show_Image("Erode/Dilate",+Dst);
    end Erode_Dilate;
 
    procedure Help is
@@ -91,20 +91,20 @@ begin
    else
       Filename := To_Unbounded_String ("Ada.jpg");
    end if;
-   Src := CvLoadImage (To_String (Filename), 1);
+   Src := Cv_Load_Image (To_String (Filename), 1);
    if Src = null then
       return ;
    end if;
 
-   Dst := CvCloneImage (Src);
+   Dst := Cv_Clone_Image (Src);
 
-   Ret := CvNamedWindow ("Open/Close", 0);
-   Ret := CvNamedWindow ("Erode/Dilate", 0);
+   Ret := Cv_Named_Window ("Open/Close", 0);
+   Ret := Cv_Named_Window ("Erode/Dilate", 0);
 
    Open_Close_Pos := Max_Iters;
    Erode_Dilate_Pos := Max_Iters;
-   Ret := CvCreateTrackbar ("iterations", "Open/Close", Open_Close_Pos'Access, Max_Iters * 2 + 1, Open_Close'Unrestricted_Access);
-   Ret := CvCreateTrackbar ("iterations", "Erode/Dilate", Erode_Dilate_Pos'Access, Max_Iters * 2 + 1, Erode_Dilate'Unrestricted_Access);
+   Ret := Cv_Create_Trackbar ("iterations", "Open/Close", Open_Close_Pos'Access, Max_Iters * 2 + 1, Open_Close'Unrestricted_Access);
+   Ret := Cv_Create_Trackbar ("iterations", "Erode/Dilate", Erode_Dilate_Pos'Access, Max_Iters * 2 + 1, Erode_Dilate'Unrestricted_Access);
 
    loop
 
@@ -125,8 +125,8 @@ begin
       end if;
    end loop;
 
-   CvDestroyWindow ("Open/Close");
-   CvDestroyWindow ("Erode/Dilate");
-   CvReleaseImage (Src'Access);
-   CvReleaseImage (Dst'Access);
+   Cv_Destroy_Window ("Open/Close");
+   Cv_Destroy_Window ("Erode/Dilate");
+   Cv_Release_Image (Src'Access);
+   Cv_Release_Image (Dst'Access);
 end Morphology;

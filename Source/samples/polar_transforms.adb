@@ -29,13 +29,13 @@ procedure Polar_Transforms is
    Center : aliased Cv_Point_2D_32F;
 begin
    if Ada.Command_Line.Argument_Count = 0 then
-      Capture := Highgui.CvCreateCameraCapture (0);
+      Capture := Highgui.Cv_Create_Camera_Capture (0);
    elsif Integer'Value (Ada.Command_Line.Argument (1)) >= 0 then
       Temp := Integer'Value (Ada.Command_Line.Argument (1));
       if Character'Pos (Ada.Command_Line.Argument (1) (1)) <  58 and Character'Pos (Ada.Command_Line.Argument (1) (1)) > 47  then
-         Capture := CvCreateCameraCapture (Cv_Cap (Temp));
+         Capture := Cv_Create_Camera_Capture (Cv_Cap (Temp));
       else
-         Capture := CvCreateFileCapture (Ada.Command_Line.Argument (1));
+         Capture := Cv_Create_File_Capture (Ada.Command_Line.Argument (1));
       end if;
    end if;
 
@@ -45,50 +45,50 @@ begin
       return;
    end if;
 
-   Temp := CvNamedWindow ("Linear-Polar", 0);
-   Temp := CvNamedWindow ( "Log-Polar", 0 );
-   Temp := CvNamedWindow ( "Recovered image", 0 );
+   Temp := Cv_Named_Window ("Linear-Polar", 0);
+   Temp := Cv_Named_Window ( "Log-Polar", 0 );
+   Temp := Cv_Named_Window ( "Recovered image", 0 );
 
-   CvMoveWindow ( "Linear-Polar", 20, 20 );
-   CvMoveWindow ( "Log-Polar", 700, 20 );
-   CvMoveWindow ( "Recovered image", 20, 400 );
+   Cv_Move_Window ( "Linear-Polar", 20, 20 );
+   Cv_Move_Window ( "Log-Polar", 700, 20 );
+   Cv_Move_Window ( "Recovered image", 20, 400 );
 
    loop
-      Frame := CvQueryFrame (Capture);
+      Frame := Cv_Query_Frame (Capture);
       exit when Frame = null;
 
       if Log_Polar_Img = null then
-         Log_Polar_Img := CvCreateImage ( CvSize(Frame.all.Width, Frame.all.Height), IPL_DEPTH_8U, 3 );
-         Lin_Polar_Img := CvCreateImage ( CvSize(Frame.all.Width, Frame.all.Height), IPL_DEPTH_8U, 3 );
-         Recovered_Img := CvCreateImage ( CvSize (Frame.all.Width, Frame.all.Height), IPL_DEPTH_8U,3 );
+         Log_Polar_Img := Cv_Create_Image ( Cv_Create_Size(Frame.all.Width, Frame.all.Height), IPL_DEPTH_8U, 3 );
+         Lin_Polar_Img := Cv_Create_Image ( Cv_Create_Size(Frame.all.Width, Frame.all.Height), IPL_DEPTH_8U, 3 );
+         Recovered_Img := Cv_Create_Image ( Cv_Create_Size (Frame.all.Width, Frame.all.Height), IPL_DEPTH_8U,3 );
          Put_Line("Images done");
       end if;
       --        Interfaces.Shift_Right;
 
       Center.X := Float (Interfaces.Shift_Right (Unsigned_32 (Frame.all.Width), 1));
       Center.Y := Float (Interfaces.Shift_Right (Unsigned_32 (Frame.all.Height), 1));
-      CvLogPolar (+Frame, +Log_Polar_Img,
+      Cv_Log_Polar (+Frame, +Log_Polar_Img,
                   Center,
                   70.0,
                  1+ 8);
 
-      CvLinearPolar (+Frame, +Lin_Polar_Img,
+      Cv_Linear_Polar (+Frame, +Lin_Polar_Img,
                      Center,
                      70.0,
                      1 + 8);
 
-      CvLinearPolar (+Lin_Polar_Img, +Recovered_Img,
+      Cv_Linear_Polar (+Lin_Polar_Img, +Recovered_Img,
                      Center,
                      70.0,
                      16 + 1 + 8);
 
-      CvShowImage ("Log-Polar", +Log_Polar_Img );
-      CvShowImage ("Linear-Polar", +Lin_Polar_Img );
-      CvShowImage ("Recovered image", +Recovered_Img );
-      exit when CvWaitKey (10) = Ascii.Esc;
+      Cv_Show_Image ("Log-Polar", +Log_Polar_Img );
+      Cv_Show_Image ("Linear-Polar", +Lin_Polar_Img );
+      Cv_Show_Image ("Recovered image", +Recovered_Img );
+      exit when Cv_Wait_Key (10) = Ascii.Esc;
    end loop;
-   CvReleaseCapture ( Capture'Access );
-   CvDestroyWindow ("Linear-Polar");
-   CvDestroyWindow ("Log-Polar");
-   CvDestroyWindow ("Recovered image");
+   Cv_Release_Capture ( Capture'Access );
+   Cv_Destroy_Window ("Linear-Polar");
+   Cv_Destroy_Window ("Log-Polar");
+   Cv_Destroy_Window ("Recovered image");
 end Polar_Transforms;

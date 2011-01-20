@@ -39,13 +39,13 @@ procedure Delaunay is
 
    function Init_Delaunay (Storage : Cv_Mem_Storage_P;
                            Rect    : Cv_Rect) return Cv_Subdiv_2D_P is
-      Subdiv : constant Cv_Subdiv_2d_P := CvCreateSubdiv2d (Cv_Seq_Kind_Subdiv2d,
+      Subdiv : constant Cv_Subdiv_2d_P := Cv_Create_Subdiv_2d (Cv_Seq_Kind_Subdiv2d,
                                                             Cv_Subdiv_2d'Size / 8,
                                                             Cv_Subdiv_2d_Point'Size / 8,
                                                             Cv_Quad_Edge_2d'Size / 8,
                                                             Storage);
    begin
-      CvInitSubdivDelaunay2d (Subdiv, Rect);
+      Cv_Init_Subdiv_Delaunay_2d (Subdiv, Rect);
       return Subdiv;
    end Init_Delaunay;
 
@@ -53,7 +53,7 @@ procedure Delaunay is
                                 Fp  : Cv_Point_2d_32f;
                                 Color : Cv_Scalar) is
    begin
-      CvCircle (+Img, CvPoint (CvRound (Long_Float (Fp.X)), CvRound (Long_Float (Fp.Y))), 3, Color, Cv_Filled, 8, 0);
+      Cv_Circle (+Img, CvPoint (CvRound (Long_Float (Fp.X)), CvRound (Long_Float (Fp.Y))), 3, Color, Cv_Filled, 8, 0);
    end Draw_Subdiv_Point;
 
    procedure Draw_Subdiv_Edge (Img : Ipl_Image_P;
@@ -64,8 +64,8 @@ procedure Delaunay is
       Iorg, Idst     : Cv_Point;
    begin
       --Put_Line("DRAW_SUBDIV_EDGE: " & Edge'Img);
-      Org_Pt := CvSubdiv2dEdgeOrg (Edge);
-      Dst_Pt := CvSubdiv2dEdgedst (Edge);
+      Org_Pt := Cv_Subdiv_2d_Edge_Org (Edge);
+      Dst_Pt := Cv_Subdiv_2d_Edge_Dst (Edge);
 
 --        Put_Line ("Color:" & Color.Val(2)'img);
 
@@ -73,12 +73,12 @@ procedure Delaunay is
          Org := Org_Pt.all.Pt;
          Dst := Dst_Pt.all.Pt;
 
-         IOrg := CvPoint (Cvround (Org.X), CvRound (Org.Y));
-         IDst := CvPoint (CvRound (Dst.X), CvRound (Dst.Y));
+         IOrg := Cv_Create_Point (Cv_Round (Org.X), Cv_Round (Org.Y));
+         IDst := Cv_Create_Point (Cv_Round (Dst.X), Cv_Round (Dst.Y));
 
 --           Put_Line ("CvLine org:" & Org.X'Img & Iorg.Y'Img);
 --           Put_Line ("CvLine dst:" & Idst.X'Img & Idst.Y'Img);
-         CvLine (+Img, Iorg, Idst, Color, 1, Cv_Aa, 0);
+         Cv_Line (+Img, Iorg, Idst, Color, 1, Cv_Aa, 0);
       else
          null;--Put_Line("Error");
       end if;
@@ -106,7 +106,7 @@ procedure Delaunay is
 --        Temp      : Cv_Arr_Pointer;
       Edge1     : Cv_Quad_Edge_2d_P;
    begin
-      CvStartReadSeq (To_Seq (Subdiv.all.Edges), Reader'Unchecked_Access, 0);
+      Cv_Start_Read_Seq (To_Seq (Subdiv.all.Edges), Reader'Unchecked_Access, 0);
 
       for I in Integer range 0 .. Total-1
       loop
@@ -121,7 +121,7 @@ procedure Delaunay is
             null;
          end if;
 
-         CvNextSeqElem( elem_size, Reader'Unchecked_Access );
+         Cv_Next_Seq_Elem( elem_size, Reader'Unchecked_Access );
       end loop;
    end Draw_Subdiv;
 
@@ -134,12 +134,12 @@ procedure Delaunay is
       P  : aliased Cv_Subdiv_2d_Point_P := null;
       Ret : Cv_Subdiv_2D_Point_Location;
    begin
-      Ret := CvSubdiv2DLocate (Subdiv, Fp, E0'Unchecked_Access, P'Access);
+      Ret := Cv_Subdiv_2d_Locate (Subdiv, Fp, E0'Unchecked_Access, P'Access);
       if E0 > 0 then
          E := E0;
          loop
             Draw_Subdiv_Edge (Img, E, Active_Color);
-            E := CvSubdiv2DGetEdge (E, CV_NEXT_AROUND_LEFT);
+            E := Cv_Subdiv_2d_Get_Edge (E, CV_NEXT_AROUND_LEFT);
             exit when (E = E0);
          end loop;
       end if;
@@ -155,7 +155,7 @@ procedure Delaunay is
       begin
          loop
             Temp_Count := Temp_Count + 1;
-            T := CvSubdiv2dGetEdge (T, CV_NEXT_AROUND_LEFT);
+            T := Cv_Subdiv_2d_Get_Edge (T, CV_NEXT_AROUND_LEFT);
 --              Put_Line("T="& T'Img);
             exit when ( T = Edge);
          end loop;
@@ -173,20 +173,20 @@ procedure Delaunay is
       T := Edge;
       for I in Integer range Buf'Range
       loop
-         Pt := CvSubdiv2dEdgeOrg (T);
+         Pt := Cv_Subdiv_2d_Edge_Org (T);
          exit when Pt = null;
          Buf (I) := CvPoint (CvRound (Pt.all.Pt.X), CvRound (Pt.all.Pt.Y));
-         T := CvSubdiv2dGetEdge (T, CV_NEXT_AROUND_LEFT);
+         T := Cv_Subdiv_2d_Get_Edge (T, Cv_Next_Around_Left);
          N := I;
       end loop;
 
       if (N + 1 = Count) then
-         Pt := CvSubdiv2dEdgedst (CvSubdiv2dRotateEdge (Edge, 1));
-         CvFillConvexPoly (+Img, Buf, Count, CV_RGB (Random (G) mod 255, Random (G) mod 255, Random (G) mod 255), CV_AA, 0);
+         Pt := Cv_Subdiv_2d_Edge_Dst (CvSubdiv2dRotateEdge (Edge, 1));
+         Cv_Fill_Convex_Poly (+Img, Buf, Count, CV_RGB (Random (G) mod 255, Random (G) mod 255, Random (G) mod 255), CV_AA, 0);
 --           Put_Line("count : " & Count'Img);
          Buf_2d (0) := Buf (0)'unchecked_access;
          Count_Arr(0) := Unsigned_32(Count);
-         CvPolyLine (+Img, Buf_2d, Count_Arr, 1, 1, Cv_Rgb (0, 0, 0), 1, Cv_Aa, 0);
+         Cv_Poly_Line (+Img, Buf_2d, Count_Arr, 1, 1, Cv_Rgb (0, 0, 0), 1, Cv_Aa, 0);
       end if;
    end Draw_Subdiv_Facet;
 
@@ -208,8 +208,8 @@ procedure Delaunay is
                                       Target => Imgproc.Cv_Quad_Edge_2d_P);
 
    begin
-      CvCalcSubdivVoronoi2D (Subdiv);
-      CvStartReadSeq (To_Seq (Subdiv.all.Edges), Reader'Unchecked_Access, 0);
+      Cv_Calc_Subdiv_Voronoi_2d (Subdiv);
+      Cv_Start_Read_Seq (To_Seq (Subdiv.all.Edges), Reader'Unchecked_Access, 0);
 
       for I in Integer range 0  .. Total - 1
       loop
@@ -223,7 +223,7 @@ procedure Delaunay is
             -- right
             Draw_Subdiv_Facet (Img, CvSubdiv2dRotateEdge (E, 3));
          end if;
-         CvNextSeqElem (Elem_Size, Reader'Unchecked_Access);
+         Cv_Next_Seq_Elem (Elem_Size, Reader'Unchecked_Access);
       end loop;
    end Paint_Voronoi;
 
@@ -245,12 +245,12 @@ procedure Delaunay is
       Delaunay_Color  := CV_RGB ( 0, 0, 0);
       Voronoi_Color := CV_RGB (0, 180, 0);
       Bkgnd_Color := CV_RGB (255, 255, 255);
-      Img := CvCreateImage (CvSize(Rect.Width, Rect.Height), 8, 3);
+      Img := Cv_Create_Image (Cv_Create_Size(Rect.Width, Rect.Height), 8, 3);
       CvSet (+Img, Bkgnd_Color, null);
 
-      Ret := CvNamedWindow (Win, 1);
+      Ret := Cv_Named_Window (Win, 1);
 
-      Storage := CvCreateMemStorage (0);
+      Storage := Cv_Create_Mem_Storage (0);
       Subdiv := Init_Delaunay (Storage, Rect);
 --        Put_Line ("Delaunay triangulation will be build now interactively.");
 --        Put_Line ("To stop the process, press any key");
@@ -260,32 +260,32 @@ procedure Delaunay is
       loop
          Fp := (Float (Random (G)),Float (Random (G)));
          Locate_Point (Subdiv, Fp, Img, Active_Facet_Color);
-         CvShowImage (Win, +Img);
+         Cv_Show_Image (Win, +Img);
 
-         exit when CvWaitKey (10) = Ascii.Esc;
+         exit when Cv_Wait_Key (10) = Ascii.Esc;
 
 --           Put_Line("fp: " & Fp.X'Img & Fp.Y'Img);
 
-         S_Ret := CvSubdivDelaunay2dInsert (Subdiv, Fp);
+         S_Ret := Cv_Subdiv_Delaunay_2d_Insert (Subdiv, Fp);
 --           Put_Line("s_ret: " & S_Ret.all.Id'Img);
-         CvCalcSubdivVoronoi2d (Subdiv);
-         CvSet (+Img, Bkgnd_Color, null);
+         Cv_Calc_Subdiv_Voronoi_2d (Subdiv);
+         Cv_Set (+Img, Bkgnd_Color, null);
          Draw_Subdiv (Img, Subdiv, Delaunay_Color, Voronoi_Color);
-         CvShowImage (Win, +Img);
+         Cv_Show_Image (Win, +Img);
 
-         exit when CvWaitKey (10) = Ascii.Esc;
+         exit when Cv_Wait_Key (10) = Ascii.Esc;
       end loop;
 
 --        Put("Here we are");
 
-      CvSet (+Img, Bkgnd_Color, null);
+      Cv_Set (+Img, Bkgnd_Color, null);
       Paint_Voronoi (Subdiv, Img);
-      CvShowImage (Win, +Img);
+      Cv_Show_Image (Win, +Img);
 
 --        if CvWaitKey (0) = Ascii.Esc then
-         CvReleaseMemStorage (Storage'Access);
-         CvReleaseImage (Image => Img'Access);
-         CvDestroyWindow (Win);
+         Cv_Release_Mem_Storage (Storage'Access);
+         Cv_Release_Image (Image => Img'Access);
+         Cv_Destroy_Window (Win);
 --        end if;
 
    end Run;

@@ -28,7 +28,7 @@ procedure Latentsvmdetect is
 
    procedure Detect_And_Draw_Objects (Image : Ipl_Image_P;
                                       Detector : Cv_Latent_Svm_Detector_P) is
-      Storage : aliased Cv_Mem_Storage_P := CvCreateMemStorage (0);
+      Storage : aliased Cv_Mem_Storage_P := Cv_Create_Mem_Storage (0);
       Detections : Cv_Seq_P := null;
       I          : Integer := 0;
       Start, Finish : Time;
@@ -42,20 +42,20 @@ procedure Latentsvmdetect is
 
    begin
       Start := Ada.Real_Time.Clock;
-      Detections := CvLatentSvmDetectObjects (Image, Detector, Storage);
+      Detections := Cv_Latent_Svm_Detect_Objects (Image, Detector, Storage);
       Finish := Ada.Real_Time.Clock;
       Put_Line (Ada.Real_Time.To_Duration (Finish - Start)'img);
 
       for I in Integer range 0 .. Detections.all.Total-1
       loop
-         Detection := From_Void (CvGetSeqElem (Detections, I)).all;
+         Detection := From_Void (Cv_Get_Seq_Elem (Detections, I)).all;
          Bounding_Box := Detection.Rect;
-         CvRectangle (+Image,
+         Cv_Rectangle (+Image,
                       CvPoint (Bounding_Box.X, Bounding_Box.Y),
                       CvPoint (Bounding_Box.X + Bounding_Box.Width, Bounding_Box.Y + Bounding_Box.Height),
                       Cv_Rgb (255, 0, 0), 3);
       end loop;
-      CvReleaseMemStorage (Storage'Access);
+      Cv_Release_Mem_Storage (Storage'Access);
    end Detect_And_Draw_Objects;
    Image          : aliased Ipl_Image_P;
    Detector       : aliased Cv_Latent_Svm_Detector_P;
@@ -66,13 +66,13 @@ begin
       Model_Filename := To_Unbounded_String(Argument (2));
    end if;
 
-   Image := CvLoadImage (To_String(Image_Filename));
+   Image := Cv_Load_Image (To_String(Image_Filename));
 
    if Image = null then
       return;
    end if;
 
-   Detector := CvLoadLatentSvmDetector (To_String(Model_Filename));
+   Detector := Cv_Load_Latent_Svm_Detector (To_String(Model_Filename));
 
    if Detector = null then
       CvReleaseImage (Image'Access);
@@ -81,12 +81,12 @@ begin
 
    Detect_And_Draw_Objects (Image, Detector);
 
-   Ret := CvNAmedWindow ("test", 0);
-   CvShowImage ("test", +Image);
+   Ret := Cv_Named_Window ("test", 0);
+   Cv_Show_Image ("test", +Image);
    loop
-      exit when CvWaitKey (0) = Ascii.Esc;
+      exit when Cv_Wait_Key (0) = Ascii.Esc;
    end loop;
-   CvReleaseLatentSvmDetector (Detector'Access);
-   CvReleaseImage (Image'Access);
-   CvDestroyWindow ("test");
+   Cv_Release_Latent_Svm_Detector (Detector'Access);
+   Cv_Release_Image (Image'Access);
+   Cv_Destroy_Window ("test");
 end Latentsvmdetect;

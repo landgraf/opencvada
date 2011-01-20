@@ -34,17 +34,17 @@ procedure Mser is
       Put_Line ("Call: ./mser < path_and_image_filename, Default is 'puzzle.png'>");
    end Help;
 
-   Colors : constant array (0 .. 10) of Cv_Scalar := (CvScalar (0.0, 0.0, 255.0),
-                                                      CvScalar (0.0, 128.0, 255.0),
-                                                      CvScalar (0.0, 255.0, 255.0),
-                                                      CvScalar (0.0, 255.0, 0.0),
-                                                      CvScalar (255.0, 128.0, 0.0),
-                                                      CvScalar (255.0, 255.0, 0.0),
-                                                      CvScalar (255.0, 0.0, 0.0),
-                                                      CvScalar (255.0, 0.0, 255.0),
-                                                      CvScalar (255.0, 255.0, 255.0),
-                                                      CvScalar (196.0, 255.0, 255.0),
-                                                      CvScalar (255.0, 255.0, 196.0));
+   Colors : constant array (0 .. 10) of Cv_Scalar := (Cv_Create_Scalar (0.0, 0.0, 255.0),
+                                                      Cv_Create_Scalar (0.0, 128.0, 255.0),
+                                                      Cv_Create_Scalar (0.0, 255.0, 255.0),
+                                                      Cv_Create_Scalar (0.0, 255.0, 0.0),
+                                                      Cv_Create_Scalar (255.0, 128.0, 0.0),
+                                                      Cv_Create_Scalar (255.0, 255.0, 0.0),
+                                                      Cv_Create_Scalar (255.0, 0.0, 0.0),
+                                                      Cv_Create_Scalar (255.0, 0.0, 255.0),
+                                                      Cv_Create_Scalar (255.0, 255.0, 255.0),
+                                                      Cv_Create_Scalar (196.0, 255.0, 255.0),
+                                                      Cv_Create_Scalar (255.0, 255.0, 196.0));
 
    B_Colors : constant array (0 .. 8, 0 .. 2) of Unsigned_8 := ((0, 0, 255),
                                                                 (0, 128, 255),
@@ -81,31 +81,31 @@ begin
       Path := To_Unbounded_String(Ada.Command_Line.Argument (1));
    end if;
 
-   Img := CvLoadImage (To_String(Path), CV_LOAD_IMAGE_GRAYSCALE);
+   Img := Cv_Load_Image (To_String (Path), Cv_Load_Image_Grayscale);
 
    if Img = null then
       Put_Line ("Could not load " & To_String(Path));
       return;
    end if;
 
-   Storage := CvCreateMemStorage;
+   Storage := Cv_Create_Mem_Storage;
 
-   Rsp := CvLoadImage (To_String (Path), CV_LOAD_IMAGE_COLOR);
-   Ellipses := CvCloneImage (Rsp);
+   Rsp := Cv_Load_Image (To_String (Path), CV_LOAD_IMAGE_COLOR);
+   Ellipses := Cv_Clone_Image (Rsp);
    CvCvtColor (To_Arr (Img), To_Arr(Ellipses), CV_GRAY2BGR);
-   Hsv := CvCreateImage (CvGetSize (To_Arr (Rsp)), IPL_DEPTH_8U, 3);
-   CvCvtColor (To_Arr (Rsp), To_Arr (Hsv), CV_BGR2YCrCb);
-   Params := CvMserParams;
+   Hsv := Cv_Create_Image (CvGetSize (To_Arr (Rsp)), IPL_DEPTH_8U, 3);
+   Cv_Cvt_Color (To_Arr (Rsp), To_Arr (Hsv), CV_BGR2YCrCb);
+   Params := Cv_Mser_Params;
 
-   CvExtractMSER (To_Arr (Hsv), null, Contours'Access, Storage, Params);
+   Cv_Extract_Mser (To_Arr (Hsv), null, Contours'Access, Storage, Params);
    Rsp_Array := new Cv_8u_Array (1 .. (Rsp.all.Width * Rsp.all.Height * 3));
    Rsp_Array := new Cv_8u_Array (0 .. (Rsp.all.Width * Rsp.all.Height * 3) - 1);
    Rsp_Array.all := Cv_8u_Pointer_Pkg.Value(Rsp.all.Image_Data, Ptrdiff_T(Rsp.all.Width * Rsp.all.Height * 3));
 
    for I in reverse 0 .. Contours.all.Total - 1 loop
-      R := From_Void (CvGetSeqElem (Contours, I)).all;
+      R := From_Void (Cv_Get_Seq_Elem (Contours, I)).all;
       for J in Integer range 0 .. R.all.Total - 1 loop
-         Pt := From_Void (CvGetSeqElem (R, J));
+         Pt := From_Void (Cv_Get_Seq_Elem (R, J));
 
          Rsp_Array.all (Pt.all.X * 3 + Pt.all.Y * Rsp.all.Width_Step) := B_Colors ((I mod 9), 2);
          Rsp_Array.all (Pt.all.X * 3 + 1 + Pt.all.Y * Rsp.all.Width_Step) := B_Colors ((I mod 9), 1);
@@ -116,14 +116,14 @@ begin
    Rsp.all.Image_Data := Rsp_Array.all (0)'Access;
 
    for I in Integer range 0 .. Contours.all.Total - 1 loop
-      Contour := From_Void (CvGetSeqElem (Contours, I)).all;
+      Contour := From_Void (Cv_Get_Seq_Elem (Contours, I)).all;
       Box := CvFitEllipse2 (To_Arr (Contour));
       Box.Angle := CV_PI / 2.0 - Box.Angle;
 
       if Contour.all.Color > 0 then
-         CvEllipseBox (To_Arr (Ellipses), Box, Colors (9), 2);
+         Cv_Ellipse_Box (To_Arr (Ellipses), Box, Colors (9), 2);
       else
-         CvEllipseBox (To_Arr (Ellipses), Box, Colors (2), 2);
+         Cv_Ellipse_Box (To_Arr (Ellipses), Box, Colors (2), 2);
       end if;
    end loop;
 
@@ -134,25 +134,25 @@ begin
    begin
 --        Put_Line ("n_channels:" & Ellipses.all.N_Channels'Img);
 
-      I_Ret := CvSaveImage ("rsp.png", To_Arr (Rsp));
+      I_Ret := Cv_Save_Image ("rsp.png", To_Arr (Rsp));
 
-      I_Ret := CvNamedWindow ("original", 0);
-      CvShowImage ("original", To_Arr (Img));
+      I_Ret := Cv_Named_Window ("original", 0);
+      Cv_Show_Image ("original", To_Arr (Img));
 
-      I_Ret := CvNamedWindow ("response", 0);
-      CvShowImage ("response", To_Arr (Rsp));
+      I_Ret := Cv_Named_Window ("response", 0);
+      Cv_Show_Image ("response", To_Arr (Rsp));
 
-      I_Ret := CvNamedWindow ("ellipses", 0);
-      CvShowImage ("ellipses", To_Arr (Ellipses));
+      I_Ret := Cv_Named_Window ("ellipses", 0);
+      Cv_Show_Image ("ellipses", To_Arr (Ellipses));
 
-      C_Ret := CvWaitKey (0);
+      C_Ret := Cv_Wait_Key (0);
 
-      CvDestroyWindow ("original");
-      CvDestroyWindow ("response");
-      CvDestroyWindow ("ellipses");
+      Cv_Destroy_Window ("original");
+      Cv_Destroy_Window ("response");
+      Cv_Destroy_Window ("ellipses");
 
-      CvReleaseImage (Rsp'Access);
-      CvReleaseImage (Img'Access);
-      CvReleaseImage (Ellipses'Access);
+      Cv_Release_Image (Rsp'Access);
+      Cv_Release-image (Img'Access);
+      Cv_Release_Image (Ellipses'Access);
    end Main_Loop;
 end Mser;

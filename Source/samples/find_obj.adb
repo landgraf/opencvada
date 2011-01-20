@@ -62,8 +62,8 @@ procedure Find_Obj is
 
 
    begin
-      CvStartReadSeq (Model_Keypoints, Kreader'Unchecked_Access, 0);
-      CvStartReadSeq (Model_Descriptors, Reader'Unchecked_Access, 0);
+      Cv_Start_Read_Seq (Model_Keypoints, Kreader'Unchecked_Access, 0);
+      Cv_Start_Read_Seq (Model_Descriptors, Reader'Unchecked_Access, 0);
       for I in Integer range 0 .. Model_Descriptors.all.Total - 1
       loop
          Loop_Nnn :
@@ -72,8 +72,8 @@ procedure Find_Obj is
             Kp   : constant Cv_SURF_Point_P := From_Arr (Kreader.Ptr);
             Mvec : constant Cv_32f_Array := Core.Cv_32f_Pointer_Pkg.Value (From_Arr (Reader.Ptr), Interfaces.C.Ptrdiff_T (Model_Descriptors.all.Total));
          begin
-            CvNextSeqElem (Kreader.Seq.all.Elem_Size, Kreader'Unchecked_Access);
-            CvNextSeqElem (Reader.Seq.all.Elem_Size, Reader'Unchecked_Access);
+            Cv_Next_Seq_Elem (Kreader.Seq.all.Elem_Size, Kreader'Unchecked_Access);
+            Cv_Next_Seq_Elem (Reader.Seq.all.Elem_Size, Reader'Unchecked_Access);
             if Laplacian = Kp.all.Laplacian then
                D := Compare_Surf_Descriptors (Vec, Mvec, Dist2, Length);
                if  D < Dist1 then
@@ -100,8 +100,8 @@ procedure Find_Obj is
                          Ptpairs            : in out Vectors.Vector) is
       Reader, Kreader : aliased Cv_Seq_Reader;
    begin
-      CvStartReadSeq (Object_Keypoints, Kreader'Unchecked_Access, 0);
-      CvStartReadSeq (Object_Descriptors, Reader'Unchecked_Access, 0);
+      Cv_Start_Read_Seq (Object_Keypoints, Kreader'Unchecked_Access, 0);
+      Cv_Start_Read_Seq (Object_Descriptors, Reader'Unchecked_Access, 0);
       Vectors.Clear (Ptpairs);
       for I in Integer range 0 .. Object_Descriptors.all.Total-1
       loop
@@ -111,8 +111,8 @@ procedure Find_Obj is
             Descriptor : constant Cv_32f_Array := Core.Cv_32f_Pointer_Pkg.Value (From_Arr (Reader.Ptr), Interfaces.C.Ptrdiff_T (Object_Descriptors.all.Total));
             Nearest_Neighbor : Integer;
          begin
-            CvNextSeqElem (Kreader.Seq.all.Elem_Size, Kreader'Unchecked_Access);
-            CvNextSeqElem (Reader.Seq.all.Elem_Size, Reader'Unchecked_Access);
+            Cv_Next_Seq_Elem (Kreader.Seq.all.Elem_Size, Kreader'Unchecked_Access);
+            Cv_Next_Seq_Elem (Reader.Seq.all.Elem_Size, Reader'Unchecked_Access);
             Nearest_Neighbor := Naive_Nearest_Neighbor (Descriptor, Kp.all.Laplacian, Image_Keypoints, Image_Descriptors);
             if Nearest_Neighbor >= 0 then
                Vectors.Append (Ptpairs, I);
@@ -129,7 +129,7 @@ procedure Find_Obj is
                                   Src_Corners        : Cv_Point_Array ;
                                   Dst_Corners        : Cv_Point_Array ) return Integer is
       H : Cv_64f_Array (0 .. 8);
---        Mat_H : Cv_Mat := CvMat (3, 3, Cv_64f, H);
+--        Mat_H : Cv_Mat := Cv_Create_Mat (3, 3, Cv_64f, H);
    begin
       return 1;
    end Locate_Planar_Object;

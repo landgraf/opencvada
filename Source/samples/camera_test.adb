@@ -6,13 +6,13 @@ procedure Camera_Test is
    Image   : Ipl_Image_P;
    Retval  : Integer;
 begin
-   Capture := CvCreateCameraCapture (0);
+   Capture := Cv_Create_Camera_Capture (0);
    --     Retval := CvNamedWindow ("Test");
    for I in Integer range 1 .. 100 loop
-      Image := CvQueryFrame (Capture);
+      Image := Cv_Query_Frame (Capture);
    end loop;
 --     CvShowImage ("test", +Image);
 --     CvDestroyWindow ("test");
-   CvReleaseCapture (Capture'Access);
+   Cv_Release_Capture (Capture'Access);
 
 end Camera_Test;

@@ -84,7 +84,7 @@ begin
    Img := new Cv_Mat;
 
    Data_Pointer := Data_Array.all (0)'Access;
-   Img.all := CvMat (Height, Width, Cv_Make_Type (Cv_8u, Channels), To_Void(Data_Pointer));
+   Img.all := Cv_Create_Mat (Height, Width, Cv_Make_Type (Cv_8u, Channels), To_Void(Data_Pointer));
 
    if Img = null then
       Put_Line ("CvMat: Img is (null)");
@@ -92,7 +92,7 @@ begin
       Put_Line ("CvMat: Img.data is (null)");
    end if;
 
-   I_Ret := CvNamedWindow ("Awesome", 1);
+   I_Ret := Cv_Named_Window ("Awesome", 1);
 
    Random_Integer.Reset (Gen_Integer);
 
@@ -110,10 +110,10 @@ begin
       Point_Pointer := Points_Array.all (0)'Access;
       Points.all := CvMat (Count, 1, Cv_Make_Type (Cv_32s, 2), To_Void (Point_Pointer));
 
-      Min_Rect := CvMinAreaRect2 (Points  => To_Arr (Points),
+      Min_Rect := Cv_Min_Area_Rect2 (Points  => To_Arr (Points),
                                   Storage => null);
 
-      I_Ret := CvMinEnclosingCircle (Points => To_Arr(Points),
+      I_Ret := Cv_Min_Enclosing_Circle (Points => To_Arr(Points),
                                      Center => Circle_Center'Access,
                                      Radius => Circle_Radius'Access);
 
@@ -122,11 +122,11 @@ begin
       Put_Line (Ascii.Ht & "size:" & Min_Rect.Size.Width'Img & Min_Rect.Center.Y'Img);
       Put_Line (Ascii.Ht & "angle:" & Min_Rect.Angle'Img);
 
-      CvZero (To_Arr (Img));
+      Cv_Zero (To_Arr (Img));
 
       for I in Integer range 0 .. Count - 1 loop
          Index := I * 2;
-         CvCircle (To_Arr (Img), CvPoint (Points_Array.all (Index), Points_Array.all (Index + 1)), 3, CvScalar (0.0, 0.0, 255.0), CV_FILLED, CV_AA);
+         Cv_Circle (To_Arr (Img), CvPoint (Points_Array.all (Index), Points_Array.all (Index + 1)), 3, CvScalar (0.0, 0.0, 255.0), CV_FILLED, CV_AA);
       end loop;
       New_Line;
 
@@ -137,15 +137,15 @@ begin
       Box_Corners := GetCorners (Min_Rect);
 
       for I in Integer range 0 .. 3 loop
-         CvLine (To_Arr (Img), CvPoint (Cvround (Box_Corners (I).X), Cvround (Box_Corners (I).Y)), CvPoint (Cvround (Box_Corners ((I + 1) mod 4).X), Cvround (Box_Corners ((I + 1) mod 4).Y)), CvScalar (0.0, 255.0), 1, CV_AA);
+         Cv_Line (To_Arr (Img), Cv_Create_Point (Cv_Round (Box_Corners (I).X), Cv_Round (Box_Corners (I).Y)), Cv_Create_Point (Cvround (Box_Corners ((I + 1) mod 4).X), Cv_Round (Box_Corners ((I + 1) mod 4).Y)), Cv_Create_Scalar (0.0, 255.0), 1, Cv_Aa);
       end loop;
 
-      CvCircle (To_Arr (Img), CvPoint (Cvround (Circle_Center.X), CvRound (Circle_Center.Y)), Cvround (Circle_Radius), CvScalar (255.0), 1, CV_AA);
+      Cv_Circle (To_Arr (Img), Cv_Create_Point (Cv_Round (Circle_Center.X), Cv_Round (Circle_Center.Y)), Cv_Round (Circle_Radius), Cv_Create_Scalar (255.0), 1, CV_AA);
 
-      CvShowImage (WindowName => "Awesome",
+      Cv_Show_Image (WindowName => "Awesome",
                    Image      => To_Arr (Img));
 
-      C_Ret := CvWaitKey (0);
+      C_Ret := Cv_Wait_Key (0);
 
       if C_Ret = Ascii.Esc then
          exit;
