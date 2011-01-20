@@ -39,92 +39,92 @@ procedure Histogram_Demo is
 
    -- float
 
-   function GetHist (Image : Ipl_Image_P) return Cv_Histogram_P is
+   function Get_Hist (Image : Ipl_Image_P) return Cv_Histogram_P is
 
-      Hist    : aliased constant Cv_Histogram_P := Imgproc.Operations.CvCreateHist (3,
+      Hist    : aliased constant Cv_Histogram_P := Imgproc.Operations.Cv_Create_Hist (3,
                                                                                     (H_Bins, S_Bins, 30),
                                                                                     0,
                                                                                     Core.To_2d_Pointer (Arr1'Access));
 
-      Hsv     : aliased Ipl_Image_P := Core.Operations.CvCreateImage (CvSize(Image.all.Width,
+      Hsv     : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width,
                                                                       Image.all.Height),
                                                                       Image.all.Depth,
                                                                       Image.all.N_Channels);
-      H       : aliased Ipl_Image_P := Core.Operations.CvCreateImage (CvSize(Image.all.Width,
+      H       : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width,
                                                                       Image.all.Height),
                                                                       Image.all.Depth,
                                                                       1);
-      S       : aliased Ipl_Image_P := Core.Operations.CvCreateImage (CvSize(Image.all.Width,
+      S       : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width,
                                                                       Image.all.Height),
                                                                       Image.all.Depth,
                                                                       1);
-      V       : aliased Ipl_Image_P := Core.Operations.CvCreateImage (CvSize(Image.all.Width,
+      V       : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width,
                                                                       Image.all.Height),
                                                                       Image.all.Depth,
                                                                       1);
    begin
       --        Put_Line ("doing histogram{");
-      Imgproc.Operations.CvCvtColor (+Image, +Hsv, Imgproc.CV_BGR2HSV);
-      Core.Operations.CvSplit (+Hsv, +H, +S, +V, null);
-      Imgproc.Operations.CvCalcHist ((+H, +S, +V), Hist);
+      Imgproc.Operations.Cv_Cvt_Color (+Image, +Hsv, Imgproc.CV_BGR2HSV);
+      Core.Operations.Cv_Split (+Hsv, +H, +S, +V, null);
+      Imgproc.Operations.Cv_Calc_Hist ((+H, +S, +V), Hist);
       --        Put_Line ("}done histogram");
-      Core.Operations.CvReleaseImage (Hsv'Access);
-      Core.Operations.CvReleaseImage (H'Access);
-      Core.Operations.CvReleaseImage (S'Access);
-      Core.Operations.CvReleaseImage (V'Access);
+      Core.Operations.Cv_Release_Image (Hsv'Access);
+      Core.Operations.Cv_Release_Image (H'Access);
+      Core.Operations.Cv_Release_Image (S'Access);
+      Core.Operations.Cv_Release_Image (V'Access);
       return Hist;
    end GetHist;
 
    --     Char : Character ;
 begin
-   Ret := Highgui.CvNamedWindow ("hej");
-   Ret := Highgui.CvNamedWindow ("histogram");
-   Ret := Highgui.CvNamedWindow ("Target");
+   Ret := Highgui.Cv_Named_Window ("hej");
+   Ret := Highgui.Cv_Named_Window ("histogram");
+   Ret := Highgui.Cv_Named_Window ("Target");
 
 --     Highgui.CvShowImage ("Target", +Target);
 
 
    --     Char := Highgui.CvWaitKey (0);
 
-   Target_Hist := GetHist (Target);
+   Target_Hist := Get_Hist (Target);
    --     Put_Line("Entering Mainloop");
 
 
    loop
 
-      Ret := Highgui.CvGrabframe (Capture);
+      Ret := Highgui.Cv_Grab_Frame (Capture);
 
-      Image := Highgui.CvRetrieveFrame (Capture);
+      Image := Highgui.Cv_Retrieve_Frame (Capture);
 
-      Hist_Image_2 := Core.Operations.CvCreateImage (CvSize(H_Bins * Scale, S_Bins * Scale), 8, 3);
+      Hist_Image_2 := Core.Operations.Cv_Create_Image (CvSize(H_Bins * Scale, S_Bins * Scale), 8, 3);
 
-      Hist_Image := Core.Operations.CvCreateImage (CvSize(Image.all.Width,
+      Hist_Image := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width,
                                                    Image.all.Height),
                                                    Image.all.Depth,
                                                    1);
 
-      Hsv := Core.Operations.CvCreateImage (CvSize(Image.all.Width, Image.all.Height), Image.all.Depth, Image.all.N_Channels);
-      H := Core.Operations.CvCreateImage (CvSize(Image.all.Width, Image.all.Height), Image.all.Depth, 1);
-      S := Core.Operations.CvCreateImage (CvSize(Image.all.Width, Image.all.Height), Image.all.Depth, 1);
-      V := Core.Operations.CvCreateImage (CvSize(Image.all.Width, Image.all.Height), Image.all.Depth, 1);
+      Hsv := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width, Image.all.Height), Image.all.Depth, Image.all.N_Channels);
+      H := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width, Image.all.Height), Image.all.Depth, 1);
+      S := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width, Image.all.Height), Image.all.Depth, 1);
+      V := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width, Image.all.Height), Image.all.Depth, 1);
 
-      Imgproc.Operations.CvCvtColor (+Image, +Hsv, Imgproc.CV_BGR2HSV);
-      Core.Operations.CvSplit (+Hsv, +H, +S, +V, null);
-
-
-      Hist := GetHist (Image);
-
-      Imgproc.Operations.CvCalcBackProject ((+H, +S, +V), +Hist_Image, Target_Hist);
+      Imgproc.Operations.Cv_Cvt_Color (+Image, +Hsv, Imgproc.CV_BGR2HSV);
+      Core.Operations.Cv_Split (+Hsv, +H, +S, +V, null);
 
 
+      Hist := Get_Hist (Image);
 
-      Imgproc.Operations.CvGetMinMaxHistValue (Hist, null, Max_Value'Access);
+      Imgproc.Operations.Cv_Calc_Back_Project ((+H, +S, +V), +Hist_Image, Target_Hist);
+
+
+
+      Imgproc.Operations.Cv_Get_Min_Max_Hist_Value (Hist, null, Max_Value'Access);
       for H_I in Integer range 0 .. H_Bins - 1 loop
          for S_I in Integer range 0 .. S_Bins - 1 loop
-            Value := Core.Operations.CvGetReal3d (Hist.all.Bins, H_I, S_I,0);
+            Value := Core.Operations.Cv_Get_Real_3d (Hist.all.Bins, H_I, S_I,0);
 --              Put(Value'Img & Max_Value'Img);
-            Intensity := Core.CvRound ((Value * 255.0) / Long_Float (Max_Value));
-            Core.Operations.CvRectangle (+Hist_Image_2,
+            Intensity := Core.Cv_Round ((Value * 255.0) / Long_Float (Max_Value));
+            Core.Operations.Cv_Rectangle (+Hist_Image_2,
                                          CvPoint (H_I * Scale, S_I * Scale),
                                          Cvpoint (((H_I + 1) * Scale)-1, ((S_I + 1) * Scale)-1),
                                          Core.Operations.Cv_RGB (Intensity, Intensity, Intensity),
@@ -132,28 +132,28 @@ begin
          end loop;
       end loop;
 
-      Highgui.CvShowImage (WindowName => "Target", Image => +Hist_Image);
-      Highgui.CvShowImage (WindowName => "histogram", Image => +Hist_Image_2);
-      Highgui.CvShowImage (WindowName => "hej", Image => +Image);
+      Highgui.Cv_Show_Image (WindowName => "Target", Image => +Hist_Image);
+      Highgui.Cv_Show_Image (WindowName => "histogram", Image => +Hist_Image_2);
+      Highgui.Cv_Show_Image (WindowName => "hej", Image => +Image);
 
-      exit when Highgui.CvWaitKey (30) = Ascii.Esc;
+      exit when Highgui.Cv_Wait_Key (30) = Ascii.Esc;
 
-      Core.Operations.CvReleaseImage (Hist_Image'Access);
-      Core.Operations.CvReleaseImage (Hist_Image_2'Access);
-      Core.Operations.CvReleaseImage (Hsv'Access);
-      Core.Operations.CvReleaseImage (H'Access);
-      Core.Operations.CvReleaseImage (S'Access);
-      Core.Operations.CvReleaseImage (V'Access);
-      Imgproc.Operations.CvReleaseHist (Hist'Access);
+      Core.Operations.Cv_Release_Image (Hist_Image'Access);
+      Core.Operations.Cv_Release_Image (Hist_Image_2'Access);
+      Core.Operations.Cv_Release_Image (Hsv'Access);
+      Core.Operations.Cv_Release_Image (H'Access);
+      Core.Operations.Cv_Release_Image (S'Access);
+      Core.Operations.Cv_Release_Image (V'Access);
+      Imgproc.Operations.Cv_Release_Hist (Hist'Access);
    end loop;
 
    --     Ret := Highgui.CvSaveImage("target.jpg",+Image);
 
-   Core.Operations.CvReleaseImage (Hist_Image'Access);
-   Core.Operations.CvReleaseImage (Target'Access);
-   Imgproc.Operations.CvReleaseHist (Target_Hist'Access);
-   Imgproc.Operations.CvReleaseHist (Hist'Access);
-   Highgui.CvReleaseCapture (Capture'Access);
-   Core.Operations.CvReleaseImage (Image'Access);
-   Highgui.CvDestroyAllWindows;
+   Core.Operations.Cv_Release_Image (Hist_Image'Access);
+   Core.Operations.Cv_Release_Image (Target'Access);
+   Imgproc.Operations.Cv_Release_Hist (Target_Hist'Access);
+   Imgproc.Operations.Cv_Release_Hist (Hist'Access);
+   Highgui.Cv_Release_Capture (Capture'Access);
+   Core.Operations.Cv_Release_Image (Image'Access);
+   Highgui.Cv_Destroy_All_Windows;
 end Histogram_Demo;

@@ -50,20 +50,20 @@ procedure Distrans is
 
    procedure On_Trackbar (Position : Integer) is
    begin
-      CvThreshold (To_Arr (Gray), To_Arr (Edge), Long_Float (Position), Long_Float (Position), CV_THRESH_BINARY);
-      CvDistTransform (To_Arr (Edge), To_Arr (Dist), CV_DIST_L2, CV_DIST_MASK_5);
+      Cv_Threshold (To_Arr (Gray), To_Arr (Edge), Long_Float (Position), Long_Float (Position), CV_THRESH_BINARY);
+      Cv_Dist_Transform (To_Arr (Edge), To_Arr (Dist), CV_DIST_L2, CV_DIST_MASK_5);
 
-      CvConvertScale (To_Arr (Dist), To_Arr (Dist), 5000.0);
-      CvPow (To_Arr (Dist), To_Arr (Dist), 0.5);
+      Cv_Convert_Scale (To_Arr (Dist), To_Arr (Dist), 5000.0);
+      Cv_Pow (To_Arr (Dist), To_Arr (Dist), 0.5);
 
-      CvConvertScale (To_Arr (Dist), To_Arr (Dist_32s), 1.0, 0.5);
-      CvAndS (To_Arr (Dist_32s), CvScalarAll (255.0), To_Arr (Dist_32s));
-      CvConvertScale (To_Arr (Dist_32s), To_Arr (Dist_8u1), 1.0);
-      CvConvertScale (To_Arr (Dist_32s), To_Arr (Dist_32s), -1.0);
-      CvAddS (To_Arr (Dist_32s), CvScalarAll (255.0), To_Arr (Dist_32s));
-      CvConvertScale (To_Arr (Dist_32s), To_Arr (Dist_8u2), 1.0);
-      CvMerge (To_Arr (Dist_8u1), To_Arr (Dist_8u2), To_Arr (Dist_8u2), null, To_Arr (Dist_8u));
-      CvShowImage (Window_Name, To_Arr (Dist_8u));
+      Cv_Convert_Scale (To_Arr (Dist), To_Arr (Dist_32s), 1.0, 0.5);
+      Cv_And_S (To_Arr (Dist_32s), CvScalarAll (255.0), To_Arr (Dist_32s));
+      Cv_Convert_Scale (To_Arr (Dist_32s), To_Arr (Dist_8u1), 1.0);
+      Cv_Convert_Scale (To_Arr (Dist_32s), To_Arr (Dist_32s), -1.0);
+      Cv_Add_S (To_Arr (Dist_32s), CvScalarAll (255.0), To_Arr (Dist_32s));
+      Cv_Convert_Scale (To_Arr (Dist_32s), To_Arr (Dist_8u2), 1.0);
+      Cv_Merge (To_Arr (Dist_8u1), To_Arr (Dist_8u2), To_Arr (Dist_8u2), null, To_Arr (Dist_8u));
+      Cv_Show_Image (Window_Name, To_Arr (Dist_8u));
    end On_Trackbar;
 
    Filename    : Unbounded_String := To_Unbounded_String ("stuff.jpg");
@@ -75,25 +75,25 @@ begin
       Filename := To_Unbounded_String (Ada.Command_Line.Argument (1));
    end if;
 
-   Gray := CvLoadImage (To_String (Filename), CV_LOAD_IMAGE_GRAYSCALE);
+   Gray := Cv_Load_Image (To_String (Filename), CV_LOAD_IMAGE_GRAYSCALE);
 
    if Gray = null then
       Put_Line ("Failed to load" & To_String (Filename));
       return;
    end if;
 
-   Dist     := CvCreateImage (CvSize (Gray.all.Width, Gray.all.Height), IPL_DEPTH_32F, 1);
-   Dist_8u1 := CvCloneImage (Gray);
-   Dist_8u2 := CvCloneImage (Gray);
-   Dist_8u  := CvCreateImage (CvSize (Gray.all.Width, Gray.all.Height), IPL_DEPTH_8U, 3);
-   Dist_32s := CvCreateImage (CvSize (Gray.all.Width, Gray.all.Height), IPL_DEPTH_32S, 1);
+   Dist     := Cv_Create_Image (CvSize (Gray.all.Width, Gray.all.Height), IPL_DEPTH_32F, 1);
+   Dist_8u1 := Cv_Clone_Image (Gray);
+   Dist_8u2 := Cv_Clone_Image (Gray);
+   Dist_8u  := Cv_Create_Image (CvSize (Gray.all.Width, Gray.all.Height), IPL_DEPTH_8U, 3);
+   Dist_32s := Cv_Create_Image (CvSize (Gray.all.Width, Gray.all.Height), IPL_DEPTH_32S, 1);
 
-   Edge := CvCloneImage (Gray);
+   Edge := Cv_Clone_Image (Gray);
 
-   I_Ret := CvNamedWindow (Window_Name, 1);
-   I_Ret := CvCreateTrackbar (Trackbar_Name, Window_Name, Edge_Thresh'Access, 255, On_Trackbar'Unrestricted_Access);
+   I_Ret := Cv_Named_Window (Window_Name, 1);
+   I_Ret := Cv_Create_Trackbar (Trackbar_Name, Window_Name, Edge_Thresh'Access, 255, On_Trackbar'Unrestricted_Access);
 
    On_Trackbar (Edge_Thresh);
 
-   C_Ret := CvWaitKey (0);
+   C_Ret := Cv_Wait_Key (0);
 end Distrans;

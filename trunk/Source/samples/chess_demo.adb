@@ -19,16 +19,17 @@ begin
 
    loop
       Image := CvQueryFrame (Capture);
-      Retval := CvFindChessboardCorners (+Image, (7, 7), Corners, Corner_Count'Access);
 
-      CvDrawChessboardCorners (+Image, (7, 7), Corners, Corner_Count, Retval);
+      Retval := Cv_Find_Chessboard_Corners (+Image, (7, 7), Corners, Corner_Count'Access);
 
-      CvShowImage ("Chess Demo", +Image);
+      Cv_Draw_Chessboard:Corners (+Image, (7, 7), Corners, Corner_Count, Retval);
 
-      exit when CvWaitKey(30) = ASCII.ESC;
+      Cv_Show_Image ("Chess Demo", +Image);
+
+      exit when Cv_Wait_Key(30) = ASCII.ESC;
    end loop;
 
-   CvReleaseCapture (Capture'Access);
-   CvDestroyWindow ("Chess Demo");
+   Cv_Release_Capture (Capture'Access);
+   Cv_Destroy_Window ("Chess Demo");
 
 end Chess_Demo;

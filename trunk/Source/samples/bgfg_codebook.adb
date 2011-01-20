@@ -54,10 +54,10 @@ begin
 
    if Filename = Null_Unbounded_String then
       Put_Line ("Camera, go");
-      Capture := Highgui.CvCreateCameraCapture (0);
+      Capture := Highgui.Cv_Create_Camera_Capture (0);
    else
       Put_Line ("File, go");
-      Capture := CvCreateFileCapture (To_String (Filename));
+      Capture := Cv_Create_File_Capture (To_String (Filename));
    end if;
 
    if Capture = null then
@@ -68,7 +68,7 @@ begin
 
    loop
       if not Pause then
-         Raw_Image := CvQueryFrame (Capture);
+         Raw_Image := Cv_Query_Frame (Capture);
          Nframes := Nframes + 1;
          exit when Raw_Image = null;
       end if;
@@ -79,10 +79,10 @@ begin
 
       -- first frame
       if Nframes = 1 and Raw_Image /= null then
-         Yuv_Image := CvCloneImage (Raw_Image);
-         Imask_Code_Book := CvCreateImage (CvGetSize (+Raw_Image), Ipl_Depth_8u, 1);
-         Imask_Code_Book_CC := CvCreateImage (CvGetSize (+Raw_Image), Ipl_Depth_8u, 1);
-         CvSet (+Imask_Code_Book, CvScalar (255.0));
+         Yuv_Image := Cv_Clone_Image (Raw_Image);
+         Imask_Code_Book := Cv_Create_Image (CvGetSize (+Raw_Image), Ipl_Depth_8u, 1);
+         Imask_Code_Book_CC := Cv_Create_Image (CvGetSize (+Raw_Image), Ipl_Depth_8u, 1);
+         CvSet (+Imask_Code_Book, Cv_Create_Scalar (255.0));
 
          Ret := CvNamedWindow ("Raw", 1);
          Ret := CvNamedWindow ("ForegroundCodeBook", 1);
@@ -91,35 +91,35 @@ begin
 
       --  If we've got an rawImage and are good to go:
       if Raw_Image /= null then
-         CvCvtColor (+Raw_Image, +Yuv_Image, Cv_Bgr2yCrCb);
+         Cv_Cvt_Color (+Raw_Image, +Yuv_Image, Cv_Bgr2yCrCb);
          if not Pause and Nframes - 1 < Nframes_To_Learn_Bg then
-            CvBgCodeBookUpdate (Model, +Yuv_Image);
+            Cv_Bg_Code_Book_Update (Model, +Yuv_Image);
          end if;
 
          if Nframes - 1 = Nframes_To_Learn_Bg then
-            CvBgCodeBookClearStale (Model, Model.all.T / 2);
+            Cv_Bg_Code_Book_Clear_Stale (Model, Model.all.T / 2);
 
             Put_Line (Nframes'Img);
-            CvReleaseCapture (Capture'Access);
-            CvDestroyWindow ( "Raw" );
-            CvDestroyWindow ( "ForegroundCodeBook");
-            CvDestroyWindow ( "CodeBook_ConnectComp");
+            Cv_Release_Capture (Capture'Access);
+            Cv_Destroy_Window ( "Raw" );
+            Cv_Destroy_Window ( "ForegroundCodeBook");
+            Cv_Destroy_Window ( "CodeBook_ConnectComp");
             return;
          end if;
 
          if Nframes - 1 >= Nframes_To_Learn_Bg then
-            Ret := CvBgCodeBookDiff (Model, +Yuv_Image, +Imask_Code_Book);
+            Ret := Cv_Bg_Code_Book_Diff (Model, +Yuv_Image, +Imask_Code_Book);
             CvCopy (+Imask_Code_Book, +Imask_Code_Book_Cc);
-            Ret_Seq := CvSegmentfgmask (+Imask_Code_Book_Cc);
+            Ret_Seq := Cv_Segment_Fg_Mask (+Imask_Code_Book_Cc);
          end if;
 
          -- Display
-         CvShowImage ( "Raw", +Raw_Image );
-         CvShowImage ( "ForegroundCodeBook", +Imask_Code_Book);
-         CvShowImage ( "CodeBook_ConnectComp", +Imask_Code_Book_CC);
+         Cv_Show_Image ( "Raw", +Raw_Image );
+         Cv_Show_Image ( "ForegroundCodeBook", +Imask_Code_Book);
+         Cv_Show_Image ( "CodeBook_ConnectComp", +Imask_Code_Book_CC);
       end if;
 
-      Char := CvWaitKey (10);
+      Char := Cv_Wait_Key (10);
       --Put (Char);
       Char:=Ada.Characters.Handling.To_Lower (Char);
       exit when Char = Ascii.Esc or Char = 'q';
@@ -136,7 +136,7 @@ begin
             Pause := False;
             Singlestep := False;
          when ' ' =>
-            CvBgCodeBookClearStale (Model, 0);
+            Cv_Bg_Code_Book_Clear_Stale (Model, 0);
             Nframes := 0;
 
          when others =>
@@ -146,8 +146,8 @@ begin
 
 
 --     Put_Line(Nframes'Img);
-   CvReleaseCapture (Capture'Access);
-   CvDestroyWindow ( "Raw" );
-   CvDestroyWindow ( "ForegroundCodeBook");
-   CvDestroyWindow ( "CodeBook_ConnectComp");
+   Cv_Release_Capture (Capture'Access);
+   Cv_Destroy_Window ( "Raw" );
+   Cv_Destroy_Window ( "ForegroundCodeBook");
+   Cv_Destroy_Window ( "CodeBook_ConnectComp");
 end Bgfg_Codebook;
