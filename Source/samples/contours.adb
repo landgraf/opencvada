@@ -55,7 +55,7 @@ procedure Contours is
                           return Cv_Seq_P;
    pragma Import (C, Cv_Load_Seq, "cvLoad");
 begin
-   CvZero (+Img);
+   Cv_Zero (+Img);
 
    for I in Integer range 0 .. 6 - 1 loop
       Dx := Long_Float (I mod 2) * 250.0 - 30.0;
@@ -67,9 +67,9 @@ begin
          for J in Integer range 0 .. 10 loop
             Angle := Long_Float ((Long_Float (J) + 5.0) * Cv_Pi / 21.0);
             Cv_Line (+Img,
-              Cv_Point (Cv_Round (Dx + 100.0 + Long_Float (J) * 10.0 - 80.0 * Cos (Angle)),
+              Cv_Create_Point (Cv_Round (Dx + 100.0 + Long_Float (J) * 10.0 - 80.0 * Cos (Angle)),
                 Cv_Round (Dy + 100.0 - 90.0 * Sin (Angle))),
-              Cv_Point (Cv_Round (Dx + 100.0 + Long_Float (J) * 10.0 - 30.0 * Cos (Angle)),
+              Cv_Create_Point (Cv_Round (Dx + 100.0 + Long_Float (J) * 10.0 - 30.0 * Cos (Angle)),
                 Cv_Round (Dy + 100.0 - 30.0 * Sin (Angle))),
               White,
               1,
@@ -77,26 +77,26 @@ begin
               0);
          end loop;
       end if;
-      Cv_Ellipse ( +Img, CvPoint (Integer (Dx) + 150, Integer (Dy) + 100), Cv_Create_Size (100, 70), 0.0, 0.0, 360.0, White, -1, 8, 0 );
-      Cv_Ellipse ( +Img, CvPoint (Integer (Dx) + 115, Integer (Dy) + 70), Cv_Create_Size (30, 20), 0.0, 0.0, 360.0, Black, -1, 8, 0 );
-      Cv_Ellipse ( +Img, CvPoint (Integer (Dx) + 185, Integer (Dy) + 70), Cv_Create_Size (30, 20), 0.0, 0.0, 360.0, Black, -1, 8, 0 );
-      Cv_Ellipse ( +Img, CvPoint (Integer (Dx) + 115, Integer (Dy) + 70), Cv_Create_Size (15, 15), 0.0, 0.0, 360.0, White, -1, 8, 0 );
-      Cv_Ellipse ( +Img, CvPoint (Integer (Dx) + 185, Integer (Dy) + 70), Cv_Create_Size (15, 15), 0.0, 0.0, 360.0, White, -1, 8, 0 );
-      Cv_Ellipse ( +Img, CvPoint (Integer (Dx) + 115, Integer (Dy) + 70), Cv_Create_Size (5, 5), 0.0, 0.0, 360.0, Black, -1, 8, 0 );
-      Cv_Ellipse ( +Img, CvPoint (Integer (Dx) + 185, Integer (Dy) + 70), Cv_Create_Size (5, 5), 0.0, 0.0, 360.0, Black, -1, 8, 0 );
-      Cv_Ellipse ( +Img, CvPoint (Integer (Dx) + 150, Integer (Dy) + 100), Cv_Create_Size (10, 5), 0.0, 0.0, 360.0, Black, -1, 8, 0 );
-      Cv_Ellipse ( +Img, CvPoint (Integer (Dx) + 150, Integer (Dy) + 150), Cv_Create_Size (40, 10), 0.0, 0.0, 360.0, Black, -1, 8, 0 );
-      Cv_Ellipse ( +Img, CvPoint (Integer (Dx) + 27, Integer (Dy) + 100), Cv_Create_Size (20, 35), 0.0, 0.0, 360.0, White, -1, 8, 0 );
-      Cv_Ellipse ( +Img, CvPoint (Integer (Dx) + 273, Integer (Dy) + 100), Cv_Create_Size (20, 35), 0.0, 0.0, 360.0, White, -1, 8, 0 );
+      Cv_Ellipse ( +Img, Cv_Create_Point (Integer (Dx) + 150, Integer (Dy) + 100), Cv_Create_Size (100, 70), 0.0, 0.0, 360.0, White, -1, 8, 0 );
+      Cv_Ellipse ( +Img, Cv_Create_Point (Integer (Dx) + 115, Integer (Dy) + 70), Cv_Create_Size (30, 20), 0.0, 0.0, 360.0, Black, -1, 8, 0 );
+      Cv_Ellipse ( +Img, Cv_Create_Point (Integer (Dx) + 185, Integer (Dy) + 70), Cv_Create_Size (30, 20), 0.0, 0.0, 360.0, Black, -1, 8, 0 );
+      Cv_Ellipse ( +Img, Cv_Create_Point (Integer (Dx) + 115, Integer (Dy) + 70), Cv_Create_Size (15, 15), 0.0, 0.0, 360.0, White, -1, 8, 0 );
+      Cv_Ellipse ( +Img, Cv_Create_Point (Integer (Dx) + 185, Integer (Dy) + 70), Cv_Create_Size (15, 15), 0.0, 0.0, 360.0, White, -1, 8, 0 );
+      Cv_Ellipse ( +Img, Cv_Create_Point (Integer (Dx) + 115, Integer (Dy) + 70), Cv_Create_Size (5, 5), 0.0, 0.0, 360.0, Black, -1, 8, 0 );
+      Cv_Ellipse ( +Img, Cv_Create_Point (Integer (Dx) + 185, Integer (Dy) + 70), Cv_Create_Size (5, 5), 0.0, 0.0, 360.0, Black, -1, 8, 0 );
+      Cv_Ellipse ( +Img, Cv_Create_Point (Integer (Dx) + 150, Integer (Dy) + 100), Cv_Create_Size (10, 5), 0.0, 0.0, 360.0, Black, -1, 8, 0 );
+      Cv_Ellipse ( +Img, Cv_Create_Point (Integer (Dx) + 150, Integer (Dy) + 150), Cv_Create_Size (40, 10), 0.0, 0.0, 360.0, Black, -1, 8, 0 );
+      Cv_Ellipse ( +Img, Cv_Create_Point (Integer (Dx) + 27, Integer (Dy) + 100), Cv_Create_Size (20, 35), 0.0, 0.0, 360.0, White, -1, 8, 0 );
+      Cv_Ellipse ( +Img, Cv_Create_Point (Integer (Dx) + 273, Integer (Dy) + 100), Cv_Create_Size (20, 35), 0.0, 0.0, 360.0, White, -1, 8, 0 );
 
    end loop;
 
    Ret := Cv_Named_Window ("image", 1);
    Cv_Show_Image ("image", +Img);
 
-   Ret := Cv_Find_Contours (+Img, Storage, Contours'Access, Cv_Contour'Size / 8, Cv_Retr_Tree, CV_CHAIN_APPROX_SIMPLE, Cvpoint (0, 0));
+   Ret := Cv_Find_Contours (+Img, Storage, Contours'Access, Cv_Contour'Size / 8, Cv_Retr_Tree, CV_CHAIN_APPROX_SIMPLE, Cv_Create_point (0, 0));
 
-   Cv_Save (New_String ("contours.xml"), To_Void (Contours), Null_Ptr, Null_Ptr, CvAttrList (Attrs (0)'Unchecked_Access, null));
+   Cv_Save (New_String ("contours.xml"), To_Void (Contours), Null_Ptr, Null_Ptr, Cv_Create_Attr_List (Attrs (0)'Unchecked_Access, null));
    Contours := From_Void(Cv_Load (+"contours.xml", Storage));
 
 

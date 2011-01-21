@@ -14,15 +14,15 @@ begin
       Corners (I) := (0.0, 0.0);
    end loop;
 
-   Capture := CvCreateCameraCapture (0);
-   Retval := CvNamedWindow ("Chess Demo");
+   Capture := Cv_Create_Camera_Capture (0);
+   Retval := Cv_Named_Window ("Chess Demo");
 
    loop
-      Image := CvQueryFrame (Capture);
+      Image := Cv_Query_Frame (Capture);
 
       Retval := Cv_Find_Chessboard_Corners (+Image, (7, 7), Corners, Corner_Count'Access);
 
-      Cv_Draw_Chessboard:Corners (+Image, (7, 7), Corners, Corner_Count, Retval);
+      Cv_Draw_Chessboard_Corners (+Image, (7, 7), Corners, Corner_Count, Retval);
 
       Cv_Show_Image ("Chess Demo", +Image);
 

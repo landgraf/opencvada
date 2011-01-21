@@ -7,7 +7,7 @@ with Imgproc.Operations;
 with Core.Operations;
 
 procedure Histogram_Demo is
-   Capture : aliased Cv_Capture_P := Highgui.CvCreateCameraCapture (0);
+   Capture : aliased Cv_Capture_P := Highgui.Cv_Create_Camera_Capture (0);
    Image   : aliased Ipl_Image_P;
    Ret     : Integer;
    pragma Unreferenced (Ret);
@@ -35,7 +35,7 @@ procedure Histogram_Demo is
 
    -- hsv images
    Hist_Image, Hist_Image_2 , H, S, V, Hsv : aliased Ipl_Image_P;
-   Target  : aliased Ipl_Image_P := Highgui.CvLoadImage ("target.jpg");
+   Target  : aliased Ipl_Image_P := Highgui.Cv_Load_Image ("target.jpg");
 
    -- float
 
@@ -46,22 +46,22 @@ procedure Histogram_Demo is
                                                                                     0,
                                                                                     Core.To_2d_Pointer (Arr1'Access));
 
-      Hsv     : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width,
-                                                                      Image.all.Height),
-                                                                      Image.all.Depth,
-                                                                      Image.all.N_Channels);
-      H       : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width,
-                                                                      Image.all.Height),
-                                                                      Image.all.Depth,
-                                                                      1);
-      S       : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width,
-                                                                      Image.all.Height),
-                                                                      Image.all.Depth,
-                                                                      1);
-      V       : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width,
-                                                                      Image.all.Height),
-                                                                      Image.all.Depth,
-                                                                      1);
+      Hsv     : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image (Cv_Create_Size (Image.all.Width,
+                                                                        Image.all.Height),
+                                                                        Image.all.Depth,
+                                                                        Image.all.N_Channels);
+      H       : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image (Cv_Create_Size (Image.all.Width,
+                                                                        Image.all.Height),
+                                                                        Image.all.Depth,
+                                                                        1);
+      S       : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image (Cv_Create_Size (Image.all.Width,
+                                                                        Image.all.Height),
+                                                                        Image.all.Depth,
+                                                                        1);
+      V       : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image (Cv_Create_Size(Image.all.Width,
+                                                                        Image.all.Height),
+                                                                        Image.all.Depth,
+                                                                        1);
    begin
       --        Put_Line ("doing histogram{");
       Imgproc.Operations.Cv_Cvt_Color (+Image, +Hsv, Imgproc.CV_BGR2HSV);
@@ -73,7 +73,7 @@ procedure Histogram_Demo is
       Core.Operations.Cv_Release_Image (S'Access);
       Core.Operations.Cv_Release_Image (V'Access);
       return Hist;
-   end GetHist;
+   end Get_Hist;
 
    --     Char : Character ;
 begin
@@ -96,17 +96,17 @@ begin
 
       Image := Highgui.Cv_Retrieve_Frame (Capture);
 
-      Hist_Image_2 := Core.Operations.Cv_Create_Image (CvSize(H_Bins * Scale, S_Bins * Scale), 8, 3);
+      Hist_Image_2 := Core.Operations.Cv_Create_Image (Cv_Create_Size(H_Bins * Scale, S_Bins * Scale), 8, 3);
 
-      Hist_Image := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width,
-                                                   Image.all.Height),
-                                                   Image.all.Depth,
-                                                   1);
+      Hist_Image := Core.Operations.Cv_Create_Image (Cv_Create_Size(Image.all.Width,
+                                                     Image.all.Height),
+                                                     Image.all.Depth,
+                                                     1);
 
-      Hsv := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width, Image.all.Height), Image.all.Depth, Image.all.N_Channels);
-      H := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width, Image.all.Height), Image.all.Depth, 1);
-      S := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width, Image.all.Height), Image.all.Depth, 1);
-      V := Core.Operations.Cv_Create_Image (CvSize(Image.all.Width, Image.all.Height), Image.all.Depth, 1);
+      Hsv := Core.Operations.Cv_Create_Image (Cv_Create_Size(Image.all.Width, Image.all.Height), Image.all.Depth, Image.all.N_Channels);
+      H := Core.Operations.Cv_Create_Image (Cv_Create_Size(Image.all.Width, Image.all.Height), Image.all.Depth, 1);
+      S := Core.Operations.Cv_Create_Image (Cv_Create_Size(Image.all.Width, Image.all.Height), Image.all.Depth, 1);
+      V := Core.Operations.Cv_Create_Image (Cv_Create_Size(Image.all.Width, Image.all.Height), Image.all.Depth, 1);
 
       Imgproc.Operations.Cv_Cvt_Color (+Image, +Hsv, Imgproc.CV_BGR2HSV);
       Core.Operations.Cv_Split (+Hsv, +H, +S, +V, null);
@@ -125,8 +125,8 @@ begin
 --              Put(Value'Img & Max_Value'Img);
             Intensity := Core.Cv_Round ((Value * 255.0) / Long_Float (Max_Value));
             Core.Operations.Cv_Rectangle (+Hist_Image_2,
-                                         CvPoint (H_I * Scale, S_I * Scale),
-                                         Cvpoint (((H_I + 1) * Scale)-1, ((S_I + 1) * Scale)-1),
+                                         Cv_Create_Point (H_I * Scale, S_I * Scale),
+                                         Cv_Create_point (((H_I + 1) * Scale)-1, ((S_I + 1) * Scale)-1),
                                          Core.Operations.Cv_RGB (Intensity, Intensity, Intensity),
                                          Core.Operations.Cv_Filled);
          end loop;

@@ -4,7 +4,7 @@ with Core; use Core;
 procedure Camera_Test is
    Capture : aliased Cv_Capture_P;
    Image   : Ipl_Image_P;
-   Retval  : Integer;
+--     Retval  : Integer;
 begin
    Capture := Cv_Create_Camera_Capture (0);
    --     Retval := CvNamedWindow ("Test");

@@ -307,25 +307,25 @@ package Video.Background_Segm is
 
    procedure Cv_Bg_Code_Book_Update (Model : Cv_Bg_Code_Book_Model_P;
                                      Image : Cv_Arr_P;
-                                     Roi   : Cv_Rect := Cvrect (0, 0, 0, 0);
+                                     Roi   : Cv_Rect := Cv_Create_Rect (0, 0, 0, 0);
                                      Mask  : Cv_Arr_P := null);
 
    function Cv_Bg_Code_Book_Diff (Model  : Cv_Bg_Code_Book_Model_P;
                                   Image  : Cv_Arr_P;
                                   Fgmask : Cv_Arr_P;
-                                  Roi    : Cv_Rect := Cvrect (0, 0, 0, 0))
+                                  Roi    : Cv_Rect := Cv_Create_Rect (0, 0, 0, 0))
                                   return Integer;
 
    procedure Cv_Bg_Code_Book_Clear_Stale (Model        : Cv_Bg_Code_Book_Model_P;
                                           Stale_Thresh : Integer;
-                                          Roi          : Cv_Rect := Cvrect (0, 0, 0, 0);
+                                          Roi          : Cv_Rect := Cv_Create_Rect (0, 0, 0, 0);
                                           Mask         : Cv_Arr_P := null);
 
    function Cv_Segment_Fg_Mask (Fgmask      : Cv_Arr_P;
                                 Poly1_Hull0 : Integer := 1;
                                 Perim_Scale : Float := 4.0;
                                 Storage     : Cv_Mem_Storage_P := null;
-                                Offset      : Cv_Point := Cvpoint (0, 0))
+                                Offset      : Cv_Point := Cv_Create_Point (0, 0))
                                 return Cv_Seq_P;
 private
    --

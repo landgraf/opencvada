@@ -39,7 +39,7 @@ procedure Motempl is
                          Diff_Threshold : Long_Float) is
       Local_Time : constant Ada.Calendar.Time := Ada.Calendar.Clock;
       Timestamp  : constant Long_Float := Long_Float (Ada.Calendar.Seconds (Local_Time));
-      Size       : constant Cv_Size := CvSize (Img.all.Width, Img.all.Height);
+      Size       : constant Cv_Size := Cv_Create_Size (Img.all.Width, Img.all.Height);
       Idx2       : Integer;
       Idx1       : constant Integer := Last;
       Silh       : Ipl_Image_P;
@@ -56,8 +56,8 @@ procedure Motempl is
       if Mhi = null or else Mhi.all.Width /= Size.Width or else Mhi.all.Height /= Size.Height then
          for I in Integer range Buf'Range loop
             Cv_Release_Image (Buf (I)'Access);
-            Buf (I) := Cv_Create_Image (CvSize(Size.Width, Size.Height), IPL_DEPTH_8U, 1);
-            CvZero (+Buf (I));
+            Buf (I) := Cv_Create_Image (Cv_Create_Size (Size.Width, Size.Height), IPL_DEPTH_8U, 1);
+            Cv_Zero (+Buf (I));
          end loop;
          Cv_Release_Image (Mhi'Access);
          Cv_Release_Image (Orient'Access);

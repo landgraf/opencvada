@@ -105,7 +105,7 @@ package Calib_3d is
                                                Imagesize       : Cv_Size;
                                                Alpha           : Long_Float;
                                                Newcameramatrix : Cv_Mat_P;
-                                               Newimagesize    : Cv_Size := Cvsize (0, 0);
+                                               Newimagesize    : Cv_Size := Cv_Create_Size (0, 0);
                                                Validpixroi     : access Cv_Rect := null);
 
    --     Converts a rotation matrix to a rotation vector or vice versa.
@@ -276,7 +276,7 @@ package Calib_3d is
                                  T             : Cv_Mat_P;
                                  E             : Cv_Mat_P := null;
                                  F             : Cv_Mat_P := null;
-                                 Termcrit      : Cv_Term_Criteria := Cvtermcriteria (Cv_Termcrit_Iter + Cv_Termcrit_Eps, 30, 1.0e-6);
+                                 Termcrit      : Cv_Term_Criteria := Cv_Create_Term_Criteria (Cv_Termcrit_Iter + Cv_Termcrit_Eps, 30, 1.0e-6);
                                  Flags         : Integer := Cv_Calib_Fix_Intrinsic) return Long_Float;
 
    Cv_Calib_Zero_Disparity : constant := 1024;
@@ -297,7 +297,7 @@ package Calib_3d is
                                 Q              : Cv_Mat_P := null;
                                 Flags          : Integer := Cv_Calib_Zero_Disparity;
                                 Alpha          : Long_Float := 1.0;
-                                Newimagesize   : Cv_Size := Cvsize (0, 0);
+                                Newimagesize   : Cv_Size := Cv_Create_Size (0, 0);
                                 Roi1           : access Cv_Rect := null; -- might need to be Cv_Rect_P
                                 Roi2           : access Cv_Rect := null); -- might need to be Cv_Rect_P
 

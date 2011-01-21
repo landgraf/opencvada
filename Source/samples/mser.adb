@@ -92,10 +92,10 @@ begin
 
    Rsp := Cv_Load_Image (To_String (Path), CV_LOAD_IMAGE_COLOR);
    Ellipses := Cv_Clone_Image (Rsp);
-   CvCvtColor (To_Arr (Img), To_Arr(Ellipses), CV_GRAY2BGR);
-   Hsv := Cv_Create_Image (CvGetSize (To_Arr (Rsp)), IPL_DEPTH_8U, 3);
+   Cv_Cvt_Color (To_Arr (Img), To_Arr(Ellipses), CV_GRAY2BGR);
+   Hsv := Cv_Create_Image (Cv_Get_Size (To_Arr (Rsp)), IPL_DEPTH_8U, 3);
    Cv_Cvt_Color (To_Arr (Rsp), To_Arr (Hsv), CV_BGR2YCrCb);
-   Params := Cv_Mser_Params;
+   Params := Cv_Create_Mser_Params;
 
    Cv_Extract_Mser (To_Arr (Hsv), null, Contours'Access, Storage, Params);
    Rsp_Array := new Cv_8u_Array (1 .. (Rsp.all.Width * Rsp.all.Height * 3));
@@ -117,7 +117,7 @@ begin
 
    for I in Integer range 0 .. Contours.all.Total - 1 loop
       Contour := From_Void (Cv_Get_Seq_Elem (Contours, I)).all;
-      Box := CvFitEllipse2 (To_Arr (Contour));
+      Box := Cv_Fit_Ellipse2 (To_Arr (Contour));
       Box.Angle := CV_PI / 2.0 - Box.Angle;
 
       if Contour.all.Color > 0 then
@@ -152,7 +152,7 @@ begin
       Cv_Destroy_Window ("ellipses");
 
       Cv_Release_Image (Rsp'Access);
-      Cv_Release-image (Img'Access);
+      Cv_Release_Image (Img'Access);
       Cv_Release_Image (Ellipses'Access);
    end Main_Loop;
 end Mser;

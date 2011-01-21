@@ -35,7 +35,7 @@ procedure Bgfg_Codebook is
    Ret       : Integer;
    Ret_Seq   : Cv_Seq_P; -- ignore
 begin
-   Model := CvCreateBGCodeBookModel;
+   Model := Cv_Create_BG_Code_Book_Model;
    Model.all.Mod_Min (1) := 3; Model.all.Mod_Min (2) := 3; Model.all.Mod_Min (3) := 3;
    Model.all.Mod_Max (1) := 10; Model.all.Mod_Max (2) := 10; Model.all.Mod_Max (3) := 10;
    Model.all.Cb_Bounds (1) := 10; Model.all.Cb_Bounds (2) := 10; Model.all.Cb_Bounds (3) := 10;
@@ -45,7 +45,7 @@ begin
          Nframes_To_Learn_BG := Integer'Value (To_String (Temp_String));
          if Nframes_To_Learn_Bg <= 0 then
             Help;
-            return;
+--              return;
          end if;
       else
          Filename := Filename & Ada.Command_Line.argument(I);
@@ -80,13 +80,13 @@ begin
       -- first frame
       if Nframes = 1 and Raw_Image /= null then
          Yuv_Image := Cv_Clone_Image (Raw_Image);
-         Imask_Code_Book := Cv_Create_Image (CvGetSize (+Raw_Image), Ipl_Depth_8u, 1);
-         Imask_Code_Book_CC := Cv_Create_Image (CvGetSize (+Raw_Image), Ipl_Depth_8u, 1);
-         CvSet (+Imask_Code_Book, Cv_Create_Scalar (255.0));
+         Imask_Code_Book := Cv_Create_Image (Cv_Get_Size (+Raw_Image), Ipl_Depth_8u, 1);
+         Imask_Code_Book_CC := Cv_Create_Image (Cv_Get_Size (+Raw_Image), Ipl_Depth_8u, 1);
+         Cv_Set_All (+Imask_Code_Book, Cv_Create_Scalar (255.0));
 
-         Ret := CvNamedWindow ("Raw", 1);
-         Ret := CvNamedWindow ("ForegroundCodeBook", 1);
-         Ret := CvNamedWindow ("CodeBook_ConnectComp", 1);
+         Ret := Cv_Named_Window ("Raw", 1);
+         Ret := Cv_Named_Window ("ForegroundCodeBook", 1);
+         Ret := Cv_Named_Window ("CodeBook_ConnectComp", 1);
       end if;
 
       --  If we've got an rawImage and are good to go:
@@ -100,16 +100,16 @@ begin
             Cv_Bg_Code_Book_Clear_Stale (Model, Model.all.T / 2);
 
             Put_Line (Nframes'Img);
-            Cv_Release_Capture (Capture'Access);
-            Cv_Destroy_Window ( "Raw" );
-            Cv_Destroy_Window ( "ForegroundCodeBook");
-            Cv_Destroy_Window ( "CodeBook_ConnectComp");
-            return;
+--              Cv_Release_Capture (Capture'Access);
+--              Cv_Destroy_Window ( "Raw" );
+--              Cv_Destroy_Window ( "ForegroundCodeBook");
+--              Cv_Destroy_Window ( "CodeBook_ConnectComp");
+--              return;
          end if;
 
          if Nframes - 1 >= Nframes_To_Learn_Bg then
             Ret := Cv_Bg_Code_Book_Diff (Model, +Yuv_Image, +Imask_Code_Book);
-            CvCopy (+Imask_Code_Book, +Imask_Code_Book_Cc);
+            Cv_Copy (+Imask_Code_Book, +Imask_Code_Book_Cc);
             Ret_Seq := Cv_Segment_Fg_Mask (+Imask_Code_Book_Cc);
          end if;
 

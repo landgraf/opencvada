@@ -57,10 +57,10 @@ procedure Distrans is
       Cv_Pow (To_Arr (Dist), To_Arr (Dist), 0.5);
 
       Cv_Convert_Scale (To_Arr (Dist), To_Arr (Dist_32s), 1.0, 0.5);
-      Cv_And_S (To_Arr (Dist_32s), CvScalarAll (255.0), To_Arr (Dist_32s));
+      Cv_And_S (To_Arr (Dist_32s), Cv_Scalar_All (255.0), To_Arr (Dist_32s));
       Cv_Convert_Scale (To_Arr (Dist_32s), To_Arr (Dist_8u1), 1.0);
       Cv_Convert_Scale (To_Arr (Dist_32s), To_Arr (Dist_32s), -1.0);
-      Cv_Add_S (To_Arr (Dist_32s), CvScalarAll (255.0), To_Arr (Dist_32s));
+      Cv_Add_S (To_Arr (Dist_32s), Cv_Scalar_All (255.0), To_Arr (Dist_32s));
       Cv_Convert_Scale (To_Arr (Dist_32s), To_Arr (Dist_8u2), 1.0);
       Cv_Merge (To_Arr (Dist_8u1), To_Arr (Dist_8u2), To_Arr (Dist_8u2), null, To_Arr (Dist_8u));
       Cv_Show_Image (Window_Name, To_Arr (Dist_8u));
@@ -82,11 +82,11 @@ begin
       return;
    end if;
 
-   Dist     := Cv_Create_Image (CvSize (Gray.all.Width, Gray.all.Height), IPL_DEPTH_32F, 1);
+   Dist     := Cv_Create_Image (Cv_Create_Size (Gray.all.Width, Gray.all.Height), IPL_DEPTH_32F, 1);
    Dist_8u1 := Cv_Clone_Image (Gray);
    Dist_8u2 := Cv_Clone_Image (Gray);
-   Dist_8u  := Cv_Create_Image (CvSize (Gray.all.Width, Gray.all.Height), IPL_DEPTH_8U, 3);
-   Dist_32s := Cv_Create_Image (CvSize (Gray.all.Width, Gray.all.Height), IPL_DEPTH_32S, 1);
+   Dist_8u  := Cv_Create_Image (Cv_Create_Size (Gray.all.Width, Gray.all.Height), IPL_DEPTH_8U, 3);
+   Dist_32s := Cv_Create_Image (Cv_Create_Size (Gray.all.Width, Gray.all.Height), IPL_DEPTH_32S, 1);
 
    Edge := Cv_Clone_Image (Gray);
 

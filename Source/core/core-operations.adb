@@ -32,14 +32,14 @@ package body Core.Operations is
                            Newdims  : Integer;
                            Newsizes : Cv_32s_Array) return Cv_Arr_P is
    begin
-      return Cv_Arr_P (Cvreshapematnd (Arr, Header'Size / 8, Header, Newcn, Newdims, Newsizes));
+      return Cv_Arr_P (Cv_Reshape_Mat_Nd (Arr, Header'Size / 8, Header, Newcn, Newdims, Newsizes));
    end Cv_Reshape_Nd;
 
    procedure Cv_Convert (Src : Cv_Arr_P;
                          Dst : Cv_Arr_P) is
    begin
       Cv_Convert_Scale (Src, Dst, 1.0, 0.0);
-   end Cvconvert;
+   end Cv_Convert;
 
    -- wrapper to cvScaleAdd
    procedure Cv_Axpy (Src1  : Cv_Arr_P;
@@ -47,7 +47,7 @@ package body Core.Operations is
                       Src2  : Cv_Arr_P;
                       Dst   : Cv_Arr_P) is
    begin
-      Cv_Scale_Add (Src1, Cvrealscalar (Scale), Src2, Dst);
+      Cv_Scale_Add (Src1, Cv_Real_Scalar (Scale), Src2, Dst);
    end Cv_Axpy;
 
    procedure Cv_Mat_Mul_Add (Src1  : access Cv_Arr;
@@ -122,10 +122,10 @@ package body Core.Operations is
                     G : Integer;
                     B : Integer) return Cv_Scalar is
    begin
-      return Cv_Scalar (Long_Float (B),
-                        Long_Float (G),
-                        Long_Float (R),
-                        0.0);
+      return Cv_Create_Scalar (Long_Float (B),
+                               Long_Float (G),
+                               Long_Float (R),
+                               0.0);
    end Cv_Rgb;
 
    procedure Cv_Next_Line_Point (Lineiterator : Cv_Line_Iterator_P) is
@@ -193,7 +193,7 @@ package body Core.Operations is
                             File    : String := Gnat.Source_Info.File;
                             Line    : Integer := Gnat.Source_Info.Line) is
    begin
-      if (Cvgeterrstatus >= 0) then
+      if (Cv_Get_Err_Status >= 0) then
          Opencv_Error (Integer (Cv_Stsbacktrace),
                        (Func),
                        (Context),

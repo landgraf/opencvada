@@ -1,4 +1,4 @@
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_Io; use Ada.Text_Io;
 -----------------------------------------------------------------------
 -- Ada bindings for OpenCV 2.1.1 (from SVN 3 October 2010, rev. 3703)
 -- Developed as a master thesis project at Mälardalens Högskola
@@ -20,226 +20,226 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Core is
 
-   function CV_NODE_TYPE (Flags : Unsigned_32)
+   function Cv_Node_Type (Flags : Unsigned_32)
                           return Unsigned_32 is
    begin
       return (Flags and Cv_Node_Type_Mask);
-   end CV_NODE_TYPE;
+   end Cv_Node_Type;
 
-   function CV_NODE_IS_INT (Flags : Unsigned_32)
+   function Cv_Node_Is_Int (Flags : Unsigned_32)
                             return Boolean is
    begin
-      if Cv_Node_Type (Flags) = CV_NODE_INT then
+      if Cv_Node_Type (Flags) = Cv_Node_Int then
          return True;
       else
          return False;
       end if;
-   end CV_NODE_IS_INT;
+   end Cv_Node_Is_Int;
 
-   function CV_NODE_IS_REAL (Flags : Unsigned_32)
+   function Cv_Node_Is_Real (Flags : Unsigned_32)
                              return Boolean is
    begin
-      if Cv_Node_Type (Flags) = CV_NODE_REAL then
+      if Cv_Node_Type (Flags) = Cv_Node_Real then
          return True;
       else
          return False;
       end if;
-   end CV_NODE_IS_REAL;
+   end Cv_Node_Is_Real;
 
-   function CV_NODE_IS_STRING (Flags : Unsigned_32)
+   function Cv_Node_Is_String (Flags : Unsigned_32)
                                return Boolean is
    begin
-      if Cv_Node_Type (Flags) = CV_NODE_STRING then
+      if Cv_Node_Type (Flags) = Cv_Node_String then
          return True;
       else
          return False;
       end if;
-   end CV_NODE_IS_STRING;
+   end Cv_Node_Is_String;
 
-   function CV_NODE_IS_SEQ (Flags : Unsigned_32)
+   function Cv_Node_Is_Seq (Flags : Unsigned_32)
                             return Boolean is
    begin
-      if Cv_Node_Type (Flags) = CV_NODE_SEQ then
+      if Cv_Node_Type (Flags) = Cv_Node_Seq then
          return True;
       else
          return False;
       end if;
-   end CV_NODE_IS_SEQ;
+   end Cv_Node_Is_Seq;
 
-   function CV_NODE_IS_MAP (Flags : Unsigned_32)
+   function Cv_Node_Is_Map (Flags : Unsigned_32)
                             return Boolean is
    begin
-      if Cv_Node_Type (Flags) = CV_NODE_MAP then
+      if Cv_Node_Type (Flags) = Cv_Node_Map then
          return True;
       else
          return False;
       end if;
-   end CV_NODE_IS_MAP;
+   end Cv_Node_Is_Map;
 
-   function CV_NODE_IS_COLLECTION (Flags : Unsigned_32)
+   function Cv_Node_Is_Collection (Flags : Unsigned_32)
                                    return Boolean is
    begin
-      if Cv_Node_Type (Flags) >= CV_NODE_SEQ then
+      if Cv_Node_Type (Flags) >= Cv_Node_Seq then
          return True;
       else
          return False;
       end if;
-   end CV_NODE_IS_COLLECTION;
+   end Cv_Node_Is_Collection;
 
-   function CV_NODE_IS_FLOW (Flags : Unsigned_32)
+   function Cv_Node_Is_Flow (Flags : Unsigned_32)
                              return Boolean is
    begin
-      if (Flags and CV_NODE_FLOW) /= 0 then
+      if (Flags and Cv_Node_Flow) /= 0 then
          return True;
       else
          return False;
       end if;
-   end CV_NODE_IS_FLOW;
+   end Cv_Node_Is_Flow;
 
-   function CV_NODE_IS_EMPTY (Flags : Unsigned_32)
+   function Cv_Node_Is_Empty (Flags : Unsigned_32)
                               return Boolean is
    begin
-      if (Flags and CV_NODE_EMPTY) /= 0 then
+      if (Flags and Cv_Node_Empty) /= 0 then
          return True;
       else
          return False;
       end if;
-   end CV_NODE_IS_EMPTY;
+   end Cv_Node_Is_Empty;
 
-   function CV_NODE_IS_USER (Flags : Unsigned_32)
+   function Cv_Node_Is_User (Flags : Unsigned_32)
                              return Boolean is
    begin
-      if (Flags and CV_NODE_USER) /= 0 then
+      if (Flags and Cv_Node_User) /= 0 then
          return True;
       else
          return False;
       end if;
-   end CV_NODE_IS_USER;
+   end Cv_Node_Is_User;
 
-   function CV_NODE_HAS_NAME (Flags : Unsigned_32)
+   function Cv_Node_Has_Name (Flags : Unsigned_32)
                               return Boolean is
    begin
-      if (Flags and CV_NODE_NAMED) /= 0 then
+      if (Flags and Cv_Node_Named) /= 0 then
          return True;
       else
          return False;
       end if;
-   end CV_NODE_HAS_NAME;
+   end Cv_Node_Has_Name;
 
-   function CV_NODE_SEQ_IS_SIMPLE (Seq : access Cv_Seq)
+   function Cv_Node_Seq_Is_Simple (Seq : access Cv_Seq)
                                    return Boolean is
    begin
-      if (Seq.all.Flags and CV_NODE_SEQ_SIMPLE) /= 0 then
+      if (Seq.all.Flags and Cv_Node_Seq_Simple) /= 0 then
          return True;
       else
          return False;
       end if;
-   end CV_NODE_SEQ_IS_SIMPLE;
+   end Cv_Node_Seq_Is_Simple;
 
-   function CvAttrList (Attr : Cv_String_Pointer := null;
-                        Next : Cv_Attr_List_P := null)
-                        return Cv_Attr_List is
+   function Cv_Create_Attr_List (Attr : Cv_String_Pointer := null;
+                                 Next : Cv_Attr_List_P := null)
+                                 return Cv_Attr_List is
       L : Cv_Attr_List;
    begin
       L.Attr := Attr;
       L.Next := Next;
       return L;
-   end CvAttrList;
+   end Cv_Create_Attr_List;
 
-   procedure CV_WRITE_SEQ_ELEM_VAR ( Elem_Ptr : Cv_Arr_Pointer;
+   procedure Cv_Write_Seq_Elem_Var ( Elem_Ptr : Cv_Arr_Pointer;
                                     Writer   : Cv_Seq_Writer_P ) is
    begin
       if (Writer.all.Ptr - Writer.all.Block_Max) >= 0 then
-         CvCreateSeqBlock (Writer);
+         Cv_Create_Seq_Block (Writer);
       end if;
-      Memcpy (Writer.all.Ptr'Address, Elem_Ptr'Address, System.CRTL.Size_T (Writer.all.Seq.all.Elem_Size));
+      Memcpy (Writer.all.Ptr'Address, Elem_Ptr'Address, System.Crtl.Size_T (Writer.all.Seq.all.Elem_Size));
       Writer.all.Ptr := Writer.all.Ptr + Ptrdiff_T (Writer.all.Seq.all.Elem_Size);
-   end CV_WRITE_SEQ_ELEM_VAR;
+   end Cv_Write_Seq_Elem_Var;
 
-   procedure CV_NEXT_SEQ_ELEM (Elem_Size : Integer;
-                               Reader    : Cv_Seq_Reader_P) is
-   begin
-      Reader.all.Ptr := Reader.all.Ptr + Ptrdiff_T (Elem_Size);
-      if (Reader.all.Ptr - Reader.all.BlockMax) >= 0 then
-         CvChangeSeqBlock (To_Void (Reader), 1);
-      end if;
-   end CV_NEXT_SEQ_ELEM;
+--     procedure Cv_Next_Seq_Elem (Elem_Size : Integer;
+--                                 Reader    : Cv_Seq_Reader_P) is
+--     begin
+--        Reader.all.Ptr := Reader.all.Ptr + Ptrdiff_T (Elem_Size);
+--        if (Reader.all.Ptr - Reader.all.Blockmax) >= 0 then
+--           Cv_Change_Seq_Block (To_Void (Reader), 1);
+--        end if;
+--     end Cv_Next_Seq_Elem;
 
-   procedure CV_NEXT_SEQ_ELEM (Elem_Size : Integer;
+   procedure Cv_Next_Seq_Elem (Elem_Size : Integer;
                                Reader    : Cv_Chain_Pt_Reader_P) is
    begin
       Reader.all.Ptr := Reader.all.Ptr + Ptrdiff_T (Elem_Size);
-      if (Reader.all.Ptr - Reader.all.BlockMax) >= 0 then
-         CvChangeSeqBlock (To_Void (Reader), 1);
+      if (Reader.all.Ptr - Reader.all.Blockmax) >= 0 then
+         Cv_Change_Seq_Block (To_Void (Reader), 1);
       end if;
-   end CV_NEXT_SEQ_ELEM;
+   end Cv_Next_Seq_Elem;
 
-   procedure CV_PREV_SEQ_ELEM ( Elem_Size : Integer;
+   procedure Cv_Prev_Seq_Elem ( Elem_Size : Integer;
                                Reader    : Cv_Seq_Reader_P ) is
    begin
       Reader.all.Ptr := Reader.all.Ptr - Ptrdiff_T (Elem_Size);
-      if (Reader.all.BlockMin - Reader.all.Ptr) > 0 then
-         CvChangeSeqBLock (To_Void (Reader), -1);
+      if (Reader.all.Blockmin - Reader.all.Ptr) > 0 then
+         Cv_Change_Seq_Block (To_Void (Reader), -1);
       end if;
-   end CV_PREV_SEQ_ELEM;
+   end Cv_Prev_Seq_Elem;
 
-   procedure CV_READ_SEQ_ELEM ( Elem  : Cv_Arr_Pointer;
+   procedure Cv_Read_Seq_Elem ( Elem  : Cv_Arr_Pointer;
                                Reader : Cv_Seq_Reader_P ) is
    begin
       Memcpy (Elem'Address, Reader.all.Ptr'Address, System.Crtl.Size_T (Reader.all.Seq.all.Elem_Size));
-      CV_NEXT_SEQ_ELEM (Reader.all.Seq.all.Elem_Size, Reader);
-   end CV_READ_SEQ_ELEM;
+      Cv_Next_Seq_Elem (Reader.all.Seq.all.Elem_Size, Reader);
+   end Cv_Read_Seq_Elem;
 
-   procedure CV_READ_SEQ_ELEM ( Elem  : Unsigned_8;
+   procedure Cv_Read_Seq_Elem ( Elem  : Unsigned_8;
                                Reader : Cv_Chain_Pt_Reader_P ) is
    begin
       Memcpy (Elem'Address, Reader.all.Ptr'Address, System.Crtl.Size_T (Reader.all.Seq.all.Elem_Size));
-      CV_NEXT_SEQ_ELEM (Reader.all.Seq.all.Elem_Size, Reader);
-   end CV_READ_SEQ_ELEM;
+      Cv_Next_Seq_Elem (Reader.all.Seq.all.Elem_Size, Reader);
+   end Cv_Read_Seq_Elem;
 
-   procedure CV_REV_READ_SEQ_ELEM ( Elem  : Cv_Arr_Pointer;
+   procedure Cv_Rev_Read_Seq_Elem ( Elem  : Cv_Arr_Pointer;
                                    Reader : Cv_Seq_Reader_P ) is
    begin
-      Memcpy (Elem'Address, Reader.all.Ptr'Address, System.CRTL.Size_T (Reader.all.Seq.all.Elem_Size));
-      CV_PREV_SEQ_ELEM (Reader.all.Seq.all.Elem_Size, Reader);
-   end CV_REV_READ_SEQ_ELEM;
+      Memcpy (Elem'Address, Reader.all.Ptr'Address, System.Crtl.Size_T (Reader.all.Seq.all.Elem_Size));
+      Cv_Prev_Seq_Elem (Reader.all.Seq.all.Elem_Size, Reader);
+   end Cv_Rev_Read_Seq_Elem;
 
 
-   procedure CV_READ_CHAIN_POINT ( Pt    : out Cv_Point;
+   procedure Cv_Read_Chain_Point ( Pt    : out Cv_Point;
                                   Reader : Cv_Chain_Pt_Reader_P ) is
    begin
       Pt := Reader.all.Pt;
       if not (Reader.all.Ptr = null) then
-         CV_READ_SEQ_ELEM (Reader.all.Code, Reader);
+         Cv_Read_Seq_Elem (Reader.all.Code, Reader);
          if ((Reader.all.Code and not (Unsigned_8 (7))) = 0) then
             Reader.all.Pt.X := Reader.all.Pt.X + Integer (Reader.all.Deltas (Integer (Reader.all.Code), 1));
             Reader.all.Pt.Y := Reader.all.Pt.Y + Integer (Reader.all.Deltas (Integer (Reader.all.Code), 2));
          end if;
       end if;
 
-   end CV_READ_CHAIN_POINT;
+   end Cv_Read_Chain_Point;
 
-   function CV_CURRENT_POINT ( Reader : Cv_Chain_Pt_Reader_P ) return Cv_Point_P is
+   function Cv_Current_Point ( Reader : Cv_Chain_Pt_Reader_P ) return Cv_Point_P is
    begin
       return From_Arr (Value (Reader.all.Ptr) (1));
-   end CV_CURRENT_POINT;
+   end Cv_Current_Point;
 
-   function CV_PREV_POINT ( Reader : Cv_Chain_Pt_Reader_P) return Cv_Point_P is
+   function Cv_Prev_Point ( Reader : Cv_Chain_Pt_Reader_P) return Cv_Point_P is
    begin
-      return From_Arr (Value (Reader.all.PrevElem) (1));
-   end CV_PREV_POINT;
+      return From_Arr (Value (Reader.all.Prevelem) (1));
+   end Cv_Prev_Point;
 
-   procedure CV_READ_EDGE ( Pt1   : out Cv_Point_P;
+   procedure Cv_Read_Edge ( Pt1   : out Cv_Point_P;
                            Pt2    : out Cv_Point_P;
                            Reader : Cv_Chain_Pt_Reader_P ) is
    begin
-      Pt1 := CV_PREV_POINT (Reader);
-      Pt2 := CV_CURRENT_POINT (Reader);
-      Reader.all.PrevElem := Reader.all.Ptr;
-      CV_NEXT_SEQ_ELEM (Cv_Point'Size / 8, Reader);
-   end CV_READ_EDGE;
+      Pt1 := Cv_Prev_Point (Reader);
+      Pt2 := Cv_Current_Point (Reader);
+      Reader.all.Prevelem := Reader.all.Ptr;
+      Cv_Next_Seq_Elem (Cv_Point'Size / 8, Reader);
+   end Cv_Read_Edge;
 
-   function CV_NEXT_GRAPH_EDGE ( Edge  : Cv_Graph_Edge_P;
+   function Cv_Next_Graph_Edge ( Edge  : Cv_Graph_Edge_P;
                                 Vertex : Cv_Graph_Vtx_P ) return Cv_Graph_Edge_P is
    begin
       if (Edge.all.Vtx (1) = Vertex) then
@@ -248,280 +248,280 @@ package body Core is
          return Edge.all.Next (2);
       end if;
       return null;
-   end CV_NEXT_GRAPH_EDGE;
+   end Cv_Next_Graph_Edge;
 
-   function CV_IS_STORAGE (Storage : Cv_Mem_Storage_P) return Integer is
+   function Cv_Is_Storage (Storage : Cv_Mem_Storage_P) return Integer is
    begin
       if not (Storage = null) then
-         if (Unsigned_32 (Storage.all.Signature) and CV_MAGIC_MASK) = CV_STORAGE_MAGIC_VAL then
+         if (Unsigned_32 (Storage.all.Signature) and Cv_Magic_Mask) = Cv_Storage_Magic_Val then
             return 1;
          end if;
       end if;
       return 0;
-   end CV_IS_STORAGE;
+   end Cv_Is_Storage;
 
-   function CV_IS_SET_ELEM (Ptr : CV_Set_Elem_P) return Integer is
+   function Cv_Is_Set_Elem (Ptr : Cv_Set_Elem_P) return Integer is
    begin
       if Ptr.all.Flags >= 0 then
          return 1;
       end if;
       return 0;
-   end CV_IS_SET_ELEM;
+   end Cv_Is_Set_Elem;
 
    --#define CV_IS_SEQ(seq) \
    --    ((seq) != NULL && (((CvSeq*)(seq))->flags & CV_MAGIC_MASK) == CV_SEQ_MAGIC_VAL)
-   function CV_IS_SEQ (Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq (Seq : Cv_Seq_P) return Integer is
    begin
       if not (Seq = null) then
-         if (Seq.all.Flags and CV_MAGIC_MASK) = CV_SEQ_MAGIC_VAL then
+         if (Seq.all.Flags and Cv_Magic_Mask) = Cv_Seq_Magic_Val then
             return 1;
          end if;
       end if;
       return 0;
-   end CV_IS_SEQ;
+   end Cv_Is_Seq;
 
    --#define CV_IS_SET(set) \
    --((set) != NULL && (((CvSeq*)(set))->flags & CV_MAGIC_MASK) == CV_SET_MAGIC_VAL)
-   function CV_IS_SET (Set : Cv_Seq_P) return Integer is
+   function Cv_Is_Set (Set : Cv_Seq_P) return Integer is
    begin
       if not (Set = null) then
-         if (Set.all.Flags and CV_MAGIC_MASK) = CV_SET_MAGIC_VAL then
+         if (Set.all.Flags and Cv_Magic_Mask) = Cv_Set_Magic_Val then
             return 1;
          end if;
       end if;
       return 0;
-   end CV_IS_SET;
+   end Cv_Is_Set;
 
-   function CV_SEQ_ELTYPE_POINT return Unsigned_32 is  --/* (x,y) */ -- used to be Integer
+   function Cv_Seq_Eltype_Point return Unsigned_32 is  --/* (x,y) */ -- used to be Integer
    begin
-      return CV_MAKETYPE (CV_32S, 2);  --/* (x,y) */
-   end CV_SEQ_ELTYPE_POINT;
+      return Cv_Maketype (Cv_32s, 2);  --/* (x,y) */
+   end Cv_Seq_Eltype_Point;
 
-   function CV_SEQ_ELTYPE_CODE return Unsigned_32 is -- used to be Integer
+   function Cv_Seq_Eltype_Code return Unsigned_32 is -- used to be Integer
    begin
-      return CV_MAKETYPE (CV_8U, 1);
-   end CV_SEQ_ELTYPE_CODE;
+      return Cv_Maketype (Cv_8u, 1);
+   end Cv_Seq_Eltype_Code;
 
-   function CV_SEQ_ELTYPE_INDEX return Unsigned_32 is -- used to be Integer
+   function Cv_Seq_Eltype_Index return Unsigned_32 is -- used to be Integer
    begin
-      return CV_MAKETYPE (CV_32S, 1);  --/* #(x,y) */
-   end CV_SEQ_ELTYPE_INDEX;
+      return Cv_Maketype (Cv_32s, 1);  --/* #(x,y) */
+   end Cv_Seq_Eltype_Index;
 
-   function CV_SEQ_ELTYPE_POINT3D return Unsigned_32 is
+   function Cv_Seq_Eltype_Point3d return Unsigned_32 is
    begin
-      return CV_MAKETYPE (CV_32F, 3);  --/* (x,y,z)  */ -- used to be Integer
-   end CV_SEQ_ELTYPE_POINT3D;
+      return Cv_Maketype (Cv_32f, 3);  --/* (x,y,z)  */ -- used to be Integer
+   end Cv_Seq_Eltype_Point3d;
 
-   function CV_SEQ_POINT_SET return Integer is
+   function Cv_Seq_Point_Set return Integer is
    begin
-      return Integer (CV_SEQ_KIND_GENERIC or Unsigned_32 (CV_SEQ_ELTYPE_POINT));
-   end CV_SEQ_POINT_SET;
+      return Integer (Cv_Seq_Kind_Generic or Unsigned_32 (Cv_Seq_Eltype_Point));
+   end Cv_Seq_Point_Set;
 
-   function CV_SEQ_POINT3D_SET return Integer is
+   function Cv_Seq_Point3d_Set return Integer is
    begin
-      return Integer (CV_SEQ_KIND_GENERIC or Unsigned_32 (CV_SEQ_ELTYPE_POINT3D));
-   end CV_SEQ_POINT3D_SET;
+      return Integer (Cv_Seq_Kind_Generic or Unsigned_32 (Cv_Seq_Eltype_Point3d));
+   end Cv_Seq_Point3d_Set;
 
-   function CV_SEQ_POLYLINE return Integer is
+   function Cv_Seq_Polyline return Integer is
    begin
-      return Integer (CV_SEQ_KIND_CURVE or Unsigned_32 (CV_SEQ_ELTYPE_POINT));
-   end CV_SEQ_POLYLINE;
+      return Integer (Cv_Seq_Kind_Curve or Unsigned_32 (Cv_Seq_Eltype_Point));
+   end Cv_Seq_Polyline;
 
-   function CV_SEQ_POLYGON return Integer is
+   function Cv_Seq_Polygon return Integer is
    begin
-      return Integer (CV_SEQ_FLAG_CLOSED or Unsigned_32 (CV_SEQ_POLYLINE));
-   end CV_SEQ_POLYGON;
+      return Integer (Cv_Seq_Flag_Closed or Unsigned_32 (Cv_Seq_Polyline));
+   end Cv_Seq_Polygon;
 
-   function CV_SEQ_SIMPLE_POLYGON return Integer is
+   function Cv_Seq_Simple_Polygon return Integer is
    begin
-      return Integer (CV_SEQ_FLAG_SIMPLE or Unsigned_32 (CV_SEQ_POLYGON  ));
-   end CV_SEQ_SIMPLE_POLYGON;
+      return Integer (Cv_Seq_Flag_Simple or Unsigned_32 (Cv_Seq_Polygon  ));
+   end Cv_Seq_Simple_Polygon;
 
-   function CV_SEQ_CHAIN return Integer is
+   function Cv_Seq_Chain return Integer is
    begin
-      return Integer (CV_SEQ_KIND_CURVE or Unsigned_32 (CV_SEQ_ELTYPE_CODE));
-   end CV_SEQ_CHAIN;
+      return Integer (Cv_Seq_Kind_Curve or Unsigned_32 (Cv_Seq_Eltype_Code));
+   end Cv_Seq_Chain;
 
-   function CV_SEQ_CHAIN_CONTOUR return Integer is
+   function Cv_Seq_Chain_Contour return Integer is
    begin
-      return Integer (CV_SEQ_FLAG_CLOSED or Unsigned_32 (CV_SEQ_CHAIN));
-   end CV_SEQ_CHAIN_CONTOUR;
+      return Integer (Cv_Seq_Flag_Closed or Unsigned_32 (Cv_Seq_Chain));
+   end Cv_Seq_Chain_Contour;
 
-   function CV_SEQ_POLYGON_TREE return Integer is
+   function Cv_Seq_Polygon_Tree return Integer is
    begin
-      return Integer (CV_SEQ_KIND_BIN_TREE or Unsigned_32 (CV_SEQ_ELTYPE_TRIAN_ATR));
-   end CV_SEQ_POLYGON_TREE;
+      return Integer (Cv_Seq_Kind_Bin_Tree or Unsigned_32 (Cv_Seq_Eltype_Trian_Atr));
+   end Cv_Seq_Polygon_Tree;
 
-   function CV_SEQ_CONNECTED_COMP return Integer is
+   function Cv_Seq_Connected_Comp return Integer is
    begin
-      return Integer (CV_SEQ_KIND_GENERIC or Unsigned_32 (CV_SEQ_ELTYPE_CONNECTED_COMP));
-   end CV_SEQ_CONNECTED_COMP;
+      return Integer (Cv_Seq_Kind_Generic or Unsigned_32 (Cv_Seq_Eltype_Connected_Comp));
+   end Cv_Seq_Connected_Comp;
 
-   function CV_SEQ_INDEX return Integer is
+   function Cv_Seq_Index return Integer is
    begin
-      return Integer (CV_SEQ_KIND_GENERIC or Unsigned_32 (CV_SEQ_ELTYPE_INDEX));
-   end CV_SEQ_INDEX;
+      return Integer (Cv_Seq_Kind_Generic or Unsigned_32 (Cv_Seq_Eltype_Index));
+   end Cv_Seq_Index;
 
-   function  CV_SEQ_ELTYPE ( Seq : Cv_Seq_P ) return Unsigned_32 is
+   function  Cv_Seq_Eltype ( Seq : Cv_Seq_P ) return Unsigned_32 is
    begin
-      return Seq.all.Flags and CV_SEQ_ELTYPE_MASK;
-   end CV_SEQ_ELTYPE;
+      return Seq.all.Flags and Cv_Seq_Eltype_Mask;
+   end Cv_Seq_Eltype;
 
-   function CV_SEQ_KIND ( Seq : Cv_Seq_P ) return Integer is
+   function Cv_Seq_Kind ( Seq : Cv_Seq_P ) return Integer is
    begin
-      return Integer (Seq.all.Flags and CV_SEQ_KIND_MASK );
-   end CV_SEQ_KIND;
+      return Integer (Seq.all.Flags and Cv_Seq_Kind_Mask );
+   end Cv_Seq_Kind;
 
-   function CV_IS_SEQ_INDEX ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Index ( Seq : Cv_Seq_P) return Integer is
    begin
-      if ((CV_SEQ_ELTYPE (Seq) = CV_SEQ_ELTYPE_INDEX) and
-            (CV_SEQ_KIND (Seq) = CV_SEQ_KIND_GENERIC)) then
+      if ((Cv_Seq_Eltype (Seq) = Cv_Seq_Eltype_Index) and
+            (Cv_Seq_Kind (Seq) = Cv_Seq_Kind_Generic)) then
          return 1;
       else
          return 0;
       end if;
-   end CV_IS_SEQ_INDEX;
+   end Cv_Is_Seq_Index;
 
-   function CV_IS_SEQ_CURVE ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Curve ( Seq : Cv_Seq_P) return Integer is
    begin
-      if (CV_SEQ_KIND (Seq) = CV_SEQ_KIND_CURVE) then
+      if (Cv_Seq_Kind (Seq) = Cv_Seq_Kind_Curve) then
          return 1;
       end if;
       return 0;
-   end CV_IS_SEQ_CURVE;
+   end Cv_Is_Seq_Curve;
 
-   function CV_IS_SEQ_CLOSED ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Closed ( Seq : Cv_Seq_P) return Integer is
    begin
-      if not ((Seq.all.Flags and CV_SEQ_FLAG_CLOSED) = 0) then
+      if not ((Seq.all.Flags and Cv_Seq_Flag_Closed) = 0) then
          return 1;
       end if;
       return 0;
-   end CV_IS_SEQ_CLOSED;
+   end Cv_Is_Seq_Closed;
 
-   function CV_IS_SEQ_CONVEX ( Seq : Cv_Seq_P)   return Integer is
+   function Cv_Is_Seq_Convex ( Seq : Cv_Seq_P)   return Integer is
    begin
-      if not ((Seq.all.Flags and CV_SEQ_FLAG_CONVEX) = 0) then
+      if not ((Seq.all.Flags and Cv_Seq_Flag_Convex) = 0) then
          return 1;
       end if;
       return 0;
-   end CV_IS_SEQ_CONVEX;
+   end Cv_Is_Seq_Convex;
 
-   function CV_IS_SEQ_HOLE ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Hole ( Seq : Cv_Seq_P) return Integer is
    begin
-      if not ((Seq.all.Flags and  CV_SEQ_FLAG_HOLE) = 0) then
+      if not ((Seq.all.Flags and  Cv_Seq_Flag_Hole) = 0) then
          return 1;
       end if;
       return 0;
-   end CV_IS_SEQ_HOLE;
+   end Cv_Is_Seq_Hole;
 
-   function CV_IS_SEQ_SIMPLE ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Simple ( Seq : Cv_Seq_P) return Integer is
    begin
-      if (not ((Seq.all.Flags and CV_SEQ_FLAG_SIMPLE) = 0) or CV_IS_SEQ_CONVEX (Seq) = 1) then
+      if (not ((Seq.all.Flags and Cv_Seq_Flag_Simple) = 0) or Cv_Is_Seq_Convex (Seq) = 1) then
          return 1;
       end if;
       return 0;
-   end CV_IS_SEQ_SIMPLE;
+   end Cv_Is_Seq_Simple;
 
-   function CV_IS_SEQ_POINT_SET ( Seq : CV_Seq_P) return Integer is
+   function Cv_Is_Seq_Point_Set ( Seq : Cv_Seq_P) return Integer is
    begin
-      if ((CV_SEQ_ELTYPE (Seq) = CV_MAKE_TYPE (CV_32S, 2)) or (CV_SEQ_ELTYPE (Seq) = CV_MAKE_TYPE (CV_32F, 2))) then
+      if ((Cv_Seq_Eltype (Seq) = Cv_Make_Type (Cv_32s, 2)) or (Cv_Seq_Eltype (Seq) = Cv_Make_Type (Cv_32f, 2))) then
          return 1;
       end if;
       return 0;
-   end CV_IS_SEQ_POINT_SET;
+   end Cv_Is_Seq_Point_Set;
 
-   function CV_IS_SEQ_POINT_SUBSET ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Point_Subset ( Seq : Cv_Seq_P) return Integer is
    begin
-      if (CV_IS_SEQ_INDEX ( Seq ) = 1) or (CV_SEQ_ELTYPE (Seq) = CV_SEQ_ELTYPE_PPOINT) then
+      if (Cv_Is_Seq_Index ( Seq ) = 1) or (Cv_Seq_Eltype (Seq) = Cv_Seq_Eltype_Ppoint) then
          return 1;
       end if;
       return 0;
-   end CV_IS_SEQ_POINT_SUBSET;
+   end Cv_Is_Seq_Point_Subset;
 
-   function CV_IS_SEQ_POLYLINE ( Seq : Cv_Seq_P ) return Integer is
+   function Cv_Is_Seq_Polyline ( Seq : Cv_Seq_P ) return Integer is
    begin
-      if (CV_SEQ_KIND (Seq) = CV_SEQ_KIND_CURVE) and (CV_IS_SEQ_POINT_SET (Seq) = 1) then
+      if (Cv_Seq_Kind (Seq) = Cv_Seq_Kind_Curve) and (Cv_Is_Seq_Point_Set (Seq) = 1) then
          return 1;
       end if;
       return 0;
-   end CV_IS_SEQ_POLYLINE;
+   end Cv_Is_Seq_Polyline;
 
-   function CV_IS_SEQ_POLYGON ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Polygon ( Seq : Cv_Seq_P) return Integer is
    begin
-      if (CV_IS_SEQ_POLYLINE (Seq) = 1) and (CV_IS_SEQ_CLOSED (Seq) = 1) then
+      if (Cv_Is_Seq_Polyline (Seq) = 1) and (Cv_Is_Seq_Closed (Seq) = 1) then
          return 1;
       end if;
       return 0;
-   end CV_IS_SEQ_POLYGON;
+   end Cv_Is_Seq_Polygon;
 
-   function CV_IS_SEQ_CHAIN ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Chain ( Seq : Cv_Seq_P) return Integer is
    begin
-      if (CV_SEQ_KIND (Seq) = CV_SEQ_KIND_CURVE) and (Seq.all.Elem_Size = 1) then
+      if (Cv_Seq_Kind (Seq) = Cv_Seq_Kind_Curve) and (Seq.all.Elem_Size = 1) then
          return 1;
       end if;
       return 0;
-   end CV_IS_SEQ_CHAIN;
+   end Cv_Is_Seq_Chain;
 
-   function CV_IS_SEQ_CONTOUR ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Contour ( Seq : Cv_Seq_P) return Integer is
    begin
-      if (CV_IS_SEQ_CLOSED (Seq) = 1 )and ((CV_IS_SEQ_POLYLINE (Seq) = 1) or (CV_IS_SEQ_CHAIN (Seq) = 1)) then
+      if (Cv_Is_Seq_Closed (Seq) = 1 )and ((Cv_Is_Seq_Polyline (Seq) = 1) or (Cv_Is_Seq_Chain (Seq) = 1)) then
          return 1;
       end if;
       return 0;
-   end CV_IS_SEQ_CONTOUR;
+   end Cv_Is_Seq_Contour;
 
-   function CV_IS_SEQ_CHAIN_CONTOUR ( Seq  : Cv_Seq_P ) return Integer is
+   function Cv_Is_Seq_Chain_Contour ( Seq  : Cv_Seq_P ) return Integer is
    begin
-      if (CV_IS_SEQ_CHAIN ( Seq ) = 1) and (CV_IS_SEQ_CLOSED ( Seq ) = 1) then
+      if (Cv_Is_Seq_Chain ( Seq ) = 1) and (Cv_Is_Seq_Closed ( Seq ) = 1) then
          return 1;
       end if;
       return 0;
-   end CV_IS_SEQ_CHAIN_CONTOUR;
+   end Cv_Is_Seq_Chain_Contour;
 
-   function CV_IS_SEQ_POLYGON_TREE ( Seq  : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Polygon_Tree ( Seq  : Cv_Seq_P) return Integer is
    begin
-      if (CV_SEQ_ELTYPE (Seq) =  CV_SEQ_ELTYPE_TRIAN_ATR) and (CV_SEQ_KIND ( Seq ) =  CV_SEQ_KIND_BIN_TREE ) then
+      if (Cv_Seq_Eltype (Seq) =  Cv_Seq_Eltype_Trian_Atr) and (Cv_Seq_Kind ( Seq ) =  Cv_Seq_Kind_Bin_Tree ) then
          return 1;
       end if;
       return 0;
-   end CV_IS_SEQ_POLYGON_TREE;
+   end Cv_Is_Seq_Polygon_Tree;
 
-   function CV_IS_GRAPH ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Graph ( Seq : Cv_Seq_P) return Integer is
    begin
-      if (CV_IS_SET (Seq) = 1) and (CV_SEQ_KIND (Seq) = CV_SEQ_KIND_GRAPH) then
+      if (Cv_Is_Set (Seq) = 1) and (Cv_Seq_Kind (Seq) = Cv_Seq_Kind_Graph) then
          return 1;
       end if;
       return 0;
-   end CV_IS_GRAPH;
-   function CV_IS_GRAPH_ORIENTED ( Seq : Cv_Seq_P) return Integer is
+   end Cv_Is_Graph;
+   function Cv_Is_Graph_Oriented ( Seq : Cv_Seq_P) return Integer is
    begin
-      if not ((Seq.all.Flags and CV_GRAPH_FLAG_ORIENTED) = 0) then
+      if not ((Seq.all.Flags and Cv_Graph_Flag_Oriented) = 0) then
          return 1;
       end if;
       return 0;
-   end CV_IS_GRAPH_ORIENTED;
+   end Cv_Is_Graph_Oriented;
 
-   function CV_IS_SUBDIV2D ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Subdiv2d ( Seq : Cv_Seq_P) return Integer is
    begin
-      if (CV_IS_SET (Seq) = 1) and (CV_SEQ_KIND (Seq) = CV_SEQ_KIND_SUBDIV2D) then
+      if (Cv_Is_Set (Seq) = 1) and (Cv_Seq_Kind (Seq) = Cv_Seq_Kind_Subdiv2d) then
          return 1;
       end if;
       return 0;
-   end CV_IS_SUBDIV2D;
+   end Cv_Is_Subdiv2d;
 
 
-   function CvSlice (Start_Index : Integer;
-                     End_Index   : Integer := CV_WHOLE_SEQ_END_INDEX)
+   function Cv_Create_Slice (Start_Index : Integer;
+                     End_Index   : Integer := Cv_Whole_Seq_End_Index)
                      return Cv_Slice is
       Slice : Cv_Slice;
    begin
       Slice.Start_Index := Start_Index;
       Slice.End_Index := End_Index;
       return Slice;
-   end CvSlice;
+   end Cv_Create_Slice;
 
-   function CvTermCriteria (T_Type  : Integer; Max_Iter : Integer;
-                            Epsilon : Long_Float) return Cv_Term_Criteria is
+   function Cv_Create_Term_Criteria (T_Type  : Integer; Max_Iter : Integer;
+                                     Epsilon : Long_Float) return Cv_Term_Criteria is
       T : Cv_Term_Criteria;
    begin
       T.Term_Type := T_Type;
@@ -529,65 +529,65 @@ package body Core is
       T.Epsilon := Epsilon;
 
       return T;
-   end CvTermCriteria;
+   end Cv_Create_Term_Criteria;
 
 
-   function CV_IS_HIST (Hist : Cv_Histogram_P) return Integer is
+   function Cv_Is_Hist (Hist : Cv_Histogram_P) return Integer is
    begin
       if not (Hist = null) then
-         if ((Unsigned_32 (Hist.all.HistType) and CV_MAGIC_MASK) = CV_HIST_MAGIC_VAL) and not (Hist.all.Bins = null) then
+         if ((Unsigned_32 (Hist.all.Histtype) and Cv_Magic_Mask) = Cv_Hist_Magic_Val) and not (Hist.all.Bins = null) then
             return 1;
          end if;
       end if;
       return 0;
-   end CV_IS_HIST;
+   end Cv_Is_Hist;
 
-   function CV_IS_UNIFORM_HIST (Hist : Cv_Histogram_P) return Integer is
+   function Cv_Is_Uniform_Hist (Hist : Cv_Histogram_P) return Integer is
    begin
-      if not ((Unsigned_32 (Hist.all.HistType) and CV_HIST_UNIFORM_FLAG) = 0) then
+      if not ((Unsigned_32 (Hist.all.Histtype) and Cv_Hist_Uniform_Flag) = 0) then
          return 1;
       end if;
       return 0;
-   end CV_IS_UNIFORM_HIST;
+   end Cv_Is_Uniform_Hist;
 
-   function CV_IS_SPARSE_HIST (Hist : Cv_Histogram_P) return Integer is
+   function Cv_Is_Sparse_Hist (Hist : Cv_Histogram_P) return Integer is
    begin
-      return CV_IS_SPARSE_MAT (From_Arr (Hist.all.Bins));
-   end CV_IS_SPARSE_HIST;
+      return Cv_Is_Sparse_Mat (From_Arr (Hist.all.Bins));
+   end Cv_Is_Sparse_Hist;
 
-   function CV_HIST_HAS_RANGES (Hist : Cv_Histogram_P) return Integer is
+   function Cv_Hist_Has_Ranges (Hist : Cv_Histogram_P) return Integer is
    begin
-      if not ((Unsigned_32 (Hist.all.HistType) and CV_HIST_RANGES_FLAG) = 0 ) then
+      if not ((Unsigned_32 (Hist.all.Histtype) and Cv_Hist_Ranges_Flag) = 0 ) then
          return 1;
       end if;
       return 0;
-   end CV_HIST_HAS_RANGES;
+   end Cv_Hist_Has_Ranges;
 
 
-   function IPL2CV_DEPTH (Depth : Unsigned_32) return Integer is
+   function Ipl_To_Cv_Depth (Depth : Unsigned_32) return Integer is
       Temp : Unsigned_32 := 0;
    begin
-      if (Unsigned_32 (Depth) and IPL_DEPTH_SIGN) > 0 then
+      if (Unsigned_32 (Depth) and Ipl_Depth_Sign) > 0 then
          Temp := 20;
       end if;
       return Integer ((Shift_Right (
-        Unsigned_32 (CV_8U) +
-          Shift_Left (Unsigned_32 (CV_16U), 4)  +
-          Shift_Left (Unsigned_32 (CV_32F), 8)  +
-          Shift_Left (Unsigned_32 (CV_64F), 16) +
-          Shift_Left (Unsigned_32 (CV_8S), 20)  +
-          Shift_Left (Unsigned_32 (CV_16S), 24) +
-          Shift_Left (Unsigned_32 (CV_32S), 28),
+        Unsigned_32 (Cv_8u) +
+          Shift_Left (Unsigned_32 (Cv_16u), 4)  +
+          Shift_Left (Unsigned_32 (Cv_32f), 8)  +
+          Shift_Left (Unsigned_32 (Cv_64f), 16) +
+          Shift_Left (Unsigned_32 (Cv_8s), 20)  +
+          Shift_Left (Unsigned_32 (Cv_16s), 24) +
+          Shift_Left (Unsigned_32 (Cv_32s), 28),
         Integer (Shift_Right (Unsigned_32 (Depth) and Unsigned_32 (16#F0#),
           2))) +
           Temp) and Unsigned_32 (15));
-   end IPL2CV_DEPTH;
+   end Ipl_To_Cv_Depth;
 
 
-   function CV_IS_MAT_HDR (Mat : Cv_Mat_P) return Integer is
+   function Cv_Is_Mat_Hdr (Mat : Cv_Mat_P) return Integer is
    begin
       if not (Mat = null) then
-         if (Unsigned_32 (Mat.all.Mat_Type) and Unsigned_32 (CV_MAGIC_MASK)) = CV_MAT_MAGIC_VAL then
+         if (Unsigned_32 (Mat.all.Mat_Type) and Unsigned_32 (Cv_Magic_Mask)) = Cv_Mat_Magic_Val then
             if (Mat.all.Cols > 0) and (Mat.all.Rows > 0) then
                return 1;
             end if;
@@ -597,346 +597,346 @@ package body Core is
          end if;
       end if;
       return 0;
-   end CV_IS_MAT_HDR;
+   end Cv_Is_Mat_Hdr;
 
 
-   function CV_IS_MASK_ARR (Mat : Cv_Mat_P) return Integer is
+   function Cv_Is_Mask_Arr (Mat : Cv_Mat_P) return Integer is
    begin
-      if (Unsigned_32 (Mat.all.Mat_Type) and (CV_MAT_TYPE_MASK and (not Unsigned_32 (Cv_Make_Type (CV_8S, 1))))) = 0 then
+      if (Unsigned_32 (Mat.all.Mat_Type) and (Cv_Mat_Type_Mask and (not Unsigned_32 (Cv_Make_Type (Cv_8s, 1))))) = 0 then
          return 1;
       else
          return 0;
       end if;
 
-   end CV_IS_MASK_ARR;
+   end Cv_Is_Mask_Arr;
 
-   function CV_ARE_TYPES_EQ (Mat1 : Cv_Mat_P;
+   function Cv_Are_Types_Eq (Mat1 : Cv_Mat_P;
                              Mat2 : Cv_Mat_P) return Integer is
    begin
-      if ((Unsigned_32 (Mat1.all.Mat_Type) xor Unsigned_32 (Mat2.all.Mat_Type)) and CV_MAT_TYPE_MASK) = 0 then
+      if ((Unsigned_32 (Mat1.all.Mat_Type) xor Unsigned_32 (Mat2.all.Mat_Type)) and Cv_Mat_Type_Mask) = 0 then
          return 1;
       end if;
       return 0;
-   end CV_ARE_TYPES_EQ;
+   end Cv_Are_Types_Eq;
 
-   function CV_ARE_CNS_EQ (Mat1 : Cv_Mat_P;
+   function Cv_Are_Cns_Eq (Mat1 : Cv_Mat_P;
                            Mat2 : Cv_Mat_P) return Integer is
    begin
-      if ((Unsigned_32 (Mat1.all.Mat_Type) xor Unsigned_32 (Mat2.all.Mat_Type)) and Unsigned_32 (CV_MAT_CN_MASK)) = 0 then
+      if ((Unsigned_32 (Mat1.all.Mat_Type) xor Unsigned_32 (Mat2.all.Mat_Type)) and Unsigned_32 (Cv_Mat_Cn_Mask)) = 0 then
          return 1;
       end if;
       return 0;
-   end CV_ARE_CNS_EQ;
+   end Cv_Are_Cns_Eq;
 
-   function CV_ARE_DEPTHS_EQ (Mat1 : Cv_Mat_P;
+   function Cv_Are_Depths_Eq (Mat1 : Cv_Mat_P;
                               Mat2 : Cv_Mat_P) return Integer is
    begin
-      if ((Unsigned_32 (Mat1.all.Mat_Type) xor Unsigned_32 (Mat2.all.Mat_Type)) and Unsigned_32 (CV_MAT_DEPTH_MASK)) = 0 then
+      if ((Unsigned_32 (Mat1.all.Mat_Type) xor Unsigned_32 (Mat2.all.Mat_Type)) and Unsigned_32 (Cv_Mat_Depth_Mask)) = 0 then
          return 1;
       end if;
       return 0;
-   end CV_ARE_DEPTHS_EQ;
+   end Cv_Are_Depths_Eq;
 
-   function CV_ARE_SIZES_EQ (Mat1 : Cv_Mat_P;
+   function Cv_Are_Sizes_Eq (Mat1 : Cv_Mat_P;
                              Mat2 : Cv_Mat_P) return Integer is
    begin
       if ((Mat1.all.Rows = Mat2.all.Rows) and (Mat1.all.Cols = Mat2.all.Cols)) then
          return 1;
       end if;
       return 0;
-   end CV_ARE_SIZES_EQ;
+   end Cv_Are_Sizes_Eq;
 
-   function CV_IS_MAT_CONST (Mat : Cv_Mat_P) return Integer is
+   function Cv_Is_Mat_Const (Mat : Cv_Mat_P) return Integer is
    begin
       if (Unsigned_32 (Mat.all.Rows) or Unsigned_32 (Mat.all.Cols)) = 1 then
          return 1;
       end if;
       return 0;
-   end CV_IS_MAT_CONST;
+   end Cv_Is_Mat_Const;
 
 
 
-   function CV_MAT_ELEM_PTR (Mat : Cv_Mat_P;
+   function Cv_Mat_Elem_Ptr (Mat : Cv_Mat_P;
                              Row : Integer;
                              Col : Integer) return Cv_8u_Pointer is
    begin
-      return CV_MAT_ELEM_PTR_FAST (Mat, Row, Col, CV_ELEM_SIZE (Mat.all.Mat_Type));
-   end CV_MAT_ELEM_PTR;
+      return Cv_Mat_Elem_Ptr_Fast (Mat, Row, Col, Cv_Elem_Size (Mat.all.Mat_Type));
+   end Cv_Mat_Elem_Ptr;
 
-   function CV_MAT_ELEM (Mat      : Cv_Mat_P;
-                         Elemtype : Unsigned_32; -- used to be Integer
-                         Row      : Integer;
-                         Col      : Integer) return Cv_8u_Pointer is
-   begin
-      return CV_MAT_ELEM_PTR_FAST (Mat, Row, Col, Elemtype);
-   end CV_MAT_ELEM;
-
-
-   function CV_IS_MATND_HDR (Mat : Cv_Mat_ND_P) return Integer is
-   begin
-      if not (Mat = null) then
-         if ( Unsigned_32 (Mat.all.Mat_Type) and CV_MAGIC_MASK) = CV_MATND_MAGIC_VAL then
-            return 1;
-         end if;
-      end if;
-      return 0;
-   end CV_IS_MATND_HDR;
-
-
-   function CV_IS_SPARSE_MAT_HDR (Mat : Cv_Sparse_Mat_P) return Integer is
-   begin
-      if not (Mat = null) then
-         if (Unsigned_32 (Mat.all.Mat_Type) and CV_MAGIC_MASK) = CV_SPARSE_MAT_MAGIC_VAL then
-            return 1;
-         end if;
-      end if;
-      return 0;
-   end CV_IS_SPARSE_MAT_HDR;
-
---     function CvMat (Rows   : Integer;
---                     Cols   : Integer;
---                     M_Type : Unsigned_32;
---                     Data   : Mat_Data_P)
---                     return Cv_Mat is
---        Mat      : Cv_Mat;
---        Mat_Type : Unsigned_32;
+--     function Cv_Mat_Elem (Mat      : Cv_Mat_P;
+--                           Elemtype : Unsigned_32; -- used to be Integer
+--                           Row      : Integer;
+--                           Col      : Integer) return Cv_8u_Pointer is
 --     begin
---        Mat_Type := CV_MAT_TYPE (M_Type);
---
---        Mat.Mat_Type := CV_MAT_MAGIC_VAL or CV_MAT_CONT_FLAG or Unsigned_32 (Mat_Type);
---        Put_Line ("Mat_Type:" & Unsigned_32'Image (Mat_Type));
---        Put_Line ("mat.Mat_Type:" & Mat.Mat_Type'Img);
---        Put_Line ("CV_MAT_MAGIC_VAL:" & Cv_Mat_Magic_Val'Img);
---        Put_Line ("CV_MAT_CONT_FLAG:" & Cv_Mat_Cont_Flag'Img);
---  --        Mat.Mat_Type := CV_MAT_MAGIC_VAL or Unsigned_32 (Mat_Type);
---        Mat.Cols := Cols;
---        Mat.Rows := Rows;
---        Mat.Step := Mat.Cols * Integer(CV_ELEM_SIZE (Mat_Type));
---        if not (Data = null) then
---           Put_Line ("Data not null, adding...");
---           Mat.Data := Data.all;
---        end if;
---        Mat.Refcount := null;
---        Mat.Hdr_Refcount := 0;
---
---        return Mat;
---     end CvMat;
+--        return Cv_Mat_Elem_Ptr_Fast (Mat, Row, Col, Elemtype);
+--     end Cv_Mat_Elem;
 
-   function CV_MAT_CN_MASK return Unsigned_32 is
+
+   function Cv_Is_Matnd_Hdr (Mat : Cv_Mat_Nd_P) return Integer is
    begin
-      return Shift_Left ((CV_CN_MAX - 1), Integer (CV_CN_SHIFT));
-   end CV_MAT_CN_MASK;
+      if not (Mat = null) then
+         if ( Unsigned_32 (Mat.all.Mat_Type) and Cv_Magic_Mask) = Cv_Matnd_Magic_Val then
+            return 1;
+         end if;
+      end if;
+      return 0;
+   end Cv_Is_Matnd_Hdr;
 
-   function CV_MAT_CN (Flags : Unsigned_32) return Unsigned_32 is -- used to be Integer
+
+   function Cv_Is_Sparse_Mat_Hdr (Mat : Cv_Sparse_Mat_P) return Integer is
    begin
-      return Shift_Left (Unsigned_32 (Flags) and Unsigned_32 (CV_MAT_CN_MASK), Integer(CV_CN_SHIFT)) + 1;
-   end CV_MAT_CN;
+      if not (Mat = null) then
+         if (Unsigned_32 (Mat.all.Mat_Type) and Cv_Magic_Mask) = Cv_Sparse_Mat_Magic_Val then
+            return 1;
+         end if;
+      end if;
+      return 0;
+   end Cv_Is_Sparse_Mat_Hdr;
 
-   function CV_ELEM_SIZE_1 (E_Type : Unsigned_32) return Unsigned_32 is -- used to be Integer
+   --     function CvMat (Rows   : Integer;
+   --                     Cols   : Integer;
+   --                     M_Type : Unsigned_32;
+   --                     Data   : Mat_Data_P)
+   --                     return Cv_Mat is
+   --        Mat      : Cv_Mat;
+   --        Mat_Type : Unsigned_32;
+   --     begin
+   --        Mat_Type := CV_MAT_TYPE (M_Type);
+   --
+   --        Mat.Mat_Type := CV_MAT_MAGIC_VAL or CV_MAT_CONT_FLAG or Unsigned_32 (Mat_Type);
+   --        Put_Line ("Mat_Type:" & Unsigned_32'Image (Mat_Type));
+   --        Put_Line ("mat.Mat_Type:" & Mat.Mat_Type'Img);
+   --        Put_Line ("CV_MAT_MAGIC_VAL:" & Cv_Mat_Magic_Val'Img);
+   --        Put_Line ("CV_MAT_CONT_FLAG:" & Cv_Mat_Cont_Flag'Img);
+   --  --        Mat.Mat_Type := CV_MAT_MAGIC_VAL or Unsigned_32 (Mat_Type);
+   --        Mat.Cols := Cols;
+   --        Mat.Rows := Rows;
+   --        Mat.Step := Mat.Cols * Integer(CV_ELEM_SIZE (Mat_Type));
+   --        if not (Data = null) then
+   --           Put_Line ("Data not null, adding...");
+   --           Mat.Data := Data.all;
+   --        end if;
+   --        Mat.Refcount := null;
+   --        Mat.Hdr_Refcount := 0;
+   --
+   --        return Mat;
+   --     end CvMat;
+
+   function Cv_Mat_Cn_Mask return Unsigned_32 is
+   begin
+      return Shift_Left ((Cv_Cn_Max - 1), Integer (Cv_Cn_Shift));
+   end Cv_Mat_Cn_Mask;
+
+   function Cv_Mat_Cn (Flags : Unsigned_32) return Unsigned_32 is -- used to be Integer
+   begin
+      return Shift_Left (Unsigned_32 (Flags) and Unsigned_32 (Cv_Mat_Cn_Mask), Integer (Cv_Cn_Shift)) + 1;
+   end Cv_Mat_Cn;
+
+   function Cv_Elem_Size_1 (E_Type : Unsigned_32) return Unsigned_32 is -- used to be Integer
    begin
       -- ((((sizeof(size_t)<<28)|0x8442211) >> CV_MAT_DEPTH(type)*4) & 15)
       return Shift_Right (
         (Shift_Left (
         Unsigned_32 (Interfaces.C.Size_T'Size), 28) or Unsigned_32 (16#8442211#)),
-        Integer(CV_MAT_DEPTH (E_Type) * 4)) and Unsigned_32 (15);
-   end CV_ELEM_SIZE_1;
+        Integer (Cv_Mat_Depth (E_Type) * 4)) and Unsigned_32 (15);
+   end Cv_Elem_Size_1;
 
-   function CV_ELEM_SIZE (E_Type : Unsigned_32) return Unsigned_32 is -- used to be Integer
+   function Cv_Elem_Size (E_Type : Unsigned_32) return Unsigned_32 is -- used to be Integer
    begin
       -- (CV_MAT_CN(type) << ((((sizeof(size_t)/4+1)*16384|0x3a50) >> CV_MAT_DEPTH(type)*2) & 3))
-      return Shift_Left (Unsigned_32 (CV_MAT_CN (E_Type)),
+      return Shift_Left (Unsigned_32 (Cv_Mat_Cn (E_Type)),
         Integer (Shift_Right ((Unsigned_32 ((Interfaces.C.Size_T'Size / 32 + 1) * 16384) or Unsigned_32 (16#3a50#)),
-          Integer((CV_MAT_DEPTH (E_Type) * 2))) and Unsigned_32 (3)));
-   end CV_ELEM_SIZE;
+          Integer ((Cv_Mat_Depth (E_Type) * 2))) and Unsigned_32 (3)));
+   end Cv_Elem_Size;
 
-   function CV_IS_MAT_CONT (Flags : Integer) return Boolean is
+   function Cv_Is_Mat_Cont (Flags : Integer) return Boolean is
    begin
-      if (Unsigned_32 (Flags) and CV_MAT_CONT_FLAG) /= 0 then
+      if (Unsigned_32 (Flags) and Cv_Mat_Cont_Flag) /= 0 then
          return True;
       else
          return False;
       end if;
-   end CV_IS_MAT_CONT;
+   end Cv_Is_Mat_Cont;
 
-   function CV_IS_TEMP_MAT (Flags : Integer) return Boolean is
+   function Cv_Is_Temp_Mat (Flags : Integer) return Boolean is
    begin
-      if (Unsigned_32 (Flags) and CV_MAT_TEMP_FLAG) /= 0 then
+      if (Unsigned_32 (Flags) and Cv_Mat_Temp_Flag) /= 0 then
          return True;
       else
          return False;
       end if;
-   end CV_IS_TEMP_MAT;
+   end Cv_Is_Temp_Mat;
 
-   function CV_MAT_TYPE (Flags : Unsigned_32) return Unsigned_32 is
+   function Cv_Mat_Type (Flags : Unsigned_32) return Unsigned_32 is
    begin
-      return Flags and CV_MAT_TYPE_MASK;
-   end CV_MAT_TYPE;
+      return Flags and Cv_Mat_Type_Mask;
+   end Cv_Mat_Type;
 
-   function CV_MAKETYPE (Depth : Integer; Cn : Integer) return Unsigned_32 is
+   function Cv_Maketype (Depth : Integer; Cn : Integer) return Unsigned_32 is
    begin
-      return CV_MAT_DEPTH (Unsigned_32(Depth)) + Shift_Left (Unsigned_32 (Cn - 1), Integer(CV_CN_SHIFT));
-   end CV_MAKETYPE;
+      return Cv_Mat_Depth (Unsigned_32 (Depth)) + Shift_Left (Unsigned_32 (Cn - 1), Integer (Cv_Cn_Shift));
+   end Cv_Maketype;
 
-   function CV_MAT_DEPTH (M_Type : Unsigned_32) return Unsigned_32 is
+   function Cv_Mat_Depth (M_Type : Unsigned_32) return Unsigned_32 is
    begin
-      return M_Type and CV_MAT_DEPTH_MASK;
-   end CV_MAT_DEPTH;
+      return M_Type and Cv_Mat_Depth_Mask;
+   end Cv_Mat_Depth;
 
 
-   function CV_MAT_DEPTH_MASK return Unsigned_32 is
+   function Cv_Mat_Depth_Mask return Unsigned_32 is
    begin
-      return CV_DEPTH_MAX - 1;
-   end CV_MAT_DEPTH_MASK;
+      return Cv_Depth_Max - 1;
+   end Cv_Mat_Depth_Mask;
 
-   function CV_IS_IMAGE_HDR (Img : Ipl_Image_P) return Integer is
+   function Cv_Is_Image_Hdr (Img : Ipl_Image_P) return Integer is
    begin
       if not (Img = null) then
-         if (Img.all.N_Size = IPL_IMAGE_MAGIC_VAL) then
+         if (Img.all.N_Size = Ipl_Image_Magic_Val) then
             return 1;
          end if;
       end if;
       return 0;
-   end CV_IS_IMAGE_HDR;
+   end Cv_Is_Image_Hdr;
 
-   function CV_IS_IMAGE (Img : IPL_IMAGE_P) return Integer is
+   function Cv_Is_Image (Img : Ipl_Image_P) return Integer is
    begin
-      if CV_IS_IMAGE_HDR (Img) = 1 then
+      if Cv_Is_Image_Hdr (Img) = 1 then
          if not (Img.all.Image_Data = null) then
             return 1;
          end if;
       end if;
       return 0;
-   end CV_IS_IMAGE;
+   end Cv_Is_Image;
 
 
-   function CvInvSqrt (Value : Float)
+   function Cv_Inv_Sqrt (Value : Float)
                        return Float is
    begin
       return (1.0 / Value_Functions.Sqrt (Value));
-   end CvInvSqrt;
+   end Cv_Inv_Sqrt;
 
-   function CvSqrt (Value : Float)
+   function Cv_Sqrt (Value : Float)
                     return Float is
    begin
       return Value_Functions.Sqrt (Value);
-   end CvSqrt;
+   end Cv_Sqrt;
 
 
-   function CvPoint (X : Integer; Y : Integer) return Cv_Point is
+   function Cv_Create_Point (X : Integer; Y : Integer) return Cv_Point is
       Point : Cv_Point;
    begin
       Point.X := X;
       Point.Y := Y;
 
       return Point;
-   end CvPoint;
+   end Cv_Create_Point;
 
-   function CvPoint2D32f (X : Long_Float; Y : Long_Float)
-                          return Cv_Point_2D_32f is
-      Point : Cv_Point_2D_32f;
+   function Cv_Create_Point_2d_32f (X : Long_Float; Y : Long_Float)
+                                    return Cv_Point_2d_32f is
+      Point : Cv_Point_2d_32f;
    begin
       Point.X := Float (X);
       Point.Y := Float (Y);
 
       return Point;
-   end CvPoint2D32f;
+   end Cv_Create_Point_2d_32f;
 
-   function CvPointTo32f (Point : Cv_Point) return Cv_Point_2D_32f is
-      P : Cv_Point_2D_32f;
+   function Cv_Point_To_32f (Point : Cv_Point) return Cv_Point_2d_32f is
+      P : Cv_Point_2d_32f;
    begin
       P.X := Float (Point.X);
       P.Y := Float (Point.Y);
 
       return P;
-   end CvPointTo32f;
+   end Cv_Point_To_32f;
 
-   function CvPointFrom32f (Point : Cv_Point_2D_32f) return Cv_Point is
+   function Cv_Point_From_32f (Point : Cv_Point_2d_32f) return Cv_Point is
       P : Cv_Point;
    begin
       P.X := Integer (Point.X);
       P.Y := Integer (Point.Y);
 
       return P;
-   end CvPointFrom32f;
+   end Cv_Point_From_32f;
 
-   function CvPoint3D32f (X : Long_Float; Y : Long_Float;
-                          Z : Long_Float) return Cv_Point_3D_32f is
-      Point : Cv_Point_3D_32f;
+   function Cv_Create_Point_3d_32f (X : Long_Float; Y : Long_Float;
+                                    Z : Long_Float) return Cv_Point_3d_32f is
+      Point : Cv_Point_3d_32f;
    begin
       Point.X := Float (X);
       Point.Y := Float (Y);
       Point.Z := Float (Z);
 
       return Point;
-   end CvPoint3D32f;
+   end Cv_Create_Point_3d_32f;
 
-   function CvPoint2D64f (X : Long_Float; Y : Long_Float)
-                          return Cv_Point_2D_64f is
+   function Cv_Create_Point_2d_64f (X : Long_Float; Y : Long_Float)
+                          return Cv_Point_2d_64f is
       Point : Cv_Point_2d_64f;
    begin
       Point.X := X;
       Point.Y := Y;
 
       return Point;
-   end CvPoint2D64f;
+   end Cv_Create_Point_2d_64f;
 
-   function CvPoint3D64f (X : Long_Float; Y : Long_Float;
-                          Z : Long_Float) return Cv_Point_3D_64f is
-      Point : Cv_Point_3D_64f;
+   function Cv_Create_Point_3d_64f (X : Long_Float; Y : Long_Float;
+                                    Z : Long_Float) return Cv_Point_3d_64f is
+      Point : Cv_Point_3d_64f;
    begin
       Point.X := X;
       Point.Y := Y;
       Point.Z := Z;
 
       return Point;
-   end CvPoint3D64f;
+   end Cv_Create_Point_3d_64f;
 
 
-   function CvScalar (V0 : Long_Float; V1 : Long_Float := 0.0;
-                      V2 : Long_Float := 0.0; V3 : Long_Float := 0.0)
-                      return Cv_Scalar is
+   function Cv_Create_Scalar (V0 : Long_Float; V1 : Long_Float := 0.0;
+                              V2 : Long_Float := 0.0; V3 : Long_Float := 0.0)
+                              return Cv_Scalar is
       Scalar : Cv_Scalar;
    begin
       Scalar.Val := (V0, V1, V2, V3);
       return Scalar;
-   end CvScalar;
+   end Cv_Create_Scalar;
 
-   function CvRealScalar (V0 : Long_Float) return Cv_Scalar is
+   function Cv_Real_Scalar (V0 : Long_Float) return Cv_Scalar is
       Scalar : Cv_Scalar;
    begin
       Scalar.Val := (V0, 0.0, 0.0, 0.0);
       return Scalar;
-   end CvRealScalar;
+   end Cv_Real_Scalar;
 
-   function CvScalarAll (V0123 : Long_Float) return Cv_Scalar is
+   function Cv_Scalar_All (V0123 : Long_Float) return Cv_Scalar is
       Scalar : Cv_Scalar;
    begin
       Scalar.Val := (V0123, V0123, V0123, V0123);
       return Scalar;
-   end CvScalarAll;
+   end Cv_Scalar_All;
 
 
-   function CvSize (Width : Integer; Height : Integer) return Cv_Size is
+   function Cv_Create_Size (Width : Integer; Height : Integer) return Cv_Size is
       Size : Cv_Size;
    begin
       Size.Width := Width;
       Size.Height := Height;
       return Size;
-   end CvSize;
+   end Cv_Create_Size;
 
-   function CvSize2d32f (Width : Float; Height : Float)
-                         return Cv_Size_2d_32f is
+   function Cv_Create_Size_2d_32f (Width : Float; Height : Float)
+                                   return Cv_Size_2d_32f is
       Size : Cv_Size_2d_32f;
    begin
       Size.Width := Width;
       Size.Height := Height;
       return Size;
-   end CvSize2d32f;
+   end Cv_Create_Size_2d_32f;
 
    -- Cv_Rect ------------------------------------------------------------------
    -----------------------------------------------------------------------------
-   function CvRect (X : Integer; Y : Integer; Width : Integer; Height : Integer)
-                    return Cv_Rect is
+   function Cv_Create_Rect (X : Integer; Y : Integer; Width : Integer; Height : Integer)
+                            return Cv_Rect is
       Rect : Cv_Rect;
    begin
       Rect.X := X;
@@ -945,10 +945,10 @@ package body Core is
       Rect.Height := Height;
 
       return Rect;
-   end CvRect;
+   end Cv_Create_Rect;
 
-   function CvRectToROI (Rect : Cv_Rect; Coi : Integer) return Ipl_ROI is
-      Roi : Ipl_ROI;
+   function Cv_Rect_To_Roi (Rect : Cv_Rect; Coi : Integer) return Ipl_Roi is
+      Roi : Ipl_Roi;
    begin
       Roi.X_Offset := Rect.X;
       Roi.Y_Offset := Rect.Y;
@@ -957,12 +957,12 @@ package body Core is
       Roi.Coi := Coi;
 
       return Roi;
-   end CvRectToROI;
+   end Cv_Rect_To_Roi;
 
-   function CvROIToRect (Roi : Ipl_ROI) return Cv_Rect is
+   function Cv_Roi_To_Rect (Roi : Ipl_Roi) return Cv_Rect is
    begin
-      return CvRect (Roi.X_Offset, Roi.Y_Offset, Roi.Width, Roi.Height);
-   end CvROIToRect;
+      return Cv_Create_Rect (Roi.X_Offset, Roi.Y_Offset, Roi.Width, Roi.Height);
+   end Cv_Roi_To_Rect;
 
 
 
@@ -971,12 +971,12 @@ package body Core is
       return Image_To_Arr (Right);
    end "+";
 
-   function CV_IS_MAT (Mat : Cv_Mat_P) return Integer is
+   function Cv_Is_Mat (Mat : Cv_Mat_P) return Integer is
    begin
       if not ( Mat = null) then
-         if (CV_IS_MAT_HDR (Mat) > 0) and Mat.all.Data.Cv_8u /= null then
+         if (Cv_Is_Mat_Hdr (Mat) > 0) and Mat.all.Data.Cv_8u /= null then
             return 1;
-         elsif CV_IS_MAT_HDR (Mat) = 0 then
+         elsif Cv_Is_Mat_Hdr (Mat) = 0 then
             Put_Line ("CV_IS_MAT: Header for Mat invalid");
          elsif Mat.all.Data.Cv_8u = null then
             Put_Line ("CV_IS_MAT: Data in Mat is (null)");
@@ -985,34 +985,34 @@ package body Core is
          Put_Line ("CV_IS_MAT: Mat is (null)");
       end if;
       return 0;
-   end CV_IS_MAT;
+   end Cv_Is_Mat;
 
 
-   function CV_MAT_ELEM_PTR_FAST (Mat      : Cv_Mat_P;
+   function Cv_Mat_Elem_Ptr_Fast (Mat      : Cv_Mat_P;
                                   Row      : Integer;
                                   Col      : Integer;
                                   Pix_Size : Unsigned_32) return Cv_8u_Pointer is
    begin
-      return Mat.all.Data.Cv_8u + Interfaces.C.Ptrdiff_T (Mat.all.Step * (Row) + Integer(Pix_Size) * (Col));
-   end CV_MAT_ELEM_PTR_FAST;
+      return Mat.all.Data.Cv_8u + Interfaces.C.Ptrdiff_T (Mat.all.Step * (Row) + Integer (Pix_Size) * (Col));
+   end Cv_Mat_Elem_Ptr_Fast;
 
    function "+" (Right : String) return String_C is
    begin
-      return String_C (Right & ASCII.NUL);
+      return String_C (Right & Ascii.Nul);
    end "+";
 
    -----------------------------------------------------------------------------
    -- Inline functions
    -----------------------------------------------------------------------------
-   function CvRound (Value : Long_Float) return Integer is
+   function Cv_Round (Value : Long_Float) return Integer is
    begin
       return Integer (Long_Float'Rounding (Value));
-   end CvRound;
+   end Cv_Round;
 
-   function CvRound (Value : Float) return Integer is
+   function Cv_Round (Value : Float) return Integer is
    begin
       return Integer (Float'Rounding (Value));
-   end CvRound;
+   end Cv_Round;
 
 
    -----------------------------------------------------------------------------
@@ -1092,8 +1092,8 @@ package body Core is
 
    function To_2d_Pointer (Src : access Cv_64f_2d_Array)
                            return Cv_64f_Pointer_Array is
-      D        : aliased Cv_64F_2d_Array := Src.all;
-      Dst      : Cv_64F_Pointer_Array (D'Range);
+      D        : aliased Cv_64f_2d_Array := Src.all;
+      Dst      : Cv_64f_Pointer_Array (D'Range);
    begin
       Dst := (others => null);
       for I in Integer range D'Range loop
@@ -1103,7 +1103,7 @@ package body Core is
    end To_2d_Pointer;
 
    function To_2d_Pointer (Src : access Cv_Point_2d_Array)
-                            return Cv_Point_Pointer_Array is
+                           return Cv_Point_Pointer_Array is
       D        : aliased Cv_Point_2d_Array := Src.all;
       Dst      : Cv_Point_Pointer_Array (D'Range);
    begin

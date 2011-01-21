@@ -53,7 +53,7 @@ procedure Delaunay is
                                 Fp  : Cv_Point_2d_32f;
                                 Color : Cv_Scalar) is
    begin
-      Cv_Circle (+Img, CvPoint (CvRound (Long_Float (Fp.X)), CvRound (Long_Float (Fp.Y))), 3, Color, Cv_Filled, 8, 0);
+      Cv_Circle (+Img, Cv_Create_Point (Cv_Round (Long_Float (Fp.X)), Cv_Round (Long_Float (Fp.Y))), 3, Color, Cv_Filled, 8, 0);
    end Draw_Subdiv_Point;
 
    procedure Draw_Subdiv_Edge (Img : Ipl_Image_P;
@@ -175,13 +175,13 @@ procedure Delaunay is
       loop
          Pt := Cv_Subdiv_2d_Edge_Org (T);
          exit when Pt = null;
-         Buf (I) := CvPoint (CvRound (Pt.all.Pt.X), CvRound (Pt.all.Pt.Y));
+         Buf (I) := Cv_Create_Point (Cv_Round (Pt.all.Pt.X), Cv_Round (Pt.all.Pt.Y));
          T := Cv_Subdiv_2d_Get_Edge (T, Cv_Next_Around_Left);
          N := I;
       end loop;
 
       if (N + 1 = Count) then
-         Pt := Cv_Subdiv_2d_Edge_Dst (CvSubdiv2dRotateEdge (Edge, 1));
+         Pt := Cv_Subdiv_2d_Edge_Dst (Cv_Subdiv_2d_Rotate_Edge (Edge, 1));
          Cv_Fill_Convex_Poly (+Img, Buf, Count, CV_RGB (Random (G) mod 255, Random (G) mod 255, Random (G) mod 255), CV_AA, 0);
 --           Put_Line("count : " & Count'Img);
          Buf_2d (0) := Buf (0)'unchecked_access;
@@ -219,9 +219,9 @@ procedure Delaunay is
          if( Edge.all.Flags >= 0 ) then
             E := Quad_To_Subdiv (Edge);
             -- left
-            Draw_Subdiv_Facet (Img, CvSubdiv2dRotateEdge (E, 1));
+            Draw_Subdiv_Facet (Img, Cv_Subdiv_2d_Rotate_Edge (E, 1));
             -- right
-            Draw_Subdiv_Facet (Img, CvSubdiv2dRotateEdge (E, 3));
+            Draw_Subdiv_Facet (Img, Cv_Subdiv_2d_Rotate_Edge (E, 3));
          end if;
          Cv_Next_Seq_Elem (Elem_Size, Reader'Unchecked_Access);
       end loop;
@@ -246,7 +246,7 @@ procedure Delaunay is
       Voronoi_Color := CV_RGB (0, 180, 0);
       Bkgnd_Color := CV_RGB (255, 255, 255);
       Img := Cv_Create_Image (Cv_Create_Size(Rect.Width, Rect.Height), 8, 3);
-      CvSet (+Img, Bkgnd_Color, null);
+      Cv_Set_All (+Img, Bkgnd_Color, null);
 
       Ret := Cv_Named_Window (Win, 1);
 
@@ -269,7 +269,7 @@ procedure Delaunay is
          S_Ret := Cv_Subdiv_Delaunay_2d_Insert (Subdiv, Fp);
 --           Put_Line("s_ret: " & S_Ret.all.Id'Img);
          Cv_Calc_Subdiv_Voronoi_2d (Subdiv);
-         Cv_Set (+Img, Bkgnd_Color, null);
+         Cv_Set_All (+Img, Bkgnd_Color, null);
          Draw_Subdiv (Img, Subdiv, Delaunay_Color, Voronoi_Color);
          Cv_Show_Image (Win, +Img);
 
@@ -278,7 +278,7 @@ procedure Delaunay is
 
 --        Put("Here we are");
 
-      Cv_Set (+Img, Bkgnd_Color, null);
+      Cv_Set_All(+Img, Bkgnd_Color, null);
       Paint_Voronoi (Subdiv, Img);
       Cv_Show_Image (Win, +Img);
 

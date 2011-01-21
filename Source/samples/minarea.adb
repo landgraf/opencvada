@@ -108,17 +108,17 @@ begin
          Points_Array.all (Index + 1) := Point.Y;
       end loop;
       Point_Pointer := Points_Array.all (0)'Access;
-      Points.all := CvMat (Count, 1, Cv_Make_Type (Cv_32s, 2), To_Void (Point_Pointer));
+      Points.all := Cv_Create_Mat (Count, 1, Cv_Make_Type (Cv_32s, 2), To_Void (Point_Pointer));
 
       Min_Rect := Cv_Min_Area_Rect2 (Points  => To_Arr (Points),
                                   Storage => null);
 
       I_Ret := Cv_Min_Enclosing_Circle (Points => To_Arr(Points),
-                                     Center => Circle_Center'Access,
-                                     Radius => Circle_Radius'Access);
+                                        Center => Circle_Center'Access,
+                                        Radius => Circle_Radius'Access);
 
       Put_Line ("CvMinAreaRect2: done");
-      Put_Line (Ascii.Ht & "center:" & Min_Rect.Center.X'Img & Min_Rect.Center.Y'Img & Ascii.Ht & Integer'Image (Cvround (Min_Rect.Center.X)) & Integer'Image (Cvround (Min_Rect.Center.Y)));
+      Put_Line (Ascii.Ht & "center:" & Min_Rect.Center.X'Img & Min_Rect.Center.Y'Img & Ascii.Ht & Integer'Image (Cv_Round (Min_Rect.Center.X)) & Integer'Image (Cv_Round (Min_Rect.Center.Y)));
       Put_Line (Ascii.Ht & "size:" & Min_Rect.Size.Width'Img & Min_Rect.Center.Y'Img);
       Put_Line (Ascii.Ht & "angle:" & Min_Rect.Angle'Img);
 
@@ -126,7 +126,7 @@ begin
 
       for I in Integer range 0 .. Count - 1 loop
          Index := I * 2;
-         Cv_Circle (To_Arr (Img), CvPoint (Points_Array.all (Index), Points_Array.all (Index + 1)), 3, CvScalar (0.0, 0.0, 255.0), CV_FILLED, CV_AA);
+         Cv_Circle (To_Arr (Img), Cv_Create_Point (Points_Array.all (Index), Points_Array.all (Index + 1)), 3, Cv_Create_Scalar (0.0, 0.0, 255.0), CV_FILLED, CV_AA);
       end loop;
       New_Line;
 
@@ -137,7 +137,7 @@ begin
       Box_Corners := GetCorners (Min_Rect);
 
       for I in Integer range 0 .. 3 loop
-         Cv_Line (To_Arr (Img), Cv_Create_Point (Cv_Round (Box_Corners (I).X), Cv_Round (Box_Corners (I).Y)), Cv_Create_Point (Cvround (Box_Corners ((I + 1) mod 4).X), Cv_Round (Box_Corners ((I + 1) mod 4).Y)), Cv_Create_Scalar (0.0, 255.0), 1, Cv_Aa);
+         Cv_Line (To_Arr (Img), Cv_Create_Point (Cv_Round (Box_Corners (I).X), Cv_Round (Box_Corners (I).Y)), Cv_Create_Point (Cv_Round (Box_Corners ((I + 1) mod 4).X), Cv_Round (Box_Corners ((I + 1) mod 4).Y)), Cv_Create_Scalar (0.0, 255.0), 1, Cv_Aa);
       end loop;
 
       Cv_Circle (To_Arr (Img), Cv_Create_Point (Cv_Round (Circle_Center.X), Cv_Round (Circle_Center.Y)), Cv_Round (Circle_Radius), Cv_Create_Scalar (255.0), 1, CV_AA);

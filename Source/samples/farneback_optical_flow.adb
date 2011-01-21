@@ -21,11 +21,11 @@ procedure Farneback_Optical_Flow is
       Put_Line ("Call: ./farneback_optical_flow");
    end Help;
 
-   procedure DrawOptFlowMap (Flow       : Cv_Mat_P;
-                             C_Flow_Map : Cv_Mat_P;
-                             Step       : Integer;
-                             Scale      : Long_Float;
-                             Color      : Cv_Scalar) is
+   procedure Draw_Opt_Flow_Map (Flow       : Cv_Mat_P;
+                                C_Flow_Map : Cv_Mat_P;
+                                Step       : Integer;
+                                Scale      : Long_Float;
+                                Color      : Cv_Scalar) is
       X, Y : Integer := 0;
 --        Fxy  : Cv_Point_2d_32f;
       Fxy_P : Cv_Point_2d_32f_P;
@@ -41,7 +41,7 @@ procedure Farneback_Optical_Flow is
          Y := Y + Step;
          X := 0;
       end loop;
-   end DrawOptFlowMap;
+   end Draw_Opt_Flow_Map;
 
    Capture   : aliased Cv_Capture_P := Cv_Create_Camera_Capture (0);
    Prev_Gray : Cv_Mat_P := null;
@@ -71,22 +71,31 @@ begin
       end if;
 
       if Gray = null then
-         Gray      := Cv_Create_Mat (Frame.all.Height, Frame.all.Width, Cv_Maketype (Cv_8u, 1));
-         Prev_Gray := Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Gray.all.Mat_Type);
-         Flow      := Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Cv_Maketype (Cv_32f, 2));
-         C_Flow    := Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Cv_Maketype (Cv_8u, 3));
+         Gray := new Cv_Mat;
+         Prev_Gray := new Cv_Mat;
+         Flow := new Cv_Mat;
+         C_Flow := new Cv_Mat;
+         Gray.all      := Cv_Create_Mat (Frame.all.Height, Frame.all.Width, Cv_Maketype (Cv_8u, 1));
+         Prev_Gray.all := Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Gray.all.Mat_Type);
+         Flow.all      := Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Cv_Maketype (Cv_32f, 2));
+         C_Flow.all    := Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Cv_Maketype (Cv_8u, 3));
       end if;
 
+      Put_Line ("a");
       Cv_Cvt_Color (To_Arr(Frame), To_Arr(Gray), CV_BGR2GRAY);
 
       if First_Frame = 0 then
-         Cv_Calc_Optical_Flow_Farneback (To_Arr(Prev_Gray), To_Arr(Gray), To_Arr(Flow), 0.5, 3, 15, 3, 5, 1.2, 0);
-         Cv_Cvt_Color (To_Arr(Prev_Gray), To_Arr(C_Flow), Cv_Gray2bgr);
+         Put_Line ("b");
+         Cv_Calc_Optical_Flow_Farneback (To_Arr (Prev_Gray), To_Arr (Gray), To_Arr (Flow), 0.5, 3, 15, 3, 5, 1.2, 0);
+         Put_Line ("c");
+         Cv_Cvt_Color (To_Arr (Prev_Gray), To_Arr (C_Flow), Cv_Gray2bgr);
+         Put_Line ("d");
          Draw_Opt_Flow_Map (Flow, C_Flow, 16, 1.5, Cv_Rgb (0, 255, 0));
+         Put_Line ("e");
          Cv_Show_Image ("Flow", To_Arr (C_Flow));
       end if;
 
-      if CvWaitKey (30) = Ascii.Esc then
+      if Cv_Wait_Key (30) = Ascii.Esc then
          exit;
       end if;
 
@@ -94,5 +103,5 @@ begin
       Prev_Gray := Gray;
       Gray := Temp;
    end loop;
-   CvReleaseCapture (Capture'Access);
+   Cv_Release_Capture (Capture'Access);
 end Farneback_Optical_Flow;

@@ -127,7 +127,7 @@ package Imgproc.Operations is
                                           Sp        : Long_Float;
                                           Sr        : Long_Float;
                                           Max_Level : Integer := 1;
-                                          Termcrit  : Cv_Term_Criteria := Cvtermcriteria (Cv_Termcrit_Iter + Cv_Termcrit_Eps, 5, 1.0));
+                                          Termcrit  : Cv_Term_Criteria := Cv_Create_Term_Criteria (Cv_Termcrit_Iter + Cv_Termcrit_Eps, 5, 1.0));
 
    -- Segments image using seed markers
    procedure Cv_Watershed (Image   : Cv_Arr_P;
@@ -167,7 +167,7 @@ package Imgproc.Operations is
                              Dst       : Cv_Arr_P;
                              Mapmatrix : Cv_Mat_P;
                              Flags     : Integer := Cv_Inter'Pos (Cv_Inter_Linear) + Cv_Warp'Pos (Cv_Warp_Fill_Outliers);
-                             Fillval   : Cv_Scalar := Cvscalarall (0.0));
+                             Fillval   : Cv_Scalar := Cv_Scalar_All (0.0));
 
    -- Calculates the affine transform from 3 corresponding points.
    function Cv_Get_Affine_Transform (Src       : Cv_Point_2d_32f_Array;
@@ -185,7 +185,7 @@ package Imgproc.Operations is
                                   Dst       : Cv_Arr_P;
                                   Mapmatrix : Cv_Mat_P;
                                   Flags     : Integer := Cv_Inter'Pos (Cv_Inter_Linear) + Cv_Warp'Pos (Cv_Warp_Fill_Outliers);
-                                  Fillval   : Cv_Scalar := Cvscalarall (0.0));
+                                  Fillval   : Cv_Scalar := Cv_Scalar_All (0.0));
 
    -- Calculates the perspective transform from 4 corresponding points.
    function Cv_Get_Perspective_Transform (Src       : Cv_Point_2d_32f_Array;
@@ -198,7 +198,7 @@ package Imgproc.Operations is
                        Mapx    : Cv_Arr_P;
                        Mapy    : Cv_Arr_P;
                        Flags   : Integer := Cv_Inter'Pos (Cv_Inter_Linear) + Cv_Warp'Pos (Cv_Warp_Fill_Outliers);
-                       Fillval : Cv_Scalar := Cvscalarall (0.0));
+                       Fillval : Cv_Scalar := Cv_Scalar_All (0.0));
 
    -- Converts mapx & mapy from floating-point to integer formats for cvRemap
    procedure Cv_Convert_Maps (Mapx     : Cv_Arr_P;
@@ -366,7 +366,7 @@ package Imgproc.Operations is
                               Headersize   : Integer := Cv_Contour'Size;
                               Mode         : Cv_Retr := Cv_Retr_List;
                               Method       : Cv_Chain_Enum := Cv_Chain_Approx_Simple;
-                              Offset       : Cv_Point := Cvpoint (0, 0)) return Integer;
+                              Offset       : Cv_Point := Cv_Create_Point (0, 0)) return Integer;
 
    -- Initializes the contour scanning process.
    function Cv_Start_Find_Contours (Image      : Cv_Arr_P;
@@ -374,7 +374,7 @@ package Imgproc.Operations is
                                     Headersize : Integer := Cv_Contour'Size;
                                     Mode       : Cv_Retr := Cv_Retr_List;
                                     Method     : Cv_Chain_Enum := Cv_Chain_Approx_Simple;
-                                    Offset     : Cv_Point := Cvpoint (0, 0)) return Cv_Contour_Scanner;
+                                    Offset     : Cv_Point := Cv_Create_Point (0, 0)) return Cv_Contour_Scanner;
 
    -- Finds the next contour in the image.
    function Cv_Find_Next_Contour (Scanner : Cv_Contour_Scanner) return Cv_Seq_P;
@@ -484,7 +484,7 @@ package Imgproc.Operations is
 
    --     Calculates the contour perimeter or the curve length.
    function Cv_Arc_Length (Curve     : Cv_Void_P;
-                           Slice     : Cv_Slice := Cvslice (0);
+                           Slice     : Cv_Slice := Cv_Create_Slice (0);
                            Is_Closed : Integer := -1)
                            return Long_Float;
 
@@ -499,7 +499,7 @@ package Imgproc.Operations is
 
    --     Calculates the area of a whole contour or a contour section.
    function Cv_Contour_Area (Contour : access Cv_Arr;
-                             Slice   : Cv_Slice := Cvslice (0))
+                             Slice   : Cv_Slice := Cv_Create_Slice (0))
                              return Long_Float;
 
    -- Finds the circumscribed rectangle of minimal area for a given 2D point set.
@@ -510,7 +510,7 @@ package Imgproc.Operations is
 
    function Cv_Min_Enclosing_Circle (Points : Cv_Arr_P;
                                      Center : access Cv_Point_2d_32f;
-                                     Radius : access Long_Float) return Integer;
+                                     Radius : access Float) return Integer;
 
    -- Compares two shapes.
    function Cv_Match_Shapes (Object1   : Cv_Void_P;
@@ -699,8 +699,8 @@ package Imgproc.Operations is
    procedure Cv_Flood_Fill (Image     : Cv_Arr_P;
                             Seedpoint : Cv_Point;
                             Newvalue  : Cv_Scalar;
-                            Lodiff    : Cv_Scalar := Cvscalarall (0.0);
-                            Updiff    : Cv_Scalar := Cvscalarall (0.0);
+                            Lodiff    : Cv_Scalar := Cv_Scalar_All (0.0);
+                            Updiff    : Cv_Scalar := Cv_Scalar_All (0.0);
                             Comp      : Cv_Connected_Comp_P := null;
                             Flags     : Integer := 4;
                             Mask      : Cv_Arr_P := null);
