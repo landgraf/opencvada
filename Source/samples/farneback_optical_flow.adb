@@ -71,14 +71,10 @@ begin
       end if;
 
       if Gray = null then
-         Gray := new Cv_Mat;
-         Prev_Gray := new Cv_Mat;
-         Flow := new Cv_Mat;
-         C_Flow := new Cv_Mat;
-         Gray.all      := Cv_Create_Mat (Frame.all.Height, Frame.all.Width, Cv_Maketype (Cv_8u, 1));
-         Prev_Gray.all := Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Gray.all.Mat_Type);
-         Flow.all      := Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Cv_Maketype (Cv_32f, 2));
-         C_Flow.all    := Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Cv_Maketype (Cv_8u, 3));
+         Gray      := Core.Operations.Cv_Create_Mat(frame.all.Height, Frame.all.Width, Cv_Maketype (Cv_8u, 1));
+         Prev_Gray :=  Core.Operations.Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Gray.all.Mat_Type);
+         Flow      :=  Core.Operations.Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Cv_Maketype (Cv_32f, 2));
+         C_Flow    :=  Core.Operations.Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Cv_Maketype (Cv_8u, 3));
       end if;
 
       Put_Line ("a");

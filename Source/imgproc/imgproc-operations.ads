@@ -977,7 +977,7 @@ private
    pragma Import (C, Cv_Copy_Hist, "cvCopyHist");
    pragma Import (C, Cv_Calc_Bayesian_Prob, "cvCalcBayesianProb");
    pragma Import (C, Cv_Calc_Arr_Hist, "cvCalcArrHist");
-   pragma Import (C, Cv_Calc_Hist, "cvCalcArrHist");
+   pragma Import (C, Cv_Calc_Hist, "cvCalcHist");
    pragma Import (C, Cv_Calc_Arr_Back_Project, "cvCalcArrBackProject");
    pragma Import (C, Cv_Calc_Arr_Back_Project_Patch, "cvCalcArrBackProjectPatch");
    pragma Import (C, Cv_Calc_Prob_Density, "cvCalcProbDensity");

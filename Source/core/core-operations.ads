@@ -107,7 +107,7 @@ package Core.Operations is
    --     Creates a matrix header and allocates the matrix data.
    function Cv_Create_Mat (Rows     : Integer;
                            Cols     : Integer;
-                           Mat_Type : Integer)
+                           Mat_Type : Unsigned_32)
                            return Cv_Mat_P;
 
    --     Deallocates a matrix.
