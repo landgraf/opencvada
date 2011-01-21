@@ -111,7 +111,7 @@ begin
       Open_Close (Open_Close_Pos);
       Erode_Dilate (Erode_Dilate_Pos);
 
-      Char := CvWaitKey (0);
+      Char := Cv_Wait_Key (0);
       exit when Char = Ascii.Esc;
 
       if Char = 'e' then

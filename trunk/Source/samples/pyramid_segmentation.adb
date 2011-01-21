@@ -73,7 +73,7 @@ begin
 
    Cv_Show_Image ("Segmentation", +Image (2));
    loop
-      exit when CvWaitKey (0) = Ascii.Esc;
+      exit when Cv_Wait_Key (0) = Ascii.Esc;
    end loop;
 
    Cv_Destroy_Window ("Segmentation");

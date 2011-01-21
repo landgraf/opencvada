@@ -24,7 +24,7 @@ package body Highgui is
    --  //and alpha= 0 <-> 0xFF (not transparent <-> transparent)
    function Cv_Font_Qt (Name_Font  : String;
                         Point_Size : Integer := -1;
-                        Color      : Cv_Scalar := Core.Cvscalarall (0.0);
+                        Color      : Cv_Scalar := Core.Cv_Scalar_All (0.0);
                         Weight     : Cv_Font_Weight := Cv_Font_Normal;
                         Style      : Cv_Font_Style :=  Cv_Style_Normal;
                         Spacing    : Integer := 0) return Cv_Font is

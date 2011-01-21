@@ -117,7 +117,7 @@ package Objdetect is
                                     Scalefactor  : Long_Float := 1.1;
                                     Minneighbors : Integer := 3;
                                     Flags        : Integer := 0;
-                                    Minsize      : Cv_Size := Cvsize (0, 0)) return Cv_Seq_P;
+                                    Minsize      : Cv_Size := Cv_Create_Size (0, 0)) return Cv_Seq_P;
 
    -- Assigns images to the hidden cascade.
    procedure Cv_Set_Images_For_Haar_Classifier_Cascade (Cascade   : Cv_Haar_Classifier_Cascade_P;

@@ -51,8 +51,8 @@ procedure Latentsvmdetect is
          Detection := From_Void (Cv_Get_Seq_Elem (Detections, I)).all;
          Bounding_Box := Detection.Rect;
          Cv_Rectangle (+Image,
-                      CvPoint (Bounding_Box.X, Bounding_Box.Y),
-                      CvPoint (Bounding_Box.X + Bounding_Box.Width, Bounding_Box.Y + Bounding_Box.Height),
+                      Cv_Create_Point (Bounding_Box.X, Bounding_Box.Y),
+                      Cv_Create_Point (Bounding_Box.X + Bounding_Box.Width, Bounding_Box.Y + Bounding_Box.Height),
                       Cv_Rgb (255, 0, 0), 3);
       end loop;
       Cv_Release_Mem_Storage (Storage'Access);
@@ -75,7 +75,7 @@ begin
    Detector := Cv_Load_Latent_Svm_Detector (To_String(Model_Filename));
 
    if Detector = null then
-      CvReleaseImage (Image'Access);
+      Cv_Release_Image (Image'Access);
       return;
    end if;
 
