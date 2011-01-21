@@ -175,5 +175,6 @@ begin
    end loop;
 
    Cv_Release_Capture (Capture'Access);
-   Cv_Destroy_All_Windows;
+   Cv_Destroy_Window ("Motion");
+   Cv_Destroy_Window ("Origin");
 end Motempl;

@@ -128,7 +128,7 @@ procedure Find_Obj is
                                   Image_Descriptors  : Cv_Seq_P;
                                   Src_Corners        : Cv_Point_Array ;
                                   Dst_Corners        : Cv_Point_Array ) return Integer is
-      H : Cv_64f_Array (0 .. 8);
+--        H : Cv_64f_Array (0 .. 8);
 --        Mat_H : Cv_Mat := Cv_Create_Mat (3, 3, Cv_64f, H);
    begin
       return 1;

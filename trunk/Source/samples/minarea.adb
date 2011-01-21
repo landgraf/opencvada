@@ -148,6 +148,7 @@ begin
       C_Ret := Cv_Wait_Key (0);
 
       if C_Ret = Ascii.Esc then
+         Cv_Destroy_All_Windows;
          exit;
       end if;
    end loop;
