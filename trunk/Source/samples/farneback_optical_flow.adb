@@ -71,27 +71,26 @@ begin
       end if;
 
       if Gray = null then
-         Gray      := Core.Operations.Cv_Create_Mat(frame.all.Height, Frame.all.Width, Cv_Maketype (Cv_8u, 1));
-         Prev_Gray :=  Core.Operations.Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Gray.all.Mat_Type);
-         Flow      :=  Core.Operations.Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Cv_Maketype (Cv_32f, 2));
-         C_Flow    :=  Core.Operations.Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Cv_Maketype (Cv_8u, 3));
+         Gray := new Cv_Mat;
+         Prev_Gray := new Cv_Mat;
+         Flow := new Cv_Mat;
+         C_Flow := new Cv_Mat;
+         Gray      := Core.Operations.Cv_Create_Mat (Frame.all.Height, Frame.all.Width, Cv_Maketype (Cv_8u, 1));
+         Prev_Gray := Core.Operations.Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Gray.all.Mat_Type);
+         Flow      := Core.Operations.Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Cv_Maketype (Cv_32f, 2));
+         C_Flow    := Core.Operations.Cv_Create_Mat (Gray.all.Rows, Gray.all.Cols, Cv_Maketype (Cv_8u, 3));
       end if;
 
-      Put_Line ("a");
-      Cv_Cvt_Color (To_Arr(Frame), To_Arr(Gray), CV_BGR2GRAY);
+      Cv_Cvt_Color (To_Arr (Frame), To_Arr (Gray), CV_BGR2GRAY);
 
       if First_Frame = 0 then
-         Put_Line ("b");
          Cv_Calc_Optical_Flow_Farneback (To_Arr (Prev_Gray), To_Arr (Gray), To_Arr (Flow), 0.5, 3, 15, 3, 5, 1.2, 0);
-         Put_Line ("c");
          Cv_Cvt_Color (To_Arr (Prev_Gray), To_Arr (C_Flow), Cv_Gray2bgr);
-         Put_Line ("d");
          Draw_Opt_Flow_Map (Flow, C_Flow, 16, 1.5, Cv_Rgb (0, 255, 0));
-         Put_Line ("e");
          Cv_Show_Image ("Flow", To_Arr (C_Flow));
       end if;
 
-      if Cv_Wait_Key (30) = Ascii.Esc then
+      if Cv_Wait_Key (1) = Ascii.Esc then
          exit;
       end if;
 

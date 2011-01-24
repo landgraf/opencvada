@@ -213,7 +213,8 @@ package Imgproc.Operations is
                            --X          : Long_Float;
                            --Y          : Long_Float;
                            M          : Long_Float;
-                           Flags      : Integer := Cv_Inter'Pos (Cv_Inter_Linear) + Cv_Warp'Pos (Cv_Warp_Fill_Outliers));
+                           Flags      : Integer := Integer (Cv_Inter_Linear) + Integer (Cv_Warp_Fill_Outliers));
+--                             Flags      : Integer := Cv_Inter'Pos (Cv_Inter_Linear) + Cv_Warp'Pos (Cv_Warp_Fill_Outliers));
 
    -- Performs forward or inverse linear-polar image transform
    procedure Cv_Linear_Polar (Src        : Cv_Arr_P;
@@ -222,7 +223,8 @@ package Imgproc.Operations is
                               --                              X          : Long_Float;
                               --                              Y          : Long_Float;
                               Max_Radius : Long_Float;
-                              Flags      : Integer := Cv_Inter'Pos (Cv_Inter_Linear) + Cv_Warp'Pos (Cv_Warp_Fill_Outliers));
+                              Flags      : Integer := Integer (Cv_Inter_Linear) + Integer (Cv_Warp_Fill_Outliers));
+--                                Flags      : Integer := Cv_Inter'Pos (Cv_Inter_Linear) + Cv_Warp'Pos (Cv_Warp_Fill_Outliers));
 
    -- Transforms an image to compensate for lens distortion.
    procedure Cv_Undistort2 (Src             : Cv_Arr_P;
