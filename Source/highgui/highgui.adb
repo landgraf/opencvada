@@ -88,6 +88,17 @@ package body Highgui is
       return W_Cv_Create_Button (+Button_Name, On_Change, User_Data, Button_Type, Intial_Button_State);
    end Cv_Create_Button;
 
+
+   procedure Cv_Create_Button (Button_Name         : String;
+                              On_Change           : Cv_Button_Callback := null;
+                              User_Data           : Cv_Void_P := null;
+                              Button_Type         : Cv_Button_Type := Cv_Push_Button;
+                               Intial_Button_State : Integer := 0) is
+      Dump : Integer;
+   begin
+      Dump := w_Cv_Create_Button (+Button_Name, On_Change, User_Data, Button_Type, Intial_Button_State);
+   end Cv_Create_Button;
+
    -----------------------------------------------------------------------------
    --
    -----------------------------------------------------------------------------
@@ -108,6 +119,12 @@ package body Highgui is
                              Flags       : Highgui_Window_Params := Cv_Window_Autosize) return Integer is
    begin
       return W_Cv_Named_Window (+Windowname, Flags);
+   end Cv_Named_Window;
+   procedure  Cv_Named_Window (Windowname  : String;
+                               Flags       : Highgui_Window_Params := Cv_Window_Autosize) is
+      Dump : Integer;
+   begin
+      Dump := W_Cv_Named_Window (+Windowname, Flags);
    end Cv_Named_Window;
 
    procedure Cv_Set_Window_Property (Name       : String;
@@ -162,6 +179,15 @@ package body Highgui is
    begin
       return W_Cv_Create_Trackbar ( +Trackbar_Name, +Window_Name, Value, Count, On_Change);
    end Cv_Create_Trackbar;
+   procedure Cv_Create_Trackbar (Trackbar_Name : String;
+                                Window_Name   : String;
+                                Value         : access Integer;
+                                Count         : Integer;
+                                 On_Change     : Cv_Trackbar_Callback) is
+      Dump : Integer;
+   begin
+      Dump := W_Cv_Create_Trackbar ( +Trackbar_Name, +Window_Name, Value, Count, On_Change);
+   end Cv_Create_Trackbar;
 
    function Cv_Create_Trackbar2 (Trackbar_Name : String;
                                  Window_Name   : String;
@@ -171,6 +197,16 @@ package body Highgui is
                                  User_Data     : Cv_Void_P) return Integer is
    begin
       return W_Cv_Create_Trackbar2 (+Trackbar_Name, +Window_Name, Value, Count, On_Change, User_Data);
+   end Cv_Create_Trackbar2;
+   procedure Cv_Create_Trackbar2 (Trackbar_Name : String;
+                                 Window_Name   : String;
+                                 Value         : Integer;
+                                 Count         : Integer;
+                                 On_Change     : Cv_Trackbar_Callback2 := null;
+                                  User_Data     : Cv_Void_P) is
+      Dump : Integer;
+   begin
+      Dump := W_Cv_Create_Trackbar2 (+Trackbar_Name, +Window_Name, Value, Count, On_Change, User_Data);
    end Cv_Create_Trackbar2;
 
    function Cv_Get_Trackbar_Pos (Trackbar_Name : String;
@@ -205,6 +241,13 @@ package body Highgui is
                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer is
    begin
       return W_Cv_Save_Image (+Filename, Image, Settings);
+   end Cv_Save_Image;
+   procedure Cv_Save_Image (Filename      : String;
+                           Image         : Cv_Arr_P;
+                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) is
+      Dump : Integer;
+   begin
+      Dump :=  W_Cv_Save_Image (+Filename, Image, Settings);
    end Cv_Save_Image;
 
    function Create_File_Settings ( Compression     : Compression_Type;

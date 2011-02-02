@@ -799,6 +799,7 @@ package body Core is
    end Cv_Is_Image_Hdr;
 
    function Cv_Is_Image (Img : Ipl_Image_P) return Integer is
+      use Core.Cv_8u_Pointer_Pkg;
    begin
       if Cv_Is_Image_Hdr (Img) = 1 then
          if not (Img.all.Image_Data = null) then
@@ -972,6 +973,7 @@ package body Core is
    end "+";
 
    function Cv_Is_Mat (Mat : Cv_Mat_P) return Integer is
+      use Core.Cv_8u_Pointer_Pkg;
    begin
       if not ( Mat = null) then
          if (Cv_Is_Mat_Hdr (Mat) > 0) and Mat.all.Data.Cv_8u /= null then
@@ -992,6 +994,7 @@ package body Core is
                                   Row      : Integer;
                                   Col      : Integer;
                                   Pix_Size : Unsigned_32) return Cv_8u_Pointer is
+      use Core.Cv_8u_Pointer_Pkg;
    begin
       return Mat.all.Data.Cv_8u + Interfaces.C.Ptrdiff_T (Mat.all.Step * (Row) + Integer (Pix_Size) * (Col));
    end Cv_Mat_Elem_Ptr_Fast;

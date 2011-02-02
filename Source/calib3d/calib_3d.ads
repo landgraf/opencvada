@@ -115,12 +115,12 @@ package Calib_3d is
                            return Integer;
 
    --     Finds the perspective transformation between two planes.
-   procedure Cv_Find_Homography (Srcpoints             : Cv_Mat_P;
+   function Cv_Find_Homography (Srcpoints             : Cv_Mat_P;
                                  Dstpoints             : Cv_Mat_P;
                                  H                     : Cv_Mat_P;
                                  Method                : Integer := 0;
-                                 Ransacreprojthreshold : Integer := 3;
-                                 Status                : Cv_Mat_P := null);
+                                 Ransacreprojthreshold : Long_Float := 3.0;
+                                Status                : Cv_Mat_P := null) return Integer;
 
    --     Computes the RQ decomposition of 3x3 matrices.
    procedure Cv_Rq_Decomp_3x3 (M           : Cv_Mat_P;

@@ -48,18 +48,20 @@ package Features_2d is
          Noctaves         : Integer;
          Noctavelayers    : Integer;
       end record;
+   pragma Convention (C_Pass_By_Copy, Cv_Surf_Params);
 
    --              // returns default parameters
    function Cv_Create_Surf_Params (Threshold : Long_Float;
                                    Extended  : Integer := 0) return Cv_Surf_Params;
 
    -- Extracts Speeded Up Robust Features from an image.
-   procedure Cv_Extract_Surf (Image       : Cv_Arr_P;
-                              Mask        : Cv_Arr_P;
-                              Keypoints   : access Cv_Seq_P;
-                              Descriptors : access Cv_Seq_P;
-                              Storage     : Cv_Mem_Storage_P;
-                              Params      : Cv_Surf_Params);
+   procedure Cv_Extract_Surf (Image                : Cv_Arr_P;
+                              Mask                 : Cv_Arr_P;
+                              Keypoints            : access Cv_Seq_P;
+                              Descriptors          : access Cv_Seq_P;
+                              Storage              : Cv_Mem_Storage_P;
+                              Params               : Cv_Surf_Params;
+                              Use_Provided_Key_Pts : Integer := 0);
 
    type Cv_Mser_Params is record
       Delta_Val      : Integer;

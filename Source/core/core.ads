@@ -82,7 +82,6 @@ package Core is
 
    package Cv_8u_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Unsigned_8, Cv_8u_Array, 0);
-   use type Cv_8u_Pointer_Pkg.Pointer;
    subtype Cv_8u_Pointer is Cv_8u_Pointer_Pkg.Pointer;
 
    type Cv_8u_Pointer_Array is array (Integer range <>) of Cv_8u_Pointer;
@@ -94,7 +93,6 @@ package Core is
 
    package Cv_8s_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Integer_8, Cv_8s_Array, 0);
-   use type Cv_8s_Pointer_Pkg.Pointer;
    subtype Cv_8s_Pointer is Cv_8s_Pointer_Pkg.Pointer;
 
    type Cv_8s_Pointer_Array is array (Integer range <>) of Cv_8s_Pointer;
@@ -106,7 +104,6 @@ package Core is
 
    package Cv_16u_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Unsigned_16, Cv_16u_Array, 0);
-   use type Cv_16u_Pointer_Pkg.Pointer;
    subtype Cv_16u_Pointer is Cv_16u_Pointer_Pkg.Pointer;
 
    type Cv_16u_Pointer_Array is array (Integer range <>) of Cv_16u_Pointer;
@@ -118,7 +115,6 @@ package Core is
 
    package Cv_16s_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Integer_16, Cv_16s_Array, 0);
-   use type Cv_16s_Pointer_Pkg.Pointer;
    subtype Cv_16s_Pointer is Cv_16s_Pointer_Pkg.Pointer;
 
    type Cv_16s_Pointer_Array is array (Integer range <>) of Cv_16s_Pointer;
@@ -130,7 +126,6 @@ package Core is
 
    package Cv_32s_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Integer, Cv_32s_Array, 0);
-   use type Cv_32s_Pointer_Pkg.Pointer;
    subtype Cv_32s_Pointer is Cv_32s_Pointer_Pkg.Pointer;
 
    type Cv_32s_Pointer_Array is array (Integer range <>) of Cv_32s_Pointer;
@@ -142,7 +137,6 @@ package Core is
 
    package Cv_32f_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Float, Cv_32f_Array, 0.0);
-   use type Cv_32f_Pointer_Pkg.Pointer;
    subtype Cv_32f_Pointer is Cv_32f_Pointer_Pkg.Pointer;
 
    type Cv_32f_Pointer_Array is array (Integer range <>) of Cv_32f_Pointer;
@@ -180,7 +174,6 @@ package Core is
    -- fix this
    package Cv_String_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Interfaces.C.Strings.Chars_Ptr, Cv_String_Array, null);
-   use type Cv_String_Pointer_Pkg.Pointer;
    subtype Cv_String_Pointer is Cv_String_Pointer_Pkg.Pointer;
 
    package Value_Functions is new Ada.Numerics.Generic_Elementary_Functions (Float);
@@ -201,7 +194,6 @@ package Core is
 
    package Cv_Arr_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Cv_Arr_P, Cv_Arr_P_Array, null);
-   use type Cv_Arr_Pointer_Pkg.Pointer;
    subtype C_Cv_Arr_P_Ptr is Cv_Arr_Pointer_Pkg.Pointer;
    type Cv_Arr_Pointer is new C_Cv_Arr_P_Ptr;
 
@@ -430,7 +422,6 @@ package Core is
 
    package Cv_Ipl_Image_P_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Ipl_Image_P, Ipl_Image_P_Array, null);
-   use type Cv_Ipl_Image_P_Pointer_Pkg.Pointer;
    subtype Cv_Ipl_Image_P_Pointer is Cv_Ipl_Image_P_Pointer_Pkg.Pointer;
 
    type Ipl_Conv_Kernel is
@@ -531,7 +522,7 @@ package Core is
       Cols         : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Mat);
-   type Cv_Mat_P is access Cv_Mat;
+   type Cv_Mat_P is access all cv_Mat;
    type Cv_Mat_Array_AxB is array (Integer range <>, Integer range <>) of aliased Cv_Mat;
 
    function Cv_Is_Mat_Hdr (Mat : Cv_Mat_P) return Integer;
@@ -711,7 +702,6 @@ package Core is
 
    package Cv_Histogram_P_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Cv_Histogram_P, Cv_Histogram_P_Array, null);
-   use type Cv_Histogram_P_Pointer_Pkg.Pointer;
    subtype Cv_Histogram_P_Pointer is Cv_Histogram_P_Pointer_Pkg.Pointer;
 
    function Cv_Is_Hist (Hist : Cv_Histogram_P) return Integer;
@@ -769,6 +759,7 @@ package Core is
    pragma Convention (C_Pass_By_Copy, Cv_Point);
    type Cv_Point_P is access all Cv_Point;
    type Cv_Point_Array is array (Integer range <>) of aliased Cv_Point;
+   type Cv_Point_Array_P is access all Cv_Point_Array;
    type Cv_Point_2d_Array is array (Integer range <>, Integer range <>) of aliased Cv_Point;
    Cv_Point_Dummy        : Cv_Point;
 
@@ -776,7 +767,6 @@ package Core is
 
    package Cv_Point_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Cv_Point, Cv_Point_Array, Cv_Point_Dummy);
-   use type Cv_Point_Pointer_Pkg.Pointer;
    subtype Cv_Point_Pointer is Cv_Point_Pointer_Pkg.Pointer;
 
    type Cv_Point_Pointer_Array is array (Integer range <> ) of Cv_Point_Pointer;
@@ -789,9 +779,15 @@ package Core is
       Y : Float;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Point_2D_32f);
+   Cv_Point_2d_32f_Dummy : Cv_Point_2d_32f;
    type Cv_Point_2d_32f_P is access all Cv_Point_2d_32f;
    type Cv_Point_2D_32F_Array is array (Integer range <>) of aliased Cv_Point_2D_32f;
+   type Cv_Point_2d_32f_Array_P is access all Cv_Point_2d_32f_Array;
    Cv_Point_2d_32f_Array_Null : Cv_Point_2d_32f_Array (1 .. 0);
+
+   package Cv_Point_2d_32f_Pointer_Pkg is
+     new Interfaces.C.Pointers (Integer, Cv_Point_2d_32f, Cv_Point_2d_32f_Array, Cv_Point_2d_32f_Dummy);
+   subtype Cv_Point_2d_32f_Pointer is Cv_Point_2d_32f_Pointer_Pkg.Pointer;
 
    function Cv_Create_Point_2D_32f (X : Long_Float; Y : Long_Float)
                                     return Cv_Point_2D_32f;
@@ -840,11 +836,6 @@ package Core is
 
    function Cv_Create_Point_3d_64f (X : Long_Float; Y : Long_Float;
                                     Z : Long_Float) return Cv_Point_3d_64f;
-
-   --     package C_Point_3d_64f_Arr_Ptr is
-   --       new Interfaces.C.Pointers (Integer, Cv_Point_3d_64f, Cv_Point_3d_64f_Array, Cv_Point_3d_64f_Dummy);
-   --     use type C_Point_3d_64f_Arr_Ptr.Pointer;
-   --     subtype CvPoint_3d_64f_Ptr is C_Point_3d_64f_Arr_Ptr.Pointer;
 
    -----------------------------------------------------------------------------
    -- Cv_Size & Cv_Box
@@ -1011,10 +1002,9 @@ package Core is
    type Cv_Set_Elem_Array is array (Integer range <>) of aliased Cv_Set_Elem;
    Cv_Set_Elem_Dummy : Cv_Set_Elem;
 
-   package C_Set_Elem_Arr_Ptr is
+   package C_Set_Elem_Pointer_Ptr is
      new Interfaces.C.Pointers (Integer, Cv_Set_Elem, Cv_Set_Elem_Array, Cv_Set_Elem_Dummy);
-   use type C_Set_Elem_Arr_Ptr.Pointer;
-   subtype Cv_Set_Elem_Pointer is C_Set_Elem_Arr_Ptr.Pointer;
+   subtype Cv_Set_Elem_Pointer is C_Set_Elem_Pointer_Ptr.Pointer;
 
    type Cv_Set is record
       Flags        : Integer;
@@ -1038,10 +1028,9 @@ package Core is
    type Cv_Set_Array is array (Integer range <>) of aliased Cv_Set;
    Cv_Set_Dummy : Cv_Set;
 
-   package C_Set_Arr_Ptr is
+   package C_Set_Pointer_Ptr is
      new Interfaces.C.Pointers (Integer, Cv_Set, Cv_Set_Array, Cv_Set_Dummy);
-   use type C_Set_Arr_Ptr.Pointer;
-   subtype Cv_Set_Pointer is C_Set_Arr_Ptr.Pointer;
+   subtype Cv_Set_Pointer is C_Set_Pointer_Ptr.Pointer;
 
    Cv_Set_Elem_Idx_Mask : constant := (16#4000000# - 1);
    Cv_Set_Elem_Free_Flag : constant := 16#80000000#;
@@ -1881,26 +1870,16 @@ package Core is
    type Cv_Size_Array is array (Integer range <>) of aliased Cv_Size;
    type Cv_Size_P_Array is array (Integer range <>) of aliased Cv_Size_P;
 
-   --     package C_Mat_Arr_Ptr is
-   --       new Interfaces.C.Pointers (Integer, Cv_Mat, Cv_Mat_Array, (0, 0, null, 0, Mat_Data_Requirement, 0, 0));
-   --     use type C_Mat_Arr_Ptr.Pointer;
-   --     subtype C_Mat_Ptr is C_Mat_Arr_Ptr.Pointer;
 
-   package C_Mat_P_Arr_Ptr is
+   package C_Mat_P_Pointer_Ptr is
      new Interfaces.C.Pointers (Integer, Cv_Mat_P, Cv_Mat_P_Array, null);
-   use type C_Mat_P_Arr_Ptr.Pointer;
-   subtype Cv_Mat_P_Pointer is C_Mat_P_Arr_Ptr.Pointer;
+   use type C_Mat_P_Pointer_Ptr.Pointer;
+   subtype Cv_Mat_P_Pointer is C_Mat_P_Pointer_Ptr.Pointer;
 
-   package C_Size_Arr_Ptr is
+   package C_Size_Pointer_Ptr is
      new Interfaces.C.Pointers (Integer, Cv_Size, Cv_Size_Array, (0, 0));
-   use type C_Size_Arr_Ptr.Pointer;
-   subtype Cv_Size_Pointer is C_Size_Arr_Ptr.Pointer;
-
-   --     package C_Size_P_Arr_Ptr is
-   --       new Interfaces.C.Pointers (Integer, Cv_Size_P, Cv_Size_P_Array, null);
-   --     use type C_Size_P_Arr_Ptr.Pointer;
-   --     subtype C_Size_P_Ptr is C_Size_P_Arr_Ptr.Pointer;
-
+   use type C_Size_Pointer_Ptr.Pointer;
+   subtype Cv_Size_Pointer is C_Size_Pointer_Ptr.Pointer;
 
    function Cv_Mat_Elem (Mat       : Cv_Mat_P;
                          Elem_Size : Integer;
