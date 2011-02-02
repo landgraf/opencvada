@@ -273,10 +273,9 @@ package Video.Background_Segm is
 
    type Cv_Bg_Code_Book_Elem_P_Array is array (Integer range <>) of aliased Cv_Bg_Code_Book_Elem_P;
 
-   package C_Bg_Code_Book_Elem_P_Arr_Ptr is
+   package Cv_Bg_Code_Book_Elem_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Cv_Bg_Code_Book_Elem_P, Cv_Bg_Code_Book_Elem_P_Array, null);
-   use type C_Bg_Code_Book_Elem_P_Arr_Ptr.Pointer;
-   subtype Cv_Bg_Code_Book_Elem_Pointer is C_Bg_Code_Book_Elem_P_Arr_Ptr.Pointer;
+   subtype Cv_Bg_Code_Book_Elem_Pointer is Cv_Bg_Code_Book_Elem_Pointer_Pkg.Pointer;
 
    type Cv_Bg_Code_Book_Elem is record
       Next          : Cv_Bg_Code_Book_Elem_P;
