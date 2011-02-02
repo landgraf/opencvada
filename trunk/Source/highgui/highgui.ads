@@ -131,6 +131,12 @@ package Highgui is
                               Button_Type         : Cv_Button_Type := Cv_Push_Button;
                               Intial_Button_State : Integer := 0) return Integer;
 
+   procedure Cv_Create_Button (Button_Name         : String;
+                              On_Change           : Cv_Button_Callback := null;
+                              User_Data           : Cv_Void_P := null;
+                              Button_Type         : Cv_Button_Type := Cv_Push_Button;
+                              Intial_Button_State : Integer := 0);
+
    -----------------------------------------------------------------------------
    --
    -----------------------------------------------------------------------------
@@ -163,6 +169,8 @@ package Highgui is
    -- create window
    function Cv_Named_Window (Windowname  : String;
                              Flags       : Highgui_Window_Params := Cv_Window_Autosize) return Integer;
+   procedure Cv_Named_Window (Windowname  : String;
+                              Flags       : Highgui_Window_Params := Cv_Window_Autosize);
 
    -- Set and Get Property of the window
    procedure Cv_Set_Window_Property (Name       : String;
@@ -203,6 +211,11 @@ package Highgui is
                                 Value         : access Integer;
                                 Count         : Integer;
                                 On_Change     : Cv_Trackbar_Callback) return Integer;
+   procedure Cv_Create_Trackbar (Trackbar_Name : String;
+                                Window_Name   : String;
+                                Value         : access Integer;
+                                Count         : Integer;
+                                 On_Change     : Cv_Trackbar_Callback);
 
    type Cv_Trackbar_Callback2 is access procedure (Position  : Integer;
                                                    User_Data : Cv_Void_P) ;
@@ -214,6 +227,13 @@ package Highgui is
                                  Count         : Integer;
                                  On_Change     : Cv_Trackbar_Callback2 := null;
                                  User_Data     : Cv_Void_P) return Integer;
+
+   procedure Cv_Create_Trackbar2 (Trackbar_Name : String;
+                                 Window_Name   : String;
+                                 Value         : Integer;
+                                 Count         : Integer;
+                                 On_Change     : Cv_Trackbar_Callback2 := null;
+                                  User_Data     : Cv_Void_P);
 
    -- retrieve or set trackbar position
    function Cv_Get_Trackbar_Pos (Trackbar_Name : String;
@@ -275,6 +295,10 @@ package Highgui is
                            Image         : Cv_Arr_P;
                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer;
 
+   procedure cv_Save_Image (Filename      : String;
+                           Image         : Cv_Arr_P;
+                  Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95));
+
    -- decode image stored in the buffer
    function Cv_Decode_Image (Buf      : Cv_Mat_P;
                              Is_Color : Integer := Cv_Load_Image_Color) return Ipl_Image_P;
@@ -296,6 +320,7 @@ package Highgui is
 
    -- wait for key event infinitely (delay<=0) or for "delay" milliseconds
    function Cv_Wait_Key (Ms_Delay : Integer := 0 ) return Character;
+   procedure Cv_Wait_Key (Ms_Delay : Integer := 0 );
 
    -----------------------------------------------------------------------------
    -- Working with Video Files and Cameras
@@ -333,6 +358,7 @@ package Highgui is
    -- grab a frame, return 1 on success, 0 on fail.
    -- this function is thought to be fast
    function Cv_Grab_Frame (Capture : Cv_Capture_P) return Integer;
+   procedure Cv_Grab_Frame (Capture : Cv_Capture_P);
 
    -- get the frame grabbed with cvGrabFrame(..)
    -- This function may apply some frame processing like
@@ -408,6 +434,8 @@ package Highgui is
    -- write frame to video file
    function Cv_Write_Frame ( Writer : Cv_Video_Writer_P;
                             Image  : Ipl_Image_P) return Integer;
+   procedure Cv_Write_Frame ( Writer : Cv_Video_Writer_P;
+                             Image  : Ipl_Image_P);
 
    --- close video file writer
    procedure Cv_Release_Video_Writer (Writer : access Cv_Video_Writer_P);

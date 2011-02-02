@@ -6,15 +6,15 @@ project OpenCVAda_Samples is
    for Object_Dir use "Build";
    for Exec_Dir use "Exec";
    for Languages use ("Ada");
-   for Main use ("chess_demo.adb", "bgfg_codebook.adb", "camera_test.adb", "contours.adb", "convert_cascade.adb", "delaunay.adb", "distrans.adb", "farneback_optical_flow.adb", "find_obj.adb", "histogram_demo.adb", "latentsvmdetect.adb",
-"minarea.adb", "morphology.adb", "motempl.adb", "mser.adb", "polar_transforms.adb", "pyramid_segmentation.adb");
+   for Main use ("chess_demo.adb", "bgfg_codebook.adb", "camera_test.adb", "contours.adb", "convert_cascade.adb", "delaunay.adb", "distrans.adb", "farneback_optical_flow.adb", "find_obj.adb", "histogram_demo.adb", "latentsvmdetect.adb", 
+"minarea.adb", "morphology.adb", "motempl.adb", "mser.adb", "polar_transforms.adb", "pyramid_segmentation.adb", "find_object.adb");
 
    package Builder is
       for Default_Switches ("ada") use ("-s", "-m");
    end Builder;
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnatw.hkd", "-gnat05");
+      for Default_Switches ("ada") use ("-gnatw.hd", "-gnat05");
       for Default_Switches ("c++") use ("-IC:\OpenCV2.2\include");
    end Compiler;
 
