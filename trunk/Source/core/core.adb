@@ -729,7 +729,7 @@ package body Core is
 
    function Cv_Mat_Cn (Flags : Unsigned_32) return Unsigned_32 is -- used to be Integer
    begin
-      return Shift_Left (Unsigned_32 (Flags) and Unsigned_32 (Cv_Mat_Cn_Mask), Integer (Cv_Cn_Shift)) + 1;
+      return Shift_Right (Unsigned_32 (Flags) and Unsigned_32 (Cv_Mat_Cn_Mask), Integer (Cv_Cn_Shift)) + 1;
    end Cv_Mat_Cn;
 
    function Cv_Elem_Size_1 (E_Type : Unsigned_32) return Unsigned_32 is -- used to be Integer
