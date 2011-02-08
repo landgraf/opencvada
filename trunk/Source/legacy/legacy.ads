@@ -28,12 +28,14 @@ package Legacy is
    type Cv_Matrix_3 is record
       M : Cv_32f_2d_Array (1 .. 3, 1 .. 3);
    end record;
+   pragma Convention (C_Pass_By_Copy, Cv_Matrix_3);
 
    type Cv_Rand_State is record
       State    : Cv_Rng;
       Disttype : Integer;
       Param    : Cv_Scalar_Array (1 .. 2);
    end record;
+   pragma Convention (C_Pass_By_Copy, Cv_Rand_State);
 
    --------------------------------------------------------------------------------
 
@@ -43,7 +45,18 @@ package Legacy is
                               Ffill_Threshold : Long_Float;
                               Storage         : Cv_Mem_Storage)
                               return Cv_Seq_P;
-
+   function Cv_Segment_Image (Src             : Cv_Mat_P;
+                              Dst             : Cv_Mat_P;
+                              Canny_Threshold : Long_Float;
+                              Ffill_Threshold : Long_Float;
+                              Storage         : Cv_Mem_Storage)
+                              return Cv_Seq_P;
+   function Cv_Segment_Image (Src             : Ipl_Image_P;
+                              Dst             : Ipl_Image_P;
+                              Canny_Threshold : Long_Float;
+                              Ffill_Threshold : Long_Float;
+                              Storage         : Cv_Mem_Storage)
+                              return Cv_Seq_P;
    -----------------------------------------------------------------------------
    -- Eigen objects ------------------------------------------------------------
    -----------------------------------------------------------------------------
@@ -201,6 +214,16 @@ package Legacy is
    --     Observations to be used with an embedded HMM; Each observation is
    --     top-left block of DCT coefficient matrix
    procedure Cv_Img_To_Obs_Dct (Arr        : Cv_Arr_P;
+                                Obs        : Cv_32f_Array;
+                                Dct_Size   : Cv_Size;
+                                Obs_Size   : Cv_Size;
+                                Delta_Size : Cv_Size);
+   procedure Cv_Img_To_Obs_Dct (Arr        : Cv_Mat_P;
+                                Obs        : Cv_32f_Array;
+                                Dct_Size   : Cv_Size;
+                                Obs_Size   : Cv_Size;
+                                Delta_Size : Cv_Size);
+   procedure Cv_Img_To_Obs_Dct (Arr        : Ipl_Image_P;
                                 Obs        : Cv_32f_Array;
                                 Dct_Size   : Cv_Size;
                                 Obs_Size   : Cv_Size;
@@ -372,6 +395,7 @@ package Legacy is
       Cur_Weight     : Cv_32f_Pointer;
       Cand_Weight    : Cv_32f_Pointer;
    end record;
+   pragma Convention (C_Pass_By_Copy, Cv_Clique_Finder);
 
    Clique_Time_Off : constant := 2;
    Clique_Found    : constant := 1;
@@ -394,6 +418,26 @@ package Legacy is
                                             Right_Image   : Cv_Arr_P;
                                             Mode          : Integer;
                                             Disp_Image    : Cv_Arr_P;
+                                            Max_Disparity : Integer;
+                                            Param1        : Long_Float := Cv_Undef_Sc_Param_Lf;
+                                            Param2        : Long_Float := Cv_Undef_Sc_Param_Lf;
+                                            Param3        : Long_Float := Cv_Undef_Sc_Param_Lf;
+                                            Param4        : Long_Float := Cv_Undef_Sc_Param_Lf;
+                                            Param5        : Long_Float := Cv_Undef_Sc_Param_Lf);
+   procedure Cv_Find_Stereo_Correspondence (Left_Image    : Cv_Mat_P;
+                                            Right_Image   : Cv_Mat_P;
+                                            Mode          : Integer;
+                                            Disp_Image    : Cv_Mat_P;
+                                            Max_Disparity : Integer;
+                                            Param1        : Long_Float := Cv_Undef_Sc_Param_Lf;
+                                            Param2        : Long_Float := Cv_Undef_Sc_Param_Lf;
+                                            Param3        : Long_Float := Cv_Undef_Sc_Param_Lf;
+                                            Param4        : Long_Float := Cv_Undef_Sc_Param_Lf;
+                                            Param5        : Long_Float := Cv_Undef_Sc_Param_Lf);
+   procedure Cv_Find_Stereo_Correspondence (Left_Image    : Ipl_Image_P;
+                                            Right_Image   : Ipl_Image_P;
+                                            Mode          : Integer;
+                                            Disp_Image    : Ipl_Image_P;
                                             Max_Disparity : Integer;
                                             Param1        : Long_Float := Cv_Undef_Sc_Param_Lf;
                                             Param2        : Long_Float := Cv_Undef_Sc_Param_Lf;
@@ -559,6 +603,12 @@ package Legacy is
    procedure Cv_Compute_Perspective_Map (Coeffs     : Cv_64f_Array_3x3;
                                          Rect_Map_X : Cv_Arr_P;
                                          Rect_Map_Y : Cv_Arr_P);
+   procedure Cv_Compute_Perspective_Map (Coeffs     : Cv_64f_Array_3x3;
+                                         Rect_Map_X : Cv_Mat_P;
+                                         Rect_Map_Y : Cv_Mat_P);
+   procedure Cv_Compute_Perspective_Map (Coeffs     : Cv_64f_Array_3x3;
+                                         Rect_Map_X : Ipl_Image_P;
+                                         Rect_Map_Y : Ipl_Image_P);
 
    function Icv_Com_Coeff_For_Line (Point1           : Cv_Point_2d_64f;
                                     Point2           : Cv_Point_2d_64f;
@@ -715,6 +765,12 @@ package Legacy is
    procedure Cv_De_Interlace (Frame      : Cv_Arr_P;
                               Field_Even : Cv_Arr_P;
                               Field_Odd  : Cv_Arr_P);
+   procedure Cv_De_Interlace (Frame      : Cv_Mat_P;
+                              Field_Even : Cv_Mat_P;
+                              Field_Odd  : Cv_Mat_P);
+   procedure Cv_De_Interlace (Frame      : Ipl_Image_P;
+                              Field_Even : Ipl_Image_P;
+                              Field_Odd  : Ipl_Image_P);
 
    -- Contour Tree -------------------------------------------------------------
    -----------------------------------------------------------------------------
@@ -722,10 +778,10 @@ package Legacy is
    -- CV_TREE_NODE_FIELDS
       Flags        : Integer;
       Header_Size  : Integer;
-      H_Prev       : access Cv_Seq;
-      H_Next       : access Cv_Seq;
-      V_Prev       : access Cv_Seq;
-      V_Next       : access Cv_Seq;
+      H_Prev       : Cv_Seq_P;
+      H_Next       : Cv_Seq_P;
+      V_Prev       : Cv_Seq_P;
+      V_Next       : Cv_Seq_P;
 
       -- CV_SEQUENCE_FIELDS
       Total        : Integer;
@@ -733,16 +789,16 @@ package Legacy is
       Block_Max    : Cv_Void_P;
       Ptr          : Cv_Void_P;
       Delta_Elems  : Integer;
-      Storage      : access Cv_Mem_Storage;
-      Free_Blocks  : access Cv_Seq_Block;
-      First        : access Cv_Seq_Block;
+      Storage      : Cv_Mem_Storage_P;
+      Free_Blocks  : Cv_Seq_Block_P;
+      First        : Cv_Seq_Block_P;
 
       P1           : Cv_Point;
       P2           : Cv_Point;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Contour_Tree);
 
-   type Cv_Contour_Tree_P is access Cv_Contour_Tree;
+   type Cv_Contour_Tree_P is access all cv_Contour_Tree;
 
    --     Creates a hierarchical representation of a contour.
    function Cv_Create_Contour_Tree (Contour   : Cv_Seq_P;
@@ -750,10 +806,10 @@ package Legacy is
                                     Threshold : Long_Float) return Cv_Contour_Tree_P;
 
    --     Reconstruct (completelly or partially) contour a from contour tree
-   function Cv_Contour_From_Contour_Tree (Tree     : access Cv_Contour_Tree;
-                                          Storage  : access Cv_Mem_Storage;
+   function Cv_Contour_From_Contour_Tree (Tree     : Cv_Contour_Tree_P;
+                                          Storage  : Cv_Mem_Storage_P;
                                           Criteria : Cv_Term_Criteria)
-                                          return access Cv_Seq;
+                                          return Cv_Seq_P;
 
    Cv_Contour_Trees_Match_I1 : constant := 1;
 
@@ -874,7 +930,7 @@ package Legacy is
 
    type Cv_Face_Tracker is null record; -- Locally declared class in .cpp file
    pragma Convention (C_Pass_By_Copy, Cv_Face_Tracker);
-   type Cv_Face_Tracker_P is access Cv_Face_Tracker;
+   type Cv_Face_Tracker_P is access all cv_Face_Tracker;
 
    type Cv_Face_Elements is new Integer;
    Cv_Face_Mouth : constant Cv_Face_Elements := 0;
@@ -921,7 +977,7 @@ package Legacy is
       P  : Cv_Point_2d_32f;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_3d_Tracker_2d_Tracked_Object);
-   type Cv_3d_Tracker_2d_Tracked_Object_P is access Cv_3d_Tracker_2d_Tracked_Object;
+   type Cv_3d_Tracker_2d_Tracked_Object_P is access all Cv_3d_Tracker_2d_Tracked_Object;
    type Cv_3d_Tracker_2d_Tracked_Object_Array is array (Integer range <>) of aliased Cv_3d_Tracker_2d_Tracked_Object;
 
    function Cv_Create_3d_Tracker_2d_Tracked_Object (Id : Integer;
@@ -933,7 +989,7 @@ package Legacy is
       P  : Cv_Point_3d_32f;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_3d_Tracker_Tracked_Object);
-   type Cv_3d_Tracker_Tracked_Object_P is access Cv_3d_Tracker_Tracked_Object;
+   type Cv_3d_Tracker_Tracked_Object_P is access all cv_3d_Tracker_Tracked_Object;
    type Cv_3d_Tracker_Tracked_Object_Array is array (Integer range <>) of aliased Cv_3d_Tracker_Tracked_Object;
 
    function Cv_Create_3d_Tracker_Tracked_Object (Id : Integer;
@@ -946,7 +1002,7 @@ package Legacy is
       Principal_Point : Cv_Point_2d_32f;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_3d_Tracker_Camera_Info);
-   type Cv_3d_Tracker_Camera_Info_P is access Cv_3d_Tracker_Camera_Info;
+   type Cv_3d_Tracker_Camera_Info_P is access all cv_3d_Tracker_Camera_Info;
    type Cv_3d_Tracker_Camera_Info_Array is array (Integer range <>) of aliased Cv_3d_Tracker_Camera_Info;
 
    type Cv_3d_Tracker_Camera_Intrinsics is record
@@ -955,7 +1011,7 @@ package Legacy is
       Distortion      : Cv_32f_Array (1 .. 4);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_3d_Tracker_Camera_Intrinsics);
-   type Cv_3d_Tracker_Camera_Intrinsics_P is access Cv_3d_Tracker_Camera_Intrinsics;
+   type Cv_3d_Tracker_Camera_Intrinsics_P is access all Cv_3d_Tracker_Camera_Intrinsics;
    type Cv_3d_Tracker_Camera_Intrinsics_Array is array (Integer range <>) of aliased Cv_3d_Tracker_Camera_Intrinsics;
 
    function Cv_3d_Tracker_Calibrate_Cameras (Num_Cameras       : Integer;
@@ -1037,7 +1093,7 @@ package Legacy is
       Next : access Cv_Voronoi_Site_2d_Array_2;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Voronoi_Site_2d);
-   type Cv_Voronoi_Site_2d_P is access Cv_Voronoi_Site_2d;
+   type Cv_Voronoi_Site_2d_P is access all cv_Voronoi_Site_2d;
    type Cv_Voronoi_Site_2d_Array is array (Integer range <>) of aliased Cv_Voronoi_Site_2d;
    type Cv_Voronoi_Site_2d_Array_2 is array (Integer range 1 .. 2) of aliased Cv_Voronoi_Site_2d;
 
@@ -1048,7 +1104,7 @@ package Legacy is
       Next : access Cv_Voronoi_Edge_2d_Array_4;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Voronoi_Edge_2d);
-   type Cv_Voronoi_Edge_2d_P is access Cv_Voronoi_Edge_2d;
+   type Cv_Voronoi_Edge_2d_P is access all Cv_Voronoi_Edge_2d;
    type Cv_Voronoi_Edge_2d_Array is array (Integer range <>) of aliased Cv_Voronoi_Edge_2d;
    type Cv_Voronoi_Edge_2d_Array_2 is array (Integer range 1 .. 2) of aliased Cv_Voronoi_Edge_2d;
    type Cv_Voronoi_Edge_2d_Array_4 is array (Integer range 1 .. 4) of aliased Cv_Voronoi_Edge_2d;
@@ -1061,7 +1117,7 @@ package Legacy is
       Radius    : Float;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Voronoi_Node_2d);
-   type Cv_Voronoi_Node_2d_P is access Cv_Voronoi_Node_2d;
+   type Cv_Voronoi_Node_2d_P is access all Cv_Voronoi_Node_2d;
    type Cv_Voronoi_Node_2d_Array is array (Integer range <>) of aliased Cv_Voronoi_Node_2d;
    type Cv_Voronoi_Node_2d_Array_2 is array (Integer range 1 .. 2) of aliased Cv_Voronoi_Node_2d;
 
@@ -1089,7 +1145,7 @@ package Legacy is
       Edges           : Cv_Set_Pointer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Voronoi_Diagram_2d);
-   type Cv_Voronoi_Diagram_2d_P is access Cv_Voronoi_Diagram_2d;
+   type Cv_Voronoi_Diagram_2d_P is access all Cv_Voronoi_Diagram_2d;
    type Cv_Voronoi_Diagram_2d_Array is array (Integer range <>) of aliased Cv_Voronoi_Diagram_2d;
 
    --     Computes Voronoi Diagram for given polygons with holes
@@ -1126,12 +1182,14 @@ package Legacy is
       Index1 : Integer;
       Index2 : Integer;
    end record;
+   pragma Convention (C_Pass_By_Copy, Cv_Lcm_Edge);
 
    type Cv_Lcm_Node is record
       Flags   : Integer;
       First   : Cv_Graph_Edge_P;
       Contour : Cv_Contour_P;
    end record;
+   pragma Convention (C_Pass_By_Copy, Cv_Lcm_Node);
 
    --     Computes hybrid model from Voronoi Diagram
    function Cv_Linear_Contor_Model_From_Voronoi_Diagram (Voronoi_Diagram : Cv_Voronoi_Diagram_2d_P;
@@ -1147,6 +1205,14 @@ package Legacy is
                                             Vertex   : Cv_Point_2d_32f_Array_4;
                                             Matrix   : Cv_64f_Array_3x3;
                                             Rect_Map : Cv_Arr_P);
+   procedure Cv_Init_Perspective_Transform (Size     : Cv_Size;
+                                            Vertex   : Cv_Point_2d_32f_Array_4;
+                                            Matrix   : Cv_64f_Array_3x3;
+                                            Rect_Map : Cv_Mat_P);
+   procedure Cv_Init_Perspective_Transform (Size     : Cv_Size;
+                                            Vertex   : Cv_Point_2d_32f_Array_4;
+                                            Matrix   : Cv_64f_Array_3x3;
+                                            Rect_Map : Ipl_Image_P);
 
    -- View Morphing Functions --------------------------------------------------
    --     The order of the function corresponds to the order they should appear
@@ -1244,8 +1310,9 @@ package Legacy is
          Randomsample : Cv_32f_Array_P;
          Rands        : Cv_Rand_State;
       end record;
+   pragma Convention (C_Pass_By_Copy, Cv_Con_Densation);
 
-   type Cv_Con_Densation_P is access Cv_Con_Densation;
+   type Cv_Con_Densation_P is access all Cv_Con_Densation;
 
    --     Allocates the ConDensation filter structure.
    function Cv_Create_Condensation (Dynamparams   : Integer;
@@ -1372,4 +1439,6 @@ private
    pragma Import (C, Cv_Condens_Init_Sample_Set, "cvConDensInitSampleSet");
    pragma Import (C, Cv_Condens_Update_By_Time, "cvConDensUpdateByTime");
    pragma Import (C, Cv_Find_Stereo_Correspondence, "cvFindStereoCorrespondence");
+   pragma Import (C, Cv_Current_Int, "cvCurrentInt");
+   pragma Import (C, Cv_Prev_Int, "cvPrevInt");
 end Legacy;

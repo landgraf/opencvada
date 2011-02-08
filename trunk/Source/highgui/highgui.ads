@@ -33,7 +33,8 @@ package Highgui is
    -- Ada stuff
    ---------
    type Cv_Capture is null record;
-   type Cv_Capture_P is access Cv_Capture;
+   pragma Convention (C_Pass_By_Copy, Cv_Capture);
+   type Cv_Capture_P is access all Cv_Capture;
 
    type Compression_Type is new Integer;
    Cv_Imwrite_Jpeg_Quality : constant Compression_Type := 1;
@@ -45,6 +46,7 @@ package Highgui is
       Compression_Rate                    : Integer;
       Not_Used                            : Integer;
    end record;
+   pragma Convention (C_Pass_By_Copy, File_Settings);
 
    -- Creates a new File_Settings struct
    function Create_File_Settings ( Compression     : Compression_Type;
@@ -80,6 +82,14 @@ package Highgui is
                         Spacing    : Integer := 0) return Cv_Font;
 
    procedure Cv_Add_Text (Img  : Cv_Arr_P;
+                          Text : String;
+                          Org  : Cv_Point;
+                          Arg2 : Cv_Font_P);
+   procedure Cv_Add_Text (Img  : Cv_Mat_P;
+                          Text : String;
+                          Org  : Cv_Point;
+                          Arg2 : Cv_Font_P);
+   procedure Cv_Add_Text (Img  : Ipl_Image_P;
                           Text : String;
                           Org  : Cv_Point;
                           Arg2 : Cv_Font_P);
@@ -132,10 +142,10 @@ package Highgui is
                               Intial_Button_State : Integer := 0) return Integer;
 
    procedure Cv_Create_Button (Button_Name         : String;
-                              On_Change           : Cv_Button_Callback := null;
-                              User_Data           : Cv_Void_P := null;
-                              Button_Type         : Cv_Button_Type := Cv_Push_Button;
-                              Intial_Button_State : Integer := 0);
+                               On_Change           : Cv_Button_Callback := null;
+                               User_Data           : Cv_Void_P := null;
+                               Button_Type         : Cv_Button_Type := Cv_Push_Button;
+                               Intial_Button_State : Integer := 0);
 
    -----------------------------------------------------------------------------
    --
@@ -182,6 +192,10 @@ package Highgui is
    -- display image within window (highgui windows remember their content)
    procedure Cv_Show_Image (Windowname  : String;
                             Image       : Cv_Arr_P);
+   procedure Cv_Show_Image (Windowname  : String;
+                            Image       : Cv_Mat_P);
+   procedure Cv_Show_Image (Windowname  : String;
+                            Image       : Ipl_Image_P);
 
    -- resize/move window
    procedure Cv_Resize_Window (Windowname   : String;
@@ -212,9 +226,9 @@ package Highgui is
                                 Count         : Integer;
                                 On_Change     : Cv_Trackbar_Callback) return Integer;
    procedure Cv_Create_Trackbar (Trackbar_Name : String;
-                                Window_Name   : String;
-                                Value         : access Integer;
-                                Count         : Integer;
+                                 Window_Name   : String;
+                                 Value         : access Integer;
+                                 Count         : Integer;
                                  On_Change     : Cv_Trackbar_Callback);
 
    type Cv_Trackbar_Callback2 is access procedure (Position  : Integer;
@@ -229,10 +243,10 @@ package Highgui is
                                  User_Data     : Cv_Void_P) return Integer;
 
    procedure Cv_Create_Trackbar2 (Trackbar_Name : String;
-                                 Window_Name   : String;
-                                 Value         : Integer;
-                                 Count         : Integer;
-                                 On_Change     : Cv_Trackbar_Callback2 := null;
+                                  Window_Name   : String;
+                                  Value         : Integer;
+                                  Count         : Integer;
+                                  On_Change     : Cv_Trackbar_Callback2 := null;
                                   User_Data     : Cv_Void_P);
 
    -- retrieve or set trackbar position
@@ -295,9 +309,23 @@ package Highgui is
                            Image         : Cv_Arr_P;
                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer;
 
-   procedure cv_Save_Image (Filename      : String;
-                           Image         : Cv_Arr_P;
-                  Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95));
+   procedure Cv_Save_Image (Filename      : String;
+                            Image         : Cv_Arr_P;
+                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95));
+   function Cv_Save_Image (Filename      : String;
+                           Image         : Cv_Mat_P;
+                           Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer;
+
+   procedure Cv_Save_Image (Filename      : String;
+                            Image         : Cv_Mat_P;
+                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95));
+   function Cv_Save_Image (Filename      : String;
+                           Image         : Ipl_Image_P;
+                           Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer;
+
+   procedure Cv_Save_Image (Filename      : String;
+                            Image         : Ipl_Image_P;
+                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95));
 
    -- decode image stored in the buffer
    function Cv_Decode_Image (Buf      : Cv_Mat_P;
@@ -309,6 +337,12 @@ package Highgui is
    function Cv_Encode_Image (Ext    : String;
                              Image  : Cv_Arr_P;
                              Params : File_Settings) return Cv_Mat_P;
+   function Cv_Encode_Image (Ext    : String;
+                             Image  : Cv_Mat_P;
+                             Params : File_Settings) return Cv_Mat_P;
+   function Cv_Encode_Image (Ext    : String;
+                             Image  : Ipl_Image_P;
+                             Params : File_Settings) return Cv_Mat_P;
 
    type Convert_Image_Flags is new Integer;
    Cv_Cvtimg_Flip : constant Convert_Image_Flags := 1;
@@ -316,6 +350,12 @@ package Highgui is
    -- utility function: convert one image to another with optional vertical flip
    procedure Cv_Convert_Image (Src   : Cv_Arr_P;
                                Dst   : Cv_Arr_P;
+                               Flags : Convert_Image_Flags);
+   procedure Cv_Convert_Image (Src   : Cv_Mat_P;
+                               Dst   : Cv_Mat_P;
+                               Flags : Convert_Image_Flags);
+   procedure Cv_Convert_Image (Src   : Ipl_Image_P;
+                               Dst   : Ipl_Image_P;
                                Flags : Convert_Image_Flags);
 
    -- wait for key event infinitely (delay<=0) or for "delay" milliseconds
@@ -404,7 +444,8 @@ package Highgui is
 
    -- "black box" video file writer structure
    type Cv_Video_Writer is null record;
-   type Cv_Video_Writer_P is access Cv_Video_Writer;
+   pragma Convention (C_Pass_By_Copy, Cv_Video_Writer);
+   type Cv_Video_Writer_P is access all Cv_Video_Writer;
 
    -- Video codec
    -- C Macro #define CV_FOURCC(c1,c2,c3,c4) (((c1)&255) + (((c2)&255)<<8) + (((c3)&255)<<16) + (((c4)&255)<<24))
@@ -532,9 +573,21 @@ private
    function W_Cv_Save_Image (Filename      : String_C;
                              Image         : Cv_Arr_P;
                              Settings      : File_Settings) return Integer;
+   function W_Cv_Save_Image (Filename      : String_C;
+                             Image         : Cv_Mat_P;
+                             Settings      : File_Settings) return Integer;
+   function W_Cv_Save_Image (Filename      : String_C;
+                             Image         : Ipl_Image_P;
+                             Settings      : File_Settings) return Integer;
 
    function W_Cv_Encode_Image (Ext    : String_C;
                                Image  : Cv_Arr_P;
+                               Params : File_Settings) return Cv_Mat_P;
+   function W_Cv_Encode_Image (Ext    : String_C;
+                               Image  : Cv_Mat_P;
+                               Params : File_Settings) return Cv_Mat_P;
+   function W_Cv_Encode_Image (Ext    : String_C;
+                               Image  : Ipl_Image_P;
                                Params : File_Settings) return Cv_Mat_P;
 
    function W_Cv_Create_File_Capture ( Name : String_C ) return Cv_Capture_P;

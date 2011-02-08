@@ -6,4 +6,6 @@ extern "C" {
   Cv3dTrackerTrackedObject cv3dTrackerTrackedObject_wrap(int id , CvPoint3D32f p );
   int iplWidth_wrap(const IplImage * img );
   int iplHeight_wrap(const IplImage * img );
+  int cvCurrentInt(CvSeqReader reader);
+  int cvPrevInt(CvSeqReader reader);
 }

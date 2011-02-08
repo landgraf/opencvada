@@ -40,6 +40,16 @@ package body Core.Operations is
    begin
       Cv_Convert_Scale (Src, Dst, 1.0, 0.0);
    end Cv_Convert;
+   procedure Cv_Convert (Src : Cv_Mat_P;
+                         Dst : Cv_Mat_P) is
+   begin
+      Cv_Convert_Scale (Src, Dst, 1.0, 0.0);
+   end Cv_Convert;
+   procedure Cv_Convert (Src : Ipl_Image_P;
+                         Dst : Ipl_Image_P) is
+   begin
+      Cv_Convert_Scale (Src, Dst, 1.0, 0.0);
+   end Cv_Convert;
 
    -- wrapper to cvScaleAdd
    procedure Cv_Axpy (Src1  : Cv_Arr_P;
@@ -49,18 +59,59 @@ package body Core.Operations is
    begin
       Cv_Scale_Add (Src1, Cv_Real_Scalar (Scale), Src2, Dst);
    end Cv_Axpy;
+   procedure Cv_Axpy (Src1  : Cv_Mat_P;
+                      Scale : Long_Float;
+                      Src2  : Cv_Mat_P;
+                      Dst   : Cv_Mat_P) is
+   begin
+      Cv_Scale_Add (Src1, Cv_Real_Scalar (Scale), Src2, Dst);
+   end Cv_Axpy;
+      procedure Cv_Axpy (Src1  : Ipl_Image_P;
+                      Scale : Long_Float;
+                      Src2  : Ipl_Image_P;
+                      Dst   : Ipl_Image_P) is
+   begin
+      Cv_Scale_Add (Src1, Cv_Real_Scalar (Scale), Src2, Dst);
+   end Cv_Axpy;
 
-   procedure Cv_Mat_Mul_Add (Src1  : access Cv_Arr;
-                             Src2  : access Cv_Arr;
-                             Src3  : access Cv_Arr;
-                             Dst   : access Cv_Arr) is
+   procedure Cv_Mat_Mul_Add (Src1  : Cv_Arr_P;
+                             Src2  : Cv_Arr_P;
+                             Src3  : Cv_Arr_P;
+                             Dst   : Cv_Arr_P) is
+   begin
+      Cv_Gemm (Src1, Src2, 1.0, Src3, 1.0, Dst, 0);
+   end Cv_Mat_Mul_Add;
+   procedure Cv_Mat_Mul_Add (Src1  : Cv_Mat_P;
+                             Src2  : Cv_Mat_P;
+                             Src3  : Cv_Mat_P;
+                             Dst   : Cv_Mat_P) is
+   begin
+      Cv_Gemm (Src1, Src2, 1.0, Src3, 1.0, Dst, 0);
+   end Cv_Mat_Mul_Add;
+   procedure Cv_Mat_Mul_Add (Src1  : Ipl_Image_P;
+                             Src2  : Ipl_Image_P;
+                             Src3  : Ipl_Image_P;
+                             Dst   : Ipl_Image_P) is
    begin
       Cv_Gemm (Src1, Src2, 1.0, Src3, 1.0, Dst, 0);
    end Cv_Mat_Mul_Add;
 
-   procedure Cv_Mat_Mul (Src1 : access Cv_Arr;
-                         Src2 : access Cv_Arr;
-                         Dst  : access Cv_Arr) is
+
+   procedure Cv_Mat_Mul (Src1 : Cv_Arr_P;
+                         Src2 : Cv_Arr_P;
+                         Dst  : Cv_Arr_P) is
+   begin
+      Cv_Mat_Mul_Add (Src1, Src2, null, Dst);
+   end Cv_Mat_Mul;
+   procedure Cv_Mat_Mul (Src1 : Cv_Mat_P;
+                         Src2 : Cv_Mat_P;
+                         Dst  : Cv_Mat_P) is
+   begin
+      Cv_Mat_Mul_Add (Src1, Src2, null, Dst);
+   end Cv_Mat_Mul;
+   procedure Cv_Mat_Mul (Src1 : Ipl_Image_P;
+                         Src2 : Ipl_Image_P;
+                         Dst  : Ipl_Image_P) is
    begin
       Cv_Mat_Mul_Add (Src1, Src2, null, Dst);
    end Cv_Mat_Mul;
@@ -150,6 +201,22 @@ package body Core.Operations is
 
    -- Draws a text string.
    procedure Cv_Put_Text (Img   : Cv_Arr_P;
+                          Text  : String;
+                          Org   : Cv_Point;
+                          Font  : Cv_Font_P;
+                          Color : Cv_Scalar) is
+   begin
+      W_Cv_Put_Text (Img, +Text, Org, Font, Color);
+   end Cv_Put_Text;
+   procedure Cv_Put_Text (Img   : Cv_Mat_P;
+                          Text  : String;
+                          Org   : Cv_Point;
+                          Font  : access Cv_Font;
+                          Color : Cv_Scalar) is
+   begin
+      W_Cv_Put_Text (Img, +Text, Org, Font, Color);
+   end Cv_Put_Text;
+      procedure Cv_Put_Text (Img   : Ipl_Image_P;
                           Text  : String;
                           Org   : Cv_Point;
                           Font  : access Cv_Font;

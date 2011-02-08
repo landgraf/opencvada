@@ -116,10 +116,10 @@ package Calib_3d is
 
    --     Finds the perspective transformation between two planes.
    function Cv_Find_Homography (Srcpoints             : Cv_Mat_P;
-                                 Dstpoints             : Cv_Mat_P;
-                                 H                     : Cv_Mat_P;
-                                 Method                : Integer := 0;
-                                 Ransacreprojthreshold : Long_Float := 3.0;
+                                Dstpoints             : Cv_Mat_P;
+                                H                     : Cv_Mat_P;
+                                Method                : Integer := 0;
+                                Ransacreprojthreshold : Long_Float := 3.0;
                                 Status                : Cv_Mat_P := null) return Integer;
 
    --     Computes the RQ decomposition of 3x3 matrices.
@@ -218,9 +218,29 @@ package Calib_3d is
                                         Corners     : Cv_Point_2d_32f_Array;
                                         Cornercount : access Integer;
                                         Flags       : Integer := Cv_Calib_Cb_Adaptive_Thresh) return Integer;
+   function Cv_Find_Chessboard_Corners (Image       : Cv_Mat_P; -- doesn't correspond to C but makes more sense.
+                                        Patternsize : Cv_Size;
+                                        Corners     : Cv_Point_2d_32f_Array;
+                                        Cornercount : access Integer;
+                                        Flags       : Integer := Cv_Calib_Cb_Adaptive_Thresh) return Integer;
+   function Cv_Find_Chessboard_Corners (Image       : Ipl_Image_P; -- doesn't correspond to C but makes more sense.
+                                        Patternsize : Cv_Size;
+                                        Corners     : Cv_Point_2d_32f_Array;
+                                        Cornercount : access Integer;
+                                        Flags       : Integer := Cv_Calib_Cb_Adaptive_Thresh) return Integer;
 
    --     Renders the detected chessboard corners.
    procedure Cv_Draw_Chessboard_Corners (Image           : Cv_Arr_P;
+                                         Patternsize     : Cv_Size;
+                                         Corners         : Cv_Point_2d_32f_Array;
+                                         Count           : Integer;
+                                         Patternwasfound : Integer);
+   procedure Cv_Draw_Chessboard_Corners (Image           : Cv_Mat_P;
+                                         Patternsize     : Cv_Size;
+                                         Corners         : Cv_Point_2d_32f_Array;
+                                         Count           : Integer;
+                                         Patternwasfound : Integer);
+   procedure Cv_Draw_Chessboard_Corners (Image           : Ipl_Image_P;
                                          Patternsize     : Cv_Size;
                                          Corners         : Cv_Point_2d_32f_Array;
                                          Count           : Integer;
@@ -336,7 +356,7 @@ package Calib_3d is
       Disp                : Cv_Mat_P;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Stereo_Bm_State);
-   type Cv_Stereo_Bm_State_P is access Cv_Stereo_Bm_State;
+   type Cv_Stereo_Bm_State_P is access all cv_Stereo_Bm_State;
 
    Cv_Stereo_Bm_Basic               : constant := 0;
    Cv_Stereo_Bm_Fish_Eye            : constant := 1;
@@ -355,6 +375,14 @@ package Calib_3d is
                                                Right     : Cv_Arr_P;
                                                Disparity : Cv_Arr_P;
                                                State     : Cv_Stereo_Bm_State_P);
+   procedure Cv_Find_Stereo_Correspondence_Bm (Left      : Cv_Mat_P;
+                                               Right     : Cv_Mat_P;
+                                               Disparity : Cv_Mat_P;
+                                               State     : Cv_Stereo_Bm_State_P);
+   procedure Cv_Find_Stereo_Correspondence_Bm (Left      : Ipl_Image_P;
+                                               Right     : Ipl_Image_P;
+                                               Disparity : Ipl_Image_P;
+                                               State     : Cv_Stereo_Bm_State_P);
 
    function Cv_Get_Valid_Disparity_Roi (Roi1                  : Cv_Rect;
                                         Roi2                  : Cv_Rect;
@@ -365,6 +393,16 @@ package Calib_3d is
 
    procedure Cv_Validate_Disparity (Disparity             : Cv_Arr_P;
                                     Cost                  : Cv_Arr_P;
+                                    Min_Disparity         : Integer;
+                                    Number_Of_Disparities : Integer;
+                                    Disp_12_Max_Diff      : Integer := 1);
+   procedure Cv_Validate_Disparity (Disparity             : Cv_Mat_P;
+                                    Cost                  : Cv_Mat_P;
+                                    Min_Disparity         : Integer;
+                                    Number_Of_Disparities : Integer;
+                                    Disp_12_Max_Diff      : Integer := 1);
+   procedure Cv_Validate_Disparity (Disparity             : Ipl_Image_P;
+                                    Cost                  : Ipl_Image_P;
                                     Min_Disparity         : Integer;
                                     Number_Of_Disparities : Integer;
                                     Disp_12_Max_Diff      : Integer := 1);
@@ -390,7 +428,7 @@ package Calib_3d is
       Edgebuf                     : Cv_Mat_P;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Stereo_Gc_State);
-   type Cv_Stereo_Gc_State_P is access Cv_Stereo_Gc_State;
+   type Cv_Stereo_Gc_State_P is access all cv_Stereo_Gc_State;
 
    --     Creates the state of graph cut-based stereo correspondence algorithm.
    function Cv_Create_Stereo_Gc_State (Numberofdisparities : Integer;
@@ -410,10 +448,18 @@ package Calib_3d is
                                                Usedisparityguess : Integer := 0);
 
    --     Reprojects disparity image to 3D space.
-   procedure Cv_Reproject_Image_To_3d (Disparity           : Cv_Arr_P;
-                                       Image3d             : Cv_Arr_P;
-                                       Q                   : Cv_Mat_P;
-                                       Handlemissingvalues : Integer := 0);
+   procedure Cv_Reproject_Image_To_3d (Disparity             : Cv_Arr_P;
+                                       Image3d               : Cv_Arr_P;
+                                       Q                     : Cv_Mat_P;
+                                       Handle_Missing_Values : Integer := 0);
+   procedure Cv_Reproject_Image_To_3d (Disparity             : Cv_Mat_P;
+                                       Image3d               : Cv_Mat_P;
+                                       Q                     : Cv_Mat_P;
+                                       Handle_Missing_Values : Integer := 0);
+   procedure Cv_Reproject_Image_To_3d (Disparity             : Ipl_Image_P;
+                                       Image3d               : Ipl_Image_P;
+                                       Q                     : Cv_Mat_P;
+                                       Handle_Missing_Values : Integer := 0);
 
 private
    pragma Import (C, Cv_Create_Posit_Object, "cvCreatePOSITObject");
