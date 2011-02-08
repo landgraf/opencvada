@@ -30,6 +30,7 @@ package Imgproc is
          Rect    : Cv_Rect;
          Contour : access Cv_Seq;
       end record;
+   pragma Convention (C_Pass_By_Copy, Cv_Connected_Comp);
    type Cv_Connected_Comp_P is access all Cv_Connected_Comp;
 
    function From_Void is
@@ -169,14 +170,16 @@ package Imgproc is
          Mu20, Mu11, Mu02, Mu30, Mu21, Mu12, Mu03         : Long_Float;  --/* central moments */
          Inv_Sqrt_M00                                     : Long_Float; --/* m00 != 0 ? 1/sqrt(m00) : 0 */
       end record;
-   type Cv_Moments_P is access Cv_Moments;
+   pragma Convention (C_Pass_By_Copy, Cv_Moments);
+   type Cv_Moments_P is access all cv_Moments;
 
    --/* Hu invariants */
    type Cv_Hu_Moments is
       record
          Hu1, Hu2, Hu3, Hu4, Hu5, Hu6, Hu7 : Long_Float; --/  * Hu invariants *  /
       end record;
-   type Cv_Hu_Moments_P is access Cv_Hu_Moments;
+   pragma Convention (C_Pass_By_Copy, Cv_Hu_Moments);
+   type Cv_Hu_Moments_P is access all cv_Hu_Moments;
 
    -- Template matching methods
    type Cv_Tm is new Integer;
@@ -212,26 +215,8 @@ package Imgproc is
    -- Internal structure that is used for sequental retrieving contours from the image.
    -- It supports both hierarchical and plane variants of Suzuki algorithm.
    type Cv_Contour_Scanner is null record;
-   type Cv_Contour_Scanner_P is access Cv_Contour_Scanner;
-
-   --     -- Freeman chain reader state
-   --     type Cv_Chain_Pt_Reader is
-   --        record
-   --        --CV_SEQ_READER_FIELDS()
-   --           HeaderSize : Integer;
-   --           Seq        : Cv_Seq_P;
-   --           Block      : Cv_Seq_Block_P;
-   --           Ptr        : Cv_Arr_Pointer;
-   --           BlockMin   : Cv_Arr_Pointer;
-   --           BlockMax   : Cv_Arr_Pointer;
-   --           DeltaIndex : Integer;
-   --           PrevElem   : Cv_Arr_Pointer;
-   --           --
-   --           Code       : Unsigned_8;
-   --           Pt         : Cv_Point;
-   --           Deltas     : Delta_Array;
-   --        end record;
-   --     type Cv_Chain_Pt_Reader_P is access Cv_Chain_Pt_Reader;
+   pragma Convention (C_Pass_By_Copy, Cv_Contour_Scanner);
+   type Cv_Contour_Scanner_P is access all cv_Contour_Scanner;
 
    -- initializes 8-element array for fast access to 3x3 neighborhood of a pixel
    procedure Cv_Init_3x3_Deltas (Deltas        : in out Cv_32s_Array;
@@ -255,8 +240,8 @@ package Imgproc is
          Pt    : Cv_Point_2d_32f;
          Id    : Integer;
       end record;
-
-   type Cv_Subdiv_2d_Point_P is access Cv_Subdiv_2d_Point;
+   pragma Convention (C_Pass_By_Copy, Cv_Subdiv_2d_Point);
+   type Cv_Subdiv_2d_Point_P is access all cv_Subdiv_2d_Point;
 
    -- Array for Cv_Quad_Edge_2D
    type Cv_Subdiv_2d_Point_P_Arr is array (Integer range <>) of Cv_Subdiv_2d_Point_P;
@@ -269,7 +254,8 @@ package Imgproc is
          Pt    : Cv_Subdiv_2d_Point_P_Arr (1 .. 4);
          Next  : Cv_Subdiv_2d_Edge_Arr (1 .. 4);
       end record;
-   type Cv_Quad_Edge_2d_P is access Cv_Quad_Edge_2d;
+   pragma Convention (C_Pass_By_Copy, Cv_Quad_Edge_2d);
+   type Cv_Quad_Edge_2d_P is access all cv_Quad_Edge_2d;
 
    -- Planar subdivision
    type Cv_Subdiv_2d is
@@ -301,7 +287,8 @@ package Imgproc is
          Topleft         : Cv_Point_2d_32f;
          Bottomright     : Cv_Point_2d_32f;
       end record;
-   type Cv_Subdiv_2d_P is access Cv_Subdiv_2d;
+   pragma Convention (C_Pass_By_Copy, Cv_Subdiv_2d);
+   type Cv_Subdiv_2d_P is access all Cv_Subdiv_2d;
 
    function To_Arr is
      new Ada.Unchecked_Conversion (Source => Cv_Subdiv_2d_P,
@@ -345,6 +332,7 @@ package Imgproc is
       Depth_Point : access Cv_Point;
       Depth       : Float;
    end record;
+   pragma Convention (C_Pass_By_Copy, Cv_Convexity_Defect);
 
    -- Histogram comparison methods
    type Hist_Compare_Method is new Integer;
@@ -398,13 +386,16 @@ package Imgproc is
 
    -- Fast search data structure
    type Cv_Feature_Tree is null record;
-   type Cv_Feature_Tree_P is access Cv_Feature_Tree;
+   pragma Convention (C_Pass_By_Copy, Cv_Feature_Tree);
+   type Cv_Feature_Tree_P is access all Cv_Feature_Tree;
 
    type Cv_Lsh is null record;
+   pragma Convention (C_Pass_By_Copy, Cv_Lsh);
    type Cv_Lsh_P is access Cv_Lsh;
 
    type Cv_Lsh_Operations is null record;
-   type Cv_Lsh_Operations_P is access Cv_Lsh_Operations;
+   pragma Convention (C_Pass_By_Copy, Cv_Lsh_Operations);
+   type Cv_Lsh_Operations_P is access all cv_Lsh_Operations;
 
    -----------------------------------------------------------------------------
    -- Mmoved

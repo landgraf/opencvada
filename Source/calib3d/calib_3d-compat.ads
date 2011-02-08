@@ -32,6 +32,20 @@ package Calib_3d.Compat is
                                                 Corners      : Cv_Point_2d_32f_Array;
                                                 Corner_Count : access Integer)
                                                 return Integer;
+   function Cv_Find_Chess_Board_Corner_Guesses (Arr          : Cv_Mat_P;
+                                                Thresharr    : Cv_Mat_P;
+                                                Storage      : Cv_Mem_Storage;
+                                                Pattern_Size : Cv_Size;
+                                                Corners      : Cv_Point_2d_32f_Array;
+                                                Corner_Count : access Integer)
+                                                   return Integer;
+   function Cv_Find_Chess_Board_Corner_Guesses (Arr          : Ipl_Image_P;
+                                                Thresharr    : Ipl_Image_P;
+                                                Storage      : Cv_Mem_Storage;
+                                                Pattern_Size : Cv_Size;
+                                                Corners      : Cv_Point_2d_32f_Array;
+                                                Corner_Count : access Integer)
+                                                   return Integer;
 
    --     Calibrates camera using multiple views of calibration pattern
    procedure Cv_Calibrate_Camera (Image_Count         : Integer;

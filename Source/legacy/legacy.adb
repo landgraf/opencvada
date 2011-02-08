@@ -27,21 +27,6 @@ package body Legacy is
       Num_Obs.Width := (Roi.Width - Win.Width + Delta_Obs.Width) / Delta_Obs.Width;
       Num_Obs.Height := (Roi.Height - Win.Height + Delta_Obs.Height) / Delta_Obs.Height;
    end Cv_Count_Obs;
-
-   --
-   function Cv_Current_Int (Reader : Cv_Seq_Reader_P)
-                            return Integer is
-   begin
-      return Character'Pos (From_Arr (Value (Reader.all.Ptr) (1)));
-   end Cv_Current_Int;
-
-   --
-   function Cv_Prev_Int (Reader : Cv_Seq_Reader_P)
-                         return Integer is
-   begin
-      return Character'Pos (From_Arr (Value (Reader.all.Prevelem) (1)));
-   end Cv_Prev_Int;
-
    --
    function Ipl_Width (Img : Ipl_Image_P)
                       return Integer is

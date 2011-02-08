@@ -32,13 +32,14 @@ package Objdetect is
    -- Types
    -----------------------------------------------------------------------------
    type Cv_Haar_Classifier_Cascade;
-   type Cv_Haar_Classifier_Cascade_P is access Cv_Haar_Classifier_Cascade;
+   type Cv_Haar_Classifier_Cascade_P is access all Cv_Haar_Classifier_Cascade;
 
    type Haar_Rect is
       record
          R      : Cv_Rect;
          Weight : Float;
       end record;
+   pragma Convention (C_Pass_By_Copy, Haar_Rect);
 
    type Haar_Rect_Arr is array (Integer range 1 .. Cv_Haar_Feature_Max) of Haar_Rect;
    type Cv_Haar_Feature is
@@ -46,7 +47,8 @@ package Objdetect is
          Tilted : Integer;
          Rect   : Haar_Rect_Arr;
       end record;
-   type Cv_Haar_Feature_P is access Cv_Haar_Feature;
+   pragma Convention (C_Pass_By_Copy, Cv_Haar_Feature);
+   type Cv_Haar_Feature_P is access all Cv_Haar_Feature;
 
    type Cv_Haar_Classifier is
       record
@@ -57,7 +59,8 @@ package Objdetect is
          Right       : Cv_32s_Array_P;
          Alpha       : Cv_32f_Array_P;
       end record;
-   type Cv_Haar_Classifier_P is access Cv_Haar_Classifier;
+   pragma Convention (C_Pass_By_Copy, Cv_Haar_Classifier);
+   type Cv_Haar_Classifier_P is access all Cv_Haar_Classifier;
 
    type Cv_Haar_Stage_Classifier is
       record
@@ -68,11 +71,13 @@ package Objdetect is
          Child      : Integer;
          Parent     : Integer;
       end record;
+   pragma Convention (C_Pass_By_Copy, Cv_Haar_Stage_Classifier);
 
    type Cv_Haar_Stage_Classifier_Arr is array (Integer range <>) of Cv_Haar_Stage_Classifier;
-   type Cv_Haar_Stage_Classifier_Arr_P is access Cv_Haar_Stage_Classifier_Arr;
+   type Cv_Haar_Stage_Classifier_Arr_P is access all Cv_Haar_Stage_Classifier_Arr;
 
    type Cv_Hid_Haar_Classifier_Cascade is null record;
+   pragma Convention (C_Pass_By_Copy, Cv_Hid_Haar_Classifier_Cascade);
 
    type Cv_Haar_Classifier_Cascade is
       record
@@ -84,12 +89,14 @@ package Objdetect is
          Stageclassifier : Cv_Haar_Stage_Classifier_Arr_P;
          Hidcascade      : Cv_Hid_Haar_Classifier_Cascade;
       end record;
+   pragma Convention (C_Pass_By_Copy, Cv_Haar_Classifier_Cascade);
 
    type Cv_Avg_Comp is
       record
          Rect      : Cv_Rect;
          Neighbors : Integer;
       end record;
+   pragma Convention (C_Pass_By_Copy, Cv_Avg_Comp);
    -----------------------------------------------------------------------------
 
    --     #define CV_IS_HAAR_CLASSIFIER( haar )                                                    \
@@ -118,12 +125,36 @@ package Objdetect is
                                     Minneighbors : Integer := 3;
                                     Flags        : Integer := 0;
                                     Minsize      : Cv_Size := Cv_Create_Size (0, 0)) return Cv_Seq_P;
+   function Cv_Haar_Detect_Objects (Image        : Cv_Mat_P;
+                                    Cascade      : Cv_Haar_Classifier_Cascade_P;
+                                    Storage      : Cv_Mem_Storage_P;
+                                    Scalefactor  : Long_Float := 1.1;
+                                    Minneighbors : Integer := 3;
+                                    Flags        : Integer := 0;
+                                    Minsize      : Cv_Size := Cv_Create_Size (0, 0)) return Cv_Seq_P;
+   function Cv_Haar_Detect_Objects (Image        : Ipl_Image_P;
+                                    Cascade      : Cv_Haar_Classifier_Cascade_P;
+                                    Storage      : Cv_Mem_Storage_P;
+                                    Scalefactor  : Long_Float := 1.1;
+                                    Minneighbors : Integer := 3;
+                                    Flags        : Integer := 0;
+                                    Minsize      : Cv_Size := Cv_Create_Size (0, 0)) return Cv_Seq_P;
 
    -- Assigns images to the hidden cascade.
    procedure Cv_Set_Images_For_Haar_Classifier_Cascade (Cascade   : Cv_Haar_Classifier_Cascade_P;
                                                         Sum       : Cv_Arr_P;
                                                         Sqsum     : Cv_Arr_P;
                                                         Tiltedsum : Cv_Arr_P;
+                                                        Scale     : Long_Float);
+   procedure Cv_Set_Images_For_Haar_Classifier_Cascade (Cascade   : Cv_Haar_Classifier_Cascade_P;
+                                                        Sum       : Cv_Mat_P;
+                                                        Sqsum     : Cv_Mat_P;
+                                                        Tiltedsum : Cv_Mat_P;
+                                                        Scale     : Long_Float);
+   procedure Cv_Set_Images_For_Haar_Classifier_Cascade (Cascade   : Cv_Haar_Classifier_Cascade_P;
+                                                        Sum       : Ipl_Image_P;
+                                                        Sqsum     : Ipl_Image_P;
+                                                        Tiltedsum : Ipl_Image_P;
                                                         Scale     : Long_Float);
 
    -- Runs a cascade of boosted classifiers at the given image location.
@@ -201,7 +232,8 @@ package Objdetect is
          B                : Core.Cv_32f_Array_P;
          Score_Threshold  : Float;
       end record;
-   type Cv_Latent_Svm_Detector_P is access Cv_Latent_Svm_Detector;
+   pragma Convention (C_Pass_By_Copy, Cv_Latent_Svm_Detector);
+   type Cv_Latent_Svm_Detector_P is access all Cv_Latent_Svm_Detector;
 
    -- data type: STRUCT CvObjectDetection
    -- structure contains the bounding box and confidence level for detected object
@@ -212,7 +244,8 @@ package Objdetect is
          Rect  : Core.Cv_Rect;
          Score : Float;
       end record;
-   type Cv_Object_Detection_P is access Cv_Object_Detection;
+   pragma Convention (C_Pass_By_Copy, Cv_Object_Detection);
+   type Cv_Object_Detection_P is access all Cv_Object_Detection;
 
    -----------------------------------------------------------------------------
    -- Object Detection using Latent SVM

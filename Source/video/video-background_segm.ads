@@ -34,7 +34,7 @@ package Video.Background_Segm is
    Cv_Bg_Model_Fgd_Simple : constant := 2;
 
    type Cv_Bg_Stat_Model;
-   type Cv_Bg_Stat_Model_P is access Cv_Bg_Stat_Model;
+   type Cv_Bg_Stat_Model_P is access all Cv_Bg_Stat_Model;
 
    type Cv_Release_Bg_Stat_Model_Func is access procedure (Bg_Model : access Cv_Bg_Stat_Model_P);
 
@@ -168,7 +168,7 @@ package Video.Background_Segm is
       Is_Trained_Dyn_Model : Unsigned_8; -- uchar
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Bg_Pixel_Stat);
-   type Cv_Bg_Pixel_Stat_P is access Cv_Bg_Pixel_Stat;
+   type Cv_Bg_Pixel_Stat_P is access all Cv_Bg_Pixel_Stat;
 
    type Cv_Fgd_Stat_Model is record
       Model_Type         : Integer;           -- Type of BG model
@@ -188,7 +188,7 @@ package Video.Background_Segm is
       Params             : Cv_Fgd_Stat_Model_Params;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Fgd_Stat_Model);
-   type Cv_Fgd_Stat_Model_P is access Cv_Fgd_Stat_Model;
+   type Cv_Fgd_Stat_Model_P is access all Cv_Fgd_Stat_Model;
 
 
    function Cv_Create_Fgd_Stat_Model (First_Frame : Ipl_Image_P;
@@ -226,7 +226,7 @@ package Video.Background_Segm is
       Variance_Init : Long_Float;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Gauss_Bg_Stat_Model_Params);
-   type Cv_Gauss_Bg_Stat_Model_Params_P is access Cv_Gauss_Bg_Stat_Model_Params;
+   type Cv_Gauss_Bg_Stat_Model_Params_P is access all Cv_Gauss_Bg_Stat_Model_Params;
 
    subtype Cv_64f_Array_Ncolors is Cv_64f_Array (1 .. Cv_Bgfg_Mog_Ncolors);
 
@@ -237,13 +237,13 @@ package Video.Background_Segm is
       Mean      : Cv_64f_Array_Ncolors;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Gauss_Bg_Values);
-   type Cv_Gauss_Bg_Values_P is access Cv_Gauss_Bg_Values;
+   type Cv_Gauss_Bg_Values_P is access all Cv_Gauss_Bg_Values;
 
    type Cv_Gauss_Bg_Points is record
       G_Values : Cv_Gauss_Bg_Values_P;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Gauss_Bg_Points);
-   type Cv_Gauss_Bg_Points_P is access Cv_Gauss_Bg_Points;
+   type Cv_Gauss_Bg_Points_P is access all Cv_Gauss_Bg_Points;
 
    type Cv_Gauss_Bg_Model is record
       Model_Type         : Integer;           -- Type of BG model
@@ -261,7 +261,7 @@ package Video.Background_Segm is
       Count_Frames       : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Gauss_Bg_Model);
-   type Cv_Gauss_Bg_Model_P is access Cv_Gauss_Bg_Model;
+   type Cv_Gauss_Bg_Model_P is access all Cv_Gauss_Bg_Model;
 
    --     Creates Gaussian mixture background model
    function Cv_Create_Gaussian_Bg_Model (First_Frame : Ipl_Image_P;
@@ -269,7 +269,7 @@ package Video.Background_Segm is
                                          return Cv_Bg_Stat_Model_P;
 
    type Cv_Bg_Code_Book_Elem;
-   type Cv_Bg_Code_Book_Elem_P is access Cv_Bg_Code_Book_Elem;
+   type Cv_Bg_Code_Book_Elem_P is access all Cv_Bg_Code_Book_Elem;
 
    type Cv_Bg_Code_Book_Elem_P_Array is array (Integer range <>) of aliased Cv_Bg_Code_Book_Elem_P;
 
@@ -299,7 +299,7 @@ package Video.Background_Segm is
       Free_List : Cv_Bg_Code_Book_Elem_P;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Bg_Code_Book_Model);
-   type Cv_Bg_Code_Book_Model_P is access Cv_Bg_Code_Book_Model;
+   type Cv_Bg_Code_Book_Model_P is access all Cv_Bg_Code_Book_Model;
 
    function Cv_Create_Bg_Code_Book_Model return Cv_Bg_Code_Book_Model_P;
    procedure Cv_Release_Bg_Code_Book_Model (Model : access Cv_Bg_Code_Book_Model_P);
@@ -308,10 +308,28 @@ package Video.Background_Segm is
                                      Image : Cv_Arr_P;
                                      Roi   : Cv_Rect := Cv_Create_Rect (0, 0, 0, 0);
                                      Mask  : Cv_Arr_P := null);
+   procedure Cv_Bg_Code_Book_Update (Model : Cv_Bg_Code_Book_Model_P;
+                                     Image : Cv_Mat_P;
+                                     Roi   : Cv_Rect := Cv_Create_Rect (0, 0, 0, 0);
+                                     Mask  : Cv_Mat_P := null);
+   procedure Cv_Bg_Code_Book_Update (Model : Cv_Bg_Code_Book_Model_P;
+                                     Image : Ipl_Image_P;
+                                     Roi   : Cv_Rect := Cv_Create_Rect (0, 0, 0, 0);
+                                     Mask  : Ipl_Image_P := null);
 
    function Cv_Bg_Code_Book_Diff (Model  : Cv_Bg_Code_Book_Model_P;
                                   Image  : Cv_Arr_P;
                                   Fgmask : Cv_Arr_P;
+                                  Roi    : Cv_Rect := Cv_Create_Rect (0, 0, 0, 0))
+                                  return Integer;
+   function Cv_Bg_Code_Book_Diff (Model  : Cv_Bg_Code_Book_Model_P;
+                                  Image  : Cv_Mat_P;
+                                  Fgmask : Cv_Mat_P;
+                                  Roi    : Cv_Rect := Cv_Create_Rect (0, 0, 0, 0))
+                                  return Integer;
+   function Cv_Bg_Code_Book_Diff (Model  : Cv_Bg_Code_Book_Model_P;
+                                  Image  : Ipl_Image_P;
+                                  Fgmask : Ipl_Image_P;
                                   Roi    : Cv_Rect := Cv_Create_Rect (0, 0, 0, 0))
                                   return Integer;
 
@@ -321,6 +339,18 @@ package Video.Background_Segm is
                                           Mask         : Cv_Arr_P := null);
 
    function Cv_Segment_Fg_Mask (Fgmask      : Cv_Arr_P;
+                                Poly1_Hull0 : Integer := 1;
+                                Perim_Scale : Float := 4.0;
+                                Storage     : Cv_Mem_Storage_P := null;
+                                Offset      : Cv_Point := Cv_Create_Point (0, 0))
+                                return Cv_Seq_P;
+   function Cv_Segment_Fg_Mask (Fgmask      : Cv_Mat_P;
+                                Poly1_Hull0 : Integer := 1;
+                                Perim_Scale : Float := 4.0;
+                                Storage     : Cv_Mem_Storage_P := null;
+                                Offset      : Cv_Point := Cv_Create_Point (0, 0))
+                                return Cv_Seq_P;
+   function Cv_Segment_Fg_Mask (Fgmask      : Ipl_Image_P;
                                 Poly1_Hull0 : Integer := 1;
                                 Perim_Scale : Float := 4.0;
                                 Storage     : Cv_Mem_Storage_P := null;

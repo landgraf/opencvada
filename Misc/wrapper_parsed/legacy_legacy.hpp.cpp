@@ -15,3 +15,12 @@ double icvSqDist2D32f_wrap(CvPoint2D32f pt1 , CvPoint2D32f pt2 ){
  int iplHeight_wrap(const IplImage * img ){
 	return iplHeight(/*const*//*IplImage*//***/img);
 }
+
+int cvCurrentInt(CvSeqReader reader)
+{
+  return CV_CURRENT_INT(reader);
+}
+int cvPrevInt(CvSeqReader reader)
+{
+  return CV_PREV_INT(reader);
+}

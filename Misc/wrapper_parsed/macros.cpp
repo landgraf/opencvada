@@ -161,3 +161,5 @@ int find_obj_locatePlanarObject( const CvSeq* objectKeypoints, const CvSeq* obje
 
   return 1;
 }
+
+

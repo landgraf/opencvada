@@ -44,6 +44,20 @@ package body Highgui is
    begin
       W_Cv_Add_Text (Img, +Text, Org, Arg2);
    end Cv_Add_Text;
+   procedure Cv_Add_Text (Img  : Cv_Mat_P;
+                          Text : String;
+                          Org  : Cv_Point;
+                          Arg2 : Cv_Font_P) is
+   begin
+      W_Cv_Add_Text (To_Arr (Img), +Text, Org, Arg2);
+   end Cv_Add_Text;
+   procedure Cv_Add_Text (Img  : Ipl_Image_P;
+                          Text : String;
+                          Org  : Cv_Point;
+                          Arg2 : Cv_Font_P) is
+   begin
+      W_Cv_Add_Text (To_Arr (Img), +Text, Org, Arg2);
+   end Cv_Add_Text;
 
    procedure Cv_Display_Overlay (Name     : String;
                                  Text     : String;
@@ -90,13 +104,13 @@ package body Highgui is
 
 
    procedure Cv_Create_Button (Button_Name         : String;
-                              On_Change           : Cv_Button_Callback := null;
-                              User_Data           : Cv_Void_P := null;
-                              Button_Type         : Cv_Button_Type := Cv_Push_Button;
+                               On_Change           : Cv_Button_Callback := null;
+                               User_Data           : Cv_Void_P := null;
+                               Button_Type         : Cv_Button_Type := Cv_Push_Button;
                                Intial_Button_State : Integer := 0) is
       Dump : Integer;
    begin
-      Dump := w_Cv_Create_Button (+Button_Name, On_Change, User_Data, Button_Type, Intial_Button_State);
+      Dump := W_Cv_Create_Button (+Button_Name, On_Change, User_Data, Button_Type, Intial_Button_State);
    end Cv_Create_Button;
 
    -----------------------------------------------------------------------------
@@ -145,6 +159,16 @@ package body Highgui is
    begin
       W_Cv_Show_Image (+Windowname, Image);
    end Cv_Show_Image;
+   procedure Cv_Show_Image (Windowname  : String;
+                            Image       : Cv_Mat_P) is
+   begin
+      W_Cv_Show_Image (+Windowname, To_Arr (Image));
+   end Cv_Show_Image;
+   procedure Cv_Show_Image (Windowname  : String;
+                            Image       : Ipl_Image_P) is
+   begin
+      W_Cv_Show_Image (+Windowname, To_Arr (Image));
+   end Cv_Show_Image;
 
    procedure Cv_Resize_Window (Windowname   : String;
                                Width        : Integer;
@@ -180,9 +204,9 @@ package body Highgui is
       return W_Cv_Create_Trackbar ( +Trackbar_Name, +Window_Name, Value, Count, On_Change);
    end Cv_Create_Trackbar;
    procedure Cv_Create_Trackbar (Trackbar_Name : String;
-                                Window_Name   : String;
-                                Value         : access Integer;
-                                Count         : Integer;
+                                 Window_Name   : String;
+                                 Value         : access Integer;
+                                 Count         : Integer;
                                  On_Change     : Cv_Trackbar_Callback) is
       Dump : Integer;
    begin
@@ -199,10 +223,10 @@ package body Highgui is
       return W_Cv_Create_Trackbar2 (+Trackbar_Name, +Window_Name, Value, Count, On_Change, User_Data);
    end Cv_Create_Trackbar2;
    procedure Cv_Create_Trackbar2 (Trackbar_Name : String;
-                                 Window_Name   : String;
-                                 Value         : Integer;
-                                 Count         : Integer;
-                                 On_Change     : Cv_Trackbar_Callback2 := null;
+                                  Window_Name   : String;
+                                  Value         : Integer;
+                                  Count         : Integer;
+                                  On_Change     : Cv_Trackbar_Callback2 := null;
                                   User_Data     : Cv_Void_P) is
       Dump : Integer;
    begin
@@ -243,7 +267,33 @@ package body Highgui is
       return W_Cv_Save_Image (+Filename, Image, Settings);
    end Cv_Save_Image;
    procedure Cv_Save_Image (Filename      : String;
-                           Image         : Cv_Arr_P;
+                            Image         : Cv_Arr_P;
+                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) is
+      Dump : Integer;
+   begin
+      Dump :=  W_Cv_Save_Image (+Filename, Image, Settings);
+   end Cv_Save_Image;
+   function Cv_Save_Image (Filename      : String;
+                           Image         : Cv_Mat_P;
+                           Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer is
+   begin
+      return W_Cv_Save_Image (+Filename, Image, Settings);
+   end Cv_Save_Image;
+   procedure Cv_Save_Image (Filename      : String;
+                            Image         : Cv_Mat_P;
+                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) is
+      Dump : Integer;
+   begin
+      Dump :=  W_Cv_Save_Image (+Filename, Image, Settings);
+   end Cv_Save_Image;
+   function Cv_Save_Image (Filename      : String;
+                           Image         : Ipl_Image_P;
+                           Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer is
+   begin
+      return W_Cv_Save_Image (+Filename, Image, Settings);
+   end Cv_Save_Image;
+   procedure Cv_Save_Image (Filename      : String;
+                            Image         : Ipl_Image_P;
                             Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) is
       Dump : Integer;
    begin
@@ -259,6 +309,18 @@ package body Highgui is
 
    function Cv_Encode_Image (Ext    : String;
                              Image  : Cv_Arr_P;
+                             Params : File_Settings) return Cv_Mat_P is
+   begin
+      return W_Cv_Encode_Image (+Ext, Image, Params);
+   end Cv_Encode_Image;
+   function Cv_Encode_Image (Ext    : String;
+                             Image  : Cv_Mat_P;
+                             Params : File_Settings) return Cv_Mat_P is
+   begin
+      return W_Cv_Encode_Image (+Ext, Image, Params);
+   end Cv_Encode_Image;
+   function Cv_Encode_Image (Ext    : String;
+                             Image  : Ipl_Image_P;
                              Params : File_Settings) return Cv_Mat_P is
    begin
       return W_Cv_Encode_Image (+Ext, Image, Params);

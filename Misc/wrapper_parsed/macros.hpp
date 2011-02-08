@@ -1,5 +1,4 @@
 #include <opencv2/opencv.hpp>
-
 extern "C" {
   void cvNextLinePoint(CvLineIterator * LineIterator);
   void cvNextSeqElem(int elem_size, CvSeqReader * reader);
@@ -12,4 +11,6 @@ extern "C" {
 				    const CvSeq* model_keypoints,
 				    const CvSeq* model_descriptors );
   double find_obj_compareSURFDescriptors( const float* d1, const float* d2, double best, int length );
+
+
 }

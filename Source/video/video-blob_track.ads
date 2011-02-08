@@ -32,7 +32,7 @@ package Video.Blob_Track is
       H  : Float;
       ID : Integer;
    end record;
-   type Cv_Blob_P is access Cv_Blob;
+   type Cv_Blob_P is access all Cv_Blob;
    pragma Convention (C_Pass_By_Copy, Cv_Blob);
    pragma Convention (C, Cv_Blob_P);
 
@@ -46,7 +46,7 @@ package Video.Blob_Track is
       Shape : Shape_Type;
       Color : Cv_Scalar;
    end record;
-   type Cv_Draw_Shape_P is access Cv_Draw_Shape;
+   type Cv_Draw_Shape_P is access all Cv_Draw_Shape;
    pragma Convention (C_Pass_By_Copy, Cv_Draw_Shape);
    pragma Convention (C, Cv_Draw_Shape_P);
 
@@ -88,7 +88,7 @@ package Video.Blob_Track is
       Mat_Temp4               : Cv_Mat_P;
       Mat_Temp5               : Cv_Mat_P;
    end record;
-   type Cv_Kalman_P is access Cv_Kalman;
+   type Cv_Kalman_P is access all Cv_Kalman;
    pragma Convention (C_Pass_By_Copy, Cv_Kalman);
    pragma Convention (C, Cv_Kalman_P);
 
@@ -101,7 +101,7 @@ package Video.Blob_Track is
       Seq_P       : Cv_Seq_P;
       Elem_Format : Elem_Format_Array;
    end record;
-   type Cv_Blob_Seq_P is access Cv_Blob_Seq;
+   type Cv_Blob_Seq_P is access all Cv_Blob_Seq;
    pragma Convention (C_Pass_By_Copy, Cv_Blob_Seq);
    pragma Convention (C, Cv_Blob_Seq_P);
 
@@ -165,7 +165,7 @@ package Video.Blob_Track is
       Data_Noise_Pos  : Float;
       Data_Noise_Size : Float;
    end record;
-   type Cv_Blob_Track_Predict_Kalman_P is access Cv_Blob_Track_Predict_Kalman;
+   type Cv_Blob_Track_Predict_Kalman_P is access all Cv_Blob_Track_Predict_Kalman;
    pragma Convention (C_Pass_By_Copy, Cv_Blob_Track_Predict_Kalman);
    pragma Convention (C, Cv_Blob_Track_Predict_Kalman_P);
 
@@ -177,7 +177,7 @@ package Video.Blob_Track is
       Blob_Hyp_P   : Cv_Blob_Seq_P;
       Aver_FG      : Float;
    end record;
-   type Cv_Def_Blob_Tracker_P is access Cv_Def_Blob_Tracker;
+   type Cv_Def_Blob_Tracker_P is access all cv_Def_Blob_Tracker;
    pragma Convention (C_Pass_By_Copy, Cv_Def_Blob_Tracker);
    pragma Convention (C, Cv_Def_Blob_Tracker_P);
 
@@ -203,23 +203,23 @@ package Video.Blob_Track is
       Img_P               : Ipl_Image_P;
       Img_FG              : Ipl_Image_P;
    end record;
-   type Cv_Blob_Tracker_CC_P is access Cv_Blob_Tracker_CC;
+   type Cv_Blob_Tracker_CC_P is access all cv_Blob_Tracker_Cc;
    pragma Convention (C_Pass_By_Copy, Cv_Blob_Tracker_CC);
    pragma Convention (C, Cv_Blob_Tracker_CC_P);
 
    type Cv_Blob_Tracker_One is private;
-   type Cv_Blob_Tracker_One_P is access Cv_Blob_Tracker_One;
+   type Cv_Blob_Tracker_One_P is access all cv_Blob_Tracker_One;
    pragma Convention (C, Cv_Blob_Tracker_One_P);
 
    type Cv_FG_Detector is private;
-   type Cv_FG_Detector_P is access Cv_FG_Detector;
+   type Cv_FG_Detector_P is access all cv_Fg_Detector;
    pragma Convention (C, Cv_FG_Detector_P);
 
    type Cv_Image_Drawer is record
       Image : Ipl_Image_P;
       Shape : Cv_Draw_Shape_Array (1 .. 16);
    end record;
-   type Cv_Image_Drawer_P is access Cv_Image_Drawer;
+   type Cv_Image_Drawer_P is access all cv_Image_Drawer;
    pragma Convention (C_Pass_By_Copy, Cv_Image_Drawer);
    pragma Convention (C, Cv_Image_Drawer_P);
 
@@ -232,7 +232,7 @@ package Video.Blob_Track is
    -- Cv_Def_Param -------------------------------------------------------------
    -----------------------------------------------------------------------------
    type Cv_Def_Param;
-   type Cv_Def_Param_P is access Cv_Def_Param;
+   type Cv_Def_Param_P is access all Cv_Def_Param;
    type Cv_Def_Param is record
       Next      : Cv_Def_Param_P;
       Name_P    : Chars_Ptr;
@@ -258,7 +258,7 @@ package Video.Blob_Track is
       Start_Frame : Integer;
       Blob_Seq_P  : Cv_Blob_Seq_P; -- TODO: This is a "class" in subpackage.
    end record;
-   type Cv_Blob_Track_P is access Cv_Blob_Track;
+   type Cv_Blob_Track_P is access all Cv_Blob_Track;
    pragma Convention (C_Pass_By_Copy, Cv_Blob_Track);
    pragma Convention (C, Cv_Blob_Track_P);
 
@@ -274,7 +274,7 @@ package Video.Blob_Track is
       ID       : Integer;
       Response : Float;
    end record;
-   type Cv_Detected_Blob_P is access Cv_Detected_Blob;
+   type Cv_Detected_Blob_P is access all cv_Detected_Blob;
    pragma Convention (C_Pass_By_Copy, Cv_Detected_Blob);
    pragma Convention (C, Cv_Detected_Blob_P);
 
@@ -292,7 +292,7 @@ package Video.Blob_Track is
       Meanshift_Profile  : Integer;
       Sigma              : Float;
    end record;
-   type Cv_Blob_Tracker_Param_MS_P is access Cv_Blob_Tracker_Param_MS;
+   type Cv_Blob_Tracker_Param_MS_P is access all cv_Blob_Tracker_Param_Ms;
    pragma Convention (C_Pass_By_Copy, Cv_Blob_Tracker_Param_MS);
    pragma Convention (C, Cv_Blob_Tracker_Param_MS_P);
 
@@ -304,7 +304,7 @@ package Video.Blob_Track is
       Hist_Type   : Integer;
       Scale_After : Integer;
    end record;
-   type Cv_Blob_Tracker_Param_LH_P is access Cv_Blob_Tracker_Param_LH;
+   type Cv_Blob_Tracker_Param_LH_P is access all cv_Blob_Tracker_Param_Lh;
    pragma Convention (C_Pass_By_Copy, Cv_Blob_Tracker_Param_LH);
    pragma Convention (C, Cv_Blob_Tracker_Param_LH_P);
 
@@ -322,7 +322,7 @@ package Video.Blob_Track is
       Use_PP_Data     : Integer;
       BTA_P           : Cv_Blob_Track_Analysis_P;  -- TODO: This is a "class" in subpackage.
    end record;
-   type Cv_Blob_Tracker_Auto_Param_1_P is access Cv_Blob_Tracker_Auto_Param_1;
+   type Cv_Blob_Tracker_Auto_Param_1_P is access all Cv_Blob_Tracker_Auto_Param_1;
    pragma Convention (C_Pass_By_Copy, Cv_Blob_Tracker_Auto_Param_1);
    pragma Convention (C, Cv_Blob_Tracker_Auto_Param_1_P);
 
@@ -341,7 +341,7 @@ package Video.Blob_Track is
       Shift1  : Integer;
       Shift2  : Integer;
    end record;
-   type Cv_Track_Time_Pos_P is access Cv_Track_Time_Pos;
+   type Cv_Track_Time_Pos_P is access all Cv_Track_Time_Pos;
    pragma Convention (C_Pass_By_Copy, Cv_Track_Time_Pos);
    pragma Convention (C, Cv_Track_Time_Pos_P);
 
@@ -794,7 +794,7 @@ package Video.Blob_Track is
                      Src      : Cv_Arr_P;
                      Blob_Seq : Cv_Blob_Seq_P;
                      Roi_Seq  : Cv_Seq_P)
-                  return Ipl_Image_P;
+                     return Ipl_Image_P;
 
       function GetImage (This : Cv_Image_Drawer_P)
                       return Ipl_Image_P;

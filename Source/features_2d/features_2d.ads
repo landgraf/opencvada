@@ -31,7 +31,8 @@ package Features_2d is
          Dir       : Float;
          Hessian   : Float;
       end record;
-   type Cv_Surf_Point_P is access Cv_Surf_Point;
+   pragma Convention (C_Pass_By_Copy, Cv_Surf_Point);
+   type Cv_Surf_Point_P is access all Cv_Surf_Point;
 
    function Cv_Create_Surf_Point (Pt        : Cv_Point_2d_32f;
                                   Laplacian : Integer;
@@ -62,6 +63,20 @@ package Features_2d is
                               Storage              : Cv_Mem_Storage_P;
                               Params               : Cv_Surf_Params;
                               Use_Provided_Key_Pts : Integer := 0);
+   procedure Cv_Extract_Surf (Image                : Cv_Mat_P;
+                              Mask                 : Cv_Mat_P;
+                              Keypoints            : access Cv_Seq_P;
+                              Descriptors          : access Cv_Seq_P;
+                              Storage              : Cv_Mem_Storage_P;
+                              Params               : Cv_Surf_Params;
+                              Use_Provided_Key_Pts : Integer := 0);
+   procedure Cv_Extract_Surf (Image                : Ipl_Image_P;
+                              Mask                 : Ipl_Image_P;
+                              Keypoints            : access Cv_Seq_P;
+                              Descriptors          : access Cv_Seq_P;
+                              Storage              : Cv_Mem_Storage_P;
+                              Params               : Cv_Surf_Params;
+                              Use_Provided_Key_Pts : Integer := 0);
 
    type Cv_Mser_Params is record
       Delta_Val      : Integer;
@@ -75,7 +90,7 @@ package Features_2d is
       Edge_Blur_Size : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Mser_Params);
-   type Cv_Mser_Params_P is access Cv_Mser_Params;
+   type Cv_Mser_Params_P is access all Cv_Mser_Params;
 
    function Cv_Create_Mser_Params (Delta_Val      : Integer := 5;
                                    Min_Area       : Integer := 60;
@@ -94,6 +109,17 @@ package Features_2d is
                               Contours : access Cv_Seq_P;
                               Storage  : Cv_Mem_Storage_P;
                               Params   : Cv_Mser_Params);
+   procedure Cv_Extract_Mser (Img      : Cv_Mat_P;
+                              Mask     : Cv_Mat_P;
+                              Contours : access Cv_Seq_P;
+                              Storage  : Cv_Mem_Storage_P;
+                              Params   : Cv_Mser_Params);
+   procedure Cv_Extract_Mser (Img      : Ipl_Image_P;
+                              Mask     : Ipl_Image_P;
+                              Contours : access Cv_Seq_P;
+                              Storage  : Cv_Mem_Storage_P;
+                              Params   : Cv_Mser_Params);
+
 
    type Cv_Star_Keypoint is record
       Pt       : Cv_Point;
@@ -101,7 +127,7 @@ package Features_2d is
       Response : Float;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Star_Keypoint);
-   type Cv_Star_Keypoint_P is access Cv_Star_Keypoint;
+   type Cv_Star_Keypoint_P is access all Cv_Star_Keypoint;
 
    function Cv_Create_Star_Keypoint (Pt       : Cv_Point;
                                      Size     : Integer;
@@ -117,7 +143,7 @@ package Features_2d is
          Suppressnonmaxsize     : Integer;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Star_Detector_Params);
-   type Cv_Star_Detector_Params_P is access Cv_Star_Detector_Params;
+   type Cv_Star_Detector_Params_P is access all Cv_Star_Detector_Params;
 
    -- Constructor for Cv_Star_Detector_Params with default values.
    function Cv_Create_Star_Detector_Params (Maxsize                : Integer := 45;
@@ -128,6 +154,12 @@ package Features_2d is
 
    --Retrieves keypoints using the StarDetector algorithm.
    function Cv_Get_Star_Keypoints (Image   : Cv_Arr_P;
+                                   Storage : Cv_Mem_Storage_P;
+                                   Params  : Cv_Star_Detector_Params := Cv_Create_Star_Detector_Params) return Cv_Seq_P;
+   function Cv_Get_Star_Keypoints (Image   : Cv_Mat_P;
+                                   Storage : Cv_Mem_Storage_P;
+                                   Params  : Cv_Star_Detector_Params := Cv_Create_Star_Detector_Params) return Cv_Seq_P;
+   function Cv_Get_Star_Keypoints (Image   : Ipl_Image_P;
                                    Storage : Cv_Mem_Storage_P;
                                    Params  : Cv_Star_Detector_Params := Cv_Create_Star_Detector_Params) return Cv_Seq_P;
 
