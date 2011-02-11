@@ -60,7 +60,7 @@ procedure Mser is
 
    Img      : aliased Ipl_Image_Ptr;
    Rsp      : aliased Ipl_Image_Ptr;
-   Rsp_Array : Cv_8u_Array_P;
+   Rsp_Array : Cv_8u_Array_Ptr;
    Ellipses : aliased Ipl_Image_Ptr;
 
    Contours : aliased Cv_Seq_Ptr := new Cv_Seq;

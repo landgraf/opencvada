@@ -54,10 +54,10 @@ package Objdetect is
       record
          Count       : Integer;
          Haarfeature : Cv_Haar_Feature;
-         Threshold   : Cv_32f_Array_P;
-         Left        : Cv_32s_Array_P;
-         Right       : Cv_32s_Array_P;
-         Alpha       : Cv_32f_Array_P;
+         Threshold   : Cv_32f_Array_Ptr;
+         Left        : Cv_32s_Array_Ptr;
+         Right       : Cv_32s_Array_Ptr;
+         Alpha       : Cv_32f_Array_Ptr;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Haar_Classifier);
    type Cv_Haar_Classifier_Ptr is access all Cv_Haar_Classifier;
@@ -203,7 +203,7 @@ package Objdetect is
          Size_Y        : Unsigned_32;
          P             : Unsigned_32;
          Xp            : Unsigned_32;
-         H             : Core.Cv_32f_Array_P;
+         H             : Core.Cv_32f_Array_Ptr;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Lsvm_Filter_Object);
    type Cv_Lsvm_Filter_Object_Array is array (Integer range <>) of aliased Cv_Lsvm_Filter_Object;
@@ -227,9 +227,9 @@ package Objdetect is
       record
          Num_Filters      : Integer;
          Num_Components   : Integer;
-         Num_Part_Filters : Core.Cv_32s_Array_P;
+         Num_Part_Filters : Core.Cv_32s_Array_Ptr;
          Filters          : Cv_Lsvm_Filter_Object_2d_Array_P;
-         B                : Core.Cv_32f_Array_P;
+         B                : Core.Cv_32f_Array_Ptr;
          Score_Threshold  : Float;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Latent_Svm_Detector);

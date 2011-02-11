@@ -1025,7 +1025,7 @@ package Imgproc.Operations is
                                Mask       : Cv_Arr_Ptr := null);
 
    -- Calculates the histogram of image(s).
-   procedure Cv_Calc_Hist (Image      : Cv_Arr_P_Array;
+   procedure Cv_Calc_Hist (Image      : Cv_Arr_Ptr_Array;
                            Hist       : Cv_Histogram_Ptr;
                            Accumulate : Integer := 0;
                            Mask       : Cv_Arr_Ptr := null);
@@ -1039,7 +1039,7 @@ package Imgproc.Operations is
                            Mask       : Cv_Arr_Ptr := null);
 
    --Calculates the back projection.
-   procedure Cv_Calc_Arr_Back_Project (Image       : Cv_Arr_P_Array;
+   procedure Cv_Calc_Arr_Back_Project (Image       : Cv_Arr_Ptr_Array;
                                        Backproject : Cv_Arr_Ptr;
                                        Hist        : Cv_Histogram_Ptr);
    procedure Cv_Calc_Arr_Back_Project (Image       : Cv_Mat_P_Array;
@@ -1050,7 +1050,7 @@ package Imgproc.Operations is
                                        Hist        : Cv_Histogram_Ptr);
 
    --Calculates the back projection.
-   procedure Cv_Calc_Back_Project (Image       : Cv_Arr_P_Array;
+   procedure Cv_Calc_Back_Project (Image       : Cv_Arr_Ptr_Array;
                                    Backproject : Cv_Arr_Ptr;
                                    Hist        : Cv_Histogram_Ptr) renames Cv_Calc_Arr_Back_Project;
    procedure Cv_Calc_Back_Project (Image       : Cv_Mat_P_Array;
@@ -1061,7 +1061,7 @@ package Imgproc.Operations is
                                    Hist        : Cv_Histogram_Ptr) renames Cv_Calc_Arr_Back_Project;
 
    --Locates a template within an image by using a histogram comparison.
-   procedure Cv_Calc_Arr_Back_Project_Patch (Images    : Cv_Arr_P_Array;
+   procedure Cv_Calc_Arr_Back_Project_Patch (Images    : Cv_Arr_Ptr_Array;
                                              Dst       : Cv_Arr_Ptr;
                                              Patchsize : Cv_Size;
                                              Hist      : Cv_Histogram_Ptr;
@@ -1081,7 +1081,7 @@ package Imgproc.Operations is
                                              Factor    : Float);
 
    --Locates a template within an image by using a histogram comparison.
-   procedure Cv_Calc_Back_Project_Patch (Images    : Cv_Arr_P_Array;
+   procedure Cv_Calc_Back_Project_Patch (Images    : Cv_Arr_Ptr_Array;
                                          Dst       : Cv_Arr_Ptr;
                                          Patchsize : Cv_Size;
                                          Hist      : Cv_Histogram_Ptr;

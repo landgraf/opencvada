@@ -678,7 +678,7 @@ package body Core is
 --     end Cv_Mat_Elem;
 
 
-   function Cv_Is_Matnd_Hdr (Mat : Cv_Mat_Nd_P) return Integer is
+   function Cv_Is_Matnd_Hdr (Mat : Cv_Mat_ND_Ptr) return Integer is
    begin
       if not (Mat = null) then
          if ( Unsigned_32 (Mat.all.Mat_Type) and Cv_Magic_Mask) = Cv_Matnd_Magic_Val then

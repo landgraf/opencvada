@@ -51,8 +51,6 @@ package Core is
    CV_64F      : constant := 6;
    CV_USRTYPE1 : constant := 7;
 
-   type Float_P is access Float;
-
    type Cv_8u_Array is array (Integer range <>) of aliased Unsigned_8;
    type Cv_8s_Array is array (Integer range <>) of aliased Integer_8;
    type Cv_16u_Array is array (Integer range <>) of aliased Unsigned_16;
@@ -71,21 +69,21 @@ package Core is
    type Cv_32f_2d_Array is array (Integer range <>, Integer range <>) of aliased Float;
    type Cv_64f_2d_Array is array (Integer range <>, Integer range <>) of aliased Long_Float;
 
-   type Cv_8u_Array_P is access Cv_8u_Array;
-   type Cv_8s_Array_P is access Cv_8s_Array;
-   type Cv_16u_Array_P is access Cv_16u_Array;
-   type Cv_16s_Array_P is access Cv_16s_Array;
-   type Cv_32s_Array_P is access Cv_32s_Array;
-   type Cv_32u_Array_P is access Cv_32u_Array;
-   type Cv_32f_Array_P is access Cv_32f_Array;
-   type Cv_64f_Array_P is access Cv_64f_Array;
+   type Cv_8u_Array_Ptr is access Cv_8u_Array;
+   type Cv_8s_Array_Ptr is access Cv_8s_Array;
+   type Cv_16u_Array_Ptr is access Cv_16u_Array;
+   type Cv_16s_Array_Ptr is access Cv_16s_Array;
+   type Cv_32s_Array_Ptr is access Cv_32s_Array;
+   type Cv_32u_Array_Ptr is access Cv_32u_Array;
+   type Cv_32f_Array_Ptr is access Cv_32f_Array;
+   type Cv_64f_Array_Ptr is access Cv_64f_Array;
 
    package Cv_8u_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Unsigned_8, Cv_8u_Array, 0);
    subtype Cv_8u_Pointer is Cv_8u_Pointer_Pkg.Pointer;
 
    type Cv_8u_Pointer_Array is array (Integer range <>) of Cv_8u_Pointer;
-   type Cv_8u_Pointer_Array_P is access Cv_8u_Pointer_Array;
+   type Cv_8u_Pointer_Array_Ptr is access Cv_8u_Pointer_Array;
 
    -- Changes an ada 2d array into a C compatible 2d array
    function To_2d_Pointer (Src : access Cv_8u_2d_Array)
@@ -96,7 +94,7 @@ package Core is
    subtype Cv_8s_Pointer is Cv_8s_Pointer_Pkg.Pointer;
 
    type Cv_8s_Pointer_Array is array (Integer range <>) of Cv_8s_Pointer;
-   type Cv_8s_Pointer_Array_P is access Cv_8s_Pointer_Array;
+   type Cv_8s_Pointer_Array_Ptr is access Cv_8s_Pointer_Array;
 
    -- Changes an ada 2d array into a C compatible 2d array
    function To_2d_Pointer (Src : access Cv_8s_2d_Array)
@@ -107,7 +105,7 @@ package Core is
    subtype Cv_16u_Pointer is Cv_16u_Pointer_Pkg.Pointer;
 
    type Cv_16u_Pointer_Array is array (Integer range <>) of Cv_16u_Pointer;
-   type Cv_16u_Pointer_Array_P is access Cv_16u_Pointer_Array;
+   type Cv_16u_Pointer_Array_Ptr is access Cv_16u_Pointer_Array;
 
    -- Changes an ada 2d array into a C compatible 2d array
    function To_2d_Pointer (Src : access Cv_16u_2d_Array)
@@ -118,7 +116,7 @@ package Core is
    subtype Cv_16s_Pointer is Cv_16s_Pointer_Pkg.Pointer;
 
    type Cv_16s_Pointer_Array is array (Integer range <>) of Cv_16s_Pointer;
-   type Cv_16s_Pointer_Array_P is access Cv_16s_Pointer_Array;
+   type Cv_16s_Pointer_Array_Ptr is access Cv_16s_Pointer_Array;
 
    -- Changes an ada 2d array into a C compatible 2d array
    function To_2d_Pointer (Src : access Cv_16s_2d_Array)
@@ -129,7 +127,7 @@ package Core is
    subtype Cv_32s_Pointer is Cv_32s_Pointer_Pkg.Pointer;
 
    type Cv_32s_Pointer_Array is array (Integer range <>) of Cv_32s_Pointer;
-   type Cv_32s_Pointer_Array_P is access Cv_32s_Pointer_Array;
+   type Cv_32s_Pointer_Array_Ptr is access Cv_32s_Pointer_Array;
 
    -- Changes an ada 2d array into a C compatible 2d array
    function To_2d_Pointer (Src : access Cv_32s_2d_Array)
@@ -140,7 +138,7 @@ package Core is
    subtype Cv_32f_Pointer is Cv_32f_Pointer_Pkg.Pointer;
 
    type Cv_32f_Pointer_Array is array (Integer range <>) of Cv_32f_Pointer;
-   type Cv_32f_Pointer_Array_P is access Cv_32f_Pointer_Array;
+   type Cv_32f_Pointer_Array_Ptr is access Cv_32f_Pointer_Array;
 
    -- Changes an ada 2d array into a C compatible 2d array
    function To_2d_Pointer (Src : access Cv_32f_2d_Array)
@@ -149,10 +147,10 @@ package Core is
    package Cv_64f_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Long_Float , Cv_64F_Array, 0.0);
    subtype Cv_64f_Pointer is Cv_64f_Pointer_Pkg.Pointer;
-   type Cv_64f_Pointer_P is access Cv_64f_Pointer;
+   type Cv_64f_Pointer_Ptr is access Cv_64f_Pointer;
 
    type Cv_64F_Pointer_Array is array (Integer range <>) of Cv_64f_Pointer;
-   type Cv_64F_Pointer_Array_P is access Cv_64F_Pointer_Array;
+   type Cv_64F_Pointer_Array_Ptr is access Cv_64F_Pointer_Array;
 
    -- Changes an ada 2d array into a C compatible 2d array
    function To_2d_Pointer (Src : access Cv_64f_2d_Array)
@@ -189,11 +187,11 @@ package Core is
    type Cv_Arr_Ptr is access all Cv_Arr;
    type Cv_Void_Ptr is access all Cv_Arr;
 
-   type Cv_Arr_P_Array is array (Integer range <>) of aliased Cv_Arr_Ptr;
-   type Cv_Arr_P_Array_P is access Cv_Arr_P_Array;
+   type Cv_Arr_Ptr_Array is array (Integer range <>) of aliased Cv_Arr_Ptr;
+   type Cv_Arr_Ptr_Array_Ptr is access Cv_Arr_Ptr_Array;
 
    package Cv_Arr_Pointer_Pkg is
-     new Interfaces.C.Pointers (Integer, Cv_Arr_Ptr, Cv_Arr_P_Array, null);
+     new Interfaces.C.Pointers (Integer, Cv_Arr_Ptr, Cv_Arr_Ptr_Array, null);
    subtype Cv_Arr_Pointer is Cv_Arr_Pointer_Pkg.Pointer;
 
 
@@ -429,7 +427,7 @@ package Core is
          N_Rows     : Integer;
          Anchor_X   : Integer;
          Anchor_Y   : Integer;
-         Values     : Cv_32U_Array_P;
+         Values     : Cv_32u_Array_Ptr;
          N_Shift_R  : Integer;
       end record;
    pragma Convention (C_Pass_By_Copy, Ipl_Conv_Kernel);
@@ -441,7 +439,7 @@ package Core is
          NRows   : Integer;
          AnchorX : Integer;
          AnchorY : Integer;
-         Values  : Cv_32F_Array_P;
+         Values  : Cv_32f_Array_Ptr;
       end record;
    pragma Convention (C_Pass_By_Copy, Ipl_Conv_Kernel_Fp);
    Ipl_Image_Header : constant := 1;
@@ -609,15 +607,15 @@ package Core is
    type Cv_Mat_ND is record
       Mat_Type : Integer;
       Dims     : Integer;
-      Refcount : Cv_32U_Array_P;
+      Refcount : Cv_32u_Array_Ptr;
       Data     : Mat_Data;
       Dim      : Mat_Dimensions_Array (1 .. CV_MAX_DIM);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Mat_ND);
-   type Cv_Mat_ND_P is access Cv_Mat_ND;
+   type Cv_Mat_ND_Ptr is access Cv_Mat_ND;
 
-   function Cv_Is_Matnd_Hdr (Mat : Cv_Mat_Nd_P) return Integer;
-   function Cv_Is_Matnd ( Mat : Cv_Mat_Nd_P) return Integer renames Cv_Is_Matnd_Hdr;
+   function Cv_Is_Matnd_Hdr (Mat : Cv_Mat_Nd_Ptr) return Integer;
+   function Cv_Is_Matnd ( Mat : Cv_Mat_Nd_Ptr) return Integer renames Cv_Is_Matnd_Hdr;
 
    -----------------------------------------------------------------------------
    -- Multi-dimensional sparse array (CvSparseMat)
@@ -694,7 +692,7 @@ package Core is
          HistType : Integer;
          Bins     : Cv_Arr_Ptr;
          Thresh   : Thresh_Arr;
-         Thresh2  : Cv_32F_Pointer_Array_P;
+         Thresh2  : Cv_32f_Pointer_Array_Ptr;
          Mat      : Cv_Mat_ND;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Histogram);
@@ -746,7 +744,7 @@ package Core is
       Epsilon   : Long_Float;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Term_Criteria);
-   type Cv_Term_Criteria_P is access Cv_Term_Criteria;
+   type Cv_Term_Criteria_Ptr is access Cv_Term_Criteria;
 
    function Cv_Create_Term_Criteria (T_Type  : Integer; Max_Iter : Integer;
                                      Epsilon : Long_Float) return Cv_Term_Criteria;
@@ -1098,7 +1096,7 @@ package Core is
       Edges        : access Cv_Set;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Graph);
-   type Cv_Graph_P is access Cv_Graph;
+   type Cv_Graph_Ptr is access Cv_Graph;
 
    CV_TYPE_NAME_GRAPH : constant String := "opencv-graph";
 
@@ -1730,10 +1728,6 @@ package Core is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_Mat_Ptr);
 
-   function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
-                                   Target => Float_P);
-
    function To_Void is
      new Ada.Unchecked_Conversion (Source => Ipl_Image_Ptr,
                                    Target => Cv_Void_Ptr);
@@ -1748,10 +1742,6 @@ package Core is
 
    function To_Void is
      new Ada.Unchecked_Conversion (Source => Cv_Mat_Ptr,
-                                   Target => Cv_Void_Ptr);
-
-   function To_Void is
-     new Ada.Unchecked_Conversion (Source => Float_P,
                                    Target => Cv_Void_Ptr);
    function Image_To_Arr is
      new Ada.Unchecked_Conversion (Source => Ipl_Image_Ptr,

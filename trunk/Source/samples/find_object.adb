@@ -131,7 +131,7 @@ procedure Find_Object is
       Nearest_Neighbor : Integer;
       Temp_Pairs : Int_Vector.Vector;
       Temp_Length : Integer := 0;
-      Temp_Array : Cv_32s_Array_P;
+      Temp_Array : Cv_32s_Array_Ptr;
    begin
       Cv_Start_Read_Seq (Object_Keypoints, Kreader'Unchecked_Access);
       Cv_Start_Read_Seq (Object_Descriptors, Reader'Unchecked_Access);
@@ -172,7 +172,7 @@ procedure Find_Object is
       H_Ptr                 : Cv_64f_Pointer := H (0)'Unchecked_Access;
       H_Mat                 : aliased Cv_Mat := Cv_Create_Mat (3, 3, Cv_Make_Type (Cv_64f, 1), To_Void (H_Ptr));
       Pt_Pairs_P            : aliased Cv_32s_Pointer := null;
-      Pt_Pairs              : Cv_32s_Array_P;
+      Pt_Pairs              : Cv_32s_Array_Ptr;
       Pt1, Pt2              : Cv_Point_2d_32f_Array_Ptr;
       Pt1_Ptr, Pt2_Ptr      : Cv_Point_2d_32f_Pointer;
       Pt1_Mat, Pt2_Mat      : aliased Cv_Mat;

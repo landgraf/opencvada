@@ -101,7 +101,7 @@ package Legacy is
                                     Io_Flags    : Integer;
                                     Op_Buf_Size : Integer;
                                     User_Data   : Cv_Void_Ptr;
-                                    Calc_Limit  : Cv_Term_Criteria_P;
+                                    Calc_Limit  : Cv_Term_Criteria_Ptr;
                                     Avg         : Ipl_Image_Ptr;
                                     Eig_Vals    : Cv_32f_Array);
    --     Calculates dot product (obj - avg) * eigObj (i.e. projects image to
@@ -138,9 +138,9 @@ package Legacy is
       Obs_X    : Integer;
       Obs_Y    : Integer;
       Obs_Size : Integer;
-      Obs      : Cv_32f_Array_P;
-      State    : Cv_32s_Array_P;
-      Mix      : Cv_32s_Array_P;
+      Obs      : Cv_32f_Array_Ptr;
+      State    : Cv_32s_Array_Ptr;
+      Mix      : Cv_32s_Array_Ptr;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Img_Obs_Info);
    type Cv_1d_Obs_Info is new Cv_Img_Obs_Info;
@@ -154,10 +154,10 @@ package Legacy is
    -- Cv_EHMM_State ------------------------------------------------------------
    type Cv_Ehmm_State is record
       Num_Mix     : Integer;
-      Mu          : Cv_32f_Array_P;
-      Inv_Var     : Cv_32f_Array_P;
-      Log_Var_Val : Cv_32f_Array_P;
-      Weight      : Cv_32f_Array_P;
+      Mu          : Cv_32f_Array_Ptr;
+      Inv_Var     : Cv_32f_Array_Ptr;
+      Log_Var_Val : Cv_32f_Array_Ptr;
+      Weight      : Cv_32f_Array_Ptr;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Ehmm_State);
    type Cv_Ehmm_State_Ptr is access all Cv_Ehmm_State;
@@ -181,8 +181,8 @@ package Legacy is
    type Cv_Ehmm is record
       Level      : Integer;
       Num_States : Integer;
-      Trans_P    : Cv_32f_Array_P;    -- float *
-      Obs_Prob   : Cv_32f_Pointer_Array_P; -- float **
+      Trans_P    : Cv_32f_Array_Ptr;    -- float *
+      Obs_Prob   : Cv_32f_Pointer_Array_Ptr; -- float **
       U          : Cv_Ehmm_Union;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Ehmm);
@@ -369,14 +369,14 @@ package Legacy is
 
    -- Stereo Correspondence ----------------------------------------------------
    type Cv_Clique_Finder is record
-      Graph          : Cv_Graph_P;
-      Adj_Mat        : Cv_32s_Pointer_Array_P;
+      Graph          : Cv_Graph_Ptr;
+      Adj_Mat        : Cv_32s_Pointer_Array_Ptr;
       N              : Integer; -- Graph size
 
       -- stacks, counters etc
       K              : Integer; -- Stack size
       Current_Comp   : Cv_32s_Pointer;
-      All_Cliques    : Cv_32s_Pointer_Array_P;
+      All_Cliques    : Cv_32s_Pointer_Array_Ptr;
 
       Ne             : Cv_32s_Pointer;
       Ce             : Cv_32s_Pointer;
@@ -883,12 +883,12 @@ package Legacy is
    type Cv_Glcm is record
       Matrix_Side_Length           : Integer;
       Num_Matrices                 : Integer;
-      Matrices                     : access Cv_64f_Pointer_Array_P; -- double***
+      Matrices                     : access Cv_64f_Pointer_Array_Ptr; -- double***
 
       Num_Lookup_Table_Elements    : Integer;
       Forward_Lookup_Table         : Cv_32s_Array (1 .. Cv_Max_Num_Grey_Levels_8u);
       Reverse_Lookup_Table         : Cv_32s_Array (1 .. Cv_Max_Num_Grey_Levels_8u);
-      Descriptors                  : Cv_64f_Pointer_Array_P; -- double**
+      Descriptors                  : Cv_64f_Pointer_Array_Ptr; -- double**
       Num_Descriptors              : Integer;
       Descriptor_Optimization_Type : Integer;
       Optimization_Type            : Integer;
@@ -1194,10 +1194,10 @@ package Legacy is
    --     Computes hybrid model from Voronoi Diagram
    function Cv_Linear_Contor_Model_From_Voronoi_Diagram (Voronoi_Diagram : Cv_Voronoi_Diagram_2d_Ptr;
                                                          Max_Width       : Float)
-                                                         return Cv_Graph_P;
+                                                         return Cv_Graph_Ptr;
 
    --     Releases hybrid model storage
-   procedure Cv_Release_Linear_Contor_Model_Storage (Graph : access Cv_Graph_P);
+   procedure Cv_Release_Linear_Contor_Model_Storage (Graph : access Cv_Graph_Ptr);
 
    subtype Cv_Point_2d_32f_Array_4 is Cv_Point_2d_32f_Array (1 .. 4);
 
@@ -1299,15 +1299,15 @@ package Legacy is
       record
          Mp           : Integer;
          Dp           : Integer;
-         Dynammatr    : Cv_32f_Array_P;
-         State        : Cv_32f_Array_P;
+         Dynammatr    : Cv_32f_Array_Ptr;
+         State        : Cv_32f_Array_Ptr;
          Samplesnum   : Integer;
-         Flsamples    : access Cv_32f_Array_P;
-         Flnewsamples : access Cv_32f_Array_P;
-         Flconfidance : Cv_32f_Array_P;
-         Flcumulative : Cv_32f_Array_P;
-         Temp         : Cv_32f_Array_P;
-         Randomsample : Cv_32f_Array_P;
+         Flsamples    : access Cv_32f_Array_Ptr;
+         Flnewsamples : access Cv_32f_Array_Ptr;
+         Flconfidance : Cv_32f_Array_Ptr;
+         Flcumulative : Cv_32f_Array_Ptr;
+         Temp         : Cv_32f_Array_Ptr;
+         Randomsample : Cv_32f_Array_Ptr;
          Rands        : Cv_Rand_State;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Con_Densation);

@@ -251,14 +251,14 @@ package Core.Operations is
    function Cv_Create_Mat_Nd_Header (Dims     : Integer;
                                      Sizes    : access Integer;
                                      Mat_Type : Integer)
-                                     return Cv_Mat_Nd_P;
+                                     return Cv_Mat_Nd_Ptr;
 
    --     Creates the header and allocates the data for a multi-dimensional
    --     dense array.
    function Cv_Create_Mat_Nd (Dims     : Integer;
                               Sizes    : access Integer;
                               Mat_Type : Integer)
-                              return Cv_Mat_Nd_P;
+                              return Cv_Mat_Nd_Ptr;
 
    --     Initializes a pre-allocated multi-dimensional array header.
    function Cv_Init_Mat_Nd_Header (Mat   : access Cv_Mat_Nd;
@@ -266,15 +266,15 @@ package Core.Operations is
                                    Sizes : Cv_32s_Array;
                                    Mat_T : Integer;
                                    Data  : access Mat_Data := null) -- void*
-                                   return Cv_Mat_Nd_P;
+                                   return Cv_Mat_Nd_Ptr;
 
    --     Deallocates a multi-dimensional array.
-   procedure Cv_Release_Mat_Nd (Mat : access Cv_Mat_Nd_P);
+   procedure Cv_Release_Mat_Nd (Mat : access Cv_Mat_Nd_Ptr);
 
    --     Creates full copy of a multi-dimensional array and returns a pointer
    --     to the copy.
-   function Cv_Clone_Mat_Nd (Mat : Cv_Mat_Nd_P)
-                             return Cv_Mat_Nd_P;
+   function Cv_Clone_Mat_Nd (Mat : Cv_Mat_Nd_Ptr)
+                             return Cv_Mat_Nd_Ptr;
 
    --     Creates sparse array.
    function Cv_Create_Sparse_Mat (Dims     : Integer;
@@ -304,7 +304,7 @@ package Core.Operations is
    Cv_Max_Arr : constant := 10;
 
    type Cv_N_Array_Ptr_Array is array (Integer range 1 .. Cv_Max_Arr) of Cv_Void_Ptr;
-   type Cv_N_Array_Cvmatnd_P_Array is array (Integer range 1 .. Cv_Max_Arr) of Cv_Mat_Nd_P;
+   type Cv_N_Array_Cvmatnd_P_Array is array (Integer range 1 .. Cv_Max_Arr) of Cv_Mat_Nd_Ptr;
 
    type Cv_N_Array_Iterator is
       record
@@ -325,21 +325,21 @@ package Core.Operations is
    --     (the function together with cvNextArraySlice is used for
    --      N-ari element-wise operations) */
    procedure Cv_Init_N_Array_Iterator (Count         : Integer;
-                                       Arrs          : Cv_Arr_P_Array;
+                                       Arrs          : Cv_Arr_Ptr_Array;
                                        Mask          : Cv_Arr_Ptr;
-                                       Stubs         : Cv_Mat_Nd_P;
+                                       Stubs         : Cv_Mat_Nd_Ptr;
                                        Arrayiterator : Cv_N_Array_Iterator;
                                        Flags         : Integer := 0);
    procedure Cv_Init_N_Array_Iterator (Count         : Integer;
                                        Arrs          : Cv_Mat_Array;
                                        Mask          : Cv_Mat_Ptr;
-                                       Stubs         : Cv_Mat_Nd_P;
+                                       Stubs         : Cv_Mat_Nd_Ptr;
                                        Arrayiterator : Cv_N_Array_Iterator;
                                        Flags         : Integer := 0);
    procedure Cv_Init_N_Array_Iterator (Count         : Integer;
                                        Arrs          : Ipl_Image_P_Array;
                                        Mask          : Ipl_Image_Ptr;
-                                       Stubs         : Cv_Mat_Nd_P;
+                                       Stubs         : Cv_Mat_Nd_Ptr;
                                        Arrayiterator : Cv_N_Array_Iterator;
                                        Flags         : Integer := 0);
 
@@ -2344,88 +2344,88 @@ package Core.Operations is
                              Headersize : Integer;
                              Vtxsize    : Integer;
                              Edgesize   : Integer;
-                             Storage    : Cv_Mem_Storage_Ptr) return Cv_Graph_P;
+                             Storage    : Cv_Mem_Storage_Ptr) return Cv_Graph_Ptr;
 
    -- Adds a vertex to a graph.
-   function Cv_Graph_Add_Vtx (Graph       : Cv_Graph_P;
+   function Cv_Graph_Add_Vtx (Graph       : Cv_Graph_Ptr;
                               Vtx         : Cv_Graph_Vtx_Ptr := null;
                               Insertedvtx : access Cv_Graph_Vtx_Ptr := null) return Integer;
 
    -- Removes a vertex from a graph.
-   function Cv_Graph_Remove_Vtx (Graph : Cv_Graph_P;
+   function Cv_Graph_Remove_Vtx (Graph : Cv_Graph_Ptr;
                                  Index : Integer) return Integer;
 
    --Removes a vertex from a graph by using its pointer.
-   function Cv_Graph_Remove_Vtx_By_Ptr (Graph : Cv_Graph_P;
+   function Cv_Graph_Remove_Vtx_By_Ptr (Graph : Cv_Graph_Ptr;
                                         Vtx   : Cv_Graph_Vtx_Ptr) return Integer;
 
    -- Adds an edge to a graph.
-   function Cv_Graph_Add_Edge (Graph        : Cv_Graph_P;
+   function Cv_Graph_Add_Edge (Graph        : Cv_Graph_Ptr;
                                Startidx     : Integer;
                                Endidx       : Integer;
                                Edge         : Cv_Graph_Edge_Ptr := null;
                                Insertededge : access Cv_Graph_Edge_Ptr := null) return Integer;
 
    -- Adds an edge to a graph by using its pointer.
-   function Cv_Graph_Add_Edge_By_Ptr (Graph        : Cv_Graph_P;
+   function Cv_Graph_Add_Edge_By_Ptr (Graph        : Cv_Graph_Ptr;
                                       Startvtx     : Cv_Graph_Vtx_Ptr;
                                       Endvtx       : Cv_Graph_Vtx_Ptr;
                                       Edge         : Cv_Graph_Edge_Ptr := null;
                                       Insertededge : access Cv_Graph_Edge_Ptr := null) return Integer;
 
    -- Removes an edge from a graph.
-   procedure Cv_Graph_Remove_Edge (Graph    : Cv_Graph_P;
+   procedure Cv_Graph_Remove_Edge (Graph    : Cv_Graph_Ptr;
                                    Startidx : Integer;
                                    Endidx   : Integer);
 
    --Removes an edge from a graph by using its pointer.
-   procedure Cv_Graph_Remove_Edge_By_Ptr (Graph    : Cv_Graph_P;
+   procedure Cv_Graph_Remove_Edge_By_Ptr (Graph    : Cv_Graph_Ptr;
                                           Startvtx : Cv_Graph_Vtx_Ptr;
                                           Endvtx   : Cv_Graph_Vtx_Ptr);
 
    -- Finds an edge in a graph.
-   function Cv_Find_Graph_Edge (Graph    : Cv_Graph_P;
+   function Cv_Find_Graph_Edge (Graph    : Cv_Graph_Ptr;
                                 Startidx : Integer;
                                 Endidx   : Integer) return Cv_Graph_Edge_Ptr;
-   function Cv_Graph_Find_Edge (Graph    : Cv_Graph_P;
+   function Cv_Graph_Find_Edge (Graph    : Cv_Graph_Ptr;
                                 Startidx : Integer;
                                 Endidx   : Integer) return Cv_Graph_Edge_Ptr renames Cv_Find_Graph_Edge;
 
    -- Finds an edge in a graph by using its pointer.
-   function Cv_Find_Graph_Edge_By_Ptr (Graph    : Cv_Graph_P;
+   function Cv_Find_Graph_Edge_By_Ptr (Graph    : Cv_Graph_Ptr;
                                        Startvtx : Cv_Graph_Vtx_Ptr;
                                        Endvtx   : Cv_Graph_Vtx_Ptr) return Cv_Graph_Edge_Ptr;
-   function Cv_Graph_Find_Edge_By_Ptr (Graph    : Cv_Graph_P;
+   function Cv_Graph_Find_Edge_By_Ptr (Graph    : Cv_Graph_Ptr;
                                        Startvtx : Cv_Graph_Vtx_Ptr;
                                        Endvtx   : Cv_Graph_Vtx_Ptr) return Cv_Graph_Edge_Ptr renames Cv_Find_Graph_Edge_By_Ptr;
 
    --Clears a graph.
-   procedure Cv_Clear_Graph (Graph : Cv_Graph_P);
+   procedure Cv_Clear_Graph (Graph : Cv_Graph_Ptr);
 
    -- Counts the number of edges indicent to the vertex.
-   function Cv_Graph_Vtx_Degree (Graph  : Cv_Graph_P;
+   function Cv_Graph_Vtx_Degree (Graph  : Cv_Graph_Ptr;
                                  Vtxldx : Integer) return Integer;
 
    -- Finds an edge in a graph.
-   function Cv_Graph_Vtx_Degree_By_Ptr (Graph : Cv_Graph_P;
+   function Cv_Graph_Vtx_Degree_By_Ptr (Graph : Cv_Graph_Ptr;
                                         Vtx   : Cv_Graph_Vtx_Ptr) return Integer;
 
    -- Finds a graph vertex by using its index.
-   function Cv_Get_Graph_Vtx (Graph  : Cv_Graph_P;
+   function Cv_Get_Graph_Vtx (Graph  : Cv_Graph_Ptr;
                               Vtxidx : Integer) return Cv_Graph_Vtx_Ptr;
 
    -- Returns the index of a graph vertex.
-   function Cv_Graph_Vtx_Idx (Graph : Cv_Graph_P;
+   function Cv_Graph_Vtx_Idx (Graph : Cv_Graph_Ptr;
                               Vtx   : Cv_Graph_Vtx_Ptr) return Integer;
 
    -- Returns the index of a graph edge.
-   function Cv_Graph_Edge_Idx (Graph : Cv_Graph_P;
+   function Cv_Graph_Edge_Idx (Graph : Cv_Graph_Ptr;
                                Edge  : Cv_Graph_Edge_Ptr) return Integer;
 
    --#define cvGraphGetVtxCount( graph ) ((graph)->active_count)
-   function Cv_Graph_Get_Vtx_Count (Graph : Cv_Graph_P) return Integer;
+   function Cv_Graph_Get_Vtx_Count (Graph : Cv_Graph_Ptr) return Integer;
    --#define cvGraphGetEdgeCount( graph ) ((graph)->edges->active_count)
-   function Cv_Graph_Get_Edge_Count (Graph : Cv_Graph_P) return Integer;
+   function Cv_Graph_Get_Edge_Count (Graph : Cv_Graph_Ptr) return Integer;
 
    Cv_Graph_Vertex : constant := 1;
    Cv_Graph_Tree_Edge : constant := 2;
@@ -2458,7 +2458,7 @@ package Core.Operations is
       Dst   : Cv_Graph_Vtx_Ptr;
       Edge  : Cv_Graph_Edge_Ptr;
 
-      Graph : Cv_Graph_P;
+      Graph : Cv_Graph_Ptr;
       Stack : Cv_Seq_Ptr;
       Index : Integer;
       Mask  : Integer;
@@ -2467,7 +2467,7 @@ package Core.Operations is
    type Cv_Graph_Scanner_Ptr is access all Cv_Graph_Scanner;
 
    -- Creates structure for depth-first graph traversal.
-   function Cv_Create_Graph_Scanner (Graph : Cv_Graph_P;
+   function Cv_Create_Graph_Scanner (Graph : Cv_Graph_Ptr;
                                      Vtx   : Cv_Graph_Vtx_Ptr := null; --null = start from beginning
                                      Mask  : Integer := Cv_Graph_All_Items) return Cv_Graph_Scanner_Ptr;
 
@@ -2478,7 +2478,7 @@ package Core.Operations is
    function Cv_Next_Graph_Item (Scanner : Cv_Graph_Scanner_Ptr) return Integer;
 
    -- Clones a graph.
-   procedure Cv_Clone_Graph (Graph   : Cv_Graph_P;
+   procedure Cv_Clone_Graph (Graph   : Cv_Graph_Ptr;
                              Storage : Cv_Mem_Storage_Ptr);
 
    -----------------------------------------------------------------------------
@@ -2878,9 +2878,9 @@ package Core.Operations is
       Name_Font         : access String_C;
       Color             : Cv_Scalar;
       Font_Face         : Cv_Font_Face;
-      Ascii             : Cv_32u_Array_P;
-      Greek             : Cv_32u_Array_P;
-      Cyrillic          : Cv_32u_Array_P;
+      Ascii             : Cv_32u_Array_Ptr;
+      Greek             : Cv_32u_Array_Ptr;
+      Cyrillic          : Cv_32u_Array_Ptr;
       Hscale, Vscale    : Float;
       Shear             : Float;
       Thickness         : Integer;
