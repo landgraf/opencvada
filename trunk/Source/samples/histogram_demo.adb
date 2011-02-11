@@ -36,7 +36,7 @@ procedure Histogram_Demo is
 
    -- hsv images
    Hist_Image, Hist_Image_2 , H, S, V, Hsv : aliased Ipl_Image_Ptr;
-   Arr_Hsv : Core.Ipl_Image_P_Array := (H, S, V);
+   Arr_Hsv : Core.Ipl_Image_Ptr_Array := (H, S, V);
    Target  : aliased Ipl_Image_Ptr := Highgui.Cv_Load_Image ("target.jpg");
 
    -- float
@@ -64,7 +64,7 @@ procedure Histogram_Demo is
                                                                         Image.all.Height),
                                                                         Image.all.Depth,
         1);
-      Arr_Hsv : Core.Ipl_Image_P_Array := (H, S, V);
+      Arr_Hsv : Core.Ipl_Image_Ptr_Array := (H, S, V);
    begin
               Put_Line ("doing histogram{");
       Imgproc.Operations.Cv_Cvt_Color (+Image, +Hsv, Imgproc.CV_BGR2HSV);

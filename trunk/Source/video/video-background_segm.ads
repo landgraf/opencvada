@@ -49,7 +49,7 @@ package Video.Background_Segm is
       Update             : Cv_Update_Bg_Stat_Model_Func;
       Background         : Ipl_Image_Ptr;       -- 8UC3 reference background image
       Foreground         : Ipl_Image_Ptr;       -- 8UC1 foreground image
-      Layers             : Cv_Ipl_Image_P_Pointer; -- 8UC3 reference background image, can be null
+      Layers             : Cv_Ipl_Image_Ptr_Pointer; -- 8UC3 reference background image, can be null
       Layer_Count        : Integer;           -- Can be zero
       Storage            : Cv_Mem_Storage_Ptr;  -- Storage for foreground_regions
       Foreground_Regions : Cv_Seq_Ptr;          -- Foreground object contours
@@ -141,7 +141,7 @@ package Video.Background_Segm is
       Min_Area             : Float; -- Discards foreground blobs whose bounding box is smaller than this threshold.
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Fgd_Stat_Model_Params);
-   type Cv_Fgd_Stat_Model_Params_P is access Cv_Fgd_Stat_Model_Params;
+   type Cv_Fgd_Stat_Model_Params_Ptr is access all Cv_Fgd_Stat_Model_Params;
 
    type Cv_Bg_Pixel_C_Stat_Table is record
       Pv  : Float;
@@ -149,7 +149,7 @@ package Video.Background_Segm is
       V   : Cv_8u_Array (1 .. 3);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Bg_Pixel_C_Stat_Table);
-   type Cv_Bg_Pixel_C_Stat_Table_P is access Cv_Bg_Pixel_C_Stat_Table;
+   type Cv_Bg_Pixel_C_Stat_Table_Ptr is access all Cv_Bg_Pixel_C_Stat_Table;
 
    type Cv_Bg_Pixel_Cc_Stat_Table is record
       Pv  : Float;
@@ -157,13 +157,13 @@ package Video.Background_Segm is
       V   : Cv_8u_Array (1 .. 6);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Bg_Pixel_Cc_Stat_Table);
-   type Cv_Bg_Pixel_Cc_Stat_Table_P is access Cv_Bg_Pixel_Cc_Stat_Table;
+   type Cv_Bg_Pixel_Cc_Stat_Table_Ptr is access Cv_Bg_Pixel_Cc_Stat_Table;
 
    type Cv_Bg_Pixel_Stat is record
       Pbc                  : Float;
       Pbcc                 : Float;
-      Ctable               : Cv_Bg_Pixel_C_Stat_Table_P;
-      Cctable              : Cv_Bg_Pixel_Cc_Stat_Table_P;
+      Ctable               : Cv_Bg_Pixel_C_Stat_Table_Ptr;
+      Cctable              : Cv_Bg_Pixel_Cc_Stat_Table_Ptr;
       Is_Trained_St_Model  : Unsigned_8; -- uchar
       Is_Trained_Dyn_Model : Unsigned_8; -- uchar
    end record;
@@ -176,7 +176,7 @@ package Video.Background_Segm is
       Update             : Cv_Release_Bg_Stat_Model_Func;
       Background         : Ipl_Image_Ptr;       -- 8UC3 reference background image
       Foreground         : Ipl_Image_Ptr;       -- 8UC1 foreground image
-      Layers             : Cv_Ipl_Image_P_Pointer; -- 8UC3 reference background image, can be null
+      Layers             : Cv_Ipl_Image_Ptr_Pointer; -- 8UC3 reference background image, can be null
       Layer_Count        : Integer;           -- Can be zero
       Storage            : Cv_Mem_Storage_Ptr;  -- Storage for foreground_regions
       Foreground_Regions : Cv_Seq_Ptr;          -- Foreground object contours
@@ -251,7 +251,7 @@ package Video.Background_Segm is
       Update             : Cv_Release_Bg_Stat_Model_Func;
       Background         : Ipl_Image_Ptr;       -- 8UC3 reference background image
       Foreground         : Ipl_Image_Ptr;       -- 8UC1 foreground image
-      Layers             : Cv_Ipl_Image_P_Pointer; -- 8UC3 reference background image, can be null
+      Layers             : Cv_Ipl_Image_Ptr_Pointer; -- 8UC3 reference background image, can be null
       Layer_Count        : Integer;           -- Can be zero
       Storage            : Cv_Mem_Storage_Ptr;  -- Storage for foreground_regions
       Foreground_Regions : Cv_Seq_Ptr;          -- Foreground object contours
@@ -271,10 +271,10 @@ package Video.Background_Segm is
    type Cv_Bg_Code_Book_Elem;
    type Cv_Bg_Code_Book_Elem_Ptr is access all Cv_Bg_Code_Book_Elem;
 
-   type Cv_Bg_Code_Book_Elem_P_Array is array (Integer range <>) of aliased Cv_Bg_Code_Book_Elem_Ptr;
+   type Cv_Bg_Code_Book_Elem_Ptr_Array is array (Integer range <>) of aliased Cv_Bg_Code_Book_Elem_Ptr;
 
    package Cv_Bg_Code_Book_Elem_Pointer_Pkg is
-     new Interfaces.C.Pointers (Integer, Cv_Bg_Code_Book_Elem_Ptr, Cv_Bg_Code_Book_Elem_P_Array, null);
+     new Interfaces.C.Pointers (Integer, Cv_Bg_Code_Book_Elem_Ptr, Cv_Bg_Code_Book_Elem_Ptr_Array, null);
    subtype Cv_Bg_Code_Book_Elem_Pointer is Cv_Bg_Code_Book_Elem_Pointer_Pkg.Pointer;
 
    type Cv_Bg_Code_Book_Elem is record

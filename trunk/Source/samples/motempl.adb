@@ -27,7 +27,7 @@ procedure Motempl is
    N              : constant Integer := 4;
 
    -- image buffers
-   Buf            : Ipl_Image_P_Array (0 .. N - 1) := (others => null);
+   Buf            : Ipl_Image_Ptr_Array (0 .. N - 1) := (others => null);
    Last           : Integer := 0;
 
    -- temp images
