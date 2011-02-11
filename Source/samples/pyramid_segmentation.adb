@@ -14,7 +14,7 @@ with Interfaces; use Interfaces;
 
 procedure Pyramid_Segmentation is
 
-   Image : aliased Ipl_Image_P_Array (0 .. 2);
+   Image : aliased Ipl_Image_Ptr_Array (0 .. 2);
 
    Threshold1, Threshold2 : aliased Integer;
 
@@ -23,7 +23,7 @@ procedure Pyramid_Segmentation is
    Block_Size : constant Integer := 1000;
    Result : Integer;
    Filter : Pyr_Filter := Cv_Gaussian_5x5;
-   Comp : aliased Cv_Seq_P_Array(0 .. 0);
+   Comp : aliased Cv_Seq_Ptr_Array(0 .. 0);
    Storage : aliased Cv_Mem_Storage_Ptr;
 
    procedure On_Segment (Position : Integer);

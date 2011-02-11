@@ -149,7 +149,7 @@ package Legacy is
    type Cv_Img_Obs_Info_Ptr is access all Cv_Img_Obs_Info;
    type Cv_1d_Obs_Info_Ptr is access all Cv_1d_Obs_Info;
 
-   type Cv_Img_Obs_Info_P_Array is array (Integer range <>) of aliased Cv_Img_Obs_Info_Ptr;
+   type Cv_Img_Obs_Info_Ptr_Array is array (Integer range <>) of aliased Cv_Img_Obs_Info_Ptr;
 
    -- Cv_EHMM_State ------------------------------------------------------------
    type Cv_Ehmm_State is record
@@ -234,19 +234,19 @@ package Legacy is
                                   Ehmm     : Cv_Ehmm_Ptr);
 
    --     Does mixture segmentation of the states of embedded HMM
-   procedure Cv_Init_Mix_Segm (Obs_Info_Array : Cv_Img_Obs_Info_P_Array;
+   procedure Cv_Init_Mix_Segm (Obs_Info_Array : Cv_Img_Obs_Info_Ptr_Array;
                                Num_Img        : Integer;
                                Hmm            : Cv_Ehmm_Ptr);
 
    --     Function calculates means, variances, weights of every Gaussian
    --     Mixture of every low-level state of embedded HMM
-   procedure Cv_Estimate_Hmm_State_Params (Obs_Info_Array : Cv_Img_Obs_Info_P_Array;
+   procedure Cv_Estimate_Hmm_State_Params (Obs_Info_Array : Cv_Img_Obs_Info_Ptr_Array;
                                            Num_Img        : Integer;
                                            Hmm            : Cv_Ehmm_Ptr);
 
    --     Function computes transition probability matrices of embedded HMM
    --     given observations segmentation
-   procedure Cv_Estimate_Trans_Prob (Obs_Info_Array : Cv_Img_Obs_Info_P_Array;
+   procedure Cv_Estimate_Trans_Prob (Obs_Info_Array : Cv_Img_Obs_Info_Ptr_Array;
                                      Num_Img        : Integer;
                                      Hmm            : Cv_Ehmm_Ptr);
 
@@ -264,7 +264,7 @@ package Legacy is
    --     given observations segmentation.
    --     Euclidean distance used for clustering vectors.
    --     Centers of clusters are given means of every mixture
-   procedure Cv_Mix_Segm_L2 (Obs_Info_Array : Cv_Img_Obs_Info_P_Array;
+   procedure Cv_Mix_Segm_L2 (Obs_Info_Array : Cv_Img_Obs_Info_Ptr_Array;
                              Num_Img        : Integer;
                              Hmm            : Cv_Ehmm_Ptr);
 
@@ -339,8 +339,8 @@ package Legacy is
    type Cv_Graph_Weighted_Edge is record
       Flags  : Integer;
       Weight : Float;
-      Next   : Cv_Graph_Edge_P_Array;
-      Vtx    : Cv_Graph_Vtx_P_Array;
+      Next   : Cv_Graph_Edge_Ptr_Array;
+      Vtx    : Cv_Graph_Vtx_Ptr_Array;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Graph_Weighted_Edge);
 
@@ -481,8 +481,8 @@ package Legacy is
    type Cv_Camera_Ptr is access all Cv_Camera;
 
    type Cv_Camera_Array is array (Integer range <>) of aliased Cv_Camera;
-   type Cv_Camera_P_Array is array (Integer range <>) of aliased Cv_Camera_Ptr;
-   subtype Cv_Camera_P_Array_2 is Cv_Camera_P_Array (1 .. 2);
+   type Cv_Camera_Ptr_Array is array (Integer range <>) of aliased Cv_Camera_Ptr;
+   subtype Cv_Camera_Ptr_Array_2 is Cv_Camera_Ptr_Array (1 .. 2);
 
    subtype Cv_Point_3d_32f_Array_2 is Cv_Point_3d_32f_Array (1 .. 2);
 
@@ -497,7 +497,7 @@ package Legacy is
    subtype Cv_64f_Array_4x2 is Cv_64f_2d_Array (1 .. 4, 1 .. 2);
 
    type Cv_Stereo_Camera is record
-      Camera            : Cv_Camera_P_Array_2; -- two individual camera parameters
+      Camera            : Cv_Camera_Ptr_Array_2; -- two individual camera parameters
       Fund_Matr         : Cv_32f_Array (1 .. 9); -- fundamental matrix
 
       -- New part for stereo
@@ -1018,7 +1018,7 @@ package Legacy is
                                              Camera_Intrinsics : Cv_3d_Tracker_Camera_Intrinsics_Array; -- size = num_cameras
                                              Etalon_Size       : Cv_Size;
                                              Square_Size       : Float;
-                                             Samples           : Ipl_Image_P_Array; -- size = num_cameras
+                                             Samples           : Ipl_Image_Ptr_Array; -- size = num_cameras
                                              Camera_Info       : Cv_3d_Tracker_Camera_Info_Array) -- size = num_cameras
                                              return Cv_Bool;
 
@@ -1175,8 +1175,8 @@ package Legacy is
    type Cv_Lcm_Edge is record
       Flags  : Integer;
       Weight : Float;
-      Next   : Cv_Graph_Edge_P_Array;
-      Vtx    : Cv_Graph_Vtx_P_Array;
+      Next   : Cv_Graph_Edge_Ptr_Array;
+      Vtx    : Cv_Graph_Vtx_Ptr_Array;
       Chain  : Cv_Seq_Ptr;
       Width  : Float;
       Index1 : Integer;

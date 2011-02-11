@@ -304,7 +304,7 @@ package Core.Operations is
    Cv_Max_Arr : constant := 10;
 
    type Cv_N_Array_Ptr_Array is array (Integer range 1 .. Cv_Max_Arr) of Cv_Void_Ptr;
-   type Cv_N_Array_Cvmatnd_P_Array is array (Integer range 1 .. Cv_Max_Arr) of Cv_Mat_Nd_Ptr;
+   type Cv_N_Array_Cv_mat_nd_Ptr_Array is array (Integer range 1 .. Cv_Max_Arr) of Cv_Mat_Nd_Ptr;
 
    type Cv_N_Array_Iterator is
       record
@@ -313,7 +313,7 @@ package Core.Operations is
          Size  : Cv_Size;
          Ptr   : Cv_N_Array_Ptr_Array;
          Stack : Cv_32s_Array (1 .. Cv_Max_Dim);
-         Hdr   : Cv_N_Array_Cvmatnd_P_Array;
+         Hdr   : Cv_N_Array_Cv_Mat_Nd_Ptr_Array;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_N_Array_Iterator);
 
@@ -337,7 +337,7 @@ package Core.Operations is
                                        Arrayiterator : Cv_N_Array_Iterator;
                                        Flags         : Integer := 0);
    procedure Cv_Init_N_Array_Iterator (Count         : Integer;
-                                       Arrs          : Ipl_Image_P_Array;
+                                       Arrs          : Ipl_Image_Ptr_Array;
                                        Mask          : Ipl_Image_Ptr;
                                        Stubs         : Cv_Mat_Nd_Ptr;
                                        Arrayiterator : Cv_N_Array_Iterator;

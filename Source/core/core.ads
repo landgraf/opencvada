@@ -414,12 +414,12 @@ package Core is
    end record;
    pragma Convention (C_Pass_By_Copy, Ipl_Image);
    --   type Ipl_Image_Array is array (Integer range <>) of aliased Ipl_Image;
-   type Ipl_Image_P_Array is array (Integer range<>) of aliased Ipl_Image_Ptr;
+   type Ipl_Image_Ptr_Array is array (Integer range<>) of aliased Ipl_Image_Ptr;
 
 
-   package Cv_Ipl_Image_P_Pointer_Pkg is
-     new Interfaces.C.Pointers (Integer, Ipl_Image_Ptr, Ipl_Image_P_Array, null);
-   subtype Cv_Ipl_Image_P_Pointer is Cv_Ipl_Image_P_Pointer_Pkg.Pointer;
+   package Cv_Ipl_Image_Ptr_Pointer_Pkg is
+     new Interfaces.C.Pointers (Integer, Ipl_Image_Ptr, Ipl_Image_Ptr_Array, null);
+   subtype Cv_Ipl_Image_Ptr_Pointer is Cv_Ipl_Image_Ptr_Pointer_Pkg.Pointer;
 
    type Ipl_Conv_Kernel is
       record
@@ -698,11 +698,11 @@ package Core is
    pragma Convention (C_Pass_By_Copy, Cv_Histogram);
    type Cv_Histogram_Ptr is access all cv_Histogram;
 
-   type Cv_Histogram_P_Array is array (Integer range <>) of aliased Cv_Histogram_Ptr;
+   type Cv_Histogram_Ptr_Array is array (Integer range <>) of aliased Cv_Histogram_Ptr;
 
-   package Cv_Histogram_P_Pointer_Pkg is
-     new Interfaces.C.Pointers (Integer, Cv_Histogram_Ptr, Cv_Histogram_P_Array, null);
-   subtype Cv_Histogram_P_Pointer is Cv_Histogram_P_Pointer_Pkg.Pointer;
+   package Cv_Histogram_Ptr_Pointer_Pkg is
+     new Interfaces.C.Pointers (Integer, Cv_Histogram_Ptr, Cv_Histogram_Ptr_Array, null);
+   subtype Cv_Histogram_Ptr_Pointer is Cv_Histogram_Ptr_Pointer_Pkg.Pointer;
 
    function Cv_Is_Hist (Hist : Cv_Histogram_Ptr) return Integer;
    function Cv_Is_Uniform_Hist (Hist : Cv_Histogram_Ptr) return Integer;
@@ -990,7 +990,7 @@ package Core is
       First       : Cv_Seq_Block_Ptr;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Seq);
-   type Cv_Seq_P_Array is array (Integer range <>) of aliased Cv_Seq_Ptr;
+   type Cv_Seq_Ptr_Array is array (Integer range <>) of aliased Cv_Seq_Ptr;
 
    Cv_Type_Name_Seq : constant String := "opencv-sequence";
    Cv_Type_Name_Seq_Tree : constant String := "opencv-sequence-tree";
@@ -1007,9 +1007,9 @@ package Core is
    type Cv_Set_Elem_Array is array (Integer range <>) of aliased Cv_Set_Elem;
    Cv_Set_Elem_Dummy : Cv_Set_Elem;
 
-   package C_Set_Elem_Pointer_Pkg is
+   package Cv_Set_Elem_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Cv_Set_Elem, Cv_Set_Elem_Array, Cv_Set_Elem_Dummy);
-   subtype Cv_Set_Elem_Pointer is C_Set_Elem_Pointer_Pkg.Pointer;
+   subtype Cv_Set_Elem_Pointer is Cv_Set_Elem_Pointer_Pkg.Pointer;
 
    type Cv_Set is record
       Flags        : Integer;
@@ -1034,9 +1034,9 @@ package Core is
    type Cv_Set_Array is array (Integer range <>) of aliased Cv_Set;
    Cv_Set_Dummy : Cv_Set;
 
-   package C_Set_Pointer_Pkg is
+   package Cv_Set_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Cv_Set, Cv_Set_Array, Cv_Set_Dummy);
-   subtype Cv_Set_Pointer is C_Set_Pointer_Pkg.Pointer;
+   subtype Cv_Set_Pointer is Cv_Set_Pointer_Pkg.Pointer;
 
    Cv_Set_Elem_Idx_Mask : constant := (16#4000000# - 1);
    Cv_Set_Elem_Free_Flag : constant := 16#80000000#;
@@ -1048,16 +1048,16 @@ package Core is
    -----------------------------------------------------------------------------
    --type Cv_Graph_Edge;
    type Cv_Graph_Edge_Ptr is access all Cv_Graph_Edge;
-   type Cv_Graph_Edge_P_Array is array (1 .. 2) of Cv_Graph_Edge_Ptr;
+   type Cv_Graph_Edge_Ptr_Array is array (1 .. 2) of Cv_Graph_Edge_Ptr;
 
    type Cv_Graph_Vtx_Ptr is access all Cv_Graph_Vtx;
-   type Cv_Graph_Vtx_P_Array is array (1 .. 2) of Cv_Graph_Vtx_Ptr;
+   type Cv_Graph_Vtx_Ptr_Array is array (1 .. 2) of Cv_Graph_Vtx_Ptr;
 
    type Cv_Graph_Edge is record
       Flags  : Integer;
       Weight : Float;
-      Next   : Cv_Graph_Edge_P_Array;
-      Vtx    : Cv_Graph_Vtx_P_Array;
+      Next   : Cv_Graph_Edge_Ptr_Array;
+      Vtx    : Cv_Graph_Vtx_Ptr_Array;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Graph_Edge);
 
@@ -1802,18 +1802,18 @@ package Core is
    -- START Unbounded array pointers --
    Mat_Data_Requirement : Mat_Data; -- This is just a dummy, do not use!
    type Cv_Mat_Array is array (Integer range <>) of aliased Cv_Mat;
-   type Cv_Mat_P_Array is array (Integer range <>) of aliased Cv_Mat_Ptr;
+   type Cv_Mat_Ptr_Array is array (Integer range <>) of aliased Cv_Mat_Ptr;
    type Cv_Size_Array is array (Integer range <>) of aliased Cv_Size;
-   type Cv_Size_P_Array is array (Integer range <>) of aliased Cv_Size_Ptr;
+   type Cv_Size_Ptr_Array is array (Integer range <>) of aliased Cv_Size_Ptr;
 
 
-   package C_Mat_P_Pointer_Pkg is
-     new Interfaces.C.Pointers (Integer, Cv_Mat_Ptr, Cv_Mat_P_Array, null);
-   subtype Cv_Mat_P_Pointer is C_Mat_P_Pointer_Pkg.Pointer;
+   package Cv_Mat_Ptr_Pointer_Pkg is
+     new Interfaces.C.Pointers (Integer, Cv_Mat_Ptr, Cv_Mat_Ptr_Array, null);
+   subtype Cv_Mat_Ptr_Pointer is Cv_Mat_Ptr_Pointer_Pkg.Pointer;
 
-   package C_Size_Pointer_Pkg is
+   package Cv_Size_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Cv_Size, Cv_Size_Array, (0, 0));
-   subtype Cv_Size_Pointer is C_Size_Pointer_Pkg.Pointer;
+   subtype Cv_Size_Pointer is Cv_Size_Pointer_Pkg.Pointer;
 
    function Cv_Mat_Elem (Mat       : Cv_Mat_Ptr;
                          Elem_Size : Integer;

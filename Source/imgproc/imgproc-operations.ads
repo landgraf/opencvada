@@ -183,7 +183,7 @@ package Imgproc.Operations is
                                Bufarr       : Cv_Arr_Ptr := null;
                                Calc         : Integer := 1;
                                Filter       : Pyr_Filter := Cv_Gaussian_5x5)
-                               return Cv_Mat_P_Pointer;
+                               return Cv_Mat_Ptr_Pointer;
    function Cv_Create_Pyramid (Img          : Cv_Mat_Ptr;
                                Extra_Layers : Integer;
                                Rate         : Long_Float;
@@ -191,7 +191,7 @@ package Imgproc.Operations is
                                Bufarr       : Cv_Mat_Ptr := null;
                                Calc         : Integer := 1;
                                Filter       : Pyr_Filter := Cv_Gaussian_5x5)
-                               return Cv_Mat_P_Pointer;
+                               return Cv_Mat_Ptr_Pointer;
    function Cv_Create_Pyramid (Img          : Ipl_Image_Ptr;
                                Extra_Layers : Integer;
                                Rate         : Long_Float;
@@ -199,10 +199,10 @@ package Imgproc.Operations is
                                Bufarr       : Ipl_Image_Ptr := null;
                                Calc         : Integer := 1;
                                Filter       : Pyr_Filter := Cv_Gaussian_5x5)
-                               return Cv_Mat_P_Pointer;
+                               return Cv_Mat_Ptr_Pointer;
 
    -- Releases pyramid
-   procedure Cv_Release_Pyramid (Pyramid      : access Cv_Mat_P_Pointer;
+   procedure Cv_Release_Pyramid (Pyramid      : access Cv_Mat_Ptr_Pointer;
                                  Extra_Layers : Integer);
 
    -- Splits color or grayscale image into multiple connected components
@@ -212,7 +212,7 @@ package Imgproc.Operations is
    procedure Cv_Pyr_Segmentation (Src        : Ipl_Image_Ptr;
                                   Dst        : Ipl_Image_Ptr;
                                   Storage    : Cv_Mem_Storage_Ptr;
-                                  Comp       : Cv_Seq_P_Array;
+                                  Comp       : Cv_Seq_Ptr_Array;
                                   Level      : Integer;
                                   Threshold1 : Long_Float;
                                   Threshold2 : Long_Float);
@@ -1010,16 +1010,16 @@ package Imgproc.Operations is
 
    -- Calculates bayesian probabilistic histograms
    -- (each or src and dst is an array of <number> histograms
-   procedure Cv_Calc_Bayesian_Prob (Src   : Cv_Histogram_P_Pointer;
+   procedure Cv_Calc_Bayesian_Prob (Src   : Cv_Histogram_Ptr_Pointer;
                                     Count : Integer;
-                                    Dst   : Cv_Histogram_P_Pointer);
+                                    Dst   : Cv_Histogram_Ptr_Pointer);
 
    -- Calculates array histogram
    procedure Cv_Calc_Arr_Hist (Arr        : Cv_Arr_Pointer;
                                Hist       : Cv_Histogram_Ptr;
                                Accumulate : Integer := 0;
                                Mask       : Cv_Arr_Ptr := null);
-   procedure Cv_Calc_Arr_Hist (Arr        : Cv_Mat_P_Pointer;
+   procedure Cv_Calc_Arr_Hist (Arr        : Cv_Mat_Ptr_Pointer;
                                Hist       : Cv_Histogram_Ptr;
                                Accumulate : Integer := 0;
                                Mask       : Cv_Arr_Ptr := null);
@@ -1029,11 +1029,11 @@ package Imgproc.Operations is
                            Hist       : Cv_Histogram_Ptr;
                            Accumulate : Integer := 0;
                            Mask       : Cv_Arr_Ptr := null);
-   procedure Cv_Calc_Hist (Image      : Cv_Mat_P_Array;
+   procedure Cv_Calc_Hist (Image      : Cv_Mat_Ptr_Array;
                            Hist       : Cv_Histogram_Ptr;
                            Accumulate : Integer := 0;
                            Mask       : Cv_Arr_Ptr := null);
-   procedure Cv_Calc_Hist (Image      : Ipl_Image_P_Array;
+   procedure Cv_Calc_Hist (Image      : Ipl_Image_Ptr_Array;
                            Hist       : Cv_Histogram_Ptr;
                            Accumulate : Integer := 0;
                            Mask       : Cv_Arr_Ptr := null);
@@ -1042,10 +1042,10 @@ package Imgproc.Operations is
    procedure Cv_Calc_Arr_Back_Project (Image       : Cv_Arr_Ptr_Array;
                                        Backproject : Cv_Arr_Ptr;
                                        Hist        : Cv_Histogram_Ptr);
-   procedure Cv_Calc_Arr_Back_Project (Image       : Cv_Mat_P_Array;
+   procedure Cv_Calc_Arr_Back_Project (Image       : Cv_Mat_Ptr_Array;
                                        Backproject : Cv_Arr_Ptr;
                                        Hist        : Cv_Histogram_Ptr);
-   procedure Cv_Calc_Arr_Back_Project (Image       : Ipl_Image_P_Array;
+   procedure Cv_Calc_Arr_Back_Project (Image       : Ipl_Image_Ptr_Array;
                                        Backproject : Cv_Arr_Ptr;
                                        Hist        : Cv_Histogram_Ptr);
 
@@ -1053,10 +1053,10 @@ package Imgproc.Operations is
    procedure Cv_Calc_Back_Project (Image       : Cv_Arr_Ptr_Array;
                                    Backproject : Cv_Arr_Ptr;
                                    Hist        : Cv_Histogram_Ptr) renames Cv_Calc_Arr_Back_Project;
-   procedure Cv_Calc_Back_Project (Image       : Cv_Mat_P_Array;
+   procedure Cv_Calc_Back_Project (Image       : Cv_Mat_Ptr_Array;
                                    Backproject : Cv_Arr_Ptr;
                                    Hist        : Cv_Histogram_Ptr) renames Cv_Calc_Arr_Back_Project;
-   procedure Cv_Calc_Back_Project (Image       : Ipl_Image_P_Array;
+   procedure Cv_Calc_Back_Project (Image       : Ipl_Image_Ptr_Array;
                                    Backproject : Cv_Arr_Ptr;
                                    Hist        : Cv_Histogram_Ptr) renames Cv_Calc_Arr_Back_Project;
 
@@ -1067,13 +1067,13 @@ package Imgproc.Operations is
                                              Hist      : Cv_Histogram_Ptr;
                                              Method    : Hist_Compare_Method;
                                              Factor    : Float);
-   procedure Cv_Calc_Arr_Back_Project_Patch (Images    : Cv_Mat_P_Array;
+   procedure Cv_Calc_Arr_Back_Project_Patch (Images    : Cv_Mat_Ptr_Array;
                                              Dst       : Cv_Mat_Ptr;
                                              Patchsize : Cv_Size;
                                              Hist      : Cv_Histogram_Ptr;
                                              Method    : Hist_Compare_Method;
                                              Factor    : Float);
-   procedure Cv_Calc_Arr_Back_Project_Patch (Images    : Ipl_Image_P_Array;
+   procedure Cv_Calc_Arr_Back_Project_Patch (Images    : Ipl_Image_Ptr_Array;
                                              Dst       : Ipl_Image_Ptr;
                                              Patchsize : Cv_Size;
                                              Hist      : Cv_Histogram_Ptr;
@@ -1087,13 +1087,13 @@ package Imgproc.Operations is
                                          Hist      : Cv_Histogram_Ptr;
                                          Method    : Hist_Compare_Method;
                                          Factor    : Float) renames Cv_Calc_Arr_Back_Project_Patch;
-   procedure Cv_Calc_Back_Project_Patch (Images    : Cv_Mat_P_Array;
+   procedure Cv_Calc_Back_Project_Patch (Images    : Cv_Mat_Ptr_Array;
                                          Dst       : Cv_Mat_Ptr;
                                          Patchsize : Cv_Size;
                                          Hist      : Cv_Histogram_Ptr;
                                          Method    : Hist_Compare_Method;
                                          Factor    : Float) renames Cv_Calc_Arr_Back_Project_Patch;
-   procedure Cv_Calc_Back_Project_Patch (Images    : Ipl_Image_P_Array;
+   procedure Cv_Calc_Back_Project_Patch (Images    : Ipl_Image_Ptr_Array;
                                          Dst       : Ipl_Image_Ptr;
                                          Patchsize : Cv_Size;
                                          Hist      : Cv_Histogram_Ptr;

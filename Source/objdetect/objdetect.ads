@@ -73,8 +73,8 @@ package Objdetect is
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Haar_Stage_Classifier);
 
-   type Cv_Haar_Stage_Classifier_Arr is array (Integer range <>) of Cv_Haar_Stage_Classifier;
-   type Cv_Haar_Stage_Classifier_Arr_Ptr is access all Cv_Haar_Stage_Classifier_Arr;
+   type Cv_Haar_Stage_Classifier_Array is array (Integer range <>) of Cv_Haar_Stage_Classifier;
+   type Cv_Haar_Stage_Classifier_Array_Ptr is access all Cv_Haar_Stage_Classifier_Array;
 
    type Cv_Hid_Haar_Classifier_Cascade is null record;
    pragma Convention (C_Pass_By_Copy, Cv_Hid_Haar_Classifier_Cascade);
@@ -86,7 +86,7 @@ package Objdetect is
          Origwindowsize  : Cv_Size;
          Realwindowsize  : Cv_Size;
          Scale           : Long_Float;
-         Stageclassifier : Cv_Haar_Stage_Classifier_Arr_Ptr;
+         Stageclassifier : Cv_Haar_Stage_Classifier_Array_Ptr;
          Hidcascade      : Cv_Hid_Haar_Classifier_Cascade;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Haar_Classifier_Cascade);
