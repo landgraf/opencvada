@@ -33,7 +33,7 @@ package Highgui is
    -- Ada stuff
    ---------
    type Cv_Capture is null record;
-   type Cv_Capture_P is access all Cv_Capture;
+   type Cv_Capture_Ptr is access all Cv_Capture;
 
    type Compression_Type is new Integer;
    Cv_Imwrite_Jpeg_Quality : constant Compression_Type := 1;
@@ -80,18 +80,18 @@ package Highgui is
                         Style      : Cv_Font_Style :=  Cv_Style_Normal;
                         Spacing    : Integer := 0) return Cv_Font;
 
-   procedure Cv_Add_Text (Img  : Cv_Arr_P;
+   procedure Cv_Add_Text (Img  : Cv_Arr_Ptr;
                           Text : String;
                           Org  : Cv_Point;
-                          Arg2 : Cv_Font_P);
-   procedure Cv_Add_Text (Img  : Cv_Mat_P;
+                          Arg2 : Cv_Font_Ptr);
+   procedure Cv_Add_Text (Img  : Cv_Mat_Ptr;
                           Text : String;
                           Org  : Cv_Point;
-                          Arg2 : Cv_Font_P);
-   procedure Cv_Add_Text (Img  : Ipl_Image_P;
+                          Arg2 : Cv_Font_Ptr);
+   procedure Cv_Add_Text (Img  : Ipl_Image_Ptr;
                           Text : String;
                           Org  : Cv_Point;
-                          Arg2 : Cv_Font_P);
+                          Arg2 : Cv_Font_Ptr);
 
    procedure Cv_Display_Overlay (Name     : String;
                                  Text     : String;
@@ -101,12 +101,12 @@ package Highgui is
                                     Text     : String;
                                     Delay_Ms : Integer);
 
-   type Cv_Opengl_Callback is access procedure (User_Data : Cv_Void_P);
+   type Cv_Opengl_Callback is access procedure (User_Data : Cv_Void_Ptr);
    pragma Convention (C, Cv_Opengl_Callback);
 
    procedure Cv_Create_Opengl_Callback (Window_Name     : String;
                                         Callback_Opengl : Cv_Opengl_Callback;
-                                        User_Data       : Cv_Void_P := null;
+                                        User_Data       : Cv_Void_Ptr := null;
                                         Angle           : Long_Float := -1.0;
                                         Zmin            : Long_Float := -1.0;
                                         Zmax            : Long_Float := -1.0);
@@ -126,7 +126,7 @@ package Highgui is
    procedure Cv_Stop_Loop;
 
    type Cv_Button_Callback is access procedure (State     : Integer;
-                                                User_Data : Cv_Void_P);
+                                                User_Data : Cv_Void_Ptr);
    pragma Convention (C, Cv_Button_Callback);
 
    type Cv_Button_Type is new Integer;
@@ -136,13 +136,13 @@ package Highgui is
 
    function Cv_Create_Button (Button_Name         : String;
                               On_Change           : Cv_Button_Callback := null;
-                              User_Data           : Cv_Void_P := null;
+                              User_Data           : Cv_Void_Ptr := null;
                               Button_Type         : Cv_Button_Type := Cv_Push_Button;
                               Intial_Button_State : Integer := 0) return Integer;
 
    procedure Cv_Create_Button (Button_Name         : String;
                                On_Change           : Cv_Button_Callback := null;
-                               User_Data           : Cv_Void_P := null;
+                               User_Data           : Cv_Void_Ptr := null;
                                Button_Type         : Cv_Button_Type := Cv_Push_Button;
                                Intial_Button_State : Integer := 0);
 
@@ -190,11 +190,11 @@ package Highgui is
 
    -- display image within window (highgui windows remember their content)
    procedure Cv_Show_Image (Windowname  : String;
-                            Image       : Cv_Arr_P);
+                            Image       : Cv_Arr_Ptr);
    procedure Cv_Show_Image (Windowname  : String;
-                            Image       : Cv_Mat_P);
+                            Image       : Cv_Mat_Ptr);
    procedure Cv_Show_Image (Windowname  : String;
-                            Image       : Ipl_Image_P);
+                            Image       : Ipl_Image_Ptr);
 
    -- resize/move window
    procedure Cv_Resize_Window (Windowname   : String;
@@ -210,9 +210,9 @@ package Highgui is
 
    -- get native window handle (HWND in case of Win32 and Widget in case of X Window)
    function Cv_Get_Window_Handle (Window_Name : String)
-                                  return Cv_Void_P;
+                                  return Cv_Void_Ptr;
 
-   function Cv_Get_Window_Name (Window_Handle : Cv_Void_P)
+   function Cv_Get_Window_Name (Window_Handle : Cv_Void_Ptr)
                                 return Interfaces.C.Strings.Chars_Ptr;
 
    type Cv_Trackbar_Callback is access procedure ( Position : Integer ) ;
@@ -231,7 +231,7 @@ package Highgui is
                                  On_Change     : Cv_Trackbar_Callback);
 
    type Cv_Trackbar_Callback2 is access procedure (Position  : Integer;
-                                                   User_Data : Cv_Void_P) ;
+                                                   User_Data : Cv_Void_Ptr) ;
    pragma Convention (C, Cv_Trackbar_Callback2);
 
    function Cv_Create_Trackbar2 (Trackbar_Name : String;
@@ -239,14 +239,14 @@ package Highgui is
                                  Value         : Integer;
                                  Count         : Integer;
                                  On_Change     : Cv_Trackbar_Callback2 := null;
-                                 User_Data     : Cv_Void_P) return Integer;
+                                 User_Data     : Cv_Void_Ptr) return Integer;
 
    procedure Cv_Create_Trackbar2 (Trackbar_Name : String;
                                   Window_Name   : String;
                                   Value         : Integer;
                                   Count         : Integer;
                                   On_Change     : Cv_Trackbar_Callback2 := null;
-                                  User_Data     : Cv_Void_P);
+                                  User_Data     : Cv_Void_Ptr);
 
    -- retrieve or set trackbar position
    function Cv_Get_Trackbar_Pos (Trackbar_Name : String;
@@ -278,13 +278,13 @@ package Highgui is
                                                X     : Integer;
                                                Y     : Integer;
                                                Flags : Integer;
-                                               Param : Cv_Void_P);
+                                               Param : Cv_Void_Ptr);
    pragma Convention (C, Cv_Mouse_Callback);
 
    -- assign callback for mouse events
    procedure Cv_Set_Mouse_Callback (Window_Name : String_C;
                                     On_Mouse    : Cv_Mouse_Callback;
-                                    Param       : Cv_Void_P := null);
+                                    Param       : Cv_Void_Ptr := null);
 
    Cv_Load_Image_Unchanged : constant := -1; --8bit, color or not
    Cv_Load_Image_Grayscale : constant := 0; -- 8bit, gray
@@ -298,63 +298,63 @@ package Highgui is
    -- using CV_LOAD_IMAGE_ANYCOLOR alone is equivalent to CV_LOAD_IMAGE_UNCHANGED
    -- unless CV_LOAD_IMAGE_ANYDEPTH is specified images are converted to 8bit
    function Cv_Load_Image (Filename : String;
-                           Iscolor  : Integer := Cv_Load_Image_Color) return Ipl_Image_P;
+                           Iscolor  : Integer := Cv_Load_Image_Color) return Ipl_Image_Ptr;
    function Cv_Load_Image_M ( Filename : String;
                              Iscolor  : Integer
-                             := Cv_Load_Image_Color) return Cv_Mat_P;
+                             := Cv_Load_Image_Color) return Cv_Mat_Ptr;
 
    -- save image to file
    function Cv_Save_Image (Filename      : String;
-                           Image         : Cv_Arr_P;
+                           Image         : Cv_Arr_Ptr;
                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer;
 
    procedure Cv_Save_Image (Filename      : String;
-                            Image         : Cv_Arr_P;
+                            Image         : Cv_Arr_Ptr;
                             Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95));
    function Cv_Save_Image (Filename      : String;
-                           Image         : Cv_Mat_P;
+                           Image         : Cv_Mat_Ptr;
                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer;
 
    procedure Cv_Save_Image (Filename      : String;
-                            Image         : Cv_Mat_P;
+                            Image         : Cv_Mat_Ptr;
                             Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95));
    function Cv_Save_Image (Filename      : String;
-                           Image         : Ipl_Image_P;
+                           Image         : Ipl_Image_Ptr;
                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer;
 
    procedure Cv_Save_Image (Filename      : String;
-                            Image         : Ipl_Image_P;
+                            Image         : Ipl_Image_Ptr;
                             Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95));
 
    -- decode image stored in the buffer
-   function Cv_Decode_Image (Buf      : Cv_Mat_P;
-                             Is_Color : Integer := Cv_Load_Image_Color) return Ipl_Image_P;
-   function Cv_Decode_Image_M (Buf      : Cv_Mat_P;
-                               Is_Color : Integer := Cv_Load_Image_Color) return Cv_Mat_P;
+   function Cv_Decode_Image (Buf      : Cv_Mat_Ptr;
+                             Is_Color : Integer := Cv_Load_Image_Color) return Ipl_Image_Ptr;
+   function Cv_Decode_Image_M (Buf      : Cv_Mat_Ptr;
+                               Is_Color : Integer := Cv_Load_Image_Color) return Cv_Mat_Ptr;
 
    -- encode image and store the result as a byte vector (single-row 8uC1 matrix)
    function Cv_Encode_Image (Ext    : String;
-                             Image  : Cv_Arr_P;
-                             Params : File_Settings) return Cv_Mat_P;
+                             Image  : Cv_Arr_Ptr;
+                             Params : File_Settings) return Cv_Mat_Ptr;
    function Cv_Encode_Image (Ext    : String;
-                             Image  : Cv_Mat_P;
-                             Params : File_Settings) return Cv_Mat_P;
+                             Image  : Cv_Mat_Ptr;
+                             Params : File_Settings) return Cv_Mat_Ptr;
    function Cv_Encode_Image (Ext    : String;
-                             Image  : Ipl_Image_P;
-                             Params : File_Settings) return Cv_Mat_P;
+                             Image  : Ipl_Image_Ptr;
+                             Params : File_Settings) return Cv_Mat_Ptr;
 
    type Convert_Image_Flags is new Integer;
    Cv_Cvtimg_Flip : constant Convert_Image_Flags := 1;
    Cv_Cvtimg_Swap_Rb : constant Convert_Image_Flags := 2;
    -- utility function: convert one image to another with optional vertical flip
-   procedure Cv_Convert_Image (Src   : Cv_Arr_P;
-                               Dst   : Cv_Arr_P;
+   procedure Cv_Convert_Image (Src   : Cv_Arr_Ptr;
+                               Dst   : Cv_Arr_Ptr;
                                Flags : Convert_Image_Flags);
-   procedure Cv_Convert_Image (Src   : Cv_Mat_P;
-                               Dst   : Cv_Mat_P;
+   procedure Cv_Convert_Image (Src   : Cv_Mat_Ptr;
+                               Dst   : Cv_Mat_Ptr;
                                Flags : Convert_Image_Flags);
-   procedure Cv_Convert_Image (Src   : Ipl_Image_P;
-                               Dst   : Ipl_Image_P;
+   procedure Cv_Convert_Image (Src   : Ipl_Image_Ptr;
+                               Dst   : Ipl_Image_Ptr;
                                Flags : Convert_Image_Flags);
 
    -- wait for key event infinitely (delay<=0) or for "delay" milliseconds
@@ -367,7 +367,7 @@ package Highgui is
 
 
    -- start capturing frames from video file
-   function Cv_Create_File_Capture ( Name : String ) return Cv_Capture_P;
+   function Cv_Create_File_Capture ( Name : String ) return Cv_Capture_Ptr;
 
    type Cv_Cap is new Integer;
    Cv_Cap_Any : Cv_Cap := 0; --     /  / autodetect
@@ -392,23 +392,23 @@ package Highgui is
    Cv_Cap_V4l2  : Cv_Cap := Cv_Cap_Vfw;
 
    -- start capturing frames from camera: index = camera_index + domain_offset (CV_CAP_*)
-   function Cv_Create_Camera_Capture ( Index : Cv_Cap ) return Cv_Capture_P ;
+   function Cv_Create_Camera_Capture ( Index : Cv_Cap ) return Cv_Capture_Ptr ;
 
    -- grab a frame, return 1 on success, 0 on fail.
    -- this function is thought to be fast
-   function Cv_Grab_Frame (Capture : Cv_Capture_P) return Integer;
-   procedure Cv_Grab_Frame (Capture : Cv_Capture_P);
+   function Cv_Grab_Frame (Capture : Cv_Capture_Ptr) return Integer;
+   procedure Cv_Grab_Frame (Capture : Cv_Capture_Ptr);
 
    -- get the frame grabbed with cvGrabFrame(..)
    -- This function may apply some frame processing like
    -- frame decompression, flipping etc.
-   function Cv_Retrieve_Frame (Capture : Cv_Capture_P ) return Ipl_Image_P;
+   function Cv_Retrieve_Frame (Capture : Cv_Capture_Ptr ) return Ipl_Image_Ptr;
 
    --  Just a combination of cvGrabFrame and cvRetrieveFrame
-   function Cv_Query_Frame ( Capture : Cv_Capture_P ) return Ipl_Image_P;
+   function Cv_Query_Frame ( Capture : Cv_Capture_Ptr ) return Ipl_Image_Ptr;
 
    -- stop capturing/reading and free resources
-   procedure Cv_Release_Capture ( Capture : access Cv_Capture_P );
+   procedure Cv_Release_Capture ( Capture : access Cv_Capture_Ptr );
 
    type Capture_Property is new Integer;
    Cv_Cap_Prop_Pos_Msec : constant Capture_Property := 0;
@@ -432,19 +432,19 @@ package Highgui is
    Cv_Cap_Prop_Rectification : constant Capture_Property := 18;
 
    -- retrieve or set capture properties
-   function Cv_Get_Capture_Property ( Capture    : Cv_Capture_P;
+   function Cv_Get_Capture_Property ( Capture    : Cv_Capture_Ptr;
                                      Property_Id :  Capture_Property ) return Float;
-   function Cv_Set_Capture_Property ( Capture    : Cv_Capture_P;
+   function Cv_Set_Capture_Property ( Capture    : Cv_Capture_Ptr;
                                      Property_Id :  Capture_Property;
                                      Value       : Float) return Integer;
 
    -- Return the type of the capturer (eg, CV_CAP_V4W, CV_CAP_UNICAP), which is unknown if created with CV_CAP_ANY
-   function Cv_Get_Capture_Domain (Capture : Cv_Capture_P) return Cv_Cap;
+   function Cv_Get_Capture_Domain (Capture : Cv_Capture_Ptr) return Cv_Cap;
 
    -- "black box" video file writer structure
    type Cv_Video_Writer is null record;
    pragma Convention (C_Pass_By_Copy, Cv_Video_Writer);
-   type Cv_Video_Writer_P is access all Cv_Video_Writer;
+   type Cv_Video_Writer_Ptr is access all Cv_Video_Writer;
 
    -- Video codec
    -- C Macro #define CV_FOURCC(c1,c2,c3,c4) (((c1)&255) + (((c2)&255)<<8) + (((c3)&255)<<16) + (((c4)&255)<<24))
@@ -469,16 +469,16 @@ package Highgui is
                                     Fps            : Long_Float;
                                     Width          : Integer;
                                     Height         : Integer;
-                                    Is_Color       : Integer) return Cv_Video_Writer_P;
+                                    Is_Color       : Integer) return Cv_Video_Writer_Ptr;
 
    -- write frame to video file
-   function Cv_Write_Frame ( Writer : Cv_Video_Writer_P;
-                            Image  : Ipl_Image_P) return Integer;
-   procedure Cv_Write_Frame ( Writer : Cv_Video_Writer_P;
-                             Image  : Ipl_Image_P);
+   function Cv_Write_Frame ( Writer : Cv_Video_Writer_Ptr;
+                            Image  : Ipl_Image_Ptr) return Integer;
+   procedure Cv_Write_Frame ( Writer : Cv_Video_Writer_Ptr;
+                             Image  : Ipl_Image_Ptr);
 
    --- close video file writer
-   procedure Cv_Release_Video_Writer (Writer : access Cv_Video_Writer_P);
+   procedure Cv_Release_Video_Writer (Writer : access Cv_Video_Writer_Ptr);
 
 private
    function W_Cv_Font_Qt (Name_Font  : String_C;
@@ -488,10 +488,10 @@ private
                           Style      : Cv_Font_Style;
                           Spacing    : Integer) return Cv_Font;
 
-   procedure W_Cv_Add_Text (Img  : Cv_Arr_P;
+   procedure W_Cv_Add_Text (Img  : Cv_Arr_Ptr;
                             Text : String_C;
                             Org  : Cv_Point;
-                            Arg2 : Cv_Font_P);
+                            Arg2 : Cv_Font_Ptr);
 
    procedure W_Cv_Display_Overlay (Name     : String_C;
                                    Text     : String_C;
@@ -503,7 +503,7 @@ private
 
    procedure W_Cv_Create_Opengl_Callback (Window_Name     : String_C;
                                           Callback_Opengl : Cv_Opengl_Callback;
-                                          User_Data       : Cv_Void_P;
+                                          User_Data       : Cv_Void_Ptr;
                                           Angle           : Long_Float;
                                           Zmin            : Long_Float;
                                           Zmax            : Long_Float);
@@ -514,7 +514,7 @@ private
 
    function W_Cv_Create_Button (Button_Name         : String_C;
                                 On_Change           : Cv_Button_Callback;
-                                User_Data           : Cv_Void_P;
+                                User_Data           : Cv_Void_Ptr;
                                 Button_Type         : Cv_Button_Type;
                                 Intial_Button_State : Integer) return Integer;
    --
@@ -531,7 +531,7 @@ private
                                       Prop_Id : Highgui_Window_Params) return Long_Float;
 
    procedure W_Cv_Show_Image (Windowname  : String_C;
-                              Image       : Cv_Arr_P);
+                              Image       : Cv_Arr_Ptr);
 
    procedure W_Cv_Resize_Window (Windowname   : String_C;
                                  Width        : Integer;
@@ -544,7 +544,7 @@ private
    procedure W_Cv_Destroy_Window (Windowname : String );
 
    function W_Cv_Get_Window_Handle (Window_Name : String_C)
-                                    return Cv_Void_P;
+                                    return Cv_Void_Ptr;
 
    function W_Cv_Create_Trackbar (Trackbar_Name : String_C;
                                   Window_Name   : String_C;
@@ -557,7 +557,7 @@ private
                                    Value         : Integer;
                                    Count         : Integer;
                                    On_Change     : Cv_Trackbar_Callback2 := null;
-                                   User_Data     : Cv_Void_P) return Integer;
+                                   User_Data     : Cv_Void_Ptr) return Integer;
 
    -- retrieve or set trackbar position
    function W_Cv_Get_Trackbar_Pos (Trackbar_Name : String_C;
@@ -566,30 +566,30 @@ private
    procedure W_Cv_Set_Trackbar_Pos (Trackbar_Name : String_C;
                                     Window_Name   : String_C;
                                     Pos           : Integer);
-   function W_Cv_Load_Image ( Filename : String_C; Iscolor : Integer) return Ipl_Image_P;
-   function W_Cv_Load_Image_M ( Filename : String_C; Iscolor : Integer) return Cv_Mat_P;
+   function W_Cv_Load_Image ( Filename : String_C; Iscolor : Integer) return Ipl_Image_Ptr;
+   function W_Cv_Load_Image_M ( Filename : String_C; Iscolor : Integer) return Cv_Mat_Ptr;
 
    function W_Cv_Save_Image (Filename      : String_C;
-                             Image         : Cv_Arr_P;
+                             Image         : Cv_Arr_Ptr;
                              Settings      : File_Settings) return Integer;
    function W_Cv_Save_Image (Filename      : String_C;
-                             Image         : Cv_Mat_P;
+                             Image         : Cv_Mat_Ptr;
                              Settings      : File_Settings) return Integer;
    function W_Cv_Save_Image (Filename      : String_C;
-                             Image         : Ipl_Image_P;
+                             Image         : Ipl_Image_Ptr;
                              Settings      : File_Settings) return Integer;
 
    function W_Cv_Encode_Image (Ext    : String_C;
-                               Image  : Cv_Arr_P;
-                               Params : File_Settings) return Cv_Mat_P;
+                               Image  : Cv_Arr_Ptr;
+                               Params : File_Settings) return Cv_Mat_Ptr;
    function W_Cv_Encode_Image (Ext    : String_C;
-                               Image  : Cv_Mat_P;
-                               Params : File_Settings) return Cv_Mat_P;
+                               Image  : Cv_Mat_Ptr;
+                               Params : File_Settings) return Cv_Mat_Ptr;
    function W_Cv_Encode_Image (Ext    : String_C;
-                               Image  : Ipl_Image_P;
-                               Params : File_Settings) return Cv_Mat_P;
+                               Image  : Ipl_Image_Ptr;
+                               Params : File_Settings) return Cv_Mat_Ptr;
 
-   function W_Cv_Create_File_Capture ( Name : String_C ) return Cv_Capture_P;
+   function W_Cv_Create_File_Capture ( Name : String_C ) return Cv_Capture_Ptr;
 
    function W_Cv_Create_Video_Writer (Filename       : String_C;
                                       Fourcc         : Integer;
@@ -597,7 +597,7 @@ private
                                       Width          : Integer;
                                       Height         : Integer;
                                       Is_Color       : Integer
-                                     ) return Cv_Video_Writer_P;
+                                     ) return Cv_Video_Writer_Ptr;
 
    pragma Import (C, W_Cv_Font_Qt, "cvFontQt");
    pragma Import (C, W_Cv_Add_Text, "cvAddText");

@@ -16,15 +16,15 @@ with Ada.Unchecked_Conversion;
 
 procedure Mser is
 
-   type Cv_Seq_P_P is access Cv_Seq_P;
-   type Cv_Contour_P_P is access Cv_Contour_P;
+   type Cv_Seq_P_P is access Cv_Seq_Ptr;
+   type Cv_Contour_P_P is access Cv_Contour_Ptr;
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_Contour_P_P);
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_Seq_P_P);
 
    procedure Help is
@@ -58,20 +58,20 @@ procedure Mser is
 
    Path     : Unbounded_String;
 
-   Img      : aliased Ipl_Image_P;
-   Rsp      : aliased Ipl_Image_P;
+   Img      : aliased Ipl_Image_Ptr;
+   Rsp      : aliased Ipl_Image_Ptr;
    Rsp_Array : Cv_8u_Array_P;
-   Ellipses : aliased Ipl_Image_P;
+   Ellipses : aliased Ipl_Image_Ptr;
 
-   Contours : aliased Cv_Seq_P := new Cv_Seq;
-   Storage  : Cv_Mem_Storage_P;
-   Hsv      : Ipl_Image_P;
+   Contours : aliased Cv_Seq_Ptr := new Cv_Seq;
+   Storage  : Cv_Mem_Storage_Ptr;
+   Hsv      : Ipl_Image_Ptr;
    Params   : Cv_MSER_Params;
 
-   R        : Cv_Seq_P;
-   Pt       : Cv_Point_P;
+   R        : Cv_Seq_Ptr;
+   Pt       : Cv_Point_Ptr;
 
-   Contour  : Cv_Contour_P;
+   Contour  : Cv_Contour_Ptr;
    Box      : Cv_Box_2d;
 begin
    Help;

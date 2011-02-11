@@ -18,106 +18,106 @@
 -----------------------------------------------------------------------
 package body Core.Operations is
 -- CvFree
-   procedure Cv_Free (Ptr : access Cv_Void_P) is
-      Temp_Ptr : constant access Cv_Void_P := Ptr;
+   procedure Cv_Free (Ptr : access Cv_Void_Ptr) is
+      Temp_Ptr : constant access Cv_Void_Ptr := Ptr;
    begin
       Cv_Free_Wrapper (Temp_Ptr);
       Temp_Ptr.all := null;
    end Cv_Free;
 
    -- CvReshapeMatND wrapper?
-   function Cv_Reshape_Nd (Arr      : Cv_Arr_P;
-                           Header   : Cv_Arr_P;
+   function Cv_Reshape_Nd (Arr      : Cv_Arr_Ptr;
+                           Header   : Cv_Arr_Ptr;
                            Newcn    : Integer;
                            Newdims  : Integer;
-                           Newsizes : Cv_32s_Array) return Cv_Arr_P is
+                           Newsizes : Cv_32s_Array) return Cv_Arr_Ptr is
    begin
-      return Cv_Arr_P (Cv_Reshape_Mat_Nd (Arr, Header'Size / 8, Header, Newcn, Newdims, Newsizes));
+      return Cv_Arr_Ptr (Cv_Reshape_Mat_Nd (Arr, Header'Size / 8, Header, Newcn, Newdims, Newsizes));
    end Cv_Reshape_Nd;
 
-   procedure Cv_Convert (Src : Cv_Arr_P;
-                         Dst : Cv_Arr_P) is
+   procedure Cv_Convert (Src : Cv_Arr_Ptr;
+                         Dst : Cv_Arr_Ptr) is
    begin
       Cv_Convert_Scale (Src, Dst, 1.0, 0.0);
    end Cv_Convert;
-   procedure Cv_Convert (Src : Cv_Mat_P;
-                         Dst : Cv_Mat_P) is
+   procedure Cv_Convert (Src : Cv_Mat_Ptr;
+                         Dst : Cv_Mat_Ptr) is
    begin
       Cv_Convert_Scale (Src, Dst, 1.0, 0.0);
    end Cv_Convert;
-   procedure Cv_Convert (Src : Ipl_Image_P;
-                         Dst : Ipl_Image_P) is
+   procedure Cv_Convert (Src : Ipl_Image_Ptr;
+                         Dst : Ipl_Image_Ptr) is
    begin
       Cv_Convert_Scale (Src, Dst, 1.0, 0.0);
    end Cv_Convert;
 
    -- wrapper to cvScaleAdd
-   procedure Cv_Axpy (Src1  : Cv_Arr_P;
+   procedure Cv_Axpy (Src1  : Cv_Arr_Ptr;
                       Scale : Long_Float;
-                      Src2  : Cv_Arr_P;
-                      Dst   : Cv_Arr_P) is
+                      Src2  : Cv_Arr_Ptr;
+                      Dst   : Cv_Arr_Ptr) is
    begin
       Cv_Scale_Add (Src1, Cv_Real_Scalar (Scale), Src2, Dst);
    end Cv_Axpy;
-   procedure Cv_Axpy (Src1  : Cv_Mat_P;
+   procedure Cv_Axpy (Src1  : Cv_Mat_Ptr;
                       Scale : Long_Float;
-                      Src2  : Cv_Mat_P;
-                      Dst   : Cv_Mat_P) is
+                      Src2  : Cv_Mat_Ptr;
+                      Dst   : Cv_Mat_Ptr) is
    begin
       Cv_Scale_Add (Src1, Cv_Real_Scalar (Scale), Src2, Dst);
    end Cv_Axpy;
-      procedure Cv_Axpy (Src1  : Ipl_Image_P;
+      procedure Cv_Axpy (Src1  : Ipl_Image_Ptr;
                       Scale : Long_Float;
-                      Src2  : Ipl_Image_P;
-                      Dst   : Ipl_Image_P) is
+                      Src2  : Ipl_Image_Ptr;
+                      Dst   : Ipl_Image_Ptr) is
    begin
       Cv_Scale_Add (Src1, Cv_Real_Scalar (Scale), Src2, Dst);
    end Cv_Axpy;
 
-   procedure Cv_Mat_Mul_Add (Src1  : Cv_Arr_P;
-                             Src2  : Cv_Arr_P;
-                             Src3  : Cv_Arr_P;
-                             Dst   : Cv_Arr_P) is
+   procedure Cv_Mat_Mul_Add (Src1  : Cv_Arr_Ptr;
+                             Src2  : Cv_Arr_Ptr;
+                             Src3  : Cv_Arr_Ptr;
+                             Dst   : Cv_Arr_Ptr) is
    begin
       Cv_Gemm (Src1, Src2, 1.0, Src3, 1.0, Dst, 0);
    end Cv_Mat_Mul_Add;
-   procedure Cv_Mat_Mul_Add (Src1  : Cv_Mat_P;
-                             Src2  : Cv_Mat_P;
-                             Src3  : Cv_Mat_P;
-                             Dst   : Cv_Mat_P) is
+   procedure Cv_Mat_Mul_Add (Src1  : Cv_Mat_Ptr;
+                             Src2  : Cv_Mat_Ptr;
+                             Src3  : Cv_Mat_Ptr;
+                             Dst   : Cv_Mat_Ptr) is
    begin
       Cv_Gemm (Src1, Src2, 1.0, Src3, 1.0, Dst, 0);
    end Cv_Mat_Mul_Add;
-   procedure Cv_Mat_Mul_Add (Src1  : Ipl_Image_P;
-                             Src2  : Ipl_Image_P;
-                             Src3  : Ipl_Image_P;
-                             Dst   : Ipl_Image_P) is
+   procedure Cv_Mat_Mul_Add (Src1  : Ipl_Image_Ptr;
+                             Src2  : Ipl_Image_Ptr;
+                             Src3  : Ipl_Image_Ptr;
+                             Dst   : Ipl_Image_Ptr) is
    begin
       Cv_Gemm (Src1, Src2, 1.0, Src3, 1.0, Dst, 0);
    end Cv_Mat_Mul_Add;
 
 
-   procedure Cv_Mat_Mul (Src1 : Cv_Arr_P;
-                         Src2 : Cv_Arr_P;
-                         Dst  : Cv_Arr_P) is
+   procedure Cv_Mat_Mul (Src1 : Cv_Arr_Ptr;
+                         Src2 : Cv_Arr_Ptr;
+                         Dst  : Cv_Arr_Ptr) is
    begin
       Cv_Mat_Mul_Add (Src1, Src2, null, Dst);
    end Cv_Mat_Mul;
-   procedure Cv_Mat_Mul (Src1 : Cv_Mat_P;
-                         Src2 : Cv_Mat_P;
-                         Dst  : Cv_Mat_P) is
+   procedure Cv_Mat_Mul (Src1 : Cv_Mat_Ptr;
+                         Src2 : Cv_Mat_Ptr;
+                         Dst  : Cv_Mat_Ptr) is
    begin
       Cv_Mat_Mul_Add (Src1, Src2, null, Dst);
    end Cv_Mat_Mul;
-   procedure Cv_Mat_Mul (Src1 : Ipl_Image_P;
-                         Src2 : Ipl_Image_P;
-                         Dst  : Ipl_Image_P) is
+   procedure Cv_Mat_Mul (Src1 : Ipl_Image_Ptr;
+                         Src2 : Ipl_Image_Ptr;
+                         Dst  : Ipl_Image_Ptr) is
    begin
       Cv_Mat_Mul_Add (Src1, Src2, null, Dst);
    end Cv_Mat_Mul;
 
    -- Allocates a memory buffer in a storage block.
-   function Cv_Mem_Storage_Alloc_String (Storage : Cv_Mem_Storage_P;
+   function Cv_Mem_Storage_Alloc_String (Storage : Cv_Mem_Storage_Ptr;
                                          Ptr     : String;
                                          Len     : Integer := -1) return Cv_String is
    begin
@@ -128,7 +128,7 @@ package body Core.Operations is
 
    -- Returns the index of a graph vertex.
    function Cv_Graph_Vtx_Idx (Graph : Cv_Graph_P;
-                              Vtx   : Cv_Graph_Vtx_P) return Integer is
+                              Vtx   : Cv_Graph_Vtx_Ptr) return Integer is
       pragma Unreferenced (Graph);
    begin
       return Integer (Unsigned_32 (Vtx.all.Flags) and Cv_Set_Elem_Idx_Mask);
@@ -136,7 +136,7 @@ package body Core.Operations is
 
    -- Returns the index of a graph edge.
    function Cv_Graph_Edge_Idx (Graph : Cv_Graph_P;
-                               Edge  : Cv_Graph_Edge_P) return Integer is
+                               Edge  : Cv_Graph_Edge_Ptr) return Integer is
       pragma Unreferenced (Graph);
    begin
       return Integer (Unsigned_32 (Edge.all.Flags) and Cv_Set_Elem_Idx_Mask);
@@ -156,14 +156,14 @@ package body Core.Operations is
 
    --     #define  CV_IS_GRAPH_VERTEX_VISITED(vtx) \
    --      (((CvGraphVtx*)(vtx))->flags & CV_GRAPH_ITEM_VISITED_FLAG)
-   function Cv_Is_Graph_Vertex_Visisted (Vtx : Cv_Graph_Vtx_P) return Integer is
+   function Cv_Is_Graph_Vertex_Visisted (Vtx : Cv_Graph_Vtx_Ptr) return Integer is
    begin
       return Integer (Unsigned_32 (Vtx.all.Flags) and Unsigned_32 (Cv_Graph_Item_Visited_Flag));
    end Cv_Is_Graph_Vertex_Visisted;
 
    --   #define  CV_IS_GRAPH_EDGE_VISITED(edge) \
    --      (((CvGraphEdge*)(edge))->flags & CV_GRAPH_ITEM_VISITED_FLAG)
-   function Cv_Is_Graph_Edge_Visited (Edge : Cv_Graph_Edge_P) return Integer is
+   function Cv_Is_Graph_Edge_Visited (Edge : Cv_Graph_Edge_Ptr) return Integer is
    begin
       return Integer (Unsigned_32 (Edge.all.Flags) and Unsigned_32 (Cv_Graph_Item_Visited_Flag));
    end Cv_Is_Graph_Edge_Visited;
@@ -179,8 +179,8 @@ package body Core.Operations is
                                0.0);
    end Cv_Rgb;
 
-   procedure Cv_Next_Line_Point (Lineiterator : Cv_Line_Iterator_P) is
-      Lineiterator_Temp  : constant Cv_Line_Iterator_P := Lineiterator;
+   procedure Cv_Next_Line_Point (Lineiterator : Cv_Line_Iterator_Ptr) is
+      Lineiterator_Temp  : constant Cv_Line_Iterator_Ptr := Lineiterator;
       Line_Iterator_Mask : Integer;
       Diff               : Ptrdiff_T ;
 
@@ -200,15 +200,15 @@ package body Core.Operations is
    end Cv_Next_Line_Point;
 
    -- Draws a text string.
-   procedure Cv_Put_Text (Img   : Cv_Arr_P;
+   procedure Cv_Put_Text (Img   : Cv_Arr_Ptr;
                           Text  : String;
                           Org   : Cv_Point;
-                          Font  : Cv_Font_P;
+                          Font  : Cv_Font_Ptr;
                           Color : Cv_Scalar) is
    begin
       W_Cv_Put_Text (Img, +Text, Org, Font, Color);
    end Cv_Put_Text;
-   procedure Cv_Put_Text (Img   : Cv_Mat_P;
+   procedure Cv_Put_Text (Img   : Cv_Mat_Ptr;
                           Text  : String;
                           Org   : Cv_Point;
                           Font  : access Cv_Font;
@@ -216,7 +216,7 @@ package body Core.Operations is
    begin
       W_Cv_Put_Text (Img, +Text, Org, Font, Color);
    end Cv_Put_Text;
-      procedure Cv_Put_Text (Img   : Ipl_Image_P;
+      procedure Cv_Put_Text (Img   : Ipl_Image_Ptr;
                           Text  : String;
                           Org   : Cv_Point;
                           Font  : access Cv_Font;

@@ -18,7 +18,7 @@
 -----------------------------------------------------------------------
 
 package body Ff_Opencv is
-   function Cv_Create_File_Capture_Ffmpeg (Filename : String) return Cv_Capture_P is
+   function Cv_Create_File_Capture_Ffmpeg (Filename : String) return Cv_Capture_Ptr is
    begin
       return W_Cv_Create_File_Capture_Ffmpeg (New_String (Filename));
    end Cv_Create_File_Capture_Ffmpeg;

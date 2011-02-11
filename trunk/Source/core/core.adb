@@ -137,7 +137,7 @@ package body Core is
    end Cv_Node_Seq_Is_Simple;
 
    function Cv_Create_Attr_List (Attr : Cv_String_Pointer := null;
-                                 Next : Cv_Attr_List_P := null)
+                                 Next : Cv_Attr_List_Ptr := null)
                                  return Cv_Attr_List is
       L : Cv_Attr_List;
    begin
@@ -147,7 +147,8 @@ package body Core is
    end Cv_Create_Attr_List;
 
    procedure Cv_Write_Seq_Elem_Var ( Elem_Ptr : Cv_Arr_Pointer;
-                                    Writer   : Cv_Seq_Writer_P ) is
+                                    Writer   : Cv_Seq_Writer_Ptr ) is
+      use Core.Cv_Arr_Pointer_Pkg;
    begin
       if (Writer.all.Ptr - Writer.all.Block_Max) >= 0 then
          Cv_Create_Seq_Block (Writer);
@@ -166,7 +167,8 @@ package body Core is
 --     end Cv_Next_Seq_Elem;
 
    procedure Cv_Next_Seq_Elem (Elem_Size : Integer;
-                               Reader    : Cv_Chain_Pt_Reader_P) is
+                               Reader    : Cv_Chain_Pt_Reader_Ptr) is
+      use Core.Cv_Arr_Pointer_Pkg;
    begin
       Reader.all.Ptr := Reader.all.Ptr + Ptrdiff_T (Elem_Size);
       if (Reader.all.Ptr - Reader.all.Blockmax) >= 0 then
@@ -175,7 +177,8 @@ package body Core is
    end Cv_Next_Seq_Elem;
 
    procedure Cv_Prev_Seq_Elem ( Elem_Size : Integer;
-                               Reader    : Cv_Seq_Reader_P ) is
+                               Reader    : Cv_Seq_Reader_Ptr ) is
+      use Core.Cv_Arr_Pointer_Pkg;
    begin
       Reader.all.Ptr := Reader.all.Ptr - Ptrdiff_T (Elem_Size);
       if (Reader.all.Blockmin - Reader.all.Ptr) > 0 then
@@ -184,21 +187,21 @@ package body Core is
    end Cv_Prev_Seq_Elem;
 
    procedure Cv_Read_Seq_Elem ( Elem  : Cv_Arr_Pointer;
-                               Reader : Cv_Seq_Reader_P ) is
+                               Reader : Cv_Seq_Reader_Ptr ) is
    begin
       Memcpy (Elem'Address, Reader.all.Ptr'Address, System.Crtl.Size_T (Reader.all.Seq.all.Elem_Size));
       Cv_Next_Seq_Elem (Reader.all.Seq.all.Elem_Size, Reader);
    end Cv_Read_Seq_Elem;
 
    procedure Cv_Read_Seq_Elem ( Elem  : Unsigned_8;
-                               Reader : Cv_Chain_Pt_Reader_P ) is
+                               Reader : Cv_Chain_Pt_Reader_Ptr ) is
    begin
       Memcpy (Elem'Address, Reader.all.Ptr'Address, System.Crtl.Size_T (Reader.all.Seq.all.Elem_Size));
       Cv_Next_Seq_Elem (Reader.all.Seq.all.Elem_Size, Reader);
    end Cv_Read_Seq_Elem;
 
    procedure Cv_Rev_Read_Seq_Elem ( Elem  : Cv_Arr_Pointer;
-                                   Reader : Cv_Seq_Reader_P ) is
+                                   Reader : Cv_Seq_Reader_Ptr ) is
    begin
       Memcpy (Elem'Address, Reader.all.Ptr'Address, System.Crtl.Size_T (Reader.all.Seq.all.Elem_Size));
       Cv_Prev_Seq_Elem (Reader.all.Seq.all.Elem_Size, Reader);
@@ -206,7 +209,8 @@ package body Core is
 
 
    procedure Cv_Read_Chain_Point ( Pt    : out Cv_Point;
-                                  Reader : Cv_Chain_Pt_Reader_P ) is
+                                  Reader : Cv_Chain_Pt_Reader_Ptr ) is
+      use core.Cv_Arr_Pointer_Pkg;
    begin
       Pt := Reader.all.Pt;
       if not (Reader.all.Ptr = null) then
@@ -219,19 +223,21 @@ package body Core is
 
    end Cv_Read_Chain_Point;
 
-   function Cv_Current_Point ( Reader : Cv_Chain_Pt_Reader_P ) return Cv_Point_P is
+   function Cv_Current_Point ( Reader : Cv_Chain_Pt_Reader_Ptr ) return Cv_Point_Ptr is
+      use Core.Cv_Arr_Pointer_Pkg;
    begin
       return From_Arr (Value (Reader.all.Ptr) (1));
    end Cv_Current_Point;
 
-   function Cv_Prev_Point ( Reader : Cv_Chain_Pt_Reader_P) return Cv_Point_P is
+   function Cv_Prev_Point ( Reader : Cv_Chain_Pt_Reader_Ptr) return Cv_Point_Ptr is
+      use Core.Cv_Arr_Pointer_Pkg;
    begin
       return From_Arr (Value (Reader.all.Prevelem) (1));
    end Cv_Prev_Point;
 
-   procedure Cv_Read_Edge ( Pt1   : out Cv_Point_P;
-                           Pt2    : out Cv_Point_P;
-                           Reader : Cv_Chain_Pt_Reader_P ) is
+   procedure Cv_Read_Edge ( Pt1   : out Cv_Point_Ptr;
+                           Pt2    : out Cv_Point_Ptr;
+                           Reader : Cv_Chain_Pt_Reader_Ptr ) is
    begin
       Pt1 := Cv_Prev_Point (Reader);
       Pt2 := Cv_Current_Point (Reader);
@@ -239,8 +245,8 @@ package body Core is
       Cv_Next_Seq_Elem (Cv_Point'Size / 8, Reader);
    end Cv_Read_Edge;
 
-   function Cv_Next_Graph_Edge ( Edge  : Cv_Graph_Edge_P;
-                                Vertex : Cv_Graph_Vtx_P ) return Cv_Graph_Edge_P is
+   function Cv_Next_Graph_Edge ( Edge  : Cv_Graph_Edge_Ptr;
+                                Vertex : Cv_Graph_Vtx_Ptr ) return Cv_Graph_Edge_Ptr is
    begin
       if (Edge.all.Vtx (1) = Vertex) then
          return Edge.all.Next (1);
@@ -250,7 +256,7 @@ package body Core is
       return null;
    end Cv_Next_Graph_Edge;
 
-   function Cv_Is_Storage (Storage : Cv_Mem_Storage_P) return Integer is
+   function Cv_Is_Storage (Storage : Cv_Mem_Storage_Ptr) return Integer is
    begin
       if not (Storage = null) then
          if (Unsigned_32 (Storage.all.Signature) and Cv_Magic_Mask) = Cv_Storage_Magic_Val then
@@ -260,7 +266,7 @@ package body Core is
       return 0;
    end Cv_Is_Storage;
 
-   function Cv_Is_Set_Elem (Ptr : Cv_Set_Elem_P) return Integer is
+   function Cv_Is_Set_Elem (Ptr : Cv_Set_Elem_Ptr) return Integer is
    begin
       if Ptr.all.Flags >= 0 then
          return 1;
@@ -270,7 +276,7 @@ package body Core is
 
    --#define CV_IS_SEQ(seq) \
    --    ((seq) != NULL && (((CvSeq*)(seq))->flags & CV_MAGIC_MASK) == CV_SEQ_MAGIC_VAL)
-   function Cv_Is_Seq (Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq (Seq : Cv_Seq_Ptr) return Integer is
    begin
       if not (Seq = null) then
          if (Seq.all.Flags and Cv_Magic_Mask) = Cv_Seq_Magic_Val then
@@ -282,7 +288,7 @@ package body Core is
 
    --#define CV_IS_SET(set) \
    --((set) != NULL && (((CvSeq*)(set))->flags & CV_MAGIC_MASK) == CV_SET_MAGIC_VAL)
-   function Cv_Is_Set (Set : Cv_Seq_P) return Integer is
+   function Cv_Is_Set (Set : Cv_Seq_Ptr) return Integer is
    begin
       if not (Set = null) then
          if (Set.all.Flags and Cv_Magic_Mask) = Cv_Set_Magic_Val then
@@ -362,17 +368,17 @@ package body Core is
       return Integer (Cv_Seq_Kind_Generic or Unsigned_32 (Cv_Seq_Eltype_Index));
    end Cv_Seq_Index;
 
-   function  Cv_Seq_Eltype ( Seq : Cv_Seq_P ) return Unsigned_32 is
+   function  Cv_Seq_Eltype ( Seq : Cv_Seq_Ptr ) return Unsigned_32 is
    begin
       return Seq.all.Flags and Cv_Seq_Eltype_Mask;
    end Cv_Seq_Eltype;
 
-   function Cv_Seq_Kind ( Seq : Cv_Seq_P ) return Integer is
+   function Cv_Seq_Kind ( Seq : Cv_Seq_Ptr ) return Integer is
    begin
       return Integer (Seq.all.Flags and Cv_Seq_Kind_Mask );
    end Cv_Seq_Kind;
 
-   function Cv_Is_Seq_Index ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Index ( Seq : Cv_Seq_Ptr) return Integer is
    begin
       if ((Cv_Seq_Eltype (Seq) = Cv_Seq_Eltype_Index) and
             (Cv_Seq_Kind (Seq) = Cv_Seq_Kind_Generic)) then
@@ -382,7 +388,7 @@ package body Core is
       end if;
    end Cv_Is_Seq_Index;
 
-   function Cv_Is_Seq_Curve ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Curve ( Seq : Cv_Seq_Ptr) return Integer is
    begin
       if (Cv_Seq_Kind (Seq) = Cv_Seq_Kind_Curve) then
          return 1;
@@ -390,7 +396,7 @@ package body Core is
       return 0;
    end Cv_Is_Seq_Curve;
 
-   function Cv_Is_Seq_Closed ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Closed ( Seq : Cv_Seq_Ptr) return Integer is
    begin
       if not ((Seq.all.Flags and Cv_Seq_Flag_Closed) = 0) then
          return 1;
@@ -398,7 +404,7 @@ package body Core is
       return 0;
    end Cv_Is_Seq_Closed;
 
-   function Cv_Is_Seq_Convex ( Seq : Cv_Seq_P)   return Integer is
+   function Cv_Is_Seq_Convex ( Seq : Cv_Seq_Ptr)   return Integer is
    begin
       if not ((Seq.all.Flags and Cv_Seq_Flag_Convex) = 0) then
          return 1;
@@ -406,7 +412,7 @@ package body Core is
       return 0;
    end Cv_Is_Seq_Convex;
 
-   function Cv_Is_Seq_Hole ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Hole ( Seq : Cv_Seq_Ptr) return Integer is
    begin
       if not ((Seq.all.Flags and  Cv_Seq_Flag_Hole) = 0) then
          return 1;
@@ -414,7 +420,7 @@ package body Core is
       return 0;
    end Cv_Is_Seq_Hole;
 
-   function Cv_Is_Seq_Simple ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Simple ( Seq : Cv_Seq_Ptr) return Integer is
    begin
       if (not ((Seq.all.Flags and Cv_Seq_Flag_Simple) = 0) or Cv_Is_Seq_Convex (Seq) = 1) then
          return 1;
@@ -422,7 +428,7 @@ package body Core is
       return 0;
    end Cv_Is_Seq_Simple;
 
-   function Cv_Is_Seq_Point_Set ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Point_Set ( Seq : Cv_Seq_Ptr) return Integer is
    begin
       if ((Cv_Seq_Eltype (Seq) = Cv_Make_Type (Cv_32s, 2)) or (Cv_Seq_Eltype (Seq) = Cv_Make_Type (Cv_32f, 2))) then
          return 1;
@@ -430,7 +436,7 @@ package body Core is
       return 0;
    end Cv_Is_Seq_Point_Set;
 
-   function Cv_Is_Seq_Point_Subset ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Point_Subset ( Seq : Cv_Seq_Ptr) return Integer is
    begin
       if (Cv_Is_Seq_Index ( Seq ) = 1) or (Cv_Seq_Eltype (Seq) = Cv_Seq_Eltype_Ppoint) then
          return 1;
@@ -438,7 +444,7 @@ package body Core is
       return 0;
    end Cv_Is_Seq_Point_Subset;
 
-   function Cv_Is_Seq_Polyline ( Seq : Cv_Seq_P ) return Integer is
+   function Cv_Is_Seq_Polyline ( Seq : Cv_Seq_Ptr ) return Integer is
    begin
       if (Cv_Seq_Kind (Seq) = Cv_Seq_Kind_Curve) and (Cv_Is_Seq_Point_Set (Seq) = 1) then
          return 1;
@@ -446,7 +452,7 @@ package body Core is
       return 0;
    end Cv_Is_Seq_Polyline;
 
-   function Cv_Is_Seq_Polygon ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Polygon ( Seq : Cv_Seq_Ptr) return Integer is
    begin
       if (Cv_Is_Seq_Polyline (Seq) = 1) and (Cv_Is_Seq_Closed (Seq) = 1) then
          return 1;
@@ -454,7 +460,7 @@ package body Core is
       return 0;
    end Cv_Is_Seq_Polygon;
 
-   function Cv_Is_Seq_Chain ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Chain ( Seq : Cv_Seq_Ptr) return Integer is
    begin
       if (Cv_Seq_Kind (Seq) = Cv_Seq_Kind_Curve) and (Seq.all.Elem_Size = 1) then
          return 1;
@@ -462,7 +468,7 @@ package body Core is
       return 0;
    end Cv_Is_Seq_Chain;
 
-   function Cv_Is_Seq_Contour ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Contour ( Seq : Cv_Seq_Ptr) return Integer is
    begin
       if (Cv_Is_Seq_Closed (Seq) = 1 )and ((Cv_Is_Seq_Polyline (Seq) = 1) or (Cv_Is_Seq_Chain (Seq) = 1)) then
          return 1;
@@ -470,7 +476,7 @@ package body Core is
       return 0;
    end Cv_Is_Seq_Contour;
 
-   function Cv_Is_Seq_Chain_Contour ( Seq  : Cv_Seq_P ) return Integer is
+   function Cv_Is_Seq_Chain_Contour ( Seq  : Cv_Seq_Ptr ) return Integer is
    begin
       if (Cv_Is_Seq_Chain ( Seq ) = 1) and (Cv_Is_Seq_Closed ( Seq ) = 1) then
          return 1;
@@ -478,7 +484,7 @@ package body Core is
       return 0;
    end Cv_Is_Seq_Chain_Contour;
 
-   function Cv_Is_Seq_Polygon_Tree ( Seq  : Cv_Seq_P) return Integer is
+   function Cv_Is_Seq_Polygon_Tree ( Seq  : Cv_Seq_Ptr) return Integer is
    begin
       if (Cv_Seq_Eltype (Seq) =  Cv_Seq_Eltype_Trian_Atr) and (Cv_Seq_Kind ( Seq ) =  Cv_Seq_Kind_Bin_Tree ) then
          return 1;
@@ -486,14 +492,14 @@ package body Core is
       return 0;
    end Cv_Is_Seq_Polygon_Tree;
 
-   function Cv_Is_Graph ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Graph ( Seq : Cv_Seq_Ptr) return Integer is
    begin
       if (Cv_Is_Set (Seq) = 1) and (Cv_Seq_Kind (Seq) = Cv_Seq_Kind_Graph) then
          return 1;
       end if;
       return 0;
    end Cv_Is_Graph;
-   function Cv_Is_Graph_Oriented ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Graph_Oriented ( Seq : Cv_Seq_Ptr) return Integer is
    begin
       if not ((Seq.all.Flags and Cv_Graph_Flag_Oriented) = 0) then
          return 1;
@@ -501,7 +507,7 @@ package body Core is
       return 0;
    end Cv_Is_Graph_Oriented;
 
-   function Cv_Is_Subdiv2d ( Seq : Cv_Seq_P) return Integer is
+   function Cv_Is_Subdiv2d ( Seq : Cv_Seq_Ptr) return Integer is
    begin
       if (Cv_Is_Set (Seq) = 1) and (Cv_Seq_Kind (Seq) = Cv_Seq_Kind_Subdiv2d) then
          return 1;
@@ -532,7 +538,7 @@ package body Core is
    end Cv_Create_Term_Criteria;
 
 
-   function Cv_Is_Hist (Hist : Cv_Histogram_P) return Integer is
+   function Cv_Is_Hist (Hist : Cv_Histogram_Ptr) return Integer is
    begin
       if not (Hist = null) then
          if ((Unsigned_32 (Hist.all.Histtype) and Cv_Magic_Mask) = Cv_Hist_Magic_Val) and not (Hist.all.Bins = null) then
@@ -542,7 +548,7 @@ package body Core is
       return 0;
    end Cv_Is_Hist;
 
-   function Cv_Is_Uniform_Hist (Hist : Cv_Histogram_P) return Integer is
+   function Cv_Is_Uniform_Hist (Hist : Cv_Histogram_Ptr) return Integer is
    begin
       if not ((Unsigned_32 (Hist.all.Histtype) and Cv_Hist_Uniform_Flag) = 0) then
          return 1;
@@ -550,12 +556,12 @@ package body Core is
       return 0;
    end Cv_Is_Uniform_Hist;
 
-   function Cv_Is_Sparse_Hist (Hist : Cv_Histogram_P) return Integer is
+   function Cv_Is_Sparse_Hist (Hist : Cv_Histogram_Ptr) return Integer is
    begin
       return Cv_Is_Sparse_Mat (From_Arr (Hist.all.Bins));
    end Cv_Is_Sparse_Hist;
 
-   function Cv_Hist_Has_Ranges (Hist : Cv_Histogram_P) return Integer is
+   function Cv_Hist_Has_Ranges (Hist : Cv_Histogram_Ptr) return Integer is
    begin
       if not ((Unsigned_32 (Hist.all.Histtype) and Cv_Hist_Ranges_Flag) = 0 ) then
          return 1;
@@ -584,7 +590,7 @@ package body Core is
    end Ipl_To_Cv_Depth;
 
 
-   function Cv_Is_Mat_Hdr (Mat : Cv_Mat_P) return Integer is
+   function Cv_Is_Mat_Hdr (Mat : Cv_Mat_Ptr) return Integer is
    begin
       if not (Mat = null) then
          if (Unsigned_32 (Mat.all.Mat_Type) and Unsigned_32 (Cv_Magic_Mask)) = Cv_Mat_Magic_Val then
@@ -600,7 +606,7 @@ package body Core is
    end Cv_Is_Mat_Hdr;
 
 
-   function Cv_Is_Mask_Arr (Mat : Cv_Mat_P) return Integer is
+   function Cv_Is_Mask_Arr (Mat : Cv_Mat_Ptr) return Integer is
    begin
       if (Unsigned_32 (Mat.all.Mat_Type) and (Cv_Mat_Type_Mask and (not Unsigned_32 (Cv_Make_Type (Cv_8s, 1))))) = 0 then
          return 1;
@@ -610,8 +616,8 @@ package body Core is
 
    end Cv_Is_Mask_Arr;
 
-   function Cv_Are_Types_Eq (Mat1 : Cv_Mat_P;
-                             Mat2 : Cv_Mat_P) return Integer is
+   function Cv_Are_Types_Eq (Mat1 : Cv_Mat_Ptr;
+                             Mat2 : Cv_Mat_Ptr) return Integer is
    begin
       if ((Unsigned_32 (Mat1.all.Mat_Type) xor Unsigned_32 (Mat2.all.Mat_Type)) and Cv_Mat_Type_Mask) = 0 then
          return 1;
@@ -619,8 +625,8 @@ package body Core is
       return 0;
    end Cv_Are_Types_Eq;
 
-   function Cv_Are_Cns_Eq (Mat1 : Cv_Mat_P;
-                           Mat2 : Cv_Mat_P) return Integer is
+   function Cv_Are_Cns_Eq (Mat1 : Cv_Mat_Ptr;
+                           Mat2 : Cv_Mat_Ptr) return Integer is
    begin
       if ((Unsigned_32 (Mat1.all.Mat_Type) xor Unsigned_32 (Mat2.all.Mat_Type)) and Unsigned_32 (Cv_Mat_Cn_Mask)) = 0 then
          return 1;
@@ -628,8 +634,8 @@ package body Core is
       return 0;
    end Cv_Are_Cns_Eq;
 
-   function Cv_Are_Depths_Eq (Mat1 : Cv_Mat_P;
-                              Mat2 : Cv_Mat_P) return Integer is
+   function Cv_Are_Depths_Eq (Mat1 : Cv_Mat_Ptr;
+                              Mat2 : Cv_Mat_Ptr) return Integer is
    begin
       if ((Unsigned_32 (Mat1.all.Mat_Type) xor Unsigned_32 (Mat2.all.Mat_Type)) and Unsigned_32 (Cv_Mat_Depth_Mask)) = 0 then
          return 1;
@@ -637,8 +643,8 @@ package body Core is
       return 0;
    end Cv_Are_Depths_Eq;
 
-   function Cv_Are_Sizes_Eq (Mat1 : Cv_Mat_P;
-                             Mat2 : Cv_Mat_P) return Integer is
+   function Cv_Are_Sizes_Eq (Mat1 : Cv_Mat_Ptr;
+                             Mat2 : Cv_Mat_Ptr) return Integer is
    begin
       if ((Mat1.all.Rows = Mat2.all.Rows) and (Mat1.all.Cols = Mat2.all.Cols)) then
          return 1;
@@ -646,7 +652,7 @@ package body Core is
       return 0;
    end Cv_Are_Sizes_Eq;
 
-   function Cv_Is_Mat_Const (Mat : Cv_Mat_P) return Integer is
+   function Cv_Is_Mat_Const (Mat : Cv_Mat_Ptr) return Integer is
    begin
       if (Unsigned_32 (Mat.all.Rows) or Unsigned_32 (Mat.all.Cols)) = 1 then
          return 1;
@@ -656,7 +662,7 @@ package body Core is
 
 
 
-   function Cv_Mat_Elem_Ptr (Mat : Cv_Mat_P;
+   function Cv_Mat_Elem_Ptr (Mat : Cv_Mat_Ptr;
                              Row : Integer;
                              Col : Integer) return Cv_8u_Pointer is
    begin
@@ -683,7 +689,7 @@ package body Core is
    end Cv_Is_Matnd_Hdr;
 
 
-   function Cv_Is_Sparse_Mat_Hdr (Mat : Cv_Sparse_Mat_P) return Integer is
+   function Cv_Is_Sparse_Mat_Hdr (Mat : Cv_Sparse_Mat_Ptr) return Integer is
    begin
       if not (Mat = null) then
          if (Unsigned_32 (Mat.all.Mat_Type) and Cv_Magic_Mask) = Cv_Sparse_Mat_Magic_Val then
@@ -788,7 +794,7 @@ package body Core is
       return Cv_Depth_Max - 1;
    end Cv_Mat_Depth_Mask;
 
-   function Cv_Is_Image_Hdr (Img : Ipl_Image_P) return Integer is
+   function Cv_Is_Image_Hdr (Img : Ipl_Image_Ptr) return Integer is
    begin
       if not (Img = null) then
          if (Img.all.N_Size = Ipl_Image_Magic_Val) then
@@ -798,7 +804,7 @@ package body Core is
       return 0;
    end Cv_Is_Image_Hdr;
 
-   function Cv_Is_Image (Img : Ipl_Image_P) return Integer is
+   function Cv_Is_Image (Img : Ipl_Image_Ptr) return Integer is
       use Core.Cv_8u_Pointer_Pkg;
    begin
       if Cv_Is_Image_Hdr (Img) = 1 then
@@ -967,12 +973,12 @@ package body Core is
 
 
 
-   function "+" (Right : Ipl_Image_P) return Cv_Arr_P is
+   function "+" (Right : Ipl_Image_Ptr) return Cv_Arr_Ptr is
    begin
       return Image_To_Arr (Right);
    end "+";
 
-   function Cv_Is_Mat (Mat : Cv_Mat_P) return Integer is
+   function Cv_Is_Mat (Mat : Cv_Mat_Ptr) return Integer is
       use Core.Cv_8u_Pointer_Pkg;
    begin
       if not ( Mat = null) then
@@ -990,7 +996,7 @@ package body Core is
    end Cv_Is_Mat;
 
 
-   function Cv_Mat_Elem_Ptr_Fast (Mat      : Cv_Mat_P;
+   function Cv_Mat_Elem_Ptr_Fast (Mat      : Cv_Mat_Ptr;
                                   Row      : Integer;
                                   Col      : Integer;
                                   Pix_Size : Unsigned_32) return Cv_8u_Pointer is

@@ -63,14 +63,14 @@ package Core.Mat is
 
 --     procedure Deallocate (Mat : out Cv_Mat_P);
 
-   function To_Arr is new Ada.Unchecked_Conversion    (Target => Cv_Arr_P,
+   function To_Arr is new Ada.Unchecked_Conversion    (Target => Cv_Arr_Ptr,
                                                        Source => Cv_Mat_P);
    function From_Arr is new Ada.Unchecked_Conversion  (Target => Cv_Mat_P,
-                                                       Source => Cv_Arr_P);
-   function To_Void is new Ada.Unchecked_Conversion   (Target => Cv_Void_P,
+                                                       Source => Cv_Arr_Ptr);
+   function To_Void is new Ada.Unchecked_Conversion   (Target => Cv_Void_Ptr,
                                                        Source => Cv_Mat_P);
    function From_Void is new Ada.Unchecked_Conversion (Target => Cv_Mat_P,
-                                                       Source => Cv_Void_P);
+                                                       Source => Cv_Void_Ptr);
 
 --     procedure Cv_Release_Mat (Mat : in out Cv_Mat_P);
 
@@ -89,7 +89,7 @@ private
    procedure Deallocate_Mat_Data is new Ada.Unchecked_Deallocation (Object => Cv_Pointer,
                                                                     Name   => Cv_Pointer_P);
 
-   function To_Void is new Ada.Unchecked_Conversion (Target => Cv_Void_P,
+   function To_Void is new Ada.Unchecked_Conversion (Target => Cv_Void_Ptr,
                                                      Source => Cv_Pointer);
 
    function Malloc (Size : Interfaces.C.Size_T) return System.Address;

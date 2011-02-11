@@ -34,69 +34,69 @@ package Video.Tracking is
    -- Optical flow
    -----------------------------------------------------------------------------
    -- Calculates optical flow for 2 images using classical Lucas & Kanade algorithm
-   procedure Cv_Calc_Optical_Flow_Lk (Prev    : Cv_Arr_P;
-                                      Curr    : Cv_Arr_P;
+   procedure Cv_Calc_Optical_Flow_Lk (Prev    : Cv_Arr_Ptr;
+                                      Curr    : Cv_Arr_Ptr;
                                       Winsize : Cv_Size;
-                                      Velx    : Cv_Arr_P;
-                                      Vely    : Cv_Arr_P);
-   procedure Cv_Calc_Optical_Flow_Lk (Prev    : Cv_Mat_P;
-                                      Curr    : Cv_Mat_P;
+                                      Velx    : Cv_Arr_Ptr;
+                                      Vely    : Cv_Arr_Ptr);
+   procedure Cv_Calc_Optical_Flow_Lk (Prev    : Cv_Mat_Ptr;
+                                      Curr    : Cv_Mat_Ptr;
                                       Winsize : Cv_Size;
-                                      Velx    : Cv_Mat_P;
-                                      Vely    : Cv_Mat_P);
-   procedure Cv_Calc_Optical_Flow_Lk (Prev    : Ipl_Image_P;
-                                      Curr    : Ipl_Image_P;
+                                      Velx    : Cv_Mat_Ptr;
+                                      Vely    : Cv_Mat_Ptr);
+   procedure Cv_Calc_Optical_Flow_Lk (Prev    : Ipl_Image_Ptr;
+                                      Curr    : Ipl_Image_Ptr;
                                       Winsize : Cv_Size;
-                                      Velx    : Ipl_Image_P;
-                                      Vely    : Ipl_Image_P);
+                                      Velx    : Ipl_Image_Ptr;
+                                      Vely    : Ipl_Image_Ptr);
 
    -- Calculates the optical flow for two images by using the block matching method.
-   procedure Cv_Calc_Optical_Flow_Bm (Prev        : Cv_Arr_P;
-                                      Curr        : Cv_Arr_P;
+   procedure Cv_Calc_Optical_Flow_Bm (Prev        : Cv_Arr_Ptr;
+                                      Curr        : Cv_Arr_Ptr;
                                       Blocksize   : Cv_Size;
                                       Shiftsize   :  Cv_Size;
                                       Maxrange    : Cv_Size;
                                       Useprevious : Integer;
-                                      Velx        : Cv_Arr_P;
-                                      Vely        : Cv_Arr_P);
-   procedure Cv_Calc_Optical_Flow_Bm (Prev        : Cv_Mat_P;
-                                      Curr        : Cv_Mat_P;
+                                      Velx        : Cv_Arr_Ptr;
+                                      Vely        : Cv_Arr_Ptr);
+   procedure Cv_Calc_Optical_Flow_Bm (Prev        : Cv_Mat_Ptr;
+                                      Curr        : Cv_Mat_Ptr;
                                       Blocksize   : Cv_Size;
                                       Shiftsize   :  Cv_Size;
                                       Maxrange    : Cv_Size;
                                       Useprevious : Integer;
-                                      Velx        : Cv_Mat_P;
-                                      Vely        : Cv_Mat_P);
-   procedure Cv_Calc_Optical_Flow_Bm (Prev        : Ipl_Image_P;
-                                      Curr        : Ipl_Image_P;
+                                      Velx        : Cv_Mat_Ptr;
+                                      Vely        : Cv_Mat_Ptr);
+   procedure Cv_Calc_Optical_Flow_Bm (Prev        : Ipl_Image_Ptr;
+                                      Curr        : Ipl_Image_Ptr;
                                       Blocksize   : Cv_Size;
                                       Shiftsize   :  Cv_Size;
                                       Maxrange    : Cv_Size;
                                       Useprevious : Integer;
-                                      Velx        : Ipl_Image_P;
-                                      Vely        : Ipl_Image_P);
+                                      Velx        : Ipl_Image_Ptr;
+                                      Vely        : Ipl_Image_Ptr);
 
 
    -- Calculates Optical flow for 2 images using Horn & Schunck algorithm
-   procedure Cv_Calc_Optical_Flow_Hs (Prev        : Cv_Arr_P;
-                                      Curr        : Cv_Arr_P;
+   procedure Cv_Calc_Optical_Flow_Hs (Prev        : Cv_Arr_Ptr;
+                                      Curr        : Cv_Arr_Ptr;
                                       Useprevious : Integer;
-                                      Velx        : Cv_Arr_P;
-                                      Vely        : Cv_Arr_P;
+                                      Velx        : Cv_Arr_Ptr;
+                                      Vely        : Cv_Arr_Ptr;
                                       Lambda      : Long_Float;
                                       Criteria    : Cv_Term_Criteria);
-   procedure Cv_Calc_Optical_Flow_Hs (Prev        : Cv_Mat_P;
-                                      Curr        : Cv_Mat_P;
+   procedure Cv_Calc_Optical_Flow_Hs (Prev        : Cv_Mat_Ptr;
+                                      Curr        : Cv_Mat_Ptr;
                                       Useprevious : Integer;
-                                      Velx        : Cv_Mat_P;
-                                      Vely        : Cv_Mat_P;
+                                      Velx        : Cv_Mat_Ptr;
+                                      Vely        : Cv_Mat_Ptr;
                                       Lambda      : Long_Float;
                                       Criteria    : Cv_Term_Criteria);
-   procedure Cv_Calc_Optical_Flow_Hs (Prev        : Ipl_Image_P;
-                                      Curr        : Ipl_Image_P;
+   procedure Cv_Calc_Optical_Flow_Hs (Prev        : Ipl_Image_Ptr;
+                                      Curr        : Ipl_Image_Ptr;
                                       Useprevious : Integer;
-                                      Velx        : Ipl_Image_P;
-                                      Vely        : Ipl_Image_P;
+                                      Velx        : Ipl_Image_Ptr;
+                                      Vely        : Ipl_Image_Ptr;
                                       Lambda      : Long_Float;
                                       Criteria    : Cv_Term_Criteria);
 
@@ -110,10 +110,10 @@ package Video.Tracking is
    -- every point at every pyramid level.
    -- Calculates optical flow between two images for certain set of points (i.e.
    -- it is a "sparse" optical flow, which is opposite to the previous 3 methods)
-   procedure Cv_Calc_Optical_Flow_Pyr_Lk (Prev         : Cv_Arr_P;
-                                          Curr         : Cv_Arr_P;
-                                          Prevpyr      : Cv_Arr_P;
-                                          Currpyr      : Cv_Arr_P;
+   procedure Cv_Calc_Optical_Flow_Pyr_Lk (Prev         : Cv_Arr_Ptr;
+                                          Curr         : Cv_Arr_Ptr;
+                                          Prevpyr      : Cv_Arr_Ptr;
+                                          Currpyr      : Cv_Arr_Ptr;
                                           Prevfeatures : Cv_Point_2d_32f_Array;
                                           Currfeatures : Cv_Point_2d_32f_Array;
                                           Count        : Integer;
@@ -123,10 +123,10 @@ package Video.Tracking is
                                           Trackerror   : Cv_32f_Array;
                                           Citeria      : Cv_Term_Criteria;
                                           Flags        : Integer);
-   procedure Cv_Calc_Optical_Flow_Pyr_Lk (Prev         : Cv_Mat_P;
-                                          Curr         : Cv_Mat_P;
-                                          Prevpyr      : Cv_Mat_P;
-                                          Currpyr      : Cv_Mat_P;
+   procedure Cv_Calc_Optical_Flow_Pyr_Lk (Prev         : Cv_Mat_Ptr;
+                                          Curr         : Cv_Mat_Ptr;
+                                          Prevpyr      : Cv_Mat_Ptr;
+                                          Currpyr      : Cv_Mat_Ptr;
                                           Prevfeatures : Cv_Point_2d_32f_Array;
                                           Currfeatures : Cv_Point_2d_32f_Array;
                                           Count        : Integer;
@@ -136,10 +136,10 @@ package Video.Tracking is
                                           Trackerror   : Cv_32f_Array;
                                           Citeria      : Cv_Term_Criteria;
                                           Flags        : Integer);
-   procedure Cv_Calc_Optical_Flow_Pyr_Lk (Prev         : Ipl_Image_P;
-                                          Curr         : Ipl_Image_P;
-                                          Prevpyr      : Ipl_Image_P;
-                                          Currpyr      : Ipl_Image_P;
+   procedure Cv_Calc_Optical_Flow_Pyr_Lk (Prev         : Ipl_Image_Ptr;
+                                          Curr         : Ipl_Image_Ptr;
+                                          Prevpyr      : Ipl_Image_Ptr;
+                                          Currpyr      : Ipl_Image_Ptr;
                                           Prevfeatures : Cv_Point_2d_32f_Array;
                                           Currfeatures : Cv_Point_2d_32f_Array;
                                           Count        : Integer;
@@ -152,10 +152,10 @@ package Video.Tracking is
 
    -- Modification of a previous sparse optical flow algorithm to calculate
    -- affine flow
-   procedure Cv_Calc_Affine_Flow_Pyr_Lk (Prev          : Cv_Arr_P;
-                                         Curr          : Cv_Arr_P;
-                                         Prev_Pyr      : Cv_Arr_P;
-                                         Curr_Pyr      : Cv_Arr_P;
+   procedure Cv_Calc_Affine_Flow_Pyr_Lk (Prev          : Cv_Arr_Ptr;
+                                         Curr          : Cv_Arr_Ptr;
+                                         Prev_Pyr      : Cv_Arr_Ptr;
+                                         Curr_Pyr      : Cv_Arr_Ptr;
                                          Prev_Features : Cv_Point_2d_32f_Array;
                                          Curr_Features : Cv_Point_2d_32f_Array;
                                          Matrices      : Cv_32f_Array;
@@ -166,10 +166,10 @@ package Video.Tracking is
                                          Track_Error   : Cv_32f_Array;
                                          Criteria      : Cv_Term_Criteria;
                                          Flags         : Unsigned_32);
-   procedure Cv_Calc_Affine_Flow_Pyr_Lk (Prev          : Cv_Mat_P;
-                                         Curr          : Cv_Mat_P;
-                                         Prev_Pyr      : Cv_Mat_P;
-                                         Curr_Pyr      : Cv_Mat_P;
+   procedure Cv_Calc_Affine_Flow_Pyr_Lk (Prev          : Cv_Mat_Ptr;
+                                         Curr          : Cv_Mat_Ptr;
+                                         Prev_Pyr      : Cv_Mat_Ptr;
+                                         Curr_Pyr      : Cv_Mat_Ptr;
                                          Prev_Features : Cv_Point_2d_32f_Array;
                                          Curr_Features : Cv_Point_2d_32f_Array;
                                          Matrices      : Cv_32f_Array;
@@ -180,10 +180,10 @@ package Video.Tracking is
                                          Track_Error   : Cv_32f_Array;
                                          Criteria      : Cv_Term_Criteria;
                                          Flags         : Unsigned_32);
-   procedure Cv_Calc_Affine_Flow_Pyr_Lk (Prev          : Ipl_Image_P;
-                                         Curr          : Ipl_Image_P;
-                                         Prev_Pyr      : Ipl_Image_P;
-                                         Curr_Pyr      : Ipl_Image_P;
+   procedure Cv_Calc_Affine_Flow_Pyr_Lk (Prev          : Ipl_Image_Ptr;
+                                         Curr          : Ipl_Image_Ptr;
+                                         Prev_Pyr      : Ipl_Image_Ptr;
+                                         Curr_Pyr      : Ipl_Image_Ptr;
                                          Prev_Features : Cv_Point_2d_32f_Array;
                                          Curr_Features : Cv_Point_2d_32f_Array;
                                          Matrices      : Cv_32f_Array;
@@ -196,26 +196,26 @@ package Video.Tracking is
                                          Flags         : Unsigned_32);
 
    -- Estimate rigid transformation between 2 images or 2 point sets
-   function Cv_Estimate_Rigid_Transform (A           : Cv_Arr_P;
-                                         B           : Cv_Arr_P;
-                                         M           : Cv_Mat_P;
+   function Cv_Estimate_Rigid_Transform (A           : Cv_Arr_Ptr;
+                                         B           : Cv_Arr_Ptr;
+                                         M           : Cv_Mat_Ptr;
                                          Full_Affine : Integer)
                                          return Integer;
-   function Cv_Estimate_Rigid_Transform (A           : Cv_Mat_P;
-                                         B           : Cv_Mat_P;
-                                         M           : Cv_Mat_P;
+   function Cv_Estimate_Rigid_Transform (A           : Cv_Mat_Ptr;
+                                         B           : Cv_Mat_Ptr;
+                                         M           : Cv_Mat_Ptr;
                                          Full_Affine : Integer)
                                          return Integer;
-   function Cv_Estimate_Rigid_Transform (A           : Ipl_Image_P;
-                                         B           : Ipl_Image_P;
-                                         M           : Cv_Mat_P;
+   function Cv_Estimate_Rigid_Transform (A           : Ipl_Image_Ptr;
+                                         B           : Ipl_Image_Ptr;
+                                         M           : Cv_Mat_Ptr;
                                          Full_Affine : Integer)
                                          return Integer;
 
    -- Estimate optical flow for each pixel using the two-frame G. Farneback algorithm
-   procedure Cv_Calc_Optical_Flow_Farneback (Prev       : Cv_Arr_P;
-                                             Next       : Cv_Arr_P;
-                                             Flow       : Cv_Arr_P;
+   procedure Cv_Calc_Optical_Flow_Farneback (Prev       : Cv_Arr_Ptr;
+                                             Next       : Cv_Arr_Ptr;
+                                             Flow       : Cv_Arr_Ptr;
                                              Pyr_Scale  : Long_Float;
                                              Levels     : Integer;
                                              Winsize    : Integer;
@@ -223,9 +223,9 @@ package Video.Tracking is
                                              Poly_N     : Integer;
                                              Poly_Sigma : Long_Float;
                                              Flags      : Integer);
-   procedure Cv_Calc_Optical_Flow_Farneback (Prev       : Cv_Mat_P;
-                                             Next       : Cv_Mat_P;
-                                             Flow       : Cv_Mat_P;
+   procedure Cv_Calc_Optical_Flow_Farneback (Prev       : Cv_Mat_Ptr;
+                                             Next       : Cv_Mat_Ptr;
+                                             Flow       : Cv_Mat_Ptr;
                                              Pyr_Scale  : Long_Float;
                                              Levels     : Integer;
                                              Winsize    : Integer;
@@ -233,9 +233,9 @@ package Video.Tracking is
                                              Poly_N     : Integer;
                                              Poly_Sigma : Long_Float;
                                              Flags      : Integer);
-   procedure Cv_Calc_Optical_Flow_Farneback (Prev       : Ipl_Image_P;
-                                             Next       : Ipl_Image_P;
-                                             Flow       : Ipl_Image_P;
+   procedure Cv_Calc_Optical_Flow_Farneback (Prev       : Ipl_Image_Ptr;
+                                             Next       : Ipl_Image_Ptr;
+                                             Flow       : Ipl_Image_Ptr;
                                              Pyr_Scale  : Long_Float;
                                              Levels     : Integer;
                                              Winsize    : Integer;
@@ -256,36 +256,36 @@ package Video.Tracking is
    -- all the angles are in degrees, all the times are in milliseconds
 
    -- Updates the motion history image by a moving silhouette.
-   procedure Cv_Update_Motion_History (Silhouette : Cv_Arr_P;
-                                       Mhi        : Cv_Arr_P;
+   procedure Cv_Update_Motion_History (Silhouette : Cv_Arr_Ptr;
+                                       Mhi        : Cv_Arr_Ptr;
                                        Timestamp  : Long_Float;
                                        Duration   : Long_Float);
-   procedure Cv_Update_Motion_History (Silhouette : Cv_Mat_P;
-                                       Mhi        : Cv_Mat_P;
+   procedure Cv_Update_Motion_History (Silhouette : Cv_Mat_Ptr;
+                                       Mhi        : Cv_Mat_Ptr;
                                        Timestamp  : Long_Float;
                                        Duration   : Long_Float);
-   procedure Cv_Update_Motion_History (Silhouette : Ipl_Image_P;
-                                       Mhi        : Ipl_Image_P;
+   procedure Cv_Update_Motion_History (Silhouette : Ipl_Image_Ptr;
+                                       Mhi        : Ipl_Image_Ptr;
                                        Timestamp  : Long_Float;
                                        Duration   : Long_Float);
 
    -- Calculates gradient of the motion history image and fills
    -- a mask indicating where the gradient is valid
-   procedure Cv_Calc_Motion_Gradient (Mhi          : Cv_Arr_P;
-                                      Mask         : Cv_Arr_P;
-                                      Orientation  : Cv_Arr_P;
+   procedure Cv_Calc_Motion_Gradient (Mhi          : Cv_Arr_Ptr;
+                                      Mask         : Cv_Arr_Ptr;
+                                      Orientation  : Cv_Arr_Ptr;
                                       Delta1       : Long_Float;
                                       Delta2       : Long_Float;
                                       Aperturesize : Integer := 3);
-   procedure Cv_Calc_Motion_Gradient (Mhi          : Cv_Mat_P;
-                                      Mask         : Cv_Mat_P;
-                                      Orientation  : Cv_Mat_P;
+   procedure Cv_Calc_Motion_Gradient (Mhi          : Cv_Mat_Ptr;
+                                      Mask         : Cv_Mat_Ptr;
+                                      Orientation  : Cv_Mat_Ptr;
                                       Delta1       : Long_Float;
                                       Delta2       : Long_Float;
                                       Aperturesize : Integer := 3);
-   procedure Cv_Calc_Motion_Gradient (Mhi          : Ipl_Image_P;
-                                      Mask         : Ipl_Image_P;
-                                      Orientation  : Ipl_Image_P;
+   procedure Cv_Calc_Motion_Gradient (Mhi          : Ipl_Image_Ptr;
+                                      Mask         : Ipl_Image_Ptr;
+                                      Orientation  : Ipl_Image_Ptr;
                                       Delta1       : Long_Float;
                                       Delta2       : Long_Float;
                                       Aperturesize : Integer := 3);
@@ -293,74 +293,74 @@ package Video.Tracking is
    -- Calculates average motion direction within a selected motion region
    -- (region can be selected by setting ROIs and/or by composing a valid gradient mask
    -- with the region mask)
-   function Cv_Calc_Global_Orientation (Orientation : Cv_Arr_P;
-                                        Mask        : Cv_Arr_P;
-                                        Mhi         : Cv_Arr_P;
+   function Cv_Calc_Global_Orientation (Orientation : Cv_Arr_Ptr;
+                                        Mask        : Cv_Arr_Ptr;
+                                        Mhi         : Cv_Arr_Ptr;
                                         Timemstamp  : Long_Float;
                                         Duration    : Long_Float) return Long_Float;
-   function Cv_Calc_Global_Orientation (Orientation : Cv_Mat_P;
-                                        Mask        : Cv_Mat_P;
-                                        Mhi         : Cv_Mat_P;
+   function Cv_Calc_Global_Orientation (Orientation : Cv_Mat_Ptr;
+                                        Mask        : Cv_Mat_Ptr;
+                                        Mhi         : Cv_Mat_Ptr;
                                         Timemstamp  : Long_Float;
                                         Duration    : Long_Float) return Long_Float;
-   function Cv_Calc_Global_Orientation (Orientation : Ipl_Image_P;
-                                        Mask        : Ipl_Image_P;
-                                        Mhi         : Ipl_Image_P;
+   function Cv_Calc_Global_Orientation (Orientation : Ipl_Image_Ptr;
+                                        Mask        : Ipl_Image_Ptr;
+                                        Mhi         : Ipl_Image_Ptr;
                                         Timemstamp  : Long_Float;
                                         Duration    : Long_Float) return Long_Float;
 
    -- Splits a motion history image into a few parts corresponding to separate independent motions
    -- (e.g. left hand, right hand)
-   function Cv_Segment_Motion (Mhi       : Cv_Arr_P;
-                               Segmask   : Cv_Arr_P;
-                               Storage   : Cv_Mem_Storage_P;
+   function Cv_Segment_Motion (Mhi       : Cv_Arr_Ptr;
+                               Segmask   : Cv_Arr_Ptr;
+                               Storage   : Cv_Mem_Storage_Ptr;
                                Timestamp : Long_Float;
-                               Segthresh : Long_Float) return Cv_Seq_P;
-   function Cv_Segment_Motion (Mhi       : Cv_Mat_P;
-                               Segmask   : Cv_Mat_P;
-                               Storage   : Cv_Mem_Storage_P;
+                               Segthresh : Long_Float) return Cv_Seq_Ptr;
+   function Cv_Segment_Motion (Mhi       : Cv_Mat_Ptr;
+                               Segmask   : Cv_Mat_Ptr;
+                               Storage   : Cv_Mem_Storage_Ptr;
                                Timestamp : Long_Float;
-                               Segthresh : Long_Float) return Cv_Seq_P;
-   function Cv_Segment_Motion (Mhi       : Ipl_Image_P;
-                               Segmask   : Ipl_Image_P;
-                               Storage   : Cv_Mem_Storage_P;
+                               Segthresh : Long_Float) return Cv_Seq_Ptr;
+   function Cv_Segment_Motion (Mhi       : Ipl_Image_Ptr;
+                               Segmask   : Ipl_Image_Ptr;
+                               Storage   : Cv_Mem_Storage_Ptr;
                                Timestamp : Long_Float;
-                               Segthresh : Long_Float) return Cv_Seq_P;
+                               Segthresh : Long_Float) return Cv_Seq_Ptr;
 
    -----------------------------------------------------------------------------
    -- Tracking
    -----------------------------------------------------------------------------
 
    -- Finds the object center, size, and orientation.
-   function Cv_Cam_Shift (Probimage : Cv_Arr_P;
+   function Cv_Cam_Shift (Probimage : Cv_Arr_Ptr;
                           Window    : Cv_Rect;
                           Criteria  : Cv_Term_Criteria;
-                          Comp      : Imgproc.Cv_Connected_Comp_P;
+                          Comp      : Imgproc.Cv_Connected_Comp_Ptr;
                           Box       : access Cv_Box_2d := null) return Integer;
-   function Cv_Cam_Shift (Probimage : Cv_Mat_P;
+   function Cv_Cam_Shift (Probimage : Cv_Mat_Ptr;
                           Window    : Cv_Rect;
                           Criteria  : Cv_Term_Criteria;
-                          Comp      : Imgproc.Cv_Connected_Comp_P;
+                          Comp      : Imgproc.Cv_Connected_Comp_Ptr;
                           Box       : access Cv_Box_2d := null) return Integer;
-   function Cv_Cam_Shift (Probimage : Ipl_Image_P;
+   function Cv_Cam_Shift (Probimage : Ipl_Image_Ptr;
                           Window    : Cv_Rect;
                           Criteria  : Cv_Term_Criteria;
-                          Comp      : Imgproc.Cv_Connected_Comp_P;
+                          Comp      : Imgproc.Cv_Connected_Comp_Ptr;
                           Box       : access Cv_Box_2d := null) return Integer;
 
    -- Finds the object center on back projection.
-   function Cv_Mean_Shift (Probimage : Cv_Arr_P;
+   function Cv_Mean_Shift (Probimage : Cv_Arr_Ptr;
                            Window    : Cv_Rect;
                            Criteria  : Cv_Term_Criteria;
-                           Comp      : Imgproc.Cv_Connected_Comp_P) return Integer;
-   function Cv_Mean_Shift (Probimage : Cv_Mat_P;
+                           Comp      : Imgproc.Cv_Connected_Comp_Ptr) return Integer;
+   function Cv_Mean_Shift (Probimage : Cv_Mat_Ptr;
                            Window    : Cv_Rect;
                            Criteria  : Cv_Term_Criteria;
-                           Comp      : Imgproc.Cv_Connected_Comp_P) return Integer;
-   function Cv_Mean_Shift (Probimage : Ipl_Image_P;
+                           Comp      : Imgproc.Cv_Connected_Comp_Ptr) return Integer;
+   function Cv_Mean_Shift (Probimage : Ipl_Image_Ptr;
                            Window    : Cv_Rect;
                            Criteria  : Cv_Term_Criteria;
-                           Comp      : Imgproc.Cv_Connected_Comp_P) return Integer;
+                           Comp      : Imgproc.Cv_Connected_Comp_Ptr) return Integer;
 
    -- Standard Kalman filter (in G. Welch' and G. Bishop's notation):
    -- x(k)=A*x(k-1)+B*u(k)+w(k)  p(w)~N(0,Q)
@@ -383,49 +383,49 @@ package Video.Tracking is
          Temp_1                 : Cv_32f_Array_P;
          Temp_2                 : Cv_32f_Array_P;
          --*/
-         Statepre               : Cv_Mat_P;
-         Statepost              : Cv_Mat_P;
-         Transitionmatrix       : Cv_Mat_P;
-         Controlmatrix          : Cv_Mat_P;
-         Measurementmatrix      : Cv_Mat_P;
-         Processnoisecov        : Cv_Mat_P;
-         Errorcovpre            : Cv_Mat_P;
-         Gain                   : Cv_Mat_P;
-         Errorcovpost           : Cv_Mat_P;
+         Statepre               : Cv_Mat_Ptr;
+         Statepost              : Cv_Mat_Ptr;
+         Transitionmatrix       : Cv_Mat_Ptr;
+         Controlmatrix          : Cv_Mat_Ptr;
+         Measurementmatrix      : Cv_Mat_Ptr;
+         Processnoisecov        : Cv_Mat_Ptr;
+         Errorcovpre            : Cv_Mat_Ptr;
+         Gain                   : Cv_Mat_Ptr;
+         Errorcovpost           : Cv_Mat_Ptr;
 
-         Temp1                  : Cv_Mat_P;
-         Temp2                  : Cv_Mat_P;
-         Temp3                  : Cv_Mat_P;
-         Temp4                  : Cv_Mat_P;
-         Temp5                  : Cv_Mat_P;
+         Temp1                  : Cv_Mat_Ptr;
+         Temp2                  : Cv_Mat_Ptr;
+         Temp3                  : Cv_Mat_Ptr;
+         Temp4                  : Cv_Mat_Ptr;
+         Temp5                  : Cv_Mat_Ptr;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Kalman);
-   type Cv_Kalman_P is access all Cv_Kalman;
+   type Cv_Kalman_Ptr is access all Cv_Kalman;
 
    -- Creates Kalman filter and sets A, B, Q, R and state to some initial values
    function Cv_Create_Kalman (Dynamparams   : Integer;
                               Measureparams : Integer;
-                              Controlparams : Integer := 0) return Cv_Kalman_P;
+                              Controlparams : Integer := 0) return Cv_Kalman_Ptr;
 
    -- Releases Kalman filter state
-   procedure Cv_Release_Kalman (Kalman : access Cv_Kalman_P);
+   procedure Cv_Release_Kalman (Kalman : access Cv_Kalman_Ptr);
 
    -- Updates Kalman filter by time (predicts future state of the system)
-   function Cv_Kalman_Predict (Kalman  : Cv_Kalman_P;
-                               Control : Cv_Mat_P := null) return Cv_Mat_P;
+   function Cv_Kalman_Predict (Kalman  : Cv_Kalman_Ptr;
+                               Control : Cv_Mat_Ptr := null) return Cv_Mat_Ptr;
 
    -- Updates Kalman filter by measurement
    -- (corrects state of the system and internal matrices)
-   function Cv_Kalman_Correct (Kalman      : Cv_Kalman_P;
-                               Measurement : Cv_Mat_P) return Cv_Mat_P;
+   function Cv_Kalman_Correct (Kalman      : Cv_Kalman_Ptr;
+                               Measurement : Cv_Mat_Ptr) return Cv_Mat_Ptr;
 
    -- Synonym for CvKalmanPredict
-   function Cv_Kalman_Update_By_Time (Kalman  : Cv_Kalman_P;
-                                      Control : Cv_Mat_P := null) return Cv_Mat_P renames Cv_Kalman_Predict;
+   function Cv_Kalman_Update_By_Time (Kalman  : Cv_Kalman_Ptr;
+                                      Control : Cv_Mat_Ptr := null) return Cv_Mat_Ptr renames Cv_Kalman_Predict;
 
    -- Synonym for CvKalmanCorrect
-   function Cv_Kalman_Update_By_Measurement (Kalman      : Cv_Kalman_P;
-                                             Measurement : Cv_Mat_P) return Cv_Mat_P renames Cv_Kalman_Correct;
+   function Cv_Kalman_Update_By_Measurement (Kalman      : Cv_Kalman_Ptr;
+                                             Measurement : Cv_Mat_Ptr) return Cv_Mat_Ptr renames Cv_Kalman_Correct;
 
 private
 

@@ -14,7 +14,7 @@ with Imgproc; use Imgproc;
 with Ada.Characters.Handling;
 
 procedure Bgfg_Codebook is
-   Model     : Cv_BG_Code_Book_Model_P := null;
+   Model     : Cv_Bg_Code_Book_Model_Ptr := null;
    NChannels : constant Integer := 3;
 
    procedure Help is
@@ -23,8 +23,8 @@ procedure Bgfg_Codebook is
    end Help;
 
    Filename  : Unbounded_String := Ada.Strings.Unbounded.Null_Unbounded_String;
-   Raw_Image, Yuv_Image, Imask_Code_Book, Imask_Code_Book_CC : Ipl_Image_P;
-   Capture   : aliased Cv_Capture_P;
+   Raw_Image, Yuv_Image, Imask_Code_Book, Imask_Code_Book_CC : Ipl_Image_Ptr;
+   Capture   : aliased Cv_Capture_Ptr;
    Char      : Character;
    N, Nframes : Integer := 0;
    Nframes_To_Learn_Bg : Integer := 300;
@@ -33,7 +33,7 @@ procedure Bgfg_Codebook is
 
    Pause, Singlestep : Boolean := False;
    Ret       : Integer;
-   Ret_Seq   : Cv_Seq_P; -- ignore
+   Ret_Seq   : Cv_Seq_Ptr; -- ignore
 begin
    Model := Cv_Create_BG_Code_Book_Model;
    Model.all.Mod_Min (1) := 3; Model.all.Mod_Min (2) := 3; Model.all.Mod_Min (3) := 3;

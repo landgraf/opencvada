@@ -32,7 +32,7 @@ package Objdetect is
    -- Types
    -----------------------------------------------------------------------------
    type Cv_Haar_Classifier_Cascade;
-   type Cv_Haar_Classifier_Cascade_P is access all Cv_Haar_Classifier_Cascade;
+   type Cv_Haar_Classifier_Cascade_Ptr is access all Cv_Haar_Classifier_Cascade;
 
    type Haar_Rect is
       record
@@ -48,7 +48,7 @@ package Objdetect is
          Rect   : Haar_Rect_Arr;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Haar_Feature);
-   type Cv_Haar_Feature_P is access all Cv_Haar_Feature;
+   type Cv_Haar_Feature_Ptr is access all Cv_Haar_Feature;
 
    type Cv_Haar_Classifier is
       record
@@ -60,13 +60,13 @@ package Objdetect is
          Alpha       : Cv_32f_Array_P;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Haar_Classifier);
-   type Cv_Haar_Classifier_P is access all Cv_Haar_Classifier;
+   type Cv_Haar_Classifier_Ptr is access all Cv_Haar_Classifier;
 
    type Cv_Haar_Stage_Classifier is
       record
          Count      : Integer;
          Threshold  : Float;
-         Classifier : Cv_Haar_Classifier_P;
+         Classifier : Cv_Haar_Classifier_Ptr;
          Next       : Integer;
          Child      : Integer;
          Parent     : Integer;
@@ -74,7 +74,7 @@ package Objdetect is
    pragma Convention (C_Pass_By_Copy, Cv_Haar_Stage_Classifier);
 
    type Cv_Haar_Stage_Classifier_Arr is array (Integer range <>) of Cv_Haar_Stage_Classifier;
-   type Cv_Haar_Stage_Classifier_Arr_P is access all Cv_Haar_Stage_Classifier_Arr;
+   type Cv_Haar_Stage_Classifier_Arr_Ptr is access all Cv_Haar_Stage_Classifier_Arr;
 
    type Cv_Hid_Haar_Classifier_Cascade is null record;
    pragma Convention (C_Pass_By_Copy, Cv_Hid_Haar_Classifier_Cascade);
@@ -86,7 +86,7 @@ package Objdetect is
          Origwindowsize  : Cv_Size;
          Realwindowsize  : Cv_Size;
          Scale           : Long_Float;
-         Stageclassifier : Cv_Haar_Stage_Classifier_Arr_P;
+         Stageclassifier : Cv_Haar_Stage_Classifier_Arr_Ptr;
          Hidcascade      : Cv_Hid_Haar_Classifier_Cascade;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Haar_Classifier_Cascade);
@@ -102,15 +102,15 @@ package Objdetect is
    --     #define CV_IS_HAAR_CLASSIFIER( haar )                                                    \
    --      ((haar) != NULL &&                                                                   \
    --      (((const CvHaarClassifierCascade*)(haar))->flags & CV_MAGIC_MASK)==CV_HAAR_MAGIC_VAL)
-   function Cv_Is_Haar_Classifier (Haar : Cv_Haar_Classifier_Cascade_P) return Integer;
+   function Cv_Is_Haar_Classifier (Haar : Cv_Haar_Classifier_Cascade_Ptr) return Integer;
 
    -- Loads haar classifier cascade from a directory.
    -- It is obsolete: convert your cascade to xml and use cvLoad instead
    function Cv_Load_Haar_Classifier_Cascade (Directory      : String;
-                                             Origwindowsize : Cv_Size) return Cv_Haar_Classifier_Cascade_P;
+                                             Origwindowsize : Cv_Size) return Cv_Haar_Classifier_Cascade_Ptr;
 
    -- Releases the haar classifier cascade.
-   procedure Cv_Release_Haar_Classifier_Cascade (Cascade : access Cv_Haar_Classifier_Cascade_P);
+   procedure Cv_Release_Haar_Classifier_Cascade (Cascade : access Cv_Haar_Classifier_Cascade_Ptr);
 
    Cv_Haar_Do_Canny_Pruning    : constant := 1;
    Cv_Haar_Scale_Image         : constant := 2;
@@ -118,47 +118,47 @@ package Objdetect is
    Cv_Haar_Do_Rough_Search     : constant := 8;
 
    -- Detects objects in the image.
-   function Cv_Haar_Detect_Objects (Image        : Cv_Arr_P;
-                                    Cascade      : Cv_Haar_Classifier_Cascade_P;
-                                    Storage      : Cv_Mem_Storage_P;
+   function Cv_Haar_Detect_Objects (Image        : Cv_Arr_Ptr;
+                                    Cascade      : Cv_Haar_Classifier_Cascade_Ptr;
+                                    Storage      : Cv_Mem_Storage_Ptr;
                                     Scalefactor  : Long_Float := 1.1;
                                     Minneighbors : Integer := 3;
                                     Flags        : Integer := 0;
-                                    Minsize      : Cv_Size := Cv_Create_Size (0, 0)) return Cv_Seq_P;
-   function Cv_Haar_Detect_Objects (Image        : Cv_Mat_P;
-                                    Cascade      : Cv_Haar_Classifier_Cascade_P;
-                                    Storage      : Cv_Mem_Storage_P;
+                                    Minsize      : Cv_Size := Cv_Create_Size (0, 0)) return Cv_Seq_Ptr;
+   function Cv_Haar_Detect_Objects (Image        : Cv_Mat_Ptr;
+                                    Cascade      : Cv_Haar_Classifier_Cascade_Ptr;
+                                    Storage      : Cv_Mem_Storage_Ptr;
                                     Scalefactor  : Long_Float := 1.1;
                                     Minneighbors : Integer := 3;
                                     Flags        : Integer := 0;
-                                    Minsize      : Cv_Size := Cv_Create_Size (0, 0)) return Cv_Seq_P;
-   function Cv_Haar_Detect_Objects (Image        : Ipl_Image_P;
-                                    Cascade      : Cv_Haar_Classifier_Cascade_P;
-                                    Storage      : Cv_Mem_Storage_P;
+                                    Minsize      : Cv_Size := Cv_Create_Size (0, 0)) return Cv_Seq_Ptr;
+   function Cv_Haar_Detect_Objects (Image        : Ipl_Image_Ptr;
+                                    Cascade      : Cv_Haar_Classifier_Cascade_Ptr;
+                                    Storage      : Cv_Mem_Storage_Ptr;
                                     Scalefactor  : Long_Float := 1.1;
                                     Minneighbors : Integer := 3;
                                     Flags        : Integer := 0;
-                                    Minsize      : Cv_Size := Cv_Create_Size (0, 0)) return Cv_Seq_P;
+                                    Minsize      : Cv_Size := Cv_Create_Size (0, 0)) return Cv_Seq_Ptr;
 
    -- Assigns images to the hidden cascade.
-   procedure Cv_Set_Images_For_Haar_Classifier_Cascade (Cascade   : Cv_Haar_Classifier_Cascade_P;
-                                                        Sum       : Cv_Arr_P;
-                                                        Sqsum     : Cv_Arr_P;
-                                                        Tiltedsum : Cv_Arr_P;
+   procedure Cv_Set_Images_For_Haar_Classifier_Cascade (Cascade   : Cv_Haar_Classifier_Cascade_Ptr;
+                                                        Sum       : Cv_Arr_Ptr;
+                                                        Sqsum     : Cv_Arr_Ptr;
+                                                        Tiltedsum : Cv_Arr_Ptr;
                                                         Scale     : Long_Float);
-   procedure Cv_Set_Images_For_Haar_Classifier_Cascade (Cascade   : Cv_Haar_Classifier_Cascade_P;
-                                                        Sum       : Cv_Mat_P;
-                                                        Sqsum     : Cv_Mat_P;
-                                                        Tiltedsum : Cv_Mat_P;
+   procedure Cv_Set_Images_For_Haar_Classifier_Cascade (Cascade   : Cv_Haar_Classifier_Cascade_Ptr;
+                                                        Sum       : Cv_Mat_Ptr;
+                                                        Sqsum     : Cv_Mat_Ptr;
+                                                        Tiltedsum : Cv_Mat_Ptr;
                                                         Scale     : Long_Float);
-   procedure Cv_Set_Images_For_Haar_Classifier_Cascade (Cascade   : Cv_Haar_Classifier_Cascade_P;
-                                                        Sum       : Ipl_Image_P;
-                                                        Sqsum     : Ipl_Image_P;
-                                                        Tiltedsum : Ipl_Image_P;
+   procedure Cv_Set_Images_For_Haar_Classifier_Cascade (Cascade   : Cv_Haar_Classifier_Cascade_Ptr;
+                                                        Sum       : Ipl_Image_Ptr;
+                                                        Sqsum     : Ipl_Image_Ptr;
+                                                        Tiltedsum : Ipl_Image_Ptr;
                                                         Scale     : Long_Float);
 
    -- Runs a cascade of boosted classifiers at the given image location.
-   function Cv_Run_Haar_Classifier_Cascade (Cascade    : Cv_Haar_Classifier_Cascade_P;
+   function Cv_Run_Haar_Classifier_Cascade (Cascade    : Cv_Haar_Classifier_Cascade_Ptr;
                                             Pt         : Cv_Point;
                                             Startstage : Integer := 0) return Integer;
 
@@ -233,7 +233,7 @@ package Objdetect is
          Score_Threshold  : Float;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Latent_Svm_Detector);
-   type Cv_Latent_Svm_Detector_P is access all Cv_Latent_Svm_Detector;
+   type Cv_Latent_Svm_Detector_Ptr is access all Cv_Latent_Svm_Detector;
 
    -- data type: STRUCT CvObjectDetection
    -- structure contains the bounding box and confidence level for detected object
@@ -245,7 +245,7 @@ package Objdetect is
          Score : Float;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Object_Detection);
-   type Cv_Object_Detection_P is access all Cv_Object_Detection;
+   type Cv_Object_Detection_Ptr is access all Cv_Object_Detection;
 
    -----------------------------------------------------------------------------
    -- Object Detection using Latent SVM
@@ -258,7 +258,7 @@ package Objdetect is
    --						- trained Latent SVM detector
    -- OUTPUT
    -- trained Latent SVM detector in internal representation
-   function Cv_Load_Latent_Svm_Detector (Filename : String) return Cv_Latent_Svm_Detector_P;
+   function Cv_Load_Latent_Svm_Detector (Filename : String) return Cv_Latent_Svm_Detector_Ptr;
 
    -- release memory allocated for CvLatentSvmDetector structure
    -- API
@@ -266,7 +266,7 @@ package Objdetect is
    -- INPUT
    -- detector				- CvLatentSvmDetector structure to be released
    -- OUTPUT
-   procedure Cv_Release_Latent_Svm_Detector (Detector : access Cv_Latent_Svm_Detector_P);
+   procedure Cv_Release_Latent_Svm_Detector (Detector : access Cv_Latent_Svm_Detector_Ptr);
 
    -- find rectangular regions in the given image that are likely
    -- to contain objects and corresponding confidence levels
@@ -285,16 +285,16 @@ package Objdetect is
    -- = 0.5f [Here Will Be The Reference To Original Paper]
    -- OUTPUT
    -- sequence of detected objects (bounding boxes and confidence levels stored in CvObjectDetection structures
-   function Cv_Latent_Svm_Detect_Objects (Image             : Ipl_Image_P;
-                                          Detector          : Cv_Latent_Svm_Detector_P;
-                                          Storage           : Cv_Mem_Storage_P;
-                                          Overlap_Threshold : Float := 0.5) return Cv_Seq_P;
+   function Cv_Latent_Svm_Detect_Objects (Image             : Ipl_Image_Ptr;
+                                          Detector          : Cv_Latent_Svm_Detector_Ptr;
+                                          Storage           : Cv_Mem_Storage_Ptr;
+                                          Overlap_Threshold : Float := 0.5) return Cv_Seq_Ptr;
 private
    -- Wrapper due to String.
    function W_Cv_Load_Haar_Classifier_Cascade (Directory      : String_C;
-                                               Origwindowsize : Cv_Size) return Cv_Haar_Classifier_Cascade_P;
+                                               Origwindowsize : Cv_Size) return Cv_Haar_Classifier_Cascade_Ptr;
 
-   function W_Cv_Load_Latent_Svm_Detector (Filename : String_C) return Cv_Latent_Svm_Detector_P;
+   function W_Cv_Load_Latent_Svm_Detector (Filename : String_C) return Cv_Latent_Svm_Detector_Ptr;
 
    pragma Import (C, W_Cv_Load_Haar_Classifier_Cascade, "cvLoadHaarClassifierCascade");
    pragma Import (C, Cv_Haar_Detect_Objects, "cvHaarDetectObjects");

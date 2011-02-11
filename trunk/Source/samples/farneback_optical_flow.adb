@@ -11,8 +11,8 @@ with Video.Tracking; use Video.Tracking;
 procedure Farneback_Optical_Flow is
 
    function From_Void is new
-     Ada.Unchecked_Conversion (Source => Cv_Void_P,
-                               Target => Cv_Point_2d_32f_P);
+     Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
+                               Target => Cv_Point_2d_32f_Ptr);
 
    procedure Help is
    begin
@@ -21,14 +21,14 @@ procedure Farneback_Optical_Flow is
       Put_Line ("Call: ./farneback_optical_flow");
    end Help;
 
-   procedure Draw_Opt_Flow_Map (Flow       : Cv_Mat_P;
-                                C_Flow_Map : Cv_Mat_P;
+   procedure Draw_Opt_Flow_Map (Flow       : Cv_Mat_Ptr;
+                                C_Flow_Map : Cv_Mat_Ptr;
                                 Step       : Integer;
                                 Scale      : Long_Float;
                                 Color      : Cv_Scalar) is
       X, Y : Integer := 0;
 --        Fxy  : Cv_Point_2d_32f;
-      Fxy_P : Cv_Point_2d_32f_P;
+      Fxy_P : Cv_Point_2d_32f_Ptr;
    begin
       while Y < C_Flow_Map.all.Rows loop
          while X < C_Flow_Map.all.Cols loop
@@ -43,15 +43,15 @@ procedure Farneback_Optical_Flow is
       end loop;
    end Draw_Opt_Flow_Map;
 
-   Capture   : aliased Cv_Capture_P := Cv_Create_Camera_Capture (0);
-   Prev_Gray : Cv_Mat_P := null;
-   Gray      : Cv_Mat_P := null;
-   Flow      : Cv_Mat_P := null;
-   C_Flow    : Cv_Mat_P := null;
-   Temp      : Cv_Mat_P := null;
+   Capture   : aliased Cv_Capture_Ptr := Cv_Create_Camera_Capture (0);
+   Prev_Gray : Cv_Mat_Ptr := null;
+   Gray      : Cv_Mat_Ptr := null;
+   Flow      : Cv_Mat_Ptr := null;
+   C_Flow    : Cv_Mat_Ptr := null;
+   Temp      : Cv_Mat_Ptr := null;
 
    First_Frame : Integer := 0;
-   Frame       : Ipl_Image_P;
+   Frame       : Ipl_Image_Ptr;
    Ret         : Integer := 0;
 begin
    Help;

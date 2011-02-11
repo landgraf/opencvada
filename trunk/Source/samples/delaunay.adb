@@ -37,9 +37,9 @@ procedure Delaunay is
       New_Line;
    end Help;
 
-   function Init_Delaunay (Storage : Cv_Mem_Storage_P;
-                           Rect    : Cv_Rect) return Cv_Subdiv_2D_P is
-      Subdiv : constant Cv_Subdiv_2d_P := Cv_Create_Subdiv_2d (Cv_Seq_Kind_Subdiv2d,
+   function Init_Delaunay (Storage : Cv_Mem_Storage_Ptr;
+                           Rect    : Cv_Rect) return Cv_Subdiv_2d_Ptr is
+      Subdiv : constant Cv_Subdiv_2d_Ptr := Cv_Create_Subdiv_2d (Cv_Seq_Kind_Subdiv2d,
                                                             Cv_Subdiv_2d'Size / 8,
                                                             Cv_Subdiv_2d_Point'Size / 8,
                                                             Cv_Quad_Edge_2d'Size / 8,
@@ -49,17 +49,17 @@ procedure Delaunay is
       return Subdiv;
    end Init_Delaunay;
 
-   procedure Draw_Subdiv_Point (Img : Ipl_Image_P;
+   procedure Draw_Subdiv_Point (Img : Ipl_Image_Ptr;
                                 Fp  : Cv_Point_2d_32f;
                                 Color : Cv_Scalar) is
    begin
       Cv_Circle (+Img, Cv_Create_Point (Cv_Round (Long_Float (Fp.X)), Cv_Round (Long_Float (Fp.Y))), 3, Color, Cv_Filled, 8, 0);
    end Draw_Subdiv_Point;
 
-   procedure Draw_Subdiv_Edge (Img : Ipl_Image_P;
+   procedure Draw_Subdiv_Edge (Img : Ipl_Image_Ptr;
                                Edge : Cv_Subdiv_2d_Edge;
                                Color : Cv_Scalar) is
-      Org_Pt, Dst_Pt : Cv_Subdiv_2d_Point_P;
+      Org_Pt, Dst_Pt : Cv_Subdiv_2d_Point_Ptr;
       Org, Dst       : Cv_Point_2d_32F;
       Iorg, Idst     : Cv_Point;
    begin
@@ -84,27 +84,28 @@ procedure Delaunay is
       end if;
    end Draw_Subdiv_Edge;
 
-   procedure Draw_Subdiv (Img : Ipl_Image_P;
-                          Subdiv : Cv_Subdiv_2d_P;
+   procedure Draw_Subdiv (Img : Ipl_Image_Ptr;
+                          Subdiv : Cv_Subdiv_2d_Ptr;
                           Delaunay_Color : Cv_Scalar;
                           Voronoi_Color  : Cv_Scalar) is
       Reader : aliased Cv_Seq_Reader;
       Total  : constant Integer := Subdiv.all.Edges.all.Total;
       Elem_Size : constant Integer := Subdiv.all.Edges.all.Elem_Size;
-      Edge      : Cv_Quad_Edge_2d_P := null;
+      Edge      : Cv_Quad_Edge_2d_Ptr := null;
 
       ---------
       -- Conversions
       ---------
       function From_Arr is
         new Ada.Unchecked_Conversion (Source => Cv_Arr_Pointer,
-                                      Target => Imgproc.Cv_Quad_Edge_2d_P);
+                                      Target => Imgproc.Cv_Quad_Edge_2d_Ptr);
 
       function Quad_To_Subdiv is
-        new Ada.Unchecked_Conversion (Source => Cv_Quad_Edge_2d_P,
+        new Ada.Unchecked_Conversion (Source => Cv_Quad_Edge_2d_Ptr,
                                       Target => Cv_Subdiv_2d_Edge);
 --        Temp      : Cv_Arr_Pointer;
-      Edge1     : Cv_Quad_Edge_2d_P;
+      Edge1     : Cv_Quad_Edge_2d_Ptr;
+      use Core.Cv_Arr_Pointer_Pkg;
    begin
       Cv_Start_Read_Seq (To_Seq (Subdiv.all.Edges), Reader'Unchecked_Access, 0);
 
@@ -125,13 +126,13 @@ procedure Delaunay is
       end loop;
    end Draw_Subdiv;
 
-   procedure Locate_Point (Subdiv       : Cv_Subdiv_2D_P;
+   procedure Locate_Point (Subdiv       : Cv_Subdiv_2d_Ptr;
                            Fp           : Cv_Point_2d_32F;
-                           Img          : Ipl_Image_P;
+                           Img          : Ipl_Image_Ptr;
                            Active_Color : Cv_Scalar) is
       E  : aliased Cv_Subdiv_2d_Edge;
       E0 : aliased Cv_Subdiv_2d_Edge := 0;
-      P  : aliased Cv_Subdiv_2d_Point_P := null;
+      P  : aliased Cv_Subdiv_2d_Point_Ptr := null;
       Ret : Cv_Subdiv_2D_Point_Location;
    begin
       Ret := Cv_Subdiv_2d_Locate (Subdiv, Fp, E0'Unchecked_Access, P'Access);
@@ -146,7 +147,7 @@ procedure Delaunay is
       Draw_Subdiv_Point (Img, Fp, Active_Color);
    end Locate_Point;
 
-   procedure Draw_Subdiv_Facet (Img  : Ipl_Image_P;
+   procedure Draw_Subdiv_Facet (Img  : Ipl_Image_Ptr;
                                 Edge : Cv_Subdiv_2d_Edge) is
       T : Cv_Subdiv_2D_Edge := Edge;
 
@@ -168,7 +169,7 @@ procedure Delaunay is
       Buf   : aliased Cv_Point_Array (0 .. Count - 1);
       Buf_2d : Cv_Point_Pointer_Array (0 .. 0);
       N : Integer;
-      Pt : Cv_Subdiv_2d_Point_P;
+      Pt : Cv_Subdiv_2d_Point_Ptr;
    begin
       T := Edge;
       for I in Integer range Buf'Range
@@ -190,22 +191,22 @@ procedure Delaunay is
       end if;
    end Draw_Subdiv_Facet;
 
-   procedure Paint_Voronoi (Subdiv : Cv_Subdiv_2d_P;
-                            Img    : Ipl_Image_P) is
+   procedure Paint_Voronoi (Subdiv : Cv_Subdiv_2d_Ptr;
+                            Img    : Ipl_Image_Ptr) is
       Reader : aliased Cv_Seq_Reader;
       Total  : constant Integer := Subdiv.all.Edges.all.Total;
       Elem_Size : constant Integer := Subdiv.all.Edges.all.Elem_Size;
 
-      Edge      : Cv_Quad_Edge_2d_P;
+      Edge      : Cv_Quad_Edge_2d_Ptr;
       E         : Cv_Subdiv_2d_Edge;
 
       function Quad_To_Subdiv is
-        new Ada.Unchecked_Conversion (Source => Cv_Quad_Edge_2d_P,
+        new Ada.Unchecked_Conversion (Source => Cv_Quad_Edge_2d_Ptr,
                                       Target => Cv_Subdiv_2d_Edge);
 
       function From_Arr is
         new Ada.Unchecked_Conversion (Source => Cv_Arr_Pointer,
-                                      Target => Imgproc.Cv_Quad_Edge_2d_P);
+                                      Target => Imgproc.Cv_Quad_Edge_2d_Ptr);
 
    begin
       Cv_Calc_Subdiv_Voronoi_2d (Subdiv);
@@ -230,14 +231,14 @@ procedure Delaunay is
    procedure Run is
       Win                                                            : constant String := "Source";
       Rect                                                           : constant Cv_Rect := (0, 0, 600, 600);
-      Storage                                                        : aliased Cv_Mem_Storage_P;
-      Subdiv                                                         : Cv_Subdiv_2d_P;
-      Img                                                            : aliased Ipl_Image_P;
+      Storage                                                        : aliased Cv_Mem_Storage_Ptr;
+      Subdiv                                                         : Cv_Subdiv_2d_Ptr;
+      Img                                                            : aliased Ipl_Image_Ptr;
       Active_Facet_Color, Delaunay_Color, Voronoi_Color, Bkgnd_Color : Cv_Scalar;
 
 
       Ret : Integer;
-      S_Ret : Cv_Subdiv_2D_Point_P;
+      S_Ret : Cv_Subdiv_2d_Point_Ptr;
       Fp : Cv_Point_2d_32f;
    begin
       Reset (G);

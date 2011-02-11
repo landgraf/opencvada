@@ -31,19 +31,19 @@ procedure Motempl is
    Last           : Integer := 0;
 
    -- temp images
-   Mhi, Orient, Mask, Segmask : aliased Ipl_Image_P := null;
-   Storage        : Cv_Mem_Storage_P := null;
+   Mhi, Orient, Mask, Segmask : aliased Ipl_Image_Ptr := null;
+   Storage        : Cv_Mem_Storage_Ptr := null;
 
-   procedure Update_Mhi (Img            : Ipl_Image_P;
-                         Dst            : Ipl_Image_P;
+   procedure Update_Mhi (Img            : Ipl_Image_Ptr;
+                         Dst            : Ipl_Image_Ptr;
                          Diff_Threshold : Long_Float) is
       Local_Time : constant Ada.Calendar.Time := Ada.Calendar.Clock;
       Timestamp  : constant Long_Float := Long_Float (Ada.Calendar.Seconds (Local_Time));
       Size       : constant Cv_Size := Cv_Create_Size (Img.all.Width, Img.all.Height);
       Idx2       : Integer;
       Idx1       : constant Integer := Last;
-      Silh       : Ipl_Image_P;
-      Seq        : Cv_Seq_P;
+      Silh       : Ipl_Image_Ptr;
+      Seq        : Cv_Seq_Ptr;
       Comp_Rect  : Cv_Rect;
       Count      : Long_Float;
       Angle      : Long_Float;
@@ -143,9 +143,9 @@ procedure Motempl is
          end if;
       end loop;
    end Update_Mhi;
-   Motion         : aliased Ipl_Image_P := null;
-   Capture        : aliased Cv_Capture_P;
-   Image          : Ipl_Image_P := null;
+   Motion         : aliased Ipl_Image_Ptr := null;
+   Capture        : aliased Cv_Capture_Ptr;
+   Image          : Ipl_Image_Ptr := null;
 
    Ret            : Integer;
 begin

@@ -22,9 +22,9 @@ procedure Polar_Transforms is
       New_Line;
    end Help;
 
-   Capture : aliased Cv_Capture_P := null;
-   Log_Polar_Img, Lin_Polar_Img, Recovered_Img : Ipl_Image_P := null;
-   Frame : Ipl_Image_P;
+   Capture : aliased Cv_Capture_Ptr := null;
+   Log_Polar_Img, Lin_Polar_Img, Recovered_Img : Ipl_Image_Ptr := null;
+   Frame : Ipl_Image_Ptr;
    Temp : Integer;
    Center : aliased Cv_Point_2D_32F;
 begin

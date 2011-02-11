@@ -14,15 +14,15 @@ procedure Contours is
 --     W        : constant := 500;
    Size     : constant Cv_Size := Cv_Create_Size (500, 500);
    Levels   : aliased Integer := 3;
-   Contours : aliased Cv_Seq_P := null;
+   Contours : aliased Cv_Seq_Ptr := null;
 
    procedure On_Trackbar (Position : Integer);
    pragma Convention (C, On_Trackbar);
 
    procedure On_Trackbar (Position : Integer) is
 
-      Cnt_Img        : aliased Ipl_Image_P := Cv_Create_Image (Size, 8, 3);
-      Contours_Local : Cv_Seq_P := Contours;
+      Cnt_Img        : aliased Ipl_Image_Ptr := Cv_Create_Image (Size, 8, 3);
+      Contours_Local : Cv_Seq_Ptr := Contours;
       Levels_Local   : constant Integer := Levels - 3;
    begin
       if Levels_Local <= 0 then
@@ -37,8 +37,8 @@ procedure Contours is
    end On_Trackbar;
 
 
-   Storage  : aliased Cv_Mem_Storage_P := Cv_Create_Mem_Storage (0);
-   Img      : aliased Ipl_Image_P := Cv_Create_Image (Size, 8, 1);
+   Storage  : aliased Cv_Mem_Storage_Ptr := Cv_Create_Mem_Storage (0);
+   Img      : aliased Ipl_Image_Ptr := Cv_Create_Image (Size, 8, 1);
 
    Dx, Dy   : Long_Float;
    White, Black : Cv_Scalar;
@@ -49,10 +49,10 @@ procedure Contours is
    Attrs    : Cv_String_Array (0 .. 2) := (New_String ("recursive"), New_String ("1"), Null_Ptr);
 
    function Cv_Load_Seq (Filename  : String_C;
-                       Storage   : Cv_Mem_Storage_P := null;
+                       Storage   : Cv_Mem_Storage_Ptr := null;
                        Name      : Interfaces.C.Strings.Chars_Ptr := Null_Ptr;
                        Real_Name : Interfaces.C.Strings.Chars_Ptr := Null_Ptr)
-                          return Cv_Seq_P;
+                          return Cv_Seq_Ptr;
    pragma Import (C, Cv_Load_Seq, "cvLoad");
 begin
    Cv_Zero (+Img);
