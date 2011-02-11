@@ -194,8 +194,7 @@ package Core is
 
    package Cv_Arr_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Cv_Arr_P, Cv_Arr_P_Array, null);
-   subtype C_Cv_Arr_P_Ptr is Cv_Arr_Pointer_Pkg.Pointer;
-   type Cv_Arr_Pointer is new C_Cv_Arr_P_Ptr;
+   subtype Cv_Arr_Pointer is new Cv_Arr_Pointer_Pkg.Pointer;
 
 
    type Suf is (S, U, F);
@@ -1010,9 +1009,9 @@ package Core is
    type Cv_Set_Elem_Array is array (Integer range <>) of aliased Cv_Set_Elem;
    Cv_Set_Elem_Dummy : Cv_Set_Elem;
 
-   package C_Set_Elem_Pointer_Ptr is
+   package C_Set_Elem_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Cv_Set_Elem, Cv_Set_Elem_Array, Cv_Set_Elem_Dummy);
-   subtype Cv_Set_Elem_Pointer is C_Set_Elem_Pointer_Ptr.Pointer;
+   subtype Cv_Set_Elem_Pointer is C_Set_Elem_Pointer_Pkg.Pointer;
 
    type Cv_Set is record
       Flags        : Integer;
@@ -1037,9 +1036,9 @@ package Core is
    type Cv_Set_Array is array (Integer range <>) of aliased Cv_Set;
    Cv_Set_Dummy : Cv_Set;
 
-   package C_Set_Pointer_Ptr is
+   package C_Set_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Cv_Set, Cv_Set_Array, Cv_Set_Dummy);
-   subtype Cv_Set_Pointer is C_Set_Pointer_Ptr.Pointer;
+   subtype Cv_Set_Pointer is C_Set_Pointer_Pkg.Pointer;
 
    Cv_Set_Elem_Idx_Mask : constant := (16#4000000# - 1);
    Cv_Set_Elem_Free_Flag : constant := 16#80000000#;
@@ -1419,7 +1418,7 @@ package Core is
    type Cv_Type_Info_P is access all cv_Type_Info;
 
 
-   type Cv_Is_Instance_Func is access function (Struct_Ptr : Cv_Void_P)
+   type Cv_Is_Instance_Func is access function (Struct_Pointer : Cv_Void_P)
                                                 return Integer;
    pragma Convention (C, Cv_Is_Instance_Func);
 
@@ -1437,7 +1436,7 @@ package Core is
                                            Attributes : Cv_Attr_List);
    pragma Convention (C, Cv_Write_Proc);
 
-   type Cv_Clone_Func is access function (Struct_Ptr : Cv_Void_P)
+   type Cv_Clone_Func is access function (Struct_Pointer : Cv_Void_P)
                                           return Cv_Void_P;
    pragma Convention (C, Cv_Clone_Func);
 
@@ -1818,15 +1817,13 @@ package Core is
    type Cv_Size_P_Array is array (Integer range <>) of aliased Cv_Size_P;
 
 
-   package C_Mat_P_Pointer_Ptr is
+   package C_Mat_P_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Cv_Mat_P, Cv_Mat_P_Array, null);
-   use type C_Mat_P_Pointer_Ptr.Pointer;
-   subtype Cv_Mat_P_Pointer is C_Mat_P_Pointer_Ptr.Pointer;
+   subtype Cv_Mat_P_Pointer is C_Mat_P_Pointer_Pkg.Pointer;
 
-   package C_Size_Pointer_Ptr is
+   package C_Size_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Cv_Size, Cv_Size_Array, (0, 0));
-   use type C_Size_Pointer_Ptr.Pointer;
-   subtype Cv_Size_Pointer is C_Size_Pointer_Ptr.Pointer;
+   subtype Cv_Size_Pointer is C_Size_Pointer_Pkg.Pointer;
 
    function Cv_Mat_Elem (Mat       : Cv_Mat_P;
                          Elem_Size : Integer;

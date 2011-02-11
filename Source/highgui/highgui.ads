@@ -33,7 +33,6 @@ package Highgui is
    -- Ada stuff
    ---------
    type Cv_Capture is null record;
-   pragma Convention (C_Pass_By_Copy, Cv_Capture);
    type Cv_Capture_P is access all Cv_Capture;
 
    type Compression_Type is new Integer;
@@ -440,7 +439,7 @@ package Highgui is
                                      Value       : Float) return Integer;
 
    -- Return the type of the capturer (eg, CV_CAP_V4W, CV_CAP_UNICAP), which is unknown if created with CV_CAP_ANY
-   function Cv_Get_Capture_Domain (Capture : Cv_Capture) return Cv_Cap;
+   function Cv_Get_Capture_Domain (Capture : Cv_Capture_P) return Cv_Cap;
 
    -- "black box" video file writer structure
    type Cv_Video_Writer is null record;

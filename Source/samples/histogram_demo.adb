@@ -36,6 +36,7 @@ procedure Histogram_Demo is
 
    -- hsv images
    Hist_Image, Hist_Image_2 , H, S, V, Hsv : aliased Ipl_Image_P;
+   Arr_Hsv : Core.Ipl_Image_P_Array := (H, S, V);
    Target  : aliased Ipl_Image_P := Highgui.Cv_Load_Image ("target.jpg");
 
    -- float
@@ -62,12 +63,13 @@ procedure Histogram_Demo is
       V       : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image ((Image.all.Width,
                                                                         Image.all.Height),
                                                                         Image.all.Depth,
-                                                                        1);
+        1);
+      Arr_Hsv : Core.Ipl_Image_P_Array := (H, S, V);
    begin
               Put_Line ("doing histogram{");
       Imgproc.Operations.Cv_Cvt_Color (+Image, +Hsv, Imgproc.CV_BGR2HSV);
       Core.Operations.Cv_Split (+Hsv, +H, +S, +V, null);
-      Imgproc.Operations.Cv_Calc_Hist ((+H, +S, +V), Hist);
+      Imgproc.Operations.Cv_Calc_Hist (Arr_Hsv, Hist);
               Put_Line ("}done histogram");
       Core.Operations.Cv_Release_Image (Hsv'Access);
       Core.Operations.Cv_Release_Image (H'Access);
@@ -116,7 +118,7 @@ begin
 
       Hist := Get_Hist (Image);
 
-      Imgproc.Operations.Cv_Calc_Back_Project ((+H, +S, +V), +Hist_Image, Target_Hist);
+      Imgproc.Operations.Cv_Calc_Back_Project (Arr_Hsv, +Hist_Image, Target_Hist);
 
       if Cv_Is_Hist (Hist) <= 0 then
          return;
