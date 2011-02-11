@@ -371,17 +371,17 @@ package Video.Tracking is
          Dp                     : Integer;
          Cp                     : Integer;
          --/* backward compatibility fields
-         Posterstate            : Cv_32f_Array_P;
-         Priorstate             : Cv_32f_Array_P;
-         Dynammatr              : Cv_32f_Array_P;
-         Measurementmatr        : Cv_32f_Array_P;
-         Mncovariance           : Cv_32f_Array_P;
-         Pncovariance           : Cv_32f_Array_P;
-         Kalmgainmatr           : Cv_32f_Array_P;
-         Priorerrorcovariance   : Cv_32f_Array_P;
-         Postererrorcovariance  : Cv_32f_Array_P;
-         Temp_1                 : Cv_32f_Array_P;
-         Temp_2                 : Cv_32f_Array_P;
+         Posterstate            : Cv_32f_Array_Ptr;
+         Priorstate             : Cv_32f_Array_Ptr;
+         Dynammatr              : Cv_32f_Array_Ptr;
+         Measurementmatr        : Cv_32f_Array_Ptr;
+         Mncovariance           : Cv_32f_Array_Ptr;
+         Pncovariance           : Cv_32f_Array_Ptr;
+         Kalmgainmatr           : Cv_32f_Array_Ptr;
+         Priorerrorcovariance   : Cv_32f_Array_Ptr;
+         Postererrorcovariance  : Cv_32f_Array_Ptr;
+         Temp_1                 : Cv_32f_Array_Ptr;
+         Temp_2                 : Cv_32f_Array_Ptr;
          --*/
          Statepre               : Cv_Mat_Ptr;
          Statepost              : Cv_Mat_Ptr;

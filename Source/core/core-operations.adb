@@ -127,7 +127,7 @@ package body Core.Operations is
    end Cv_Mem_Storage_Alloc_String;
 
    -- Returns the index of a graph vertex.
-   function Cv_Graph_Vtx_Idx (Graph : Cv_Graph_P;
+   function Cv_Graph_Vtx_Idx (Graph : Cv_Graph_Ptr;
                               Vtx   : Cv_Graph_Vtx_Ptr) return Integer is
       pragma Unreferenced (Graph);
    begin
@@ -135,7 +135,7 @@ package body Core.Operations is
    end Cv_Graph_Vtx_Idx;
 
    -- Returns the index of a graph edge.
-   function Cv_Graph_Edge_Idx (Graph : Cv_Graph_P;
+   function Cv_Graph_Edge_Idx (Graph : Cv_Graph_Ptr;
                                Edge  : Cv_Graph_Edge_Ptr) return Integer is
       pragma Unreferenced (Graph);
    begin
@@ -143,13 +143,13 @@ package body Core.Operations is
    end Cv_Graph_Edge_Idx;
 
    --#define cvGraphGetVtxCount( graph ) ((graph)->active_count)
-   function Cv_Graph_Get_Vtx_Count (Graph : Cv_Graph_P) return Integer is
+   function Cv_Graph_Get_Vtx_Count (Graph : Cv_Graph_Ptr) return Integer is
    begin
       return Graph.all.Active_Count;
    end Cv_Graph_Get_Vtx_Count;
 
    --#define cvGraphGetEdgeCount( graph ) ((graph)->edges->active_count)
-   function Cv_Graph_Get_Edge_Count (Graph : Cv_Graph_P) return Integer is
+   function Cv_Graph_Get_Edge_Count (Graph : Cv_Graph_Ptr) return Integer is
    begin
       return Graph.all.Edges.all.Active_Count;
    end Cv_Graph_Get_Edge_Count;
