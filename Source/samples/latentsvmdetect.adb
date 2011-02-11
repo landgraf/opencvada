@@ -26,10 +26,10 @@ procedure Latentsvmdetect is
       null;
    end Help;
 
-   procedure Detect_And_Draw_Objects (Image : Ipl_Image_P;
-                                      Detector : Cv_Latent_Svm_Detector_P) is
-      Storage : aliased Cv_Mem_Storage_P := Cv_Create_Mem_Storage (0);
-      Detections : Cv_Seq_P := null;
+   procedure Detect_And_Draw_Objects (Image : Ipl_Image_Ptr;
+                                      Detector : Cv_Latent_Svm_Detector_Ptr) is
+      Storage : aliased Cv_Mem_Storage_Ptr := Cv_Create_Mem_Storage (0);
+      Detections : Cv_Seq_Ptr := null;
       I          : Integer := 0;
       Start, Finish : Time;
       Detection     : Cv_Object_Detection;
@@ -37,8 +37,8 @@ procedure Latentsvmdetect is
 
 
       function From_Void is
-        new Ada.Unchecked_Conversion (Source => Cv_Void_P,
-                                      Target => Cv_Object_Detection_P);
+        new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
+                                      Target => Cv_Object_Detection_Ptr);
 
    begin
       Start := Ada.Real_Time.Clock;
@@ -57,8 +57,8 @@ procedure Latentsvmdetect is
       end loop;
       Cv_Release_Mem_Storage (Storage'Access);
    end Detect_And_Draw_Objects;
-   Image          : aliased Ipl_Image_P;
-   Detector       : aliased Cv_Latent_Svm_Detector_P;
+   Image          : aliased Ipl_Image_Ptr;
+   Detector       : aliased Cv_Latent_Svm_Detector_Ptr;
    Ret            : Integer;
 begin
    if Ada.Command_Line.Argument_Count = 2 then

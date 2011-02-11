@@ -9,8 +9,8 @@ with Ada.Command_Line;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 procedure Morphology is
-   Src, Dst      : aliased Ipl_Image_P := null;
-   Element       : aliased Ipl_Conv_Kernel_P := null;
+   Src, Dst      : aliased Ipl_Image_Ptr := null;
+   Element       : aliased Ipl_Conv_Kernel_Ptr := null;
    Element_Shape : Structuring_Shape := CV_SHAPE_RECT;
 
    Max_Iters     : constant Integer := 10;

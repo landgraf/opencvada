@@ -39,30 +39,30 @@ package Legacy is
 
    --------------------------------------------------------------------------------
 
-   function Cv_Segment_Image (Src             : Cv_Arr_P;
-                              Dst             : Cv_Arr_P;
+   function Cv_Segment_Image (Src             : Cv_Arr_Ptr;
+                              Dst             : Cv_Arr_Ptr;
                               Canny_Threshold : Long_Float;
                               Ffill_Threshold : Long_Float;
                               Storage         : Cv_Mem_Storage)
-                              return Cv_Seq_P;
-   function Cv_Segment_Image (Src             : Cv_Mat_P;
-                              Dst             : Cv_Mat_P;
+                              return Cv_Seq_Ptr;
+   function Cv_Segment_Image (Src             : Cv_Mat_Ptr;
+                              Dst             : Cv_Mat_Ptr;
                               Canny_Threshold : Long_Float;
                               Ffill_Threshold : Long_Float;
                               Storage         : Cv_Mem_Storage)
-                              return Cv_Seq_P;
-   function Cv_Segment_Image (Src             : Ipl_Image_P;
-                              Dst             : Ipl_Image_P;
+                              return Cv_Seq_Ptr;
+   function Cv_Segment_Image (Src             : Ipl_Image_Ptr;
+                              Dst             : Ipl_Image_Ptr;
                               Canny_Threshold : Long_Float;
                               Ffill_Threshold : Long_Float;
                               Storage         : Cv_Mem_Storage)
-                              return Cv_Seq_P;
+                              return Cv_Seq_Ptr;
    -----------------------------------------------------------------------------
    -- Eigen objects ------------------------------------------------------------
    -----------------------------------------------------------------------------
    type Cv_Callback is access function (Index     : Integer;
-                                        Buffer    : Cv_Void_P;
-                                        User_Data : Cv_Void_P)
+                                        Buffer    : Cv_Void_Ptr;
+                                        User_Data : Cv_Void_Ptr)
                                         return Integer;
    pragma Convention (C, Cv_Callback);
 
@@ -72,7 +72,7 @@ package Legacy is
          when Callback =>
             Callback : Cv_Callback;
          when Data =>
-            Data     : Cv_Void_P;
+            Data     : Cv_Void_Ptr;
       end case;
    end record;
    pragma Unchecked_Union (Cv_Input);
@@ -85,49 +85,49 @@ package Legacy is
 
    --     Calculates covariation matrix of a set of arrays
    procedure Cv_Calc_Covar_Matrix_Ex (N_Objects    : Integer;
-                                      Input        : Cv_Void_P;
+                                      Input        : Cv_Void_Ptr;
                                       Io_Flags     : Integer;
                                       Io_Buf_Size  : Integer;
                                       Buffer       : Cv_8u_Array;
-                                      User_Data    : Cv_Void_P;
-                                      Avg          : Ipl_Image_P;
+                                      User_Data    : Cv_Void_Ptr;
+                                      Avg          : Ipl_Image_Ptr;
                                       Covar_Matrix : Cv_32f_Array);
 
    --     Calculates eigen values and vectors of covariation matrix of a set of
    --     arrays
    procedure Cv_Calc_Eigen_Objects (N_Objects   : Integer;
-                                    Input       : Cv_Void_P;
-                                    Output      : Cv_Void_P;
+                                    Input       : Cv_Void_Ptr;
+                                    Output      : Cv_Void_Ptr;
                                     Io_Flags    : Integer;
                                     Op_Buf_Size : Integer;
-                                    User_Data   : Cv_Void_P;
+                                    User_Data   : Cv_Void_Ptr;
                                     Calc_Limit  : Cv_Term_Criteria_P;
-                                    Avg         : Ipl_Image_P;
+                                    Avg         : Ipl_Image_Ptr;
                                     Eig_Vals    : Cv_32f_Array);
    --     Calculates dot product (obj - avg) * eigObj (i.e. projects image to
    --     eigen vector)
-   function Cv_Calc_Decomp_Coeff (Obj        : Ipl_Image_P;
+   function Cv_Calc_Decomp_Coeff (Obj        : Ipl_Image_Ptr;
                                   N_Eig_Objs : Integer;
-                                  Avg        : Ipl_Image_P)
+                                  Avg        : Ipl_Image_Ptr)
                                   return Long_Float;
 
    --     Projects image to eigen space (finds all decomposion coefficients
-   procedure Cv_Eigen_Decomposite (Obj        : Ipl_Image_P;
+   procedure Cv_Eigen_Decomposite (Obj        : Ipl_Image_Ptr;
                                    N_Eig_Objs : Integer;
-                                   Eig_Input  : Cv_Void_P;
+                                   Eig_Input  : Cv_Void_Ptr;
                                    Io_Flags   : Integer;
-                                   User_Data  : Cv_Void_P;
-                                   Avg        : Ipl_Image_P;
+                                   User_Data  : Cv_Void_Ptr;
+                                   Avg        : Ipl_Image_Ptr;
                                    Eig_Vals   : Cv_32f_Array);
 
    --     Projects original objects used to calculate eigen space basis to that
    --     space
-   procedure Cv_Eigen_Projection (Eig_Input  : Cv_Void_P;
+   procedure Cv_Eigen_Projection (Eig_Input  : Cv_Void_Ptr;
                                   N_Eig_Objs : Integer;
                                   Io_Flags   : Integer;
-                                  User_Data  : Cv_Void_P;
+                                  User_Data  : Cv_Void_Ptr;
                                   Coeffs     : Cv_32f_Array;
-                                  Avg        : Ipl_Image_P;
+                                  Avg        : Ipl_Image_Ptr;
                                   Eig_Vals   : Cv_32f_Array);
 
    -- 1D/2D HMM ----------------------------------------------------------------
@@ -146,10 +146,10 @@ package Legacy is
    type Cv_1d_Obs_Info is new Cv_Img_Obs_Info;
    pragma Convention (C_Pass_By_Copy, Cv_1d_Obs_Info);
 
-   type Cv_Img_Obs_Info_P is access all Cv_Img_Obs_Info;
-   type Cv_1d_Obs_Info_P is access all Cv_1d_Obs_Info;
+   type Cv_Img_Obs_Info_Ptr is access all Cv_Img_Obs_Info;
+   type Cv_1d_Obs_Info_Ptr is access all Cv_1d_Obs_Info;
 
-   type Cv_Img_Obs_Info_P_Array is array (Integer range <>) of aliased Cv_Img_Obs_Info_P;
+   type Cv_Img_Obs_Info_P_Array is array (Integer range <>) of aliased Cv_Img_Obs_Info_Ptr;
 
    -- Cv_EHMM_State ------------------------------------------------------------
    type Cv_Ehmm_State is record
@@ -160,19 +160,19 @@ package Legacy is
       Weight      : Cv_32f_Array_P;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Ehmm_State);
-   type Cv_Ehmm_State_P is access all Cv_Ehmm_State;
+   type Cv_Ehmm_State_Ptr is access all Cv_Ehmm_State;
 
    -- Cv_EHMM ------------------------------------------------------------------
    type Cv_Ehmm;
-   type Cv_Ehmm_P is access all Cv_Ehmm;
+   type Cv_Ehmm_Ptr is access all Cv_Ehmm;
 
    type Cv_Ehmm_Union_Type is (State, Ehmm);
    type Cv_Ehmm_Union (Union_Type : Cv_Ehmm_Union_Type := State) is record
       case Union_Type is
          when State =>
-            State : Cv_Ehmm_State_P;
+            State : Cv_Ehmm_State_Ptr;
          when Ehmm =>
-            Ehmm  : Cv_Ehmm_P;
+            Ehmm  : Cv_Ehmm_Ptr;
       end case;
    end record;
    pragma Unchecked_Union (Cv_Ehmm_Union);
@@ -192,10 +192,10 @@ package Legacy is
    function Cv_Create_2d_Hmm (State_Number : Cv_32s_Array;
                               Num_Mix      : Cv_32s_Array;
                               Obs_Size     : Integer)
-                              return Cv_Ehmm_P;
+                              return Cv_Ehmm_Ptr;
 
    --     Releases HMM
-   procedure Cv_Release_2d_Hmm (Hmm : access Cv_Ehmm_P);
+   procedure Cv_Release_2d_Hmm (Hmm : access Cv_Ehmm_Ptr);
 
    procedure Cv_Count_Obs (Roi       : Cv_Size;
                            Win       : Cv_Size;
@@ -205,59 +205,59 @@ package Legacy is
    --     Creates storage for observation vectors
    function Cv_Create_Obs_Info (Num_Obs  : Cv_Size;
                                 Obs_Size : Integer)
-                                return Cv_Img_Obs_Info_P;
+                                return Cv_Img_Obs_Info_Ptr;
 
    --     Releases storage for observation vectors
-   procedure Cv_Release_Obs_Info (Obs_Info : access Cv_Img_Obs_Info_P);
+   procedure Cv_Release_Obs_Info (Obs_Info : access Cv_Img_Obs_Info_Ptr);
 
    --     The function takes an image on input and and returns the sequnce of
    --     Observations to be used with an embedded HMM; Each observation is
    --     top-left block of DCT coefficient matrix
-   procedure Cv_Img_To_Obs_Dct (Arr        : Cv_Arr_P;
+   procedure Cv_Img_To_Obs_Dct (Arr        : Cv_Arr_Ptr;
                                 Obs        : Cv_32f_Array;
                                 Dct_Size   : Cv_Size;
                                 Obs_Size   : Cv_Size;
                                 Delta_Size : Cv_Size);
-   procedure Cv_Img_To_Obs_Dct (Arr        : Cv_Mat_P;
+   procedure Cv_Img_To_Obs_Dct (Arr        : Cv_Mat_Ptr;
                                 Obs        : Cv_32f_Array;
                                 Dct_Size   : Cv_Size;
                                 Obs_Size   : Cv_Size;
                                 Delta_Size : Cv_Size);
-   procedure Cv_Img_To_Obs_Dct (Arr        : Ipl_Image_P;
+   procedure Cv_Img_To_Obs_Dct (Arr        : Ipl_Image_Ptr;
                                 Obs        : Cv_32f_Array;
                                 Dct_Size   : Cv_Size;
                                 Obs_Size   : Cv_Size;
                                 Delta_Size : Cv_Size);
 
    --     Uniformly segments all observation vectors extracted from image
-   procedure Cv_Uniform_Img_Segm (Obs_Info : Cv_Img_Obs_Info_P;
-                                  Ehmm     : Cv_Ehmm_P);
+   procedure Cv_Uniform_Img_Segm (Obs_Info : Cv_Img_Obs_Info_Ptr;
+                                  Ehmm     : Cv_Ehmm_Ptr);
 
    --     Does mixture segmentation of the states of embedded HMM
    procedure Cv_Init_Mix_Segm (Obs_Info_Array : Cv_Img_Obs_Info_P_Array;
                                Num_Img        : Integer;
-                               Hmm            : Cv_Ehmm_P);
+                               Hmm            : Cv_Ehmm_Ptr);
 
    --     Function calculates means, variances, weights of every Gaussian
    --     Mixture of every low-level state of embedded HMM
    procedure Cv_Estimate_Hmm_State_Params (Obs_Info_Array : Cv_Img_Obs_Info_P_Array;
                                            Num_Img        : Integer;
-                                           Hmm            : Cv_Ehmm_P);
+                                           Hmm            : Cv_Ehmm_Ptr);
 
    --     Function computes transition probability matrices of embedded HMM
    --     given observations segmentation
    procedure Cv_Estimate_Trans_Prob (Obs_Info_Array : Cv_Img_Obs_Info_P_Array;
                                      Num_Img        : Integer;
-                                     Hmm            : Cv_Ehmm_P);
+                                     Hmm            : Cv_Ehmm_Ptr);
 
    --     Function computes probabilities of appearing observations at any state
    --     (i.e. computes P(obs|state) for every pair(obs,state))
-   procedure Cv_Estimate_Obs_Prob (Obs_Info : Cv_Img_Obs_Info_P;
-                                   Hmm      : Cv_Ehmm_P);
+   procedure Cv_Estimate_Obs_Prob (Obs_Info : Cv_Img_Obs_Info_Ptr;
+                                   Hmm      : Cv_Ehmm_Ptr);
 
    --     Runs Viterbi algorithm for embedded HMM
-   function Cv_E_Viterbi (Obs_Info : Cv_Img_Obs_Info_P;
-                          Hmm      : Cv_Ehmm_P)
+   function Cv_E_Viterbi (Obs_Info : Cv_Img_Obs_Info_Ptr;
+                          Hmm      : Cv_Ehmm_Ptr)
                           return Float;
 
    --     Function clusters observation vectors from several images
@@ -266,36 +266,36 @@ package Legacy is
    --     Centers of clusters are given means of every mixture
    procedure Cv_Mix_Segm_L2 (Obs_Info_Array : Cv_Img_Obs_Info_P_Array;
                              Num_Img        : Integer;
-                             Hmm            : Cv_Ehmm_P);
+                             Hmm            : Cv_Ehmm_Ptr);
 
    -- A few function from old stereo gesture recognition demonstrations---------
    -----------------------------------------------------------------------------
    --     Creates hand mask image given several points on the hand
-   procedure Cv_Create_Hand_Mask (Hand_Points : Cv_Seq_P;
-                                  Img_Mask    : Ipl_Image_P;
-                                  Roi         : Cv_Rect_P);
+   procedure Cv_Create_Hand_Mask (Hand_Points : Cv_Seq_Ptr;
+                                  Img_Mask    : Ipl_Image_Ptr;
+                                  Roi         : Cv_Rect_Ptr);
 
    --     Finds hand region in range image data
    procedure Cv_Find_Hand_Region (Points  : Cv_Point_3d_32f_Array;
                                   Count   : Integer;
-                                  Indexs  : Cv_Seq_P;
+                                  Indexs  : Cv_Seq_Ptr;
                                   Line    : Cv_32f_Array;
                                   Size    : Cv_Size_2d_32f;
                                   Flag    : Integer;
                                   Center  : Cv_Point_3d_32f_Array;
-                                  Storage : Cv_Mem_Storage_P;
-                                  Numbers : access Cv_Seq_P);
+                                  Storage : Cv_Mem_Storage_Ptr;
+                                  Numbers : access Cv_Seq_Ptr);
 
    --     Finds hand region in range image data (advanced version)
    procedure Cv_Find_Hand_Region_A (Points  : Cv_Point_3d_32f_Array;
                                     Count   : Integer;
-                                    Indexs  : Cv_Seq_P;
+                                    Indexs  : Cv_Seq_Ptr;
                                     Line    : Cv_32f_Array;
                                     Size    : Cv_Size_2d_32f;
                                     Jc      : Integer;
                                     Center  : Cv_Point_3d_32f_Array;
-                                    Storage : Cv_Mem_Storage_P;
-                                    Numbers : access Cv_Seq_P);
+                                    Storage : Cv_Mem_Storage_Ptr;
+                                    Numbers : access Cv_Seq_Ptr);
 
    --     Calculates the cooficients of the homography matrix
    procedure Cv_Calc_Image_Homography (Line       : Cv_32f_Array;
@@ -306,13 +306,13 @@ package Legacy is
    -- Additional operations on Subdivisions ------------------------------------
    -----------------------------------------------------------------------------
    --     paints voronoi diagram: just demo function
-   procedure Icv_Draw_Mosaic (Subdiv : Cv_Subdiv_2d_P;
-                              Src    : Ipl_Image_P;
-                              Dst    : Ipl_Image_P);
+   procedure Icv_Draw_Mosaic (Subdiv : Cv_Subdiv_2d_Ptr;
+                              Src    : Ipl_Image_Ptr;
+                              Dst    : Ipl_Image_Ptr);
 
    --     checks planar subdivision for correctness. It is not an absolute
    --     check, but it verifies some relations between quad-edges
-   function Icv_Subdiv_2d_Check (Subdiv : Cv_Subdiv_2d_P)
+   function Icv_Subdiv_2d_Check (Subdiv : Cv_Subdiv_2d_Ptr)
                                  return Integer;
 
    --     returns squared distance between two 2D points with floating-point
@@ -323,15 +323,15 @@ package Legacy is
 
    -- More operations on sequences ---------------------------------------------
    -----------------------------------------------------------------------------
-   function Cv_Current_Int (Reader : Cv_Seq_Reader_P)
+   function Cv_Current_Int (Reader : Cv_Seq_Reader_Ptr)
                             return Integer;
 
-   function Cv_Prev_Int (Reader : Cv_Seq_Reader_P)
+   function Cv_Prev_Int (Reader : Cv_Seq_Reader_Ptr)
                          return Integer;
 
    type Cv_Graph_Weighted_Vtx is record
       Flags  : Integer;
-      First  : Cv_Graph_Edge_P;
+      First  : Cv_Graph_Edge_Ptr;
       Weight : Float;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Graph_Weighted_Vtx);
@@ -352,20 +352,20 @@ package Legacy is
    Cv_Weighted_All : constant Cv_Graph_Weight_Type := 3;
 
    --     Calculates histogram of a contour
-   procedure Cv_Calc_Pgh (Contour : Cv_Seq_P;
-                          Hist    : Cv_Histogram_P);
+   procedure Cv_Calc_Pgh (Contour : Cv_Seq_Ptr;
+                          Hist    : Cv_Histogram_Ptr);
 
    Cv_Dominant_Ipan : constant := 1;
 
    --     Finds high-curvature points of the contour
-   function Cv_Find_Dominant_Points (Contour    : Cv_Seq_P;
-                                     Storage    : Cv_Mem_Storage_P;
+   function Cv_Find_Dominant_Points (Contour    : Cv_Seq_Ptr;
+                                     Storage    : Cv_Mem_Storage_Ptr;
                                      Method     : Integer := Cv_Dominant_Ipan;
                                      Parameter1 : Long_Float := 0.0;
                                      Parameter2 : Long_Float := 0.0;
                                      Parameter3 : Long_Float := 0.0;
                                      Parameter4 : Long_Float := 0.0)
-                                     return Cv_Seq_P;
+                                     return Cv_Seq_Ptr;
 
    -- Stereo Correspondence ----------------------------------------------------
    type Cv_Clique_Finder is record
@@ -414,30 +414,30 @@ package Legacy is
    Cv_Disparity_Birchfield : constant := 0;
 
    --     find stereo correspondence on stereo-pair
-   procedure Cv_Find_Stereo_Correspondence (Left_Image    : Cv_Arr_P;
-                                            Right_Image   : Cv_Arr_P;
+   procedure Cv_Find_Stereo_Correspondence (Left_Image    : Cv_Arr_Ptr;
+                                            Right_Image   : Cv_Arr_Ptr;
                                             Mode          : Integer;
-                                            Disp_Image    : Cv_Arr_P;
+                                            Disp_Image    : Cv_Arr_Ptr;
                                             Max_Disparity : Integer;
                                             Param1        : Long_Float := Cv_Undef_Sc_Param_Lf;
                                             Param2        : Long_Float := Cv_Undef_Sc_Param_Lf;
                                             Param3        : Long_Float := Cv_Undef_Sc_Param_Lf;
                                             Param4        : Long_Float := Cv_Undef_Sc_Param_Lf;
                                             Param5        : Long_Float := Cv_Undef_Sc_Param_Lf);
-   procedure Cv_Find_Stereo_Correspondence (Left_Image    : Cv_Mat_P;
-                                            Right_Image   : Cv_Mat_P;
+   procedure Cv_Find_Stereo_Correspondence (Left_Image    : Cv_Mat_Ptr;
+                                            Right_Image   : Cv_Mat_Ptr;
                                             Mode          : Integer;
-                                            Disp_Image    : Cv_Mat_P;
+                                            Disp_Image    : Cv_Mat_Ptr;
                                             Max_Disparity : Integer;
                                             Param1        : Long_Float := Cv_Undef_Sc_Param_Lf;
                                             Param2        : Long_Float := Cv_Undef_Sc_Param_Lf;
                                             Param3        : Long_Float := Cv_Undef_Sc_Param_Lf;
                                             Param4        : Long_Float := Cv_Undef_Sc_Param_Lf;
                                             Param5        : Long_Float := Cv_Undef_Sc_Param_Lf);
-   procedure Cv_Find_Stereo_Correspondence (Left_Image    : Ipl_Image_P;
-                                            Right_Image   : Ipl_Image_P;
+   procedure Cv_Find_Stereo_Correspondence (Left_Image    : Ipl_Image_Ptr;
+                                            Right_Image   : Ipl_Image_Ptr;
                                             Mode          : Integer;
-                                            Disp_Image    : Ipl_Image_P;
+                                            Disp_Image    : Ipl_Image_Ptr;
                                             Max_Disparity : Integer;
                                             Param1        : Long_Float := Cv_Undef_Sc_Param_Lf;
                                             Param2        : Long_Float := Cv_Undef_Sc_Param_Lf;
@@ -464,7 +464,7 @@ package Legacy is
       Zcoef_Ab : Long_Float;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Stereo_Line_Coeff);
-   type Cv_Stereo_Line_Coeff_P is access all Cv_Stereo_Line_Coeff;
+   type Cv_Stereo_Line_Coeff_Ptr is access all Cv_Stereo_Line_Coeff;
 
 
 
@@ -478,10 +478,10 @@ package Legacy is
       Trans_Vect : Cv_32f_Array (1 .. 3); -- to some reference point in the space
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Camera);
-   type Cv_Camera_P is access all Cv_Camera;
+   type Cv_Camera_Ptr is access all Cv_Camera;
 
    type Cv_Camera_Array is array (Integer range <>) of aliased Cv_Camera;
-   type Cv_Camera_P_Array is array (Integer range <>) of aliased Cv_Camera_P;
+   type Cv_Camera_P_Array is array (Integer range <>) of aliased Cv_Camera_Ptr;
    subtype Cv_Camera_P_Array_2 is Cv_Camera_P_Array (1 .. 2);
 
    subtype Cv_Point_3d_32f_Array_2 is Cv_Point_3d_32f_Array (1 .. 2);
@@ -507,13 +507,13 @@ package Legacy is
       Coeffs            : Cv_64f_Array_2x3x3;
       Border            : Cv_Point_2d_32f_Array_2x4;
       Warpsize          : Cv_Size;
-      Line_Coeffs       : Cv_Stereo_Line_Coeff_P;
+      Line_Coeffs       : Cv_Stereo_Line_Coeff_Ptr;
       Need_Swap_Cameras : Integer;
       Rot_Matrix        : Cv_32f_Array (1 .. 9);
       Trans_Vector      : Cv_32f_Array (1 .. 3);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Stereo_Camera);
-   type Cv_Stereo_Camera_P is access all Cv_Stereo_Camera;
+   type Cv_Stereo_Camera_Ptr is access all Cv_Stereo_Camera;
 
    type Cv_Contour_Orientation is record
       Egvals  : Cv_32f_Array (1 .. 2);
@@ -524,21 +524,21 @@ package Legacy is
       Imin    : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Contour_Orientation);
-   type Cv_Contour_Orientation_P is access all Cv_Contour_Orientation;
+   type Cv_Contour_Orientation_Ptr is access all Cv_Contour_Orientation;
 
    Cv_Camera_To_Warp : constant := 1;
    Cv_Warp_To_Camera : constant := 2;
 
    function Icv_Convert_Warp_Coordinates (Coeffs       : Cv_64f_Array_3x3;
-                                          Camera_Point : Cv_Point_2d_32f_P;
-                                          Warp_Point   : Cv_Point_2d_32f_P;
+                                          Camera_Point : Cv_Point_2d_32f_Ptr;
+                                          Warp_Point   : Cv_Point_2d_32f_Ptr;
                                           Direction    : Integer)
                                           return Integer;
 
    function Icv_Get_Sympoint_3d (Point_Corner : Cv_Point_3d_64f;
                                  Point1       : Cv_Point_3d_64f;
                                  Point2       : Cv_Point_3d_64f;
-                                 Point_Sym2   : Cv_Point_3d_64f_P)
+                                 Point_Sym2   : Cv_Point_3d_64f_Ptr)
                                  return Integer;
 
    procedure Icv_Get_Piece_Length_3d (Point1 : Cv_Point_3d_64f;
@@ -547,8 +547,8 @@ package Legacy is
 
    function Icv_Compute_3d_Point (Alpha  : Long_Float;
                                   Beta   : Long_Float;
-                                  Coeffs : Cv_Stereo_Line_Coeff_P;
-                                  Point  : Cv_Point_3d_64f_P)
+                                  Coeffs : Cv_Stereo_Line_Coeff_Ptr;
+                                  Point  : Cv_Point_3d_64f_Ptr)
                                   return Integer;
 
    function Icv_Create_Convert_Matr_Vect (Rot_Matr1        : Cv_64f_Array;
@@ -560,19 +560,19 @@ package Legacy is
                                           return Integer;
 
    function Icv_Convert_Point_System (M2         : Cv_Point_3d_64f;
-                                      M1         : Cv_Point_3d_64f_P;
+                                      M1         : Cv_Point_3d_64f_Ptr;
                                       Rot_Matr   : Cv_64f_Array;
                                       Trans_Vect : Cv_64f_Array)
                                       return Integer;
 
-   function Icv_Compute_Coeff_For_Stereo (Stereo_Camera : Cv_Stereo_Camera_P)
+   function Icv_Compute_Coeff_For_Stereo (Stereo_Camera : Cv_Stereo_Camera_Ptr)
                                           return Integer;
 
    function Icv_Get_Cross_Piece_Vector (P1_Start : Cv_Point_2d_32f;
                                         P1_End   : Cv_Point_2d_32f;
                                         V2_Start : Cv_Point_2d_32f;
                                         V2_End   : Cv_Point_2d_32f;
-                                        Cross    : Cv_Point_2d_32f_P)
+                                        Cross    : Cv_Point_2d_32f_Ptr)
                                         return Integer;
 
    function Icv_Get_Cross_Line_Direct (P1    : Cv_Point_2d_32f;
@@ -580,7 +580,7 @@ package Legacy is
                                        A     : Float;
                                        B     : Float;
                                        C     : Float;
-                                       Cross : Cv_Point_2d_32f_P)
+                                       Cross : Cv_Point_2d_32f_Ptr)
                                        return Integer;
 
    function Icv_Define_Point_Position (Point1 : Cv_Point_2d_32f;
@@ -593,22 +593,22 @@ package Legacy is
                                     Image_Size    : Cv_Size;
                                     Image_Points1 : Cv_Point_2d_32f;
                                     Image_Points2 : Cv_Point_2d_32f;
-                                    Object_Points : Cv_Point_3d_32f_P;
-                                    Stereoparams  : Cv_Stereo_Camera_P)
+                                    Object_Points : Cv_Point_3d_32f_Ptr;
+                                    Stereoparams  : Cv_Stereo_Camera_Ptr)
                                     return Integer;
 
-   function Icv_Compute_Rest_Stereo_Params (Stereoparams : Cv_Stereo_Camera_P)
+   function Icv_Compute_Rest_Stereo_Params (Stereoparams : Cv_Stereo_Camera_Ptr)
                                             return Integer;
 
    procedure Cv_Compute_Perspective_Map (Coeffs     : Cv_64f_Array_3x3;
-                                         Rect_Map_X : Cv_Arr_P;
-                                         Rect_Map_Y : Cv_Arr_P);
+                                         Rect_Map_X : Cv_Arr_Ptr;
+                                         Rect_Map_Y : Cv_Arr_Ptr);
    procedure Cv_Compute_Perspective_Map (Coeffs     : Cv_64f_Array_3x3;
-                                         Rect_Map_X : Cv_Mat_P;
-                                         Rect_Map_Y : Cv_Mat_P);
+                                         Rect_Map_X : Cv_Mat_Ptr;
+                                         Rect_Map_Y : Cv_Mat_Ptr);
    procedure Cv_Compute_Perspective_Map (Coeffs     : Cv_64f_Array_3x3;
-                                         Rect_Map_X : Ipl_Image_P;
-                                         Rect_Map_Y : Ipl_Image_P);
+                                         Rect_Map_X : Ipl_Image_Ptr;
+                                         Rect_Map_Y : Ipl_Image_Ptr);
 
    function Icv_Com_Coeff_For_Line (Point1           : Cv_Point_2d_64f;
                                     Point2           : Cv_Point_2d_64f;
@@ -620,33 +620,33 @@ package Legacy is
                                     Cam_Matr2        : Cv_64f_Array;
                                     Rot_Matr2        : Cv_64f_Array;
                                     Trans_Vect2      : Cv_64f_Array;
-                                    Coeffs           : Cv_Stereo_Line_Coeff_P;
+                                    Coeffs           : Cv_Stereo_Line_Coeff_Ptr;
                                     Need_Swap_Camera : access Integer)
                                     return Integer;
 
    function Icv_Get_Direction_For_Point (Point    : Cv_Point_2d_64f;
                                          Cam_Matr : Cv_64f_Array;
-                                         Direct   : Cv_Point_3d_64f_P)
+                                         Direct   : Cv_Point_3d_64f_Ptr)
                                          return Integer;
 
    function Icv_Get_Cross_Lines (Point11   : Cv_Point_3d_64f;
                                  Point12   : Cv_Point_3d_64f;
                                  Point21   : Cv_Point_3d_64f;
                                  Point22   : Cv_Point_3d_64f;
-                                 Mid_Point : Cv_Point_3d_64f_P)
+                                 Mid_Point : Cv_Point_3d_64f_Ptr)
                                  return Integer;
 
    function Icv_Compute_Stereo_Line_Coeffs (Point_A    : Cv_Point_3d_64f;
                                             Point_B    : Cv_Point_3d_64f;
                                             Point_Cam1 : Cv_Point_3d_64f;
                                             Gamma      : Long_Float;
-                                            Coeffs     : Cv_Stereo_Line_Coeff_P)
+                                            Coeffs     : Cv_Stereo_Line_Coeff_Ptr)
                                             return Integer;
 
    function Icv_Get_Angle_Line (Start_Point : Cv_Point_2d_64f;
                                 Image_Size  : Cv_Size;
-                                Point1      : Cv_Point_2d_64f_P;
-                                Point2      : Cv_Point_2d_64f_P)
+                                Point1      : Cv_Point_2d_64f_Ptr;
+                                Point2      : Cv_Point_2d_64f_Ptr)
                                 return Integer;
 
    procedure Icv_Get_Coef_For_Piece (P_Start : Cv_Point_2d_64f;
@@ -660,17 +660,17 @@ package Legacy is
                                              Cam_Matr1 : Cv_64f_Array;
                                              Cam_Matr2 : Cv_64f_Array;
                                              Point1    : Cv_Point_2d_32f;
-                                             Point2    : Cv_Point_2d_32f_P);
+                                             Point2    : Cv_Point_2d_32f_Ptr);
 
    procedure Icv_Computee_Infinite_Project2 (Rot_Matr  : Cv_64f_Array;
                                              Cam_Matr1 : Cv_64f_Array;
                                              Cam_Matr2 : Cv_64f_Array;
-                                             Point1    : Cv_Point_2d_32f_P;
+                                             Point1    : Cv_Point_2d_32f_Ptr;
                                              Point2    : Cv_Point_2d_32f);
 
    procedure Icv_Get_Cross_Direct_Direct (Direct1 : Cv_64f_Array;
                                           Direct2 : Cv_64f_Array;
-                                          Cross   : Cv_Point_2d_64f_P;
+                                          Cross   : Cv_Point_2d_64f_Ptr;
                                           Result  : access Integer);
 
    procedure Icv_Get_Cross_Piece_Direct (P_Start : Cv_Point_2d_64f;
@@ -678,14 +678,14 @@ package Legacy is
                                          A       : Long_Float;
                                          B       : Long_Float;
                                          C       : Long_Float;
-                                         Cross   : Cv_Point_2d_64f_P;
+                                         Cross   : Cv_Point_2d_64f_Ptr;
                                          Result  : access Integer);
 
    procedure Icv_Get_Cross_Piece_Piece (P1_Start : Cv_Point_2d_64f;
                                         P1_End   : Cv_Point_2d_64f;
                                         P2_Start : Cv_Point_2d_64f;
                                         P2_End   : Cv_Point_2d_64f;
-                                        Cross    : Cv_Point_2d_64f_P;
+                                        Cross    : Cv_Point_2d_64f_Ptr;
                                         Result   : access Integer);
 
    procedure Icv_Get_Piece_Length (Point1 : Cv_Point_2d_64f;
@@ -696,15 +696,15 @@ package Legacy is
                                         A           : Long_Float;
                                         B           : Long_Float;
                                         C           : Long_Float;
-                                        Point_Start : Cv_Point_2d_64f_P;
-                                        Point_End   : Cv_Point_2d_64f_P;
+                                        Point_Start : Cv_Point_2d_64f_Ptr;
+                                        Point_End   : Cv_Point_2d_64f_Ptr;
                                         Result      : access Integer);
 
    procedure Icv_Project_Point_To_Image (Point      : Cv_Point_3d_64f;
                                          Cam_Matr   : Cv_64f_Array;
                                          Rot_Matr   : Cv_64f_Array;
                                          Trans_Vect : Cv_64f_Array;
-                                         Proj_Point : Cv_Point_2d_64f_P);
+                                         Proj_Point : Cv_Point_2d_64f_Ptr);
 
    procedure Icv_Get_Quads_Transform (Image_Size   : Cv_Size;
                                       Cam_Matr1    : Cv_64f_Array;
@@ -713,31 +713,31 @@ package Legacy is
                                       Cam_Matr2    : Cv_64f_Array;
                                       Rot_Matr2    : Cv_64f_Array;
                                       Trans_Vect2  : Cv_64f_Array;
-                                      Warp_Size    : Cv_Size_P;
+                                      Warp_Size    : Cv_Size_Ptr;
                                       Quad1        : Cv_64f_Array_4x2;
                                       Quad2        : Cv_64f_Array_4x2;
                                       Fund_Matr    : Cv_64f_Array;
-                                      Epipole1     : Cv_Point_3d_64f_P;
-                                      Epipole2     : Cv_Point_3d_64f_P);
+                                      Epipole1     : Cv_Point_3d_64f_Ptr;
+                                      Epipole2     : Cv_Point_3d_64f_Ptr);
 
-   procedure Icv_Get_Quads_Transform_Struct (Stereo_Camera : Cv_Stereo_Camera_P);
+   procedure Icv_Get_Quads_Transform_Struct (Stereo_Camera : Cv_Stereo_Camera_Ptr);
 
-   procedure Icv_Compute_Stereo_Params_For_Cameras (Stereo_Camera : Cv_Stereo_Camera_P);
+   procedure Icv_Compute_Stereo_Params_For_Cameras (Stereo_Camera : Cv_Stereo_Camera_Ptr);
 
    procedure Icv_Get_Cut_Piece (Area_Line_Coef1 : Cv_64f_Array;
                                 Area_Line_Coef2 : Cv_64f_Array;
                                 Epipole         : Cv_Point_2d_64f;
                                 Image_Size      : Cv_Size;
-                                Point11         : Cv_Point_2d_64f_P;
-                                Point12         : Cv_Point_2d_64f_P;
-                                Point21         : Cv_Point_2d_64f_P;
-                                Point22         : Cv_Point_2d_64f_P;
+                                Point11         : Cv_Point_2d_64f_Ptr;
+                                Point12         : Cv_Point_2d_64f_Ptr;
+                                Point21         : Cv_Point_2d_64f_Ptr;
+                                Point22         : Cv_Point_2d_64f_Ptr;
                                 Result          : access Integer);
 
    procedure Icv_Get_Middle_Angle_Point (Base_Point : Cv_Point_2d_64f;
                                          Point1     : Cv_Point_2d_64f;
                                          Point2     : Cv_Point_2d_64f;
-                                         Mid_Point  : Cv_Point_2d_64f_P);
+                                         Mid_Point  : Cv_Point_2d_64f_Ptr);
 
    procedure Icv_Get_Normal_Direct (Direct      : Cv_64f_Array;
                                     Point       : Cv_Point_2d_64f;
@@ -750,27 +750,27 @@ package Legacy is
 
    procedure Icv_Project_Point_To_Direct (Point         : Cv_Point_2d_64f;
                                           Line_Coeff    : Cv_64f_Array;
-                                          Project_Point : Cv_Point_2d_64f_P);
+                                          Project_Point : Cv_Point_2d_64f_Ptr);
 
    procedure Icv_Get_Distance_From_Point_To_Direct (Point     : Cv_Point_2d_64f;
                                                     Line_Coef : Cv_64f_Array;
                                                     Dist      : access Long_Float);
 
-   function Icv_Create_Isometric_Image (Src                  : Ipl_Image_P;
-                                        Dst                  : Ipl_Image_P;
+   function Icv_Create_Isometric_Image (Src                  : Ipl_Image_Ptr;
+                                        Dst                  : Ipl_Image_Ptr;
                                         Desired_Depth        : Unsigned_32;
                                         Desired_Num_Channels : Integer)
-                                        return Ipl_Image_P;
+                                        return Ipl_Image_Ptr;
 
-   procedure Cv_De_Interlace (Frame      : Cv_Arr_P;
-                              Field_Even : Cv_Arr_P;
-                              Field_Odd  : Cv_Arr_P);
-   procedure Cv_De_Interlace (Frame      : Cv_Mat_P;
-                              Field_Even : Cv_Mat_P;
-                              Field_Odd  : Cv_Mat_P);
-   procedure Cv_De_Interlace (Frame      : Ipl_Image_P;
-                              Field_Even : Ipl_Image_P;
-                              Field_Odd  : Ipl_Image_P);
+   procedure Cv_De_Interlace (Frame      : Cv_Arr_Ptr;
+                              Field_Even : Cv_Arr_Ptr;
+                              Field_Odd  : Cv_Arr_Ptr);
+   procedure Cv_De_Interlace (Frame      : Cv_Mat_Ptr;
+                              Field_Even : Cv_Mat_Ptr;
+                              Field_Odd  : Cv_Mat_Ptr);
+   procedure Cv_De_Interlace (Frame      : Ipl_Image_Ptr;
+                              Field_Even : Ipl_Image_Ptr;
+                              Field_Odd  : Ipl_Image_Ptr);
 
    -- Contour Tree -------------------------------------------------------------
    -----------------------------------------------------------------------------
@@ -778,44 +778,44 @@ package Legacy is
    -- CV_TREE_NODE_FIELDS
       Flags        : Integer;
       Header_Size  : Integer;
-      H_Prev       : Cv_Seq_P;
-      H_Next       : Cv_Seq_P;
-      V_Prev       : Cv_Seq_P;
-      V_Next       : Cv_Seq_P;
+      H_Prev       : Cv_Seq_Ptr;
+      H_Next       : Cv_Seq_Ptr;
+      V_Prev       : Cv_Seq_Ptr;
+      V_Next       : Cv_Seq_Ptr;
 
       -- CV_SEQUENCE_FIELDS
       Total        : Integer;
       Elem_Size    : Integer;
-      Block_Max    : Cv_Void_P;
-      Ptr          : Cv_Void_P;
+      Block_Max    : Cv_Void_Ptr;
+      Ptr          : Cv_Void_Ptr;
       Delta_Elems  : Integer;
-      Storage      : Cv_Mem_Storage_P;
-      Free_Blocks  : Cv_Seq_Block_P;
-      First        : Cv_Seq_Block_P;
+      Storage      : Cv_Mem_Storage_Ptr;
+      Free_Blocks  : Cv_Seq_Block_Ptr;
+      First        : Cv_Seq_Block_Ptr;
 
       P1           : Cv_Point;
       P2           : Cv_Point;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Contour_Tree);
 
-   type Cv_Contour_Tree_P is access all cv_Contour_Tree;
+   type Cv_Contour_Tree_Ptr is access all cv_Contour_Tree;
 
    --     Creates a hierarchical representation of a contour.
-   function Cv_Create_Contour_Tree (Contour   : Cv_Seq_P;
-                                    Storage   : Cv_Mem_Storage_P;
-                                    Threshold : Long_Float) return Cv_Contour_Tree_P;
+   function Cv_Create_Contour_Tree (Contour   : Cv_Seq_Ptr;
+                                    Storage   : Cv_Mem_Storage_Ptr;
+                                    Threshold : Long_Float) return Cv_Contour_Tree_Ptr;
 
    --     Reconstruct (completelly or partially) contour a from contour tree
-   function Cv_Contour_From_Contour_Tree (Tree     : Cv_Contour_Tree_P;
-                                          Storage  : Cv_Mem_Storage_P;
+   function Cv_Contour_From_Contour_Tree (Tree     : Cv_Contour_Tree_Ptr;
+                                          Storage  : Cv_Mem_Storage_Ptr;
                                           Criteria : Cv_Term_Criteria)
-                                          return Cv_Seq_P;
+                                          return Cv_Seq_Ptr;
 
    Cv_Contour_Trees_Match_I1 : constant := 1;
 
    --     Compares two contours using their tree representations.
-   function Cv_Match_Contour_Trees (Tree1     : Cv_Contour_Tree_P;
-                                    Tree2     : Cv_Contour_Tree_P;
+   function Cv_Match_Contour_Trees (Tree1     : Cv_Contour_Tree_Ptr;
+                                    Tree2     : Cv_Contour_Tree_Ptr;
                                     Method    : Integer;
                                     Threshold : Long_Float) return Long_Float;
 
@@ -823,25 +823,25 @@ package Legacy is
    -----------------------------------------------------------------------------
 
    --     finds correspondence between two contours
-   function Cv_Calc_Contours_Correspondence (Contour1 : Cv_Seq_P;
-                                             Contour2 : Cv_Seq_P;
-                                             Storage  : Cv_Mem_Storage_P)
-                                             return Cv_Seq_P;
+   function Cv_Calc_Contours_Correspondence (Contour1 : Cv_Seq_Ptr;
+                                             Contour2 : Cv_Seq_Ptr;
+                                             Storage  : Cv_Mem_Storage_Ptr)
+                                             return Cv_Seq_Ptr;
 
    --     morphs contours using the pre-calculated correspondence:
    --     alpha=0 ~ contour1, alpha=1 ~ contour2
-   function Cv_Morph_Contours (Contour1 : Cv_Seq_P;
-                               Contour2 : Cv_Seq_P;
-                               Corr     : Cv_Seq_P;
+   function Cv_Morph_Contours (Contour1 : Cv_Seq_Ptr;
+                               Contour2 : Cv_Seq_Ptr;
+                               Corr     : Cv_Seq_Ptr;
                                Alpha    : Long_Float;
-                               Storage  : Cv_Mem_Storage_P)
-                               return Cv_Seq_P;
+                               Storage  : Cv_Mem_Storage_Ptr)
+                               return Cv_Seq_Ptr;
 
    Cv_Value : constant := 1;
    Cv_Array : constant := 2;
 
    --     Changes the contour position to minimize its energy.
-   procedure Cv_Snake_Image (Image        : Ipl_Image_P;
+   procedure Cv_Snake_Image (Image        : Ipl_Image_Ptr;
                              Points       : Cv_Point_Array;
                              Length       : Integer;
                              Alpha        : Cv_32f_Array;
@@ -894,34 +894,34 @@ package Legacy is
       Optimization_Type            : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Glcm);
-   type Cv_Glcm_P is access all Cv_Glcm;
+   type Cv_Glcm_Ptr is access all Cv_Glcm;
 
-   function Cv_Create_Glcm (Src_Image           : Ipl_Image_P;
+   function Cv_Create_Glcm (Src_Image           : Ipl_Image_Ptr;
                             Step_Magnitude      : Integer;
                             Step_Direction      : Cv_32s_Pointer := null;
                             Num_Step_Directions : Integer := 0;
                             Optimization_Type   : Integer := Cv_Glcm_Optimization_None)
-                            return Cv_Glcm_P;
+                            return Cv_Glcm_Ptr;
 
-   procedure Cv_Release_Glcm (Glcm : access Cv_Glcm_P;
+   procedure Cv_Release_Glcm (Glcm : access Cv_Glcm_Ptr;
                               Flag : Integer := Cv_Glcm_All);
 
-   procedure Cv_Create_Glcm_Descriptors (Dest_Glcm                    : Cv_Glcm_P;
+   procedure Cv_Create_Glcm_Descriptors (Dest_Glcm                    : Cv_Glcm_Ptr;
                                          Descriptor_Optimization_Type : Integer := Cv_Glcmdesc_Optimization_Allowdoublenest);
 
-   function Cv_Get_Glcm_Descriptor (Glcm       : Cv_Glcm_P;
+   function Cv_Get_Glcm_Descriptor (Glcm       : Cv_Glcm_Ptr;
                                     Step       : Integer;
                                     Descriptor : Integer)
                                     return Long_Float;
 
-   procedure Cv_Get_Glcm_Descriptor_Statistics (Glcm               : Cv_Glcm_P;
+   procedure Cv_Get_Glcm_Descriptor_Statistics (Glcm               : Cv_Glcm_Ptr;
                                                 Descriptor         : Integer;
                                                 Average            : access Long_Float;
                                                 Standard_Deviation : access Long_Float);
 
-   function Cv_Create_Glcm_Image (Glcm : Cv_Glcm_P;
+   function Cv_Create_Glcm_Image (Glcm : Cv_Glcm_Ptr;
                                   Step : Integer)
-                                  return Ipl_Image_P;
+                                  return Ipl_Image_Ptr;
 
    -- Face, eyes and mouth tracking --------------------------------------------
    -----------------------------------------------------------------------------
@@ -930,28 +930,28 @@ package Legacy is
 
    type Cv_Face_Tracker is null record; -- Locally declared class in .cpp file
    pragma Convention (C_Pass_By_Copy, Cv_Face_Tracker);
-   type Cv_Face_Tracker_P is access all cv_Face_Tracker;
+   type Cv_Face_Tracker_Ptr is access all Cv_Face_Tracker;
 
    type Cv_Face_Elements is new Integer;
    Cv_Face_Mouth : constant Cv_Face_Elements := 0;
    Cv_Face_Left_Eye : constant Cv_Face_Elements := 1;
    Cv_Face_Right_Eye : constant Cv_Face_Elements := 2;
 
-   function Cv_Init_Face_Tracker (P_Face_Tracking : Cv_Face_Tracker_P;
-                                  Img_Gray        : Ipl_Image_P;
+   function Cv_Init_Face_Tracker (P_Face_Tracking : Cv_Face_Tracker_Ptr;
+                                  Img_Gray        : Ipl_Image_Ptr;
                                   P_Rects         : Cv_Rect_Array;
                                   N_Rects         : Integer)
-                                  return Cv_Face_Tracker_P;
+                                  return Cv_Face_Tracker_Ptr;
 
-   function Cv_Track_Face (P_Face_Tracker  : Cv_Face_Tracker_P;
-                           Img_Gray        : Ipl_Image_P;
+   function Cv_Track_Face (P_Face_Tracker  : Cv_Face_Tracker_Ptr;
+                           Img_Gray        : Ipl_Image_Ptr;
                            P_Rects         : Cv_Rect_Array;
                            N_Rects         : Integer;
-                           Pt_Rotate       : Cv_Point_P;
+                           Pt_Rotate       : Cv_Point_Ptr;
                            Db_Angle_Rotate : access Long_Float)
                            return Integer;
 
-   procedure Cv_Release_Face_Tracker (Pp_Face_Tracker : access Cv_Face_Tracker_P);
+   procedure Cv_Release_Face_Tracker (Pp_Face_Tracker : access Cv_Face_Tracker_Ptr);
 
    type Cv_Face_Data is record
       Mouth_Rect     : Cv_Rect;
@@ -960,13 +960,13 @@ package Legacy is
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Face_Data);
 
-   function Cv_Find_Face (Image   : Ipl_Image_P;
-                          Storage : Cv_Mem_Storage_P)
-                          return Cv_Seq_P;
+   function Cv_Find_Face (Image   : Ipl_Image_Ptr;
+                          Storage : Cv_Mem_Storage_Ptr)
+                          return Cv_Seq_Ptr;
 
-   function Cv_Post_Boosting_Find_Face (Image   : Ipl_Image_P;
-                                        Storage : Cv_Mem_Storage_P)
-                                        return Cv_Seq_P;
+   function Cv_Post_Boosting_Find_Face (Image   : Ipl_Image_Ptr;
+                                        Storage : Cv_Mem_Storage_Ptr)
+                                        return Cv_Seq_Ptr;
 
    -- 3D Tracker ---------------------------------------------------------------
    -----------------------------------------------------------------------------
@@ -977,7 +977,7 @@ package Legacy is
       P  : Cv_Point_2d_32f;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_3d_Tracker_2d_Tracked_Object);
-   type Cv_3d_Tracker_2d_Tracked_Object_P is access all Cv_3d_Tracker_2d_Tracked_Object;
+   type Cv_3d_Tracker_2d_Tracked_Object_Ptr is access all Cv_3d_Tracker_2d_Tracked_Object;
    type Cv_3d_Tracker_2d_Tracked_Object_Array is array (Integer range <>) of aliased Cv_3d_Tracker_2d_Tracked_Object;
 
    function Cv_Create_3d_Tracker_2d_Tracked_Object (Id : Integer;
@@ -989,7 +989,7 @@ package Legacy is
       P  : Cv_Point_3d_32f;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_3d_Tracker_Tracked_Object);
-   type Cv_3d_Tracker_Tracked_Object_P is access all cv_3d_Tracker_Tracked_Object;
+   type Cv_3d_Tracker_Tracked_Object_Ptr is access all cv_3d_Tracker_Tracked_Object;
    type Cv_3d_Tracker_Tracked_Object_Array is array (Integer range <>) of aliased Cv_3d_Tracker_Tracked_Object;
 
    function Cv_Create_3d_Tracker_Tracked_Object (Id : Integer;
@@ -1002,7 +1002,7 @@ package Legacy is
       Principal_Point : Cv_Point_2d_32f;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_3d_Tracker_Camera_Info);
-   type Cv_3d_Tracker_Camera_Info_P is access all cv_3d_Tracker_Camera_Info;
+   type Cv_3d_Tracker_Camera_Info_Ptr is access all cv_3d_Tracker_Camera_Info;
    type Cv_3d_Tracker_Camera_Info_Array is array (Integer range <>) of aliased Cv_3d_Tracker_Camera_Info;
 
    type Cv_3d_Tracker_Camera_Intrinsics is record
@@ -1011,7 +1011,7 @@ package Legacy is
       Distortion      : Cv_32f_Array (1 .. 4);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_3d_Tracker_Camera_Intrinsics);
-   type Cv_3d_Tracker_Camera_Intrinsics_P is access all Cv_3d_Tracker_Camera_Intrinsics;
+   type Cv_3d_Tracker_Camera_Intrinsics_Ptr is access all Cv_3d_Tracker_Camera_Intrinsics;
    type Cv_3d_Tracker_Camera_Intrinsics_Array is array (Integer range <>) of aliased Cv_3d_Tracker_Camera_Intrinsics;
 
    function Cv_3d_Tracker_Calibrate_Cameras (Num_Cameras       : Integer;
@@ -1093,7 +1093,7 @@ package Legacy is
       Next : access Cv_Voronoi_Site_2d_Array_2;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Voronoi_Site_2d);
-   type Cv_Voronoi_Site_2d_P is access all cv_Voronoi_Site_2d;
+   type Cv_Voronoi_Site_2d_Ptr is access all cv_Voronoi_Site_2d;
    type Cv_Voronoi_Site_2d_Array is array (Integer range <>) of aliased Cv_Voronoi_Site_2d;
    type Cv_Voronoi_Site_2d_Array_2 is array (Integer range 1 .. 2) of aliased Cv_Voronoi_Site_2d;
 
@@ -1104,7 +1104,7 @@ package Legacy is
       Next : access Cv_Voronoi_Edge_2d_Array_4;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Voronoi_Edge_2d);
-   type Cv_Voronoi_Edge_2d_P is access all Cv_Voronoi_Edge_2d;
+   type Cv_Voronoi_Edge_2d_Ptr is access all Cv_Voronoi_Edge_2d;
    type Cv_Voronoi_Edge_2d_Array is array (Integer range <>) of aliased Cv_Voronoi_Edge_2d;
    type Cv_Voronoi_Edge_2d_Array_2 is array (Integer range 1 .. 2) of aliased Cv_Voronoi_Edge_2d;
    type Cv_Voronoi_Edge_2d_Array_4 is array (Integer range 1 .. 4) of aliased Cv_Voronoi_Edge_2d;
@@ -1117,7 +1117,7 @@ package Legacy is
       Radius    : Float;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Voronoi_Node_2d);
-   type Cv_Voronoi_Node_2d_P is access all Cv_Voronoi_Node_2d;
+   type Cv_Voronoi_Node_2d_Ptr is access all Cv_Voronoi_Node_2d;
    type Cv_Voronoi_Node_2d_Array is array (Integer range <>) of aliased Cv_Voronoi_Node_2d;
    type Cv_Voronoi_Node_2d_Array_2 is array (Integer range 1 .. 2) of aliased Cv_Voronoi_Node_2d;
 
@@ -1126,49 +1126,49 @@ package Legacy is
    -- CV_VORONOIDIAGRAM2D_FIELDS()
       Flags           : Integer;       --CV_TREE_NODE_FIELDS(CvSeq);
       Headersize      : Integer;
-      Hprev           : Cv_Seq_P;
-      Hnext           : Cv_Seq_P;
-      Vprev           : Cv_Seq_P;
-      Vnext           : Cv_Seq_P;
+      Hprev           : Cv_Seq_Ptr;
+      Hnext           : Cv_Seq_Ptr;
+      Vprev           : Cv_Seq_Ptr;
+      Vnext           : Cv_Seq_Ptr;
 
       Total           : Integer; --CV_SEQUENCE_FIELDS
       Elemsize        : Integer;
-      Blockmax        : Cv_Void_P;
-      Ptr             : Cv_Void_P;
+      Blockmax        : Cv_Void_Ptr;
+      Ptr             : Cv_Void_Ptr;
       Deltaelems      : Integer;
-      Storage         : Cv_Mem_Storage_P;
-      Freeblocks      : Cv_Seq_Block_P;
-      First           : Cv_Seq_Block_P;
+      Storage         : Cv_Mem_Storage_Ptr;
+      Freeblocks      : Cv_Seq_Block_Ptr;
+      First           : Cv_Seq_Block_Ptr;
 
       Free_Elems      : Cv_Set_Elem_Pointer;
       Active_Count    : Integer;
       Edges           : Cv_Set_Pointer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Voronoi_Diagram_2d);
-   type Cv_Voronoi_Diagram_2d_P is access all Cv_Voronoi_Diagram_2d;
+   type Cv_Voronoi_Diagram_2d_Ptr is access all Cv_Voronoi_Diagram_2d;
    type Cv_Voronoi_Diagram_2d_Array is array (Integer range <>) of aliased Cv_Voronoi_Diagram_2d;
 
    --     Computes Voronoi Diagram for given polygons with holes
-   function Cv_Voronoi_Diagram_From_Contour (Contour_Seq         : Cv_Seq_P;
-                                             Voronoi_Diagram     : access Cv_Voronoi_Diagram_2d_P;
-                                             Voronoi_Storage     : Cv_Mem_Storage_P;
+   function Cv_Voronoi_Diagram_From_Contour (Contour_Seq         : Cv_Seq_Ptr;
+                                             Voronoi_Diagram     : access Cv_Voronoi_Diagram_2d_Ptr;
+                                             Voronoi_Storage     : Cv_Mem_Storage_Ptr;
                                              Contour_Type        : Integer := Cv_Lee_Int;
                                              Contour_Orientation : Integer := -1;
                                              Attempt_Number      : Integer := 10)
                                              return Integer;
 
    --     Computes Voronoi Diagram for domains in given image
-   function Cv_Voronoi_Diagram_From_Image (P_Image               : Ipl_Image_P;
-                                           Contour_Seq           : access Cv_Seq_P;
-                                           Voronoi_Diagram       : access Cv_Voronoi_Diagram_2d_P;
-                                           Voronoi_Storage       : Cv_Mem_Storage_P;
+   function Cv_Voronoi_Diagram_From_Image (P_Image               : Ipl_Image_Ptr;
+                                           Contour_Seq           : access Cv_Seq_Ptr;
+                                           Voronoi_Diagram       : access Cv_Voronoi_Diagram_2d_Ptr;
+                                           Voronoi_Storage       : Cv_Mem_Storage_Ptr;
                                            Regularization_Method : Integer := Cv_Lee_Non;
                                            Approx_Precision      : Float := Cv_Lee_Auto_F)
                                            return Integer;
 
    --     Deallocates the storage
-   procedure Cv_Release_Voronoi_Storage (Voronoi_Diagram   : Cv_Voronoi_Diagram_2d_P;
-                                         P_Voronoi_Storage : access Cv_Mem_Storage_P);
+   procedure Cv_Release_Voronoi_Storage (Voronoi_Diagram   : Cv_Voronoi_Diagram_2d_Ptr;
+                                         P_Voronoi_Storage : access Cv_Mem_Storage_Ptr);
 
 
    -- Linear-Contour Model -----------------------------------------------------
@@ -1177,7 +1177,7 @@ package Legacy is
       Weight : Float;
       Next   : Cv_Graph_Edge_P_Array;
       Vtx    : Cv_Graph_Vtx_P_Array;
-      Chain  : Cv_Seq_P;
+      Chain  : Cv_Seq_Ptr;
       Width  : Float;
       Index1 : Integer;
       Index2 : Integer;
@@ -1186,13 +1186,13 @@ package Legacy is
 
    type Cv_Lcm_Node is record
       Flags   : Integer;
-      First   : Cv_Graph_Edge_P;
-      Contour : Cv_Contour_P;
+      First   : Cv_Graph_Edge_Ptr;
+      Contour : Cv_Contour_Ptr;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Lcm_Node);
 
    --     Computes hybrid model from Voronoi Diagram
-   function Cv_Linear_Contor_Model_From_Voronoi_Diagram (Voronoi_Diagram : Cv_Voronoi_Diagram_2d_P;
+   function Cv_Linear_Contor_Model_From_Voronoi_Diagram (Voronoi_Diagram : Cv_Voronoi_Diagram_2d_Ptr;
                                                          Max_Width       : Float)
                                                          return Cv_Graph_P;
 
@@ -1204,15 +1204,15 @@ package Legacy is
    procedure Cv_Init_Perspective_Transform (Size     : Cv_Size;
                                             Vertex   : Cv_Point_2d_32f_Array_4;
                                             Matrix   : Cv_64f_Array_3x3;
-                                            Rect_Map : Cv_Arr_P);
+                                            Rect_Map : Cv_Arr_Ptr);
    procedure Cv_Init_Perspective_Transform (Size     : Cv_Size;
                                             Vertex   : Cv_Point_2d_32f_Array_4;
                                             Matrix   : Cv_64f_Array_3x3;
-                                            Rect_Map : Cv_Mat_P);
+                                            Rect_Map : Cv_Mat_Ptr);
    procedure Cv_Init_Perspective_Transform (Size     : Cv_Size;
                                             Vertex   : Cv_Point_2d_32f_Array_4;
                                             Matrix   : Cv_64f_Array_3x3;
-                                            Rect_Map : Ipl_Image_P);
+                                            Rect_Map : Ipl_Image_Ptr);
 
    -- View Morphing Functions --------------------------------------------------
    --     The order of the function corresponds to the order they should appear
@@ -1231,7 +1231,7 @@ package Legacy is
    --     Grab pixel values from scanlines and stores them sequentially
    --     (some sort of perspective image transform)
    procedure Cv_Pre_Warp_Image (Line_Count : Integer;
-                                Img        : Ipl_Image_P;
+                                Img        : Ipl_Image_Ptr;
                                 Dst        : Cv_8u_Pointer;
                                 Dst_Nums   : Cv_32s_Pointer;
                                 Scan_Lines : Cv_32s_Pointer);
@@ -1288,11 +1288,11 @@ package Legacy is
    procedure Cv_Post_Warp_Image (Line_Count : Integer;
                                  Src        : Cv_8u_Pointer;
                                  Src_Nums   : Cv_32s_Pointer;
-                                 Img        : Ipl_Image_P;
+                                 Img        : Ipl_Image_Ptr;
                                  Scanlines  : Cv_32s_Pointer);
 
    --     Deletes Moire (missed pixels that appear due to discretization)
-   procedure Cv_Delete_Moire (Img : Ipl_Image_P);
+   procedure Cv_Delete_Moire (Img : Ipl_Image_Ptr);
 
    -- ConDenstation state.
    type Cv_Con_Densation is
@@ -1312,25 +1312,25 @@ package Legacy is
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Con_Densation);
 
-   type Cv_Con_Densation_P is access all Cv_Con_Densation;
+   type Cv_Con_Densation_Ptr is access all Cv_Con_Densation;
 
    --     Allocates the ConDensation filter structure.
    function Cv_Create_Condensation (Dynamparams   : Integer;
                                     Measureparams : Integer;
-                                    Samplecount   : Integer) return Cv_Con_Densation_P;
+                                    Samplecount   : Integer) return Cv_Con_Densation_Ptr;
 
    --     Initializes the sample set for the ConDensation algorithm.
-   procedure Cv_Condens_Init_Sample_Set (Condens    : Cv_Con_Densation_P;
-                                         Lowerbound : Cv_Mat_P;
-                                         Upperbound : Cv_Mat_P);
+   procedure Cv_Condens_Init_Sample_Set (Condens    : Cv_Con_Densation_Ptr;
+                                         Lowerbound : Cv_Mat_Ptr;
+                                         Upperbound : Cv_Mat_Ptr);
 
    --     Updates ConDensation filter by time (predict future state of the system)
-   procedure Cv_Condens_Update_By_Time (Condens : Cv_Con_Densation_P);
+   procedure Cv_Condens_Update_By_Time (Condens : Cv_Con_Densation_Ptr);
 
-   function Ipl_Width (Img : Ipl_Image_P)
+   function Ipl_Width (Img : Ipl_Image_Ptr)
                        return Integer;
 
-   function Ipl_Height (Img : Ipl_Image_P)
+   function Ipl_Height (Img : Ipl_Image_Ptr)
                         return Integer;
 
 private

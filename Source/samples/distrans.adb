@@ -36,14 +36,14 @@ procedure Distrans is
    Trackbar_Name : constant String := "Threshold";
 
    -- The output images
-   Dist     : Ipl_Image_P;
-   Dist_8u1 : Ipl_Image_P;
-   Dist_8u2 : Ipl_Image_P;
-   Dist_8u  : Ipl_Image_P;
-   Dist_32s : Ipl_Image_P;
+   Dist     : Ipl_Image_Ptr;
+   Dist_8u1 : Ipl_Image_Ptr;
+   Dist_8u2 : Ipl_Image_Ptr;
+   Dist_8u  : Ipl_Image_Ptr;
+   Dist_32s : Ipl_Image_Ptr;
 
-   Gray     : Ipl_Image_P;
-   Edge     : Ipl_Image_P;
+   Gray     : Ipl_Image_Ptr;
+   Edge     : Ipl_Image_Ptr;
 
    procedure On_Trackbar (Position : Integer);
    pragma Convention (C, On_Trackbar);

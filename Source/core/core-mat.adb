@@ -9,7 +9,7 @@ package body Core.Mat is
       function Cv_Create_Mat_I (Rows   : Integer;
                                 Cols   : Integer;
                                 M_Type : Unsigned_32;
-                                Data   : Cv_Void_P)
+                                Data   : Cv_Void_Ptr)
                                 return Cv_Mat;
       pragma Import (C, Cv_Create_Mat_I, "CvMat_wrap");
 

@@ -32,60 +32,60 @@ package Core.Operations is
    -----------------------------------------------------------------------------
    --     Allocates a memory buffer.
    function Cv_Alloc (Size : Interfaces.C.Size_T)
-                      return Cv_Void_P;
+                      return Cv_Void_Ptr;
 
    --     Deallocates a memory buffer.
-   procedure Cv_Free (Ptr : access Cv_Void_P);
+   procedure Cv_Free (Ptr : access Cv_Void_Ptr);
 
    --     Creates an image header but does not allocate the image data.
    function Cv_Create_Image_Header (Size    : Cv_Size;
                                     Depth   : Unsigned_32;
                                     Channel : Integer)
-                                    return Ipl_Image_P;
+                                    return Ipl_Image_Ptr;
 
    --     Initializes an image header that was previously allocated.
-   function Cv_Init_Image_Header (Image    : Ipl_Image_P;
+   function Cv_Init_Image_Header (Image    : Ipl_Image_Ptr;
                                   Size     : Cv_Size;
                                   Depth    : Unsigned_32;
                                   Channels : Integer;
                                   Origin   : Integer := 0;
                                   Align    : Integer := 4)
-                                  return Ipl_Image_P;
+                                  return Ipl_Image_Ptr;
 
    --     Creates an image header and allocates the image data.
    function Cv_Create_Image (Size     : Cv_Size;
                              Depth    : Unsigned_32;
                              Channels : Integer)
-                             return Ipl_Image_P;
+                             return Ipl_Image_Ptr;
 
    --     Deallocates an image header.
-   procedure Cv_Release_Image_Header (Image : access Ipl_Image_P);
+   procedure Cv_Release_Image_Header (Image : access Ipl_Image_Ptr);
 
    --     Deallocates the image header and the image data.
-   procedure Cv_Release_Image (Image : access Ipl_Image_P);
+   procedure Cv_Release_Image (Image : access Ipl_Image_Ptr);
 
    --     Makes a full copy of an image, including the header, data, and ROI.
-   function Cv_Clone_Image (Image : Ipl_Image_P)
-                            return Ipl_Image_P;
+   function Cv_Clone_Image (Image : Ipl_Image_Ptr)
+                            return Ipl_Image_Ptr;
 
    --     Sets the channel of interest in an IplImage.
-   procedure Cv_Set_Image_Coi (Image : Ipl_Image_P;
+   procedure Cv_Set_Image_Coi (Image : Ipl_Image_Ptr;
                                Coi   : Integer);
 
    --     Returns the index of the channel of interest.
-   function Cv_Get_Image_Coi (Image : Ipl_Image_P)
+   function Cv_Get_Image_Coi (Image : Ipl_Image_Ptr)
                               return Integer;
 
    --     Sets an image Region Of Interest (ROI) for a given rectangle.
-   procedure Cv_Set_Image_Roi (Image : Ipl_Image_P;
+   procedure Cv_Set_Image_Roi (Image : Ipl_Image_Ptr;
                                Rect  : Cv_Rect);
 
    --     Resets the image ROI to include the entire image and releases the
    --     ROI structure.
-   procedure Cv_Reset_Image_Roi (Image : Ipl_Image_P);
+   procedure Cv_Reset_Image_Roi (Image : Ipl_Image_Ptr);
 
    --     Returns the image ROI.
-   function Cv_Get_Image_Roi (Image : Ipl_Image_P)
+   function Cv_Get_Image_Roi (Image : Ipl_Image_Ptr)
                               return Cv_Rect;
 
 
@@ -93,157 +93,157 @@ package Core.Operations is
    function Cv_Create_Mat_Header (Rows     : Integer;
                                   Cols     : Integer;
                                   Mat_Type : Integer)
-                                  return Cv_Mat_P;
+                                  return Cv_Mat_Ptr;
 
    --     Initializes a pre-allocated matrix header.
-   function Cv_Init_Mat_Header (Mat   : Cv_Mat_P;
+   function Cv_Init_Mat_Header (Mat   : Cv_Mat_Ptr;
                                 Rows  : Integer;
                                 Cols  : Integer;
                                 Mat_T : Integer;
                                 Data  : access Mat_Data := null; -- void*
                                 Step  : Unsigned_32 := Cv_Autostep)
-                                return Cv_Mat_P;
+                                return Cv_Mat_Ptr;
 
    --     Creates a matrix header and allocates the matrix data.
    function Cv_Create_Mat (Rows     : Integer;
                            Cols     : Integer;
                            Mat_Type : Unsigned_32)
-                           return Cv_Mat_P;
+                           return Cv_Mat_Ptr;
 
    --     Deallocates a matrix.
-   procedure Cv_Release_Mat (Mat : access Cv_Mat_P);
+   procedure Cv_Release_Mat (Mat : access Cv_Mat_Ptr);
 
    --     Decrements an array data reference counter.
-   procedure Cv_Dec_Ref_Data (Arr : Cv_Arr_P);
-   procedure Cv_Dec_Ref_Data (Arr : Cv_Mat_P);
-   procedure Cv_Dec_Ref_Data (Arr : Ipl_Image_P);
+   procedure Cv_Dec_Ref_Data (Arr : Cv_Arr_Ptr);
+   procedure Cv_Dec_Ref_Data (Arr : Cv_Mat_Ptr);
+   procedure Cv_Dec_Ref_Data (Arr : Ipl_Image_Ptr);
 
    --     Increments array data reference counter.
-   function Cv_Inc_Ref_Data (Arr : Cv_Arr_P)
+   function Cv_Inc_Ref_Data (Arr : Cv_Arr_Ptr)
                              return Integer;
-   function Cv_Inc_Ref_Data (Arr : Cv_Mat_P)
+   function Cv_Inc_Ref_Data (Arr : Cv_Mat_Ptr)
                              return Integer;
-   function Cv_Inc_Ref_Data (Arr : Ipl_Image_P)
+   function Cv_Inc_Ref_Data (Arr : Ipl_Image_Ptr)
                              return Integer;
 
    --     Creates a full matrix copy.
-   function Cv_Clone_Mat (Mat : Cv_Mat_P)
-                          return Cv_Mat_P;
+   function Cv_Clone_Mat (Mat : Cv_Mat_Ptr)
+                          return Cv_Mat_Ptr;
 
    --     Returns matrix header corresponding to the rectangular sub-array of
    --     input image or matrix.
-   function Cv_Get_Sub_Rect (Arr    : Cv_Arr_P;
-                             Submat : Cv_Mat_P;
+   function Cv_Get_Sub_Rect (Arr    : Cv_Arr_Ptr;
+                             Submat : Cv_Mat_Ptr;
                              Rect   : Cv_Rect)
-                             return Cv_Mat_P;
-   function Cv_Get_Sub_Rect (Arr    : Cv_Mat_P;
-                             Submat : Cv_Mat_P;
+                             return Cv_Mat_Ptr;
+   function Cv_Get_Sub_Rect (Arr    : Cv_Mat_Ptr;
+                             Submat : Cv_Mat_Ptr;
                              Rect   : Cv_Rect)
-                             return Cv_Mat_P;
-   function Cv_Get_Sub_Rect (Arr    : Ipl_Image_P;
-                             Submat : Cv_Mat_P;
+                             return Cv_Mat_Ptr;
+   function Cv_Get_Sub_Rect (Arr    : Ipl_Image_Ptr;
+                             Submat : Cv_Mat_Ptr;
                              Rect   : Cv_Rect)
-                             return Cv_Mat_P;
-   function Cv_Get_Sub_Arr (Arr    : Cv_Arr_P;
-                            Submat : Cv_Mat_P;
+                             return Cv_Mat_Ptr;
+   function Cv_Get_Sub_Arr (Arr    : Cv_Arr_Ptr;
+                            Submat : Cv_Mat_Ptr;
                             Rect   : Cv_Rect)
-                            return Cv_Mat_P renames Cv_Get_Sub_Rect;
-   function Cv_Get_Sub_Arr (Arr    : Cv_Mat_P;
-                            Submat : Cv_Mat_P;
+                            return Cv_Mat_Ptr renames Cv_Get_Sub_Rect;
+   function Cv_Get_Sub_Arr (Arr    : Cv_Mat_Ptr;
+                            Submat : Cv_Mat_Ptr;
                             Rect   : Cv_Rect)
-                            return Cv_Mat_P renames Cv_Get_Sub_Rect;
-   function Cv_Get_Sub_Arr (Arr    : Ipl_Image_P;
-                            Submat : Cv_Mat_P;
+                            return Cv_Mat_Ptr renames Cv_Get_Sub_Rect;
+   function Cv_Get_Sub_Arr (Arr    : Ipl_Image_Ptr;
+                            Submat : Cv_Mat_Ptr;
                             Rect   : Cv_Rect)
-                            return Cv_Mat_P renames Cv_Get_Sub_Rect;
+                            return Cv_Mat_Ptr renames Cv_Get_Sub_Rect;
 
    --     Returns row span.
-   function Cv_Get_Rows (Arr       : Cv_Arr_P;
-                         Submat    : Cv_Mat_P;
+   function Cv_Get_Rows (Arr       : Cv_Arr_Ptr;
+                         Submat    : Cv_Mat_Ptr;
                          Start_Row : Integer;
                          End_Row   : Integer;
                          Delta_Row : Integer := 1)
-                         return Cv_Mat_P;
-   function Cv_Get_Rows (Arr       : Cv_Mat_P;
-                         Submat    : Cv_Mat_P;
+                         return Cv_Mat_Ptr;
+   function Cv_Get_Rows (Arr       : Cv_Mat_Ptr;
+                         Submat    : Cv_Mat_Ptr;
                          Start_Row : Integer;
                          End_Row   : Integer;
                          Delta_Row : Integer := 1)
-                         return Cv_Mat_P;
-   function Cv_Get_Rows (Arr       : Ipl_Image_P;
-                         Submat    : Cv_Mat_P;
+                         return Cv_Mat_Ptr;
+   function Cv_Get_Rows (Arr       : Ipl_Image_Ptr;
+                         Submat    : Cv_Mat_Ptr;
                          Start_Row : Integer;
                          End_Row   : Integer;
                          Delta_Row : Integer := 1)
-                         return Cv_Mat_P;
+                         return Cv_Mat_Ptr;
 
    --     Returns array row.
-   function Cv_Get_Row (Arr    : Cv_Arr_P;
-                        Submat : Cv_Mat_P;
+   function Cv_Get_Row (Arr    : Cv_Arr_Ptr;
+                        Submat : Cv_Mat_Ptr;
                         Row    : Integer)
-                        return Cv_Mat_P;
-   function Cv_Get_Row (Arr    : Cv_Mat_P;
-                        Submat : Cv_Mat_P;
+                        return Cv_Mat_Ptr;
+   function Cv_Get_Row (Arr    : Cv_Mat_Ptr;
+                        Submat : Cv_Mat_Ptr;
                         Row    : Integer)
-                        return Cv_Mat_P;
-   function Cv_Get_Row (Arr    : Ipl_Image_P;
-                        Submat : Cv_Mat_P;
+                        return Cv_Mat_Ptr;
+   function Cv_Get_Row (Arr    : Ipl_Image_Ptr;
+                        Submat : Cv_Mat_Ptr;
                         Row    : Integer)
-                        return Cv_Mat_P;
+                        return Cv_Mat_Ptr;
 
    --     Returns array column span.
-   function Cv_Get_Cols (Arr       : Cv_Arr_P;
-                         Submat    : Cv_Mat_P;
+   function Cv_Get_Cols (Arr       : Cv_Arr_Ptr;
+                         Submat    : Cv_Mat_Ptr;
                          Start_Col : Integer;
                          End_Col   : Integer)
-                         return Cv_Mat_P;
-   function Cv_Get_Cols (Arr       : Cv_Mat_P;
-                         Submat    : Cv_Mat_P;
+                         return Cv_Mat_Ptr;
+   function Cv_Get_Cols (Arr       : Cv_Mat_Ptr;
+                         Submat    : Cv_Mat_Ptr;
                          Start_Col : Integer;
                          End_Col   : Integer)
-                         return Cv_Mat_P;
-   function Cv_Get_Cols (Arr       : Ipl_Image_P;
-                         Submat    : Cv_Mat_P;
+                         return Cv_Mat_Ptr;
+   function Cv_Get_Cols (Arr       : Ipl_Image_Ptr;
+                         Submat    : Cv_Mat_Ptr;
                          Start_Col : Integer;
                          End_Col   : Integer)
-                         return Cv_Mat_P;
+                         return Cv_Mat_Ptr;
 
    --     Returns array column.
-   function Cv_Get_Col (Arr    : Cv_Arr_P;
-                        Submat : Cv_Mat_P;
+   function Cv_Get_Col (Arr    : Cv_Arr_Ptr;
+                        Submat : Cv_Mat_Ptr;
                         Col    : Integer)
-                        return Cv_Mat_P;
-   function Cv_Get_Col (Arr    : Cv_Mat_P;
-                        Submat : Cv_Mat_P;
+                        return Cv_Mat_Ptr;
+   function Cv_Get_Col (Arr    : Cv_Mat_Ptr;
+                        Submat : Cv_Mat_Ptr;
                         Col    : Integer)
-                        return Cv_Mat_P;
-   function Cv_Get_Col (Arr    : Ipl_Image_P;
-                        Submat : Cv_Mat_P;
+                        return Cv_Mat_Ptr;
+   function Cv_Get_Col (Arr    : Ipl_Image_Ptr;
+                        Submat : Cv_Mat_Ptr;
                         Col    : Integer)
-                        return Cv_Mat_P;
+                        return Cv_Mat_Ptr;
 
    --     Returns one of array diagonals.
-   function Cv_Get_Diag (Arr    : Cv_Arr_P;
-                         Submat : Cv_Mat_P;
+   function Cv_Get_Diag (Arr    : Cv_Arr_Ptr;
+                         Submat : Cv_Mat_Ptr;
                          Diag   : Integer := 0)
-                         return Cv_Mat_P;
-   function Cv_Get_Diag (Arr    : Cv_Mat_P;
-                         Submat : Cv_Mat_P;
+                         return Cv_Mat_Ptr;
+   function Cv_Get_Diag (Arr    : Cv_Mat_Ptr;
+                         Submat : Cv_Mat_Ptr;
                          Diag   : Integer := 0)
-                         return Cv_Mat_P;
-   function Cv_Get_Diag (Arr    : Ipl_Image_P;
-                         Submat : Cv_Mat_P;
+                         return Cv_Mat_Ptr;
+   function Cv_Get_Diag (Arr    : Ipl_Image_Ptr;
+                         Submat : Cv_Mat_Ptr;
                          Diag   : Integer := 0)
-                         return Cv_Mat_P;
+                         return Cv_Mat_Ptr;
 
 
    --/* low-level scalar <-> raw data conversion functions */
    procedure Cv_Scalar_To_Raw_Data (Scalar     : access Cv_Scalar;
-                                    Data       : Cv_Void_P;
+                                    Data       : Cv_Void_Ptr;
                                     Itype      : Integer;
                                     Extendto12 : Integer := 0);
 
-   procedure Cv_Raw_Data_To_Scalar (Data   : Cv_Void_P;
+   procedure Cv_Raw_Data_To_Scalar (Data   : Cv_Void_Ptr;
                                     Itype  : Integer;
                                     Scalar : access Cv_Scalar);
 
@@ -280,22 +280,22 @@ package Core.Operations is
    function Cv_Create_Sparse_Mat (Dims     : Integer;
                                   Sizes    : access Integer;
                                   Mat_Type : Integer)
-                                  return Cv_Sparse_Mat_P;
+                                  return Cv_Sparse_Mat_Ptr;
 
    --     Deallocates sparse array.
-   procedure Cv_Release_Sparse_Mat (Mat : access Cv_Sparse_Mat_P);
+   procedure Cv_Release_Sparse_Mat (Mat : access Cv_Sparse_Mat_Ptr);
 
    --     Creates full copy of sparse array.
-   function Cv_Clone_Sparse_Mat (Mat : Cv_Sparse_Mat_P)
-                                 return Cv_Sparse_Mat_P;
+   function Cv_Clone_Sparse_Mat (Mat : Cv_Sparse_Mat_Ptr)
+                                 return Cv_Sparse_Mat_Ptr;
 
    --     Initializes sparse array elements iterator.
-   function Cv_Init_Sparse_Mat_Iterator (Mat      : Cv_Sparse_Mat_P;
-                                         Mat_Iter : Cv_Sparse_Mat_Iterator_P)
-                                         return Cv_Sparse_Node_P;
+   function Cv_Init_Sparse_Mat_Iterator (Mat      : Cv_Sparse_Mat_Ptr;
+                                         Mat_Iter : Cv_Sparse_Mat_Iterator_Ptr)
+                                         return Cv_Sparse_Node_Ptr;
 
    --     Returns the next sparse matrix element
-   function Cv_Get_Next_Sparse_Node (Mat_Iterator : Cv_Sparse_Mat_Iterator_P)
+   function Cv_Get_Next_Sparse_Node (Mat_Iterator : Cv_Sparse_Mat_Iterator_Ptr)
                                      return Cv_Sparse_Node;
 
    -----------------------------------------------------------------------------
@@ -303,7 +303,7 @@ package Core.Operations is
    -----------------------------------------------------------------------------
    Cv_Max_Arr : constant := 10;
 
-   type Cv_N_Array_Ptr_Array is array (Integer range 1 .. Cv_Max_Arr) of Cv_Void_P;
+   type Cv_N_Array_Ptr_Array is array (Integer range 1 .. Cv_Max_Arr) of Cv_Void_Ptr;
    type Cv_N_Array_Cvmatnd_P_Array is array (Integer range 1 .. Cv_Max_Arr) of Cv_Mat_Nd_P;
 
    type Cv_N_Array_Iterator is
@@ -326,19 +326,19 @@ package Core.Operations is
    --      N-ari element-wise operations) */
    procedure Cv_Init_N_Array_Iterator (Count         : Integer;
                                        Arrs          : Cv_Arr_P_Array;
-                                       Mask          : Cv_Arr_P;
+                                       Mask          : Cv_Arr_Ptr;
                                        Stubs         : Cv_Mat_Nd_P;
                                        Arrayiterator : Cv_N_Array_Iterator;
                                        Flags         : Integer := 0);
    procedure Cv_Init_N_Array_Iterator (Count         : Integer;
                                        Arrs          : Cv_Mat_Array;
-                                       Mask          : Cv_Mat_P;
+                                       Mask          : Cv_Mat_Ptr;
                                        Stubs         : Cv_Mat_Nd_P;
                                        Arrayiterator : Cv_N_Array_Iterator;
                                        Flags         : Integer := 0);
    procedure Cv_Init_N_Array_Iterator (Count         : Integer;
                                        Arrs          : Ipl_Image_P_Array;
-                                       Mask          : Ipl_Image_P;
+                                       Mask          : Ipl_Image_Ptr;
                                        Stubs         : Cv_Mat_Nd_P;
                                        Arrayiterator : Cv_N_Array_Iterator;
                                        Flags         : Integer := 0);
@@ -347,583 +347,583 @@ package Core.Operations is
    function Cv_Next_N_Array_Slice (Array_Iterator : Cv_N_Array_Iterator) return Integer;
 
    --     Returns type of array elements.
-   function Cv_Get_Elem_Type (Arr : Cv_Arr_P)
+   function Cv_Get_Elem_Type (Arr : Cv_Arr_Ptr)
                               return Integer;
-   function Cv_Get_Elem_Type (Arr : Cv_Mat_P)
+   function Cv_Get_Elem_Type (Arr : Cv_Mat_Ptr)
                               return Integer;
-   function Cv_Get_Elem_Type (Arr : Ipl_Image_P)
+   function Cv_Get_Elem_Type (Arr : Ipl_Image_Ptr)
                               return Integer;
 
    --     Return number of array dimensions and their sizes.
-   function Cv_Get_Dims (Arr   : Cv_Arr_P;
+   function Cv_Get_Dims (Arr   : Cv_Arr_Ptr;
                          Sizes : Cv_32s_Array)
                          return Integer;
-   function Cv_Get_Dims (Arr   : Cv_Mat_P;
+   function Cv_Get_Dims (Arr   : Cv_Mat_Ptr;
                          Sizes : Cv_32s_Array)
                          return Integer;
-   function Cv_Get_Dims (Arr   : Ipl_Image_P;
+   function Cv_Get_Dims (Arr   : Ipl_Image_Ptr;
                          Sizes : Cv_32s_Array)
                          return Integer;
 
    --     Return the size of a particular dimension.
-   function Cv_Get_Dim_Size (Arr   : Cv_Arr_P;
+   function Cv_Get_Dim_Size (Arr   : Cv_Arr_Ptr;
                              Index : Integer)
                              return Integer;
-   function Cv_Get_Dim_Size (Arr   : Cv_Mat_P;
+   function Cv_Get_Dim_Size (Arr   : Cv_Mat_Ptr;
                              Index : Integer)
                              return Integer;
-   function Cv_Get_Dim_Size (Arr   : Ipl_Image_P;
+   function Cv_Get_Dim_Size (Arr   : Ipl_Image_Ptr;
                              Index : Integer)
                              return Integer;
 
    --     Return pointer to a particular array element.
-   function Cv_Ptr_1d (Arr   : Cv_Arr_P;
+   function Cv_Ptr_1d (Arr   : Cv_Arr_Ptr;
                        Idx0  : Integer;
                        Mat_T : access Integer := null)
-                       return Cv_Void_P;
-   function Cv_Ptr_1d (Arr   : Cv_Mat_P;
+                       return Cv_Void_Ptr;
+   function Cv_Ptr_1d (Arr   : Cv_Mat_Ptr;
                        Idx0  : Integer;
                        Mat_T : access Integer := null)
-                       return Cv_Void_P;
-   function Cv_Ptr_1d (Arr   : Ipl_Image_P;
+                       return Cv_Void_Ptr;
+   function Cv_Ptr_1d (Arr   : Ipl_Image_Ptr;
                        Idx0  : Integer;
                        Mat_T : access Integer := null)
-                       return Cv_Void_P;
+                       return Cv_Void_Ptr;
 
    --     Return pointer to a particular array element.
-   function Cv_Ptr_2d (Arr   : Cv_Arr_P;
+   function Cv_Ptr_2d (Arr   : Cv_Arr_Ptr;
                        Idx0  : Integer;
                        Idx1  : Integer;
                        Mat_T : access Integer := null)
-                       return Cv_Void_P;
-   function Cv_Ptr_2d (Arr   : Cv_Mat_P;
+                       return Cv_Void_Ptr;
+   function Cv_Ptr_2d (Arr   : Cv_Mat_Ptr;
                        Idx0  : Integer;
                        Idx1  : Integer;
                        Mat_T : access Integer := null)
-                       return Cv_Void_P;
-   function Cv_Ptr_2d (Arr   : Ipl_Image_P;
+                       return Cv_Void_Ptr;
+   function Cv_Ptr_2d (Arr   : Ipl_Image_Ptr;
                        Idx0  : Integer;
                        Idx1  : Integer;
                        Mat_T : access Integer := null)
-                       return Cv_Void_P;
+                       return Cv_Void_Ptr;
 
    --     Return pointer to a particular array element.
-   function Cv_Ptr_3d (Arr   : Cv_Arr_P;
+   function Cv_Ptr_3d (Arr   : Cv_Arr_Ptr;
                        Idx0  : Integer;
                        Idx1  : Integer;
                        Idx2  : Integer;
                        Mat_T : access Integer := null)
-                       return Cv_Void_P;
-   function Cv_Ptr_3d (Arr   : Cv_Mat_P;
+                       return Cv_Void_Ptr;
+   function Cv_Ptr_3d (Arr   : Cv_Mat_Ptr;
                        Idx0  : Integer;
                        Idx1  : Integer;
                        Idx2  : Integer;
                        Mat_T : access Integer := null)
-                       return Cv_Void_P;
-   function Cv_Ptr_3d (Arr   : Ipl_Image_P;
+                       return Cv_Void_Ptr;
+   function Cv_Ptr_3d (Arr   : Ipl_Image_Ptr;
                        Idx0  : Integer;
                        Idx1  : Integer;
                        Idx2  : Integer;
                        Mat_T : access Integer := null)
-                       return Cv_Void_P;
+                       return Cv_Void_Ptr;
 
    --     Return pointer to a particular array element.
-   function Cv_Ptr_Nd (Arr             : Cv_Arr_P;
+   function Cv_Ptr_Nd (Arr             : Cv_Arr_Ptr;
                        Idx             : Cv_32s_Array;
                        Mat_T           : access Integer := null;
                        Create_Node     : Integer := 1;
                        Precalc_Hashval : access Unsigned_32 := null)
-                       return Cv_Void_P;
-   function Cv_Ptr_Nd (Arr             : Cv_Mat_P;
+                       return Cv_Void_Ptr;
+   function Cv_Ptr_Nd (Arr             : Cv_Mat_Ptr;
                        Idx             : Cv_32s_Array;
                        Mat_T           : access Integer := null;
                        Create_Node     : Integer := 1;
                        Precalc_Hashval : access Unsigned_32 := null)
-                       return Cv_Void_P;
-   function Cv_Ptr_Nd (Arr             : Ipl_Image_P;
+                       return Cv_Void_Ptr;
+   function Cv_Ptr_Nd (Arr             : Ipl_Image_Ptr;
                        Idx             : Cv_32s_Array;
                        Mat_T           : access Integer := null;
                        Create_Node     : Integer := 1;
                        Precalc_Hashval : access Unsigned_32 := null)
-                       return Cv_Void_P;
+                       return Cv_Void_Ptr;
 
    --     Return a specific array element.
-   function Cv_Get_1d (Arr  : Cv_Arr_P;
+   function Cv_Get_1d (Arr  : Cv_Arr_Ptr;
                        Idx0 : Integer)
                        return Cv_Scalar;
-   function Cv_Get_1d (Arr  : Cv_Mat_P;
+   function Cv_Get_1d (Arr  : Cv_Mat_Ptr;
                        Idx0 : Integer)
                        return Cv_Scalar;
-   function Cv_Get_1d (Arr  : Ipl_Image_P;
+   function Cv_Get_1d (Arr  : Ipl_Image_Ptr;
                        Idx0 : Integer)
-                       return Cv_Scalar;
-
-   --     Return a specific array element.
-   function Cv_Get_2d (Arr  : Cv_Arr_P;
-                       Idx0 : Integer;
-                       Idx1 : Integer)
-                       return Cv_Scalar;
-   function Cv_Get_2d (Arr  : Cv_Mat_P;
-                       Idx0 : Integer;
-                       Idx1 : Integer)
-                       return Cv_Scalar;
-   function Cv_Get_2d (Arr  : Ipl_Image_P;
-                       Idx0 : Integer;
-                       Idx1 : Integer)
                        return Cv_Scalar;
 
    --     Return a specific array element.
-   function Cv_Get_3d (Arr  : Cv_Arr_P;
+   function Cv_Get_2d (Arr  : Cv_Arr_Ptr;
+                       Idx0 : Integer;
+                       Idx1 : Integer)
+                       return Cv_Scalar;
+   function Cv_Get_2d (Arr  : Cv_Mat_Ptr;
+                       Idx0 : Integer;
+                       Idx1 : Integer)
+                       return Cv_Scalar;
+   function Cv_Get_2d (Arr  : Ipl_Image_Ptr;
+                       Idx0 : Integer;
+                       Idx1 : Integer)
+                       return Cv_Scalar;
+
+   --     Return a specific array element.
+   function Cv_Get_3d (Arr  : Cv_Arr_Ptr;
                        Idx0 : Integer;
                        Idx1 : Integer;
                        Idx2 : Integer)
                        return Cv_Scalar;
-   function Cv_Get_3d (Arr  : Cv_Mat_P;
+   function Cv_Get_3d (Arr  : Cv_Mat_Ptr;
                        Idx0 : Integer;
                        Idx1 : Integer;
                        Idx2 : Integer)
                        return Cv_Scalar;
-   function Cv_Get_3d (Arr  : Ipl_Image_P;
+   function Cv_Get_3d (Arr  : Ipl_Image_Ptr;
                        Idx0 : Integer;
                        Idx1 : Integer;
                        Idx2 : Integer)
                        return Cv_Scalar;
 
    --     Return a specific array element.
-   function Cv_Get_Nd (Arr : Cv_Arr_P;
+   function Cv_Get_Nd (Arr : Cv_Arr_Ptr;
                        Idx : Cv_32s_Array)
                        return Cv_Scalar;
-   function Cv_Get_Nd (Arr : Cv_Mat_P;
+   function Cv_Get_Nd (Arr : Cv_Mat_Ptr;
                        Idx : Cv_32s_Array)
                        return Cv_Scalar;
-   function Cv_Get_Nd (Arr : Ipl_Image_P;
+   function Cv_Get_Nd (Arr : Ipl_Image_Ptr;
                        Idx : Cv_32s_Array)
                        return Cv_Scalar;
 
    --     Return a specific element of single-channel 1D array.
-   function Cv_Get_Real_1d (Arr  : Cv_Arr_P;
+   function Cv_Get_Real_1d (Arr  : Cv_Arr_Ptr;
                             Idx0 : Integer)
                             return Long_Float;
-   function Cv_Get_Real_1d (Arr  : Cv_Mat_P;
+   function Cv_Get_Real_1d (Arr  : Cv_Mat_Ptr;
                             Idx0 : Integer)
                             return Long_Float;
-   function Cv_Get_Real_1d (Arr  : Ipl_Image_P;
+   function Cv_Get_Real_1d (Arr  : Ipl_Image_Ptr;
                             Idx0 : Integer)
                             return Long_Float;
 
    --     Return a specific element of single-channel 2D array.
-   function Cv_Get_Real_2d (Arr  : Cv_Arr_P;
+   function Cv_Get_Real_2d (Arr  : Cv_Arr_Ptr;
                             Idx0 : Integer;
                             Idx1 : Integer)
                             return Long_Float;
-   function Cv_Get_Real_2d (Arr  : Cv_Mat_P;
+   function Cv_Get_Real_2d (Arr  : Cv_Mat_Ptr;
                             Idx0 : Integer;
                             Idx1 : Integer)
                             return Long_Float;
-   function Cv_Get_Real_2d (Arr  : Ipl_Image_P;
+   function Cv_Get_Real_2d (Arr  : Ipl_Image_Ptr;
                             Idx0 : Integer;
                             Idx1 : Integer)
                             return Long_Float;
 
    --     Return a specific element of single-channel array.
-   function Cv_Get_Real_3d (Arr  : Cv_Arr_P;
+   function Cv_Get_Real_3d (Arr  : Cv_Arr_Ptr;
                             Idx0 : Integer;
                             Idx1 : Integer;
                             Idx2 : Integer)
                             return Long_Float;
-   function Cv_Get_Real_3d (Arr  : Cv_Mat_P;
+   function Cv_Get_Real_3d (Arr  : Cv_Mat_Ptr;
                             Idx0 : Integer;
                             Idx1 : Integer;
                             Idx2 : Integer)
                             return Long_Float;
-   function Cv_Get_Real_3d (Arr  : Ipl_Image_P;
+   function Cv_Get_Real_3d (Arr  : Ipl_Image_Ptr;
                             Idx0 : Integer;
                             Idx1 : Integer;
                             Idx2 : Integer)
                             return Long_Float;
 
    --     Return a specific element of single-channel array.
-   function Cv_Get_Real_Nd (Arr  : Cv_Arr_P;
+   function Cv_Get_Real_Nd (Arr  : Cv_Arr_Ptr;
                             Idx  : Cv_32s_Array)
                             return Long_Float;
-   function Cv_Get_Real_Nd (Arr  : Cv_Mat_P;
+   function Cv_Get_Real_Nd (Arr  : Cv_Mat_Ptr;
                             Idx  : Cv_32s_Array)
                             return Long_Float;
-   function Cv_Get_Real_Nd (Arr  : Ipl_Image_P;
+   function Cv_Get_Real_Nd (Arr  : Ipl_Image_Ptr;
                             Idx  : Cv_32s_Array)
                             return Long_Float;
 
    --     Change the particular array element.
-   procedure Cv_Set_1d (Arr   : Cv_Arr_P;
+   procedure Cv_Set_1d (Arr   : Cv_Arr_Ptr;
                         Idx0  : Integer;
                         Value : Cv_Scalar);
-   procedure Cv_Set_1d (Arr   : Cv_Mat_P;
+   procedure Cv_Set_1d (Arr   : Cv_Mat_Ptr;
                         Idx0  : Integer;
                         Value : Cv_Scalar);
-   procedure Cv_Set_1d (Arr   : Ipl_Image_P;
+   procedure Cv_Set_1d (Arr   : Ipl_Image_Ptr;
                         Idx0  : Integer;
                         Value : Cv_Scalar);
 
    --     Change the particular array element.
-   procedure Cv_Set_2d (Arr   : Cv_Arr_P;
+   procedure Cv_Set_2d (Arr   : Cv_Arr_Ptr;
                         Idx0  : Integer;
                         Idx1  : Integer;
                         Value : Cv_Scalar);
-   procedure Cv_Set_2d (Arr   : Cv_Mat_P;
+   procedure Cv_Set_2d (Arr   : Cv_Mat_Ptr;
                         Idx0  : Integer;
                         Idx1  : Integer;
                         Value : Cv_Scalar);
-   procedure Cv_Set_2d (Arr   : Ipl_Image_P;
+   procedure Cv_Set_2d (Arr   : Ipl_Image_Ptr;
                         Idx0  : Integer;
                         Idx1  : Integer;
                         Value : Cv_Scalar);
 
    --     Change the particular array element.
-   procedure Cv_Set_3d (Arr   : Cv_Arr_P;
+   procedure Cv_Set_3d (Arr   : Cv_Arr_Ptr;
                         Idx0  : Integer;
                         Idx1  : Integer;
                         Idx2  : Integer;
                         Value : Cv_Scalar);
-   procedure Cv_Set_3d (Arr   : Cv_Mat_P;
+   procedure Cv_Set_3d (Arr   : Cv_Mat_Ptr;
                         Idx0  : Integer;
                         Idx1  : Integer;
                         Idx2  : Integer;
                         Value : Cv_Scalar);
-   procedure Cv_Set_3d (Arr   : Ipl_Image_P;
+   procedure Cv_Set_3d (Arr   : Ipl_Image_Ptr;
                         Idx0  : Integer;
                         Idx1  : Integer;
                         Idx2  : Integer;
                         Value : Cv_Scalar);
 
    --     Change the particular array element.
-   procedure Cv_Set_Nd (Arr   : Cv_Arr_P;
+   procedure Cv_Set_Nd (Arr   : Cv_Arr_Ptr;
                         Idx   : Cv_32s_Array;
                         Value : Cv_Scalar);
-   procedure Cv_Set_Nd (Arr   : Cv_Mat_P;
+   procedure Cv_Set_Nd (Arr   : Cv_Mat_Ptr;
                         Idx   : Cv_32s_Array;
                         Value : Cv_Scalar);
-   procedure Cv_Set_Nd (Arr   : Ipl_Image_P;
+   procedure Cv_Set_Nd (Arr   : Ipl_Image_Ptr;
                         Idx   : Cv_32s_Array;
                         Value : Cv_Scalar);
 
    --     Change a specific array element.
-   procedure Cv_Set_Real_1d (Arr   : Cv_Arr_P;
+   procedure Cv_Set_Real_1d (Arr   : Cv_Arr_Ptr;
                              Idx0  : Integer;
                              Value : Long_Float);
-   procedure Cv_Set_Real_1d (Arr   : Cv_Mat_P;
+   procedure Cv_Set_Real_1d (Arr   : Cv_Mat_Ptr;
                              Idx0  : Integer;
                              Value : Long_Float);
-   procedure Cv_Set_Real_1d (Arr   : Ipl_Image_P;
+   procedure Cv_Set_Real_1d (Arr   : Ipl_Image_Ptr;
                              Idx0  : Integer;
                              Value : Long_Float);
 
    --     Change a specific array element.
-   procedure Cv_Set_Real_2d (Arr   : Cv_Arr_P;
+   procedure Cv_Set_Real_2d (Arr   : Cv_Arr_Ptr;
                              Idx0  : Integer;
                              Idx1  : Integer;
                              Value : Long_Float);
-   procedure Cv_Set_Real_2d (Arr   : Cv_Mat_P;
+   procedure Cv_Set_Real_2d (Arr   : Cv_Mat_Ptr;
                              Idx0  : Integer;
                              Idx1  : Integer;
                              Value : Long_Float);
-   procedure Cv_Set_Real_2d (Arr   : Ipl_Image_P;
+   procedure Cv_Set_Real_2d (Arr   : Ipl_Image_Ptr;
                              Idx0  : Integer;
                              Idx1  : Integer;
                              Value : Long_Float);
 
    --     Change a specific array element.
-   procedure Cv_Set_Real_3d (Arr   : Cv_Arr_P;
+   procedure Cv_Set_Real_3d (Arr   : Cv_Arr_Ptr;
                              Idx0  : Integer;
                              Idx1  : Integer;
                              Idx2  : Integer;
                              Value : Long_Float);
-   procedure Cv_Set_Real_3d (Arr   : Cv_Mat_P;
+   procedure Cv_Set_Real_3d (Arr   : Cv_Mat_Ptr;
                              Idx0  : Integer;
                              Idx1  : Integer;
                              Idx2  : Integer;
                              Value : Long_Float);
-   procedure Cv_Set_Real_3d (Arr   : Ipl_Image_P;
+   procedure Cv_Set_Real_3d (Arr   : Ipl_Image_Ptr;
                              Idx0  : Integer;
                              Idx1  : Integer;
                              Idx2  : Integer;
                              Value : Long_Float);
 
    --     Change a specific array element.
-   procedure Cv_Set_Real_Nd (Arr   : Cv_Arr_P;
+   procedure Cv_Set_Real_Nd (Arr   : Cv_Arr_Ptr;
                              Idx0  : Cv_32s_Array;
                              Value : Long_Float);
-   procedure Cv_Set_Real_Nd (Arr   : Cv_Mat_P;
+   procedure Cv_Set_Real_Nd (Arr   : Cv_Mat_Ptr;
                              Idx0  : Cv_32s_Array;
                              Value : Long_Float);
-   procedure Cv_Set_Real_Nd (Arr   : Ipl_Image_P;
+   procedure Cv_Set_Real_Nd (Arr   : Ipl_Image_Ptr;
                              Idx0  : Cv_32s_Array;
                              Value : Long_Float);
 
    --     Clears a specific array element.
-   procedure Cv_Clear_Nd (Arr : Cv_Arr_P;
+   procedure Cv_Clear_Nd (Arr : Cv_Arr_Ptr;
                           Idx : access Integer);
-   procedure Cv_Clear_Nd (Arr : Cv_Mat_P;
+   procedure Cv_Clear_Nd (Arr : Cv_Mat_Ptr;
                           Idx : access Integer);
-   procedure Cv_Clear_Nd (Arr : Ipl_Image_P;
+   procedure Cv_Clear_Nd (Arr : Ipl_Image_Ptr;
                           Idx : access Integer);
 
    --     Returns matrix header for arbitrary array.
-   function Cv_Get_Mat (Arr     : Cv_Arr_P;
+   function Cv_Get_Mat (Arr     : Cv_Arr_Ptr;
                         Header  : access Cv_Mat;
                         Coi     : access Integer := null;
                         Allownd : Integer := 0)
-                        return Cv_Mat_P;
-   function Cv_Get_Mat (Arr     : Cv_Mat_P;
+                        return Cv_Mat_Ptr;
+   function Cv_Get_Mat (Arr     : Cv_Mat_Ptr;
                         Header  : access Cv_Mat;
                         Coi     : access Integer := null;
                         Allownd : Integer := 0)
-                        return Cv_Mat_P;
-   function Cv_Get_Mat (Arr     : Ipl_Image_P;
+                        return Cv_Mat_Ptr;
+   function Cv_Get_Mat (Arr     : Ipl_Image_Ptr;
                         Header  : access Cv_Mat;
                         Coi     : access Integer := null;
                         Allownd : Integer := 0)
-                        return Cv_Mat_P;
+                        return Cv_Mat_Ptr;
 
    --     Returns image header for arbitrary array.
-   function Cv_Get_Image (Arr          : Cv_Arr_P;
-                          Image_Header : Ipl_Image_P)
-                          return Ipl_Image_P;
-   function Cv_Get_Image (Arr          : Cv_Mat_P;
-                          Image_Header : Ipl_Image_P)
-                          return Ipl_Image_P;
-   function Cv_Get_Image (Arr          : Ipl_Image_P;
-                          Image_Header : Ipl_Image_P)
-                          return Ipl_Image_P;
+   function Cv_Get_Image (Arr          : Cv_Arr_Ptr;
+                          Image_Header : Ipl_Image_Ptr)
+                          return Ipl_Image_Ptr;
+   function Cv_Get_Image (Arr          : Cv_Mat_Ptr;
+                          Image_Header : Ipl_Image_Ptr)
+                          return Ipl_Image_Ptr;
+   function Cv_Get_Image (Arr          : Ipl_Image_Ptr;
+                          Image_Header : Ipl_Image_Ptr)
+                          return Ipl_Image_Ptr;
 
    --     Changes the shape of a multi-dimensional array without copying
    --     the data.
-   function Cv_Reshape_Mat_Nd (Arr           : Cv_Arr_P;
+   function Cv_Reshape_Mat_Nd (Arr           : Cv_Arr_Ptr;
                                Sizeof_Header : Integer;
-                               Header        : Cv_Arr_P;
+                               Header        : Cv_Arr_Ptr;
                                New_Cn        : Integer;
                                New_Dims      : Integer;
                                New_Sizes     : Cv_32s_Array)
-                               return Cv_Arr_P;
+                               return Cv_Arr_Ptr;
 
    -- #define cvReshapeND( arr, header, new_cn, new_dims, new_sizes )   \
    --        cvReshapeMatND( (arr), sizeof(*(header)), (header),         \
    --                        (new_cn), (new_dims), (new_sizes))
-   function Cv_Reshape_Nd (Arr      : Cv_Arr_P;
-                           Header   : Cv_Arr_P;
+   function Cv_Reshape_Nd (Arr      : Cv_Arr_Ptr;
+                           Header   : Cv_Arr_Ptr;
                            Newcn    : Integer;
                            Newdims  : Integer;
-                           Newsizes : Cv_32s_Array) return Cv_Arr_P;
+                           Newsizes : Cv_32s_Array) return Cv_Arr_Ptr;
 
    --     Changes shape of matrix/image without copying data.
-   function Cv_Reshape (Arr      : Cv_Arr_P;
-                        Header   : Cv_Mat_P;
+   function Cv_Reshape (Arr      : Cv_Arr_Ptr;
+                        Header   : Cv_Mat_Ptr;
                         New_Cn   : Integer;
                         New_Rows : Integer := 0)
-                        return Cv_Mat_P;
-   function Cv_Reshape (Arr      : Cv_Mat_P;
-                        Header   : Cv_Mat_P;
+                        return Cv_Mat_Ptr;
+   function Cv_Reshape (Arr      : Cv_Mat_Ptr;
+                        Header   : Cv_Mat_Ptr;
                         New_Cn   : Integer;
                         New_Rows : Integer := 0)
-                        return Cv_Mat_P;
-   function Cv_Reshape (Arr      : Ipl_Image_P;
-                        Header   : Cv_Mat_P;
+                        return Cv_Mat_Ptr;
+   function Cv_Reshape (Arr      : Ipl_Image_Ptr;
+                        Header   : Cv_Mat_Ptr;
                         New_Cn   : Integer;
                         New_Rows : Integer := 0)
-                        return Cv_Mat_P;
+                        return Cv_Mat_Ptr;
 
    --     Fill the destination array with repeated copies of the source array.
-   procedure Cv_Repeat (Src : Cv_Arr_P;
-                        Dst : Cv_Arr_P);
-   procedure Cv_Repeat (Src : Cv_Mat_P;
-                        Dst : Cv_Mat_P);
-   procedure Cv_Repeat (Src : Ipl_Image_P;
-                        Dst : Ipl_Image_P);
+   procedure Cv_Repeat (Src : Cv_Arr_Ptr;
+                        Dst : Cv_Arr_Ptr);
+   procedure Cv_Repeat (Src : Cv_Mat_Ptr;
+                        Dst : Cv_Mat_Ptr);
+   procedure Cv_Repeat (Src : Ipl_Image_Ptr;
+                        Dst : Ipl_Image_Ptr);
 
    --     Allocates array data
-   procedure Cv_Create_Data (Arr : Cv_Arr_P);
-   procedure Cv_Create_Data (Arr : Cv_Mat_P);
-   procedure Cv_Create_Data (Arr : Ipl_Image_P);
+   procedure Cv_Create_Data (Arr : Cv_Arr_Ptr);
+   procedure Cv_Create_Data (Arr : Cv_Mat_Ptr);
+   procedure Cv_Create_Data (Arr : Ipl_Image_Ptr);
 
    --     Releases array data.
-   procedure Cv_Release_Data (Arr : Cv_Arr_P);
-   procedure Cv_Release_Data (Arr : Cv_Mat_P);
-   procedure Cv_Release_Data (Arr : Ipl_Image_P);
+   procedure Cv_Release_Data (Arr : Cv_Arr_Ptr);
+   procedure Cv_Release_Data (Arr : Cv_Mat_Ptr);
+   procedure Cv_Release_Data (Arr : Ipl_Image_Ptr);
 
    --     Assigns user data to the array header.
-   procedure Cv_Set_Data (Arr  : Cv_Arr_P;
+   procedure Cv_Set_Data (Arr  : Cv_Arr_Ptr;
                           Data : System.Address;
                           Step : Integer);
-   procedure Cv_Set_Data (Arr  : Cv_Mat_P;
+   procedure Cv_Set_Data (Arr  : Cv_Mat_Ptr;
                           Data : System.Address;
                           Step : Integer);
-   procedure Cv_Set_Data (Arr  : Ipl_Image_P;
+   procedure Cv_Set_Data (Arr  : Ipl_Image_Ptr;
                           Data : System.Address;
                           Step : Integer);
 
    --     Retrieves low-level information about the array.
-   procedure Cv_Get_Raw_Data (Arr      : Cv_Arr_P;
-                              Data     : access Cv_Arr_P; -- uchar**
+   procedure Cv_Get_Raw_Data (Arr      : Cv_Arr_Ptr;
+                              Data     : access Cv_Arr_Ptr; -- uchar**
                               Step     : access Integer := null;
                               Roi_Size : access Cv_Size := null);
 
    --     Returns size of matrix or image ROI.
-   function Cv_Get_Size (Arr : Cv_Arr_P)
+   function Cv_Get_Size (Arr : Cv_Arr_Ptr)
                          return Cv_Size;
-   function Cv_Get_Size (Arr : Cv_Mat_P)
+   function Cv_Get_Size (Arr : Cv_Mat_Ptr)
                          return Cv_Size;
-   function Cv_Get_Size (Arr : Ipl_Image_P)
+   function Cv_Get_Size (Arr : Ipl_Image_Ptr)
                          return Cv_Size;
 
    --     Copies one array to another.
-   procedure Cv_Copy (Src  : Cv_Arr_P;
-                      Dst  : Cv_Arr_P;
-                      Mask : Cv_Arr_P := null);
-   procedure Cv_Copy (Src  : Cv_Mat_P;
-                      Dst  : Cv_Mat_P;
-                      Mask : Cv_Mat_P := null);
-   procedure Cv_Copy (Src  : Ipl_Image_P;
-                      Dst  : Ipl_Image_P;
-                      Mask : Ipl_Image_P := null);
+   procedure Cv_Copy (Src  : Cv_Arr_Ptr;
+                      Dst  : Cv_Arr_Ptr;
+                      Mask : Cv_Arr_Ptr := null);
+   procedure Cv_Copy (Src  : Cv_Mat_Ptr;
+                      Dst  : Cv_Mat_Ptr;
+                      Mask : Cv_Mat_Ptr := null);
+   procedure Cv_Copy (Src  : Ipl_Image_Ptr;
+                      Dst  : Ipl_Image_Ptr;
+                      Mask : Ipl_Image_Ptr := null);
 
    --     Sets every element of an array to a given value.
-   procedure Cv_Set_All (Arr   : Cv_Arr_P;
+   procedure Cv_Set_All (Arr   : Cv_Arr_Ptr;
                          Value : Cv_Scalar;
-                         Mask  : Cv_Arr_P := null);
-   procedure Cv_Set_All (Arr   : Cv_Mat_P;
+                         Mask  : Cv_Arr_Ptr := null);
+   procedure Cv_Set_All (Arr   : Cv_Mat_Ptr;
                          Value : Cv_Scalar;
-                         Mask  : Cv_Mat_P := null);
-   procedure Cv_Set_All (Arr   : Ipl_Image_P;
+                         Mask  : Cv_Mat_Ptr := null);
+   procedure Cv_Set_All (Arr   : Ipl_Image_Ptr;
                          Value : Cv_Scalar;
-                         Mask  : Ipl_Image_P := null);
+                         Mask  : Ipl_Image_Ptr := null);
 
    --     Clears the array.
-   procedure Cv_Set_Zero (Arr : Cv_Arr_P);
-   procedure Cv_Set_Zero (Arr : Cv_Mat_P);
-   procedure Cv_Set_Zero (Arr : Ipl_Image_P);
-   procedure Cv_Zero (Arr : Cv_Arr_P) renames Cv_Set_Zero;
-   procedure Cv_Zero (Arr : Cv_Mat_P) renames Cv_Set_Zero;
-   procedure Cv_Zero (Arr : Ipl_Image_P) renames Cv_Set_Zero;
+   procedure Cv_Set_Zero (Arr : Cv_Arr_Ptr);
+   procedure Cv_Set_Zero (Arr : Cv_Mat_Ptr);
+   procedure Cv_Set_Zero (Arr : Ipl_Image_Ptr);
+   procedure Cv_Zero (Arr : Cv_Arr_Ptr) renames Cv_Set_Zero;
+   procedure Cv_Zero (Arr : Cv_Mat_Ptr) renames Cv_Set_Zero;
+   procedure Cv_Zero (Arr : Ipl_Image_Ptr) renames Cv_Set_Zero;
 
 
    --     Divides multi-channel array into several single-channel arrays or
    --     extracts a single channel from the array.
-   procedure Cv_Split (Src  : Cv_Arr_P;
-                       Dst0 : Cv_Arr_P;
-                       Dst1 : Cv_Arr_P;
-                       Dst2 : Cv_Arr_P;
-                       Dst3 : Cv_Arr_P);
-   procedure Cv_Split (Src  : Cv_Mat_P;
-                       Dst0 : Cv_Mat_P;
-                       Dst1 : Cv_Mat_P;
-                       Dst2 : Cv_Mat_P;
-                       Dst3 : Cv_Mat_P);
-   procedure Cv_Split (Src  : Ipl_Image_P;
-                       Dst0 : Ipl_Image_P;
-                       Dst1 : Ipl_Image_P;
-                       Dst2 : Ipl_Image_P;
-                       Dst3 : Ipl_Image_P);
+   procedure Cv_Split (Src  : Cv_Arr_Ptr;
+                       Dst0 : Cv_Arr_Ptr;
+                       Dst1 : Cv_Arr_Ptr;
+                       Dst2 : Cv_Arr_Ptr;
+                       Dst3 : Cv_Arr_Ptr);
+   procedure Cv_Split (Src  : Cv_Mat_Ptr;
+                       Dst0 : Cv_Mat_Ptr;
+                       Dst1 : Cv_Mat_Ptr;
+                       Dst2 : Cv_Mat_Ptr;
+                       Dst3 : Cv_Mat_Ptr);
+   procedure Cv_Split (Src  : Ipl_Image_Ptr;
+                       Dst0 : Ipl_Image_Ptr;
+                       Dst1 : Ipl_Image_Ptr;
+                       Dst2 : Ipl_Image_Ptr;
+                       Dst3 : Ipl_Image_Ptr);
 
    --     Composes a multi-channel array from several single-channel arrays or
    --     inserts a single channel into the array.
-   procedure Cv_Merge (Src0 : Cv_Arr_P;
-                       Src1 : Cv_Arr_P;
-                       Src2 : Cv_Arr_P;
-                       Src3 : Cv_Arr_P;
-                       Dst  : Cv_Arr_P);
-   procedure Cv_Merge (Src0 : Cv_Mat_P;
-                       Src1 : Cv_Mat_P;
-                       Src2 : Cv_Mat_P;
-                       Src3 : Cv_Mat_P;
-                       Dst  : Cv_Mat_P);
-   procedure Cv_Merge (Src0 : Ipl_Image_P;
-                       Src1 : Ipl_Image_P;
-                       Src2 : Ipl_Image_P;
-                       Src3 : Ipl_Image_P;
-                       Dst  : Ipl_Image_P);
+   procedure Cv_Merge (Src0 : Cv_Arr_Ptr;
+                       Src1 : Cv_Arr_Ptr;
+                       Src2 : Cv_Arr_Ptr;
+                       Src3 : Cv_Arr_Ptr;
+                       Dst  : Cv_Arr_Ptr);
+   procedure Cv_Merge (Src0 : Cv_Mat_Ptr;
+                       Src1 : Cv_Mat_Ptr;
+                       Src2 : Cv_Mat_Ptr;
+                       Src3 : Cv_Mat_Ptr;
+                       Dst  : Cv_Mat_Ptr);
+   procedure Cv_Merge (Src0 : Ipl_Image_Ptr;
+                       Src1 : Ipl_Image_Ptr;
+                       Src2 : Ipl_Image_Ptr;
+                       Src3 : Ipl_Image_Ptr;
+                       Dst  : Ipl_Image_Ptr);
 
    --     Copies several channels from input arrays to certain channels of
    --     output arrays
-   procedure Cv_Mix_Channels (Src        : access Cv_Arr_P;
+   procedure Cv_Mix_Channels (Src        : access Cv_Arr_Ptr;
                               Src_Count  : Integer;
-                              Dst        : access Cv_Arr_P;
+                              Dst        : access Cv_Arr_Ptr;
                               Dst_Count  : Integer;
                               From_To    : Cv_32s_Array;
                               Pair_Count : Integer);
 
    --     Converts one array to another with optional linear transformation.
-   procedure Cv_Convert_Scale (Src   : Cv_Arr_P;
-                               Dst   : Cv_Arr_P;
+   procedure Cv_Convert_Scale (Src   : Cv_Arr_Ptr;
+                               Dst   : Cv_Arr_Ptr;
                                Scale : Long_Float := 1.0;
                                Shift : Long_Float := 0.0);
-   procedure Cv_Convert_Scale (Src   : Cv_Mat_P;
-                               Dst   : Cv_Mat_P;
+   procedure Cv_Convert_Scale (Src   : Cv_Mat_Ptr;
+                               Dst   : Cv_Mat_Ptr;
                                Scale : Long_Float := 1.0;
                                Shift : Long_Float := 0.0);
-   procedure Cv_Convert_Scale (Src   : Ipl_Image_P;
-                               Dst   : Ipl_Image_P;
+   procedure Cv_Convert_Scale (Src   : Ipl_Image_Ptr;
+                               Dst   : Ipl_Image_Ptr;
                                Scale : Long_Float := 1.0;
                                Shift : Long_Float := 0.0);
 
-   procedure Cv_Cvt_Scale (Src   : Cv_Arr_P;
-                           Dst   : Cv_Arr_P;
+   procedure Cv_Cvt_Scale (Src   : Cv_Arr_Ptr;
+                           Dst   : Cv_Arr_Ptr;
                            Scale : Long_Float := 1.0;
                            Shift : Long_Float := 0.0) renames Cv_Convert_Scale;
-   procedure Cv_Cvt_Scale (Src   : Cv_Mat_P;
-                           Dst   : Cv_Mat_P;
+   procedure Cv_Cvt_Scale (Src   : Cv_Mat_Ptr;
+                           Dst   : Cv_Mat_Ptr;
                            Scale : Long_Float := 1.0;
                            Shift : Long_Float := 0.0) renames Cv_Convert_Scale;
-   procedure Cv_Cvt_Scale (Src   : Ipl_Image_P;
-                           Dst   : Ipl_Image_P;
+   procedure Cv_Cvt_Scale (Src   : Ipl_Image_Ptr;
+                           Dst   : Ipl_Image_Ptr;
                            Scale : Long_Float := 1.0;
                            Shift : Long_Float := 0.0) renames Cv_Convert_Scale;
 
-   procedure Cv_Scale (Src   : Cv_Arr_P;
-                       Dst   : Cv_Arr_P;
+   procedure Cv_Scale (Src   : Cv_Arr_Ptr;
+                       Dst   : Cv_Arr_Ptr;
                        Scale : Long_Float := 1.0;
                        Shift : Long_Float := 0.0) renames Cv_Convert_Scale;
-   procedure Cv_Scale (Src   : Cv_Mat_P;
-                       Dst   : Cv_Mat_P;
+   procedure Cv_Scale (Src   : Cv_Mat_Ptr;
+                       Dst   : Cv_Mat_Ptr;
                        Scale : Long_Float := 1.0;
                        Shift : Long_Float := 0.0) renames Cv_Convert_Scale;
-   procedure Cv_Scale (Src   : Ipl_Image_P;
-                       Dst   : Ipl_Image_P;
+   procedure Cv_Scale (Src   : Ipl_Image_Ptr;
+                       Dst   : Ipl_Image_Ptr;
                        Scale : Long_Float := 1.0;
                        Shift : Long_Float := 0.0) renames Cv_Convert_Scale;
 
-   procedure Cv_Convert (Src : Cv_Arr_P;
-                         Dst : Cv_Arr_P);
-   procedure Cv_Convert (Src : Cv_Mat_P;
-                         Dst : Cv_Mat_P);
-   procedure Cv_Convert (Src : Ipl_Image_P;
-                         Dst : Ipl_Image_P);
+   procedure Cv_Convert (Src : Cv_Arr_Ptr;
+                         Dst : Cv_Arr_Ptr);
+   procedure Cv_Convert (Src : Cv_Mat_Ptr;
+                         Dst : Cv_Mat_Ptr);
+   procedure Cv_Convert (Src : Ipl_Image_Ptr;
+                         Dst : Ipl_Image_Ptr);
 
    --     Converts input array elements to another 8-bit unsigned integer with
    --     optional linear transformation.
-   procedure Cv_Convert_Scale_Abs (Src   : Cv_Arr_P;
-                                   Dst   : Cv_Arr_P;
+   procedure Cv_Convert_Scale_Abs (Src   : Cv_Arr_Ptr;
+                                   Dst   : Cv_Arr_Ptr;
                                    Scale : Long_Float := 1.0;
                                    Shift : Long_Float := 0.0);
-   procedure Cv_Convert_Scale_Abs (Src   : Cv_Mat_P;
-                                   Dst   : Cv_Mat_P;
+   procedure Cv_Convert_Scale_Abs (Src   : Cv_Mat_Ptr;
+                                   Dst   : Cv_Mat_Ptr;
                                    Scale : Long_Float := 1.0;
                                    Shift : Long_Float := 0.0);
-   procedure Cv_Convert_Scale_Abs (Src   : Ipl_Image_P;
-                                   Dst   : Ipl_Image_P;
+   procedure Cv_Convert_Scale_Abs (Src   : Ipl_Image_Ptr;
+                                   Dst   : Ipl_Image_Ptr;
                                    Scale : Long_Float := 1.0;
                                    Shift : Long_Float := 0.0);
 
    --     Converts input array elements to another 8-bit unsigned integer with
    --     optional linear transformation.
-   procedure Cv_Cvt_Scale_Abs (Src   : Cv_Arr_P;
-                               Dst   : Cv_Arr_P;
+   procedure Cv_Cvt_Scale_Abs (Src   : Cv_Arr_Ptr;
+                               Dst   : Cv_Arr_Ptr;
                                Scale : Long_Float := 1.0;
                                Shift : Long_Float := 0.0) renames Cv_Convert_Scale_Abs;
-   procedure Cv_Cvt_Scale_Abs (Src   : Cv_Mat_P;
-                               Dst   : Cv_Mat_P;
+   procedure Cv_Cvt_Scale_Abs (Src   : Cv_Mat_Ptr;
+                               Dst   : Cv_Mat_Ptr;
                                Scale : Long_Float := 1.0;
                                Shift : Long_Float := 0.0) renames Cv_Convert_Scale_Abs;
-   procedure Cv_Cvt_Scale_Abs (Src   : Ipl_Image_P;
-                               Dst   : Ipl_Image_P;
+   procedure Cv_Cvt_Scale_Abs (Src   : Ipl_Image_Ptr;
+                               Dst   : Ipl_Image_Ptr;
                                Scale : Long_Float := 1.0;
                                Shift : Long_Float := 0.0) renames Cv_Convert_Scale_Abs;
 
@@ -935,282 +935,282 @@ package Core.Operations is
    -- Arithmetic, logic and comparison operations
    -----------------------------------------------------------------------------
    --     Computes the per-element sum of two arrays.
-   procedure Cv_Add (Src1 : Cv_Arr_P;
-                     Src2 : Cv_Arr_P;
-                     Dst  : Cv_Arr_P;
-                     Mask : Cv_Arr_P := null);
-   procedure Cv_Add (Src1 : Cv_Mat_P;
-                     Src2 : Cv_Mat_P;
-                     Dst  : Cv_Mat_P;
-                     Mask : Cv_Mat_P := null);
-   procedure Cv_Add (Src1 : Ipl_Image_P;
-                     Src2 : Ipl_Image_P;
-                     Dst  : Ipl_Image_P;
-                     Mask : Ipl_Image_P := null);
+   procedure Cv_Add (Src1 : Cv_Arr_Ptr;
+                     Src2 : Cv_Arr_Ptr;
+                     Dst  : Cv_Arr_Ptr;
+                     Mask : Cv_Arr_Ptr := null);
+   procedure Cv_Add (Src1 : Cv_Mat_Ptr;
+                     Src2 : Cv_Mat_Ptr;
+                     Dst  : Cv_Mat_Ptr;
+                     Mask : Cv_Mat_Ptr := null);
+   procedure Cv_Add (Src1 : Ipl_Image_Ptr;
+                     Src2 : Ipl_Image_Ptr;
+                     Dst  : Ipl_Image_Ptr;
+                     Mask : Ipl_Image_Ptr := null);
 
    --     Computes the sum of an array and a scalar.
-   procedure Cv_Add_S (Src   : Cv_Arr_P;
+   procedure Cv_Add_S (Src   : Cv_Arr_Ptr;
                        Value : Cv_Scalar;
-                       Dst   : Cv_Arr_P;
-                       Mask  : Cv_Arr_P := null);
-   procedure Cv_Add_S (Src   : Cv_Mat_P;
+                       Dst   : Cv_Arr_Ptr;
+                       Mask  : Cv_Arr_Ptr := null);
+   procedure Cv_Add_S (Src   : Cv_Mat_Ptr;
                        Value : Cv_Scalar;
-                       Dst   : Cv_Mat_P;
-                       Mask  : Cv_Mat_P := null);
-   procedure Cv_Add_S (Src   : Ipl_Image_P;
+                       Dst   : Cv_Mat_Ptr;
+                       Mask  : Cv_Mat_Ptr := null);
+   procedure Cv_Add_S (Src   : Ipl_Image_Ptr;
                        Value : Cv_Scalar;
-                       Dst   : Ipl_Image_P;
-                       Mask  : Ipl_Image_P := null);
+                       Dst   : Ipl_Image_Ptr;
+                       Mask  : Ipl_Image_Ptr := null);
 
    --     Computes the per-element difference between two arrays.
-   procedure Cv_Sub (Src1 : Cv_Arr_P;
-                     Src2 : Cv_Arr_P;
-                     Dst  : Cv_Arr_P;
-                     Mask : Cv_Arr_P := null);
-   procedure Cv_Sub (Src1 : Cv_Mat_P;
-                     Src2 : Cv_Mat_P;
-                     Dst  : Cv_Mat_P;
-                     Mask : Cv_Mat_P := null);
-   procedure Cv_Sub (Src1 : Ipl_Image_P;
-                     Src2 : Ipl_Image_P;
-                     Dst  : Ipl_Image_P;
-                     Mask : Ipl_Image_P := null);
+   procedure Cv_Sub (Src1 : Cv_Arr_Ptr;
+                     Src2 : Cv_Arr_Ptr;
+                     Dst  : Cv_Arr_Ptr;
+                     Mask : Cv_Arr_Ptr := null);
+   procedure Cv_Sub (Src1 : Cv_Mat_Ptr;
+                     Src2 : Cv_Mat_Ptr;
+                     Dst  : Cv_Mat_Ptr;
+                     Mask : Cv_Mat_Ptr := null);
+   procedure Cv_Sub (Src1 : Ipl_Image_Ptr;
+                     Src2 : Ipl_Image_Ptr;
+                     Dst  : Ipl_Image_Ptr;
+                     Mask : Ipl_Image_Ptr := null);
    --     Computes the difference between an array and a scalar.
-   procedure Cv_Sub_S (Src   : Cv_Arr_P;
+   procedure Cv_Sub_S (Src   : Cv_Arr_Ptr;
                        Value : Cv_Scalar;
-                       Dst   : Cv_Arr_P;
-                       Mask  : Cv_Arr_P := null);
-   procedure Cv_Sub_S (Src   : Cv_Mat_P;
+                       Dst   : Cv_Arr_Ptr;
+                       Mask  : Cv_Arr_Ptr := null);
+   procedure Cv_Sub_S (Src   : Cv_Mat_Ptr;
                        Value : Cv_Scalar;
-                       Dst   : Cv_Mat_P;
-                       Mask  : Cv_Mat_P := null);
-   procedure Cv_Sub_S (Src   : Ipl_Image_P;
+                       Dst   : Cv_Mat_Ptr;
+                       Mask  : Cv_Mat_Ptr := null);
+   procedure Cv_Sub_S (Src   : Ipl_Image_Ptr;
                        Value : Cv_Scalar;
-                       Dst   : Ipl_Image_P;
-                       Mask  : Ipl_Image_P := null);
+                       Dst   : Ipl_Image_Ptr;
+                       Mask  : Ipl_Image_Ptr := null);
 
    --     Computes the difference between a scalar and an array.
-   procedure Cv_Sub_Rs (Src   : Cv_Arr_P;
+   procedure Cv_Sub_Rs (Src   : Cv_Arr_Ptr;
                         Value : Cv_Scalar;
-                        Dst   : Cv_Arr_P;
-                        Mask  : Cv_Arr_P := null);
-   procedure Cv_Sub_Rs (Src   : Cv_Mat_P;
+                        Dst   : Cv_Arr_Ptr;
+                        Mask  : Cv_Arr_Ptr := null);
+   procedure Cv_Sub_Rs (Src   : Cv_Mat_Ptr;
                         Value : Cv_Scalar;
-                        Dst   : Cv_Mat_P;
-                        Mask  : Cv_Mat_P := null);
-   procedure Cv_Sub_Rs (Src   : Ipl_Image_P;
+                        Dst   : Cv_Mat_Ptr;
+                        Mask  : Cv_Mat_Ptr := null);
+   procedure Cv_Sub_Rs (Src   : Ipl_Image_Ptr;
                         Value : Cv_Scalar;
-                        Dst   : Ipl_Image_P;
-                        Mask  : Ipl_Image_P := null);
+                        Dst   : Ipl_Image_Ptr;
+                        Mask  : Ipl_Image_Ptr := null);
 
    --     Calculates the per-element product of two arrays.
-   procedure Cv_Mul (Src1  : Cv_Arr_P;
-                     Src2  : Cv_Arr_P;
-                     Dst   : Cv_Arr_P;
+   procedure Cv_Mul (Src1  : Cv_Arr_Ptr;
+                     Src2  : Cv_Arr_Ptr;
+                     Dst   : Cv_Arr_Ptr;
                      Scale : Long_Float := 1.0);
-   procedure Cv_Mul (Src1  : Cv_Mat_P;
-                     Src2  : Cv_Mat_P;
-                     Dst   : Cv_Mat_P;
+   procedure Cv_Mul (Src1  : Cv_Mat_Ptr;
+                     Src2  : Cv_Mat_Ptr;
+                     Dst   : Cv_Mat_Ptr;
                      Scale : Long_Float := 1.0);
-   procedure Cv_Mul (Src1  : Ipl_Image_P;
-                     Src2  : Ipl_Image_P;
-                     Dst   : Ipl_Image_P;
+   procedure Cv_Mul (Src1  : Ipl_Image_Ptr;
+                     Src2  : Ipl_Image_Ptr;
+                     Dst   : Ipl_Image_Ptr;
                      Scale : Long_Float := 1.0);
 
    --     Performs per-element division of two arrays.
-   procedure Cv_Div (Src1  : Cv_Arr_P;
-                     Src2  : Cv_Arr_P;
-                     Dst   : Cv_Arr_P;
+   procedure Cv_Div (Src1  : Cv_Arr_Ptr;
+                     Src2  : Cv_Arr_Ptr;
+                     Dst   : Cv_Arr_Ptr;
                      Scale : Long_Float := 1.0);
-   procedure Cv_Div (Src1  : Cv_Mat_P;
-                     Src2  : Cv_Mat_P;
-                     Dst   : Cv_Mat_P;
+   procedure Cv_Div (Src1  : Cv_Mat_Ptr;
+                     Src2  : Cv_Mat_Ptr;
+                     Dst   : Cv_Mat_Ptr;
                      Scale : Long_Float := 1.0);
-   procedure Cv_Div (Src1  : Ipl_Image_P;
-                     Src2  : Ipl_Image_P;
-                     Dst   : Ipl_Image_P;
+   procedure Cv_Div (Src1  : Ipl_Image_Ptr;
+                     Src2  : Ipl_Image_Ptr;
+                     Dst   : Ipl_Image_Ptr;
                      Scale : Long_Float := 1.0);
 
    --     Calculates the sum of a scaled array and another array.
-   procedure Cv_Scale_Add (Src1  : Cv_Arr_P;
+   procedure Cv_Scale_Add (Src1  : Cv_Arr_Ptr;
                            Scale : Cv_Scalar;
-                           Src2  : Cv_Arr_P;
-                           Dst   : Cv_Arr_P);
-   procedure Cv_Scale_Add (Src1  : Cv_Mat_P;
+                           Src2  : Cv_Arr_Ptr;
+                           Dst   : Cv_Arr_Ptr);
+   procedure Cv_Scale_Add (Src1  : Cv_Mat_Ptr;
                            Scale : Cv_Scalar;
-                           Src2  : Cv_Mat_P;
-                           Dst   : Cv_Mat_P);
-   procedure Cv_Scale_Add (Src1  : Ipl_Image_P;
+                           Src2  : Cv_Mat_Ptr;
+                           Dst   : Cv_Mat_Ptr);
+   procedure Cv_Scale_Add (Src1  : Ipl_Image_Ptr;
                            Scale : Cv_Scalar;
-                           Src2  : Ipl_Image_P;
-                           Dst   : Ipl_Image_P);
+                           Src2  : Ipl_Image_Ptr;
+                           Dst   : Ipl_Image_Ptr);
 
-   procedure Cv_Axpy (Src1  : Cv_Arr_P;
+   procedure Cv_Axpy (Src1  : Cv_Arr_Ptr;
                       Scale : Long_Float;
-                      Src2  : Cv_Arr_P;
-                      Dst   : Cv_Arr_P);
-   procedure Cv_Axpy (Src1  : Cv_Mat_P;
+                      Src2  : Cv_Arr_Ptr;
+                      Dst   : Cv_Arr_Ptr);
+   procedure Cv_Axpy (Src1  : Cv_Mat_Ptr;
                       Scale : Long_Float;
-                      Src2  : Cv_Mat_P;
-                      Dst   : Cv_Mat_P);
-   procedure Cv_Axpy (Src1  : Ipl_Image_P;
+                      Src2  : Cv_Mat_Ptr;
+                      Dst   : Cv_Mat_Ptr);
+   procedure Cv_Axpy (Src1  : Ipl_Image_Ptr;
                       Scale : Long_Float;
-                      Src2  : Ipl_Image_P;
-                      Dst   : Ipl_Image_P);
+                      Src2  : Ipl_Image_Ptr;
+                      Dst   : Ipl_Image_Ptr);
 
    --     Computes the weighted sum of two arrays.
-   procedure Cv_Add_Weighted (Src1  : Cv_Arr_P;
+   procedure Cv_Add_Weighted (Src1  : Cv_Arr_Ptr;
                               Alpha : Long_Float;
-                              Src2  : Cv_Arr_P;
+                              Src2  : Cv_Arr_Ptr;
                               Beta  : Long_Float;
                               Gamma : Long_Float;
-                              Dst   : Cv_Arr_P);
-   procedure Cv_Add_Weighted (Src1  : Cv_Mat_P;
+                              Dst   : Cv_Arr_Ptr);
+   procedure Cv_Add_Weighted (Src1  : Cv_Mat_Ptr;
                               Alpha : Long_Float;
-                              Src2  : Cv_Mat_P;
+                              Src2  : Cv_Mat_Ptr;
                               Beta  : Long_Float;
                               Gamma : Long_Float;
-                              Dst   : Cv_Mat_P);
-   procedure Cv_Add_Weighted (Src1  : Ipl_Image_P;
+                              Dst   : Cv_Mat_Ptr);
+   procedure Cv_Add_Weighted (Src1  : Ipl_Image_Ptr;
                               Alpha : Long_Float;
-                              Src2  : Ipl_Image_P;
+                              Src2  : Ipl_Image_Ptr;
                               Beta  : Long_Float;
                               Gamma : Long_Float;
-                              Dst   : Ipl_Image_P);
+                              Dst   : Ipl_Image_Ptr);
 
    --     Calculates the dot product of two arrays in Euclidian metrics.
-   function Cv_Dot_Product (Src1 : Cv_Arr_P;
-                            Src2 : Cv_Arr_P)
+   function Cv_Dot_Product (Src1 : Cv_Arr_Ptr;
+                            Src2 : Cv_Arr_Ptr)
                             return Long_Float;
-   function Cv_Dot_Product (Src1 : Cv_Mat_P;
-                            Src2 : Cv_Mat_P)
+   function Cv_Dot_Product (Src1 : Cv_Mat_Ptr;
+                            Src2 : Cv_Mat_Ptr)
                             return Long_Float;
-   function Cv_Dot_Product (Src1 : Ipl_Image_P;
-                            Src2 : Ipl_Image_P)
+   function Cv_Dot_Product (Src1 : Ipl_Image_Ptr;
+                            Src2 : Ipl_Image_Ptr)
                             return Long_Float;
 
    --     Calculates per-element bit-wise conjunction of two arrays.
-   procedure Cv_And (Src1 : Cv_Arr_P;
-                     Src2 : Cv_Arr_P;
-                     Dst  : Cv_Arr_P;
-                     Mask : Cv_Arr_P := null);
-   procedure Cv_And (Src1 : Cv_Mat_P;
-                     Src2 : Cv_Mat_P;
-                     Dst  : Cv_Mat_P;
-                     Mask : Cv_Mat_P := null);
-   procedure Cv_And (Src1 : Ipl_Image_P;
-                     Src2 : Ipl_Image_P;
-                     Dst  : Ipl_Image_P;
-                     Mask : Ipl_Image_P := null);
+   procedure Cv_And (Src1 : Cv_Arr_Ptr;
+                     Src2 : Cv_Arr_Ptr;
+                     Dst  : Cv_Arr_Ptr;
+                     Mask : Cv_Arr_Ptr := null);
+   procedure Cv_And (Src1 : Cv_Mat_Ptr;
+                     Src2 : Cv_Mat_Ptr;
+                     Dst  : Cv_Mat_Ptr;
+                     Mask : Cv_Mat_Ptr := null);
+   procedure Cv_And (Src1 : Ipl_Image_Ptr;
+                     Src2 : Ipl_Image_Ptr;
+                     Dst  : Ipl_Image_Ptr;
+                     Mask : Ipl_Image_Ptr := null);
 
    --     Calculates per-element bit-wise conjunction of an array and a scalar.
-   procedure Cv_And_S (Src   : Cv_Arr_P;
+   procedure Cv_And_S (Src   : Cv_Arr_Ptr;
                        Value : Cv_Scalar;
-                       Dst   : Cv_Arr_P;
-                       Mask  : Cv_Arr_P := null);
-   procedure Cv_And_S (Src   : Cv_Mat_P;
+                       Dst   : Cv_Arr_Ptr;
+                       Mask  : Cv_Arr_Ptr := null);
+   procedure Cv_And_S (Src   : Cv_Mat_Ptr;
                        Value : Cv_Scalar;
-                       Dst   : Cv_Mat_P;
-                       Mask  : Cv_Mat_P := null);
-   procedure Cv_And_S (Src   : Ipl_Image_P;
+                       Dst   : Cv_Mat_Ptr;
+                       Mask  : Cv_Mat_Ptr := null);
+   procedure Cv_And_S (Src   : Ipl_Image_Ptr;
                        Value : Cv_Scalar;
-                       Dst   : Ipl_Image_P;
-                       Mask  : Ipl_Image_P := null);
+                       Dst   : Ipl_Image_Ptr;
+                       Mask  : Ipl_Image_Ptr := null);
 
    --     Calculates per-element bit-wise disjunction of two arrays.
-   procedure Cv_Or (Src1 : Cv_Arr_P;
-                    Src2 : Cv_Arr_P;
-                    Dst  : Cv_Arr_P;
-                    Mask : Cv_Arr_P := null);
-   procedure Cv_Or (Src1 : Cv_Mat_P;
-                    Src2 : Cv_Mat_P;
-                    Dst  : Cv_Mat_P;
-                    Mask : Cv_Mat_P := null);
-   procedure Cv_Or (Src1 : Ipl_Image_P;
-                    Src2 : Ipl_Image_P;
-                    Dst  : Ipl_Image_P;
-                    Mask : Ipl_Image_P := null);
+   procedure Cv_Or (Src1 : Cv_Arr_Ptr;
+                    Src2 : Cv_Arr_Ptr;
+                    Dst  : Cv_Arr_Ptr;
+                    Mask : Cv_Arr_Ptr := null);
+   procedure Cv_Or (Src1 : Cv_Mat_Ptr;
+                    Src2 : Cv_Mat_Ptr;
+                    Dst  : Cv_Mat_Ptr;
+                    Mask : Cv_Mat_Ptr := null);
+   procedure Cv_Or (Src1 : Ipl_Image_Ptr;
+                    Src2 : Ipl_Image_Ptr;
+                    Dst  : Ipl_Image_Ptr;
+                    Mask : Ipl_Image_Ptr := null);
 
    --     Calculates a per-element bit-wise disjunction of an array and
    --     a scalar.
-   procedure Cv_Or_S (Src   : Cv_Arr_P;
+   procedure Cv_Or_S (Src   : Cv_Arr_Ptr;
                       Value : Cv_Scalar;
-                      Dst   : Cv_Arr_P;
-                      Mask  : Cv_Arr_P := null);
-   procedure Cv_Or_S (Src   : Cv_Mat_P;
+                      Dst   : Cv_Arr_Ptr;
+                      Mask  : Cv_Arr_Ptr := null);
+   procedure Cv_Or_S (Src   : Cv_Mat_Ptr;
                       Value : Cv_Scalar;
-                      Dst   : Cv_Mat_P;
-                      Mask  : Cv_Mat_P := null);
-   procedure Cv_Or_S (Src   : Ipl_Image_P;
+                      Dst   : Cv_Mat_Ptr;
+                      Mask  : Cv_Mat_Ptr := null);
+   procedure Cv_Or_S (Src   : Ipl_Image_Ptr;
                       Value : Cv_Scalar;
-                      Dst   : Ipl_Image_P;
-                      Mask  : Ipl_Image_P := null);
+                      Dst   : Ipl_Image_Ptr;
+                      Mask  : Ipl_Image_Ptr := null);
 
    --     Performs per-element bit-wise exclusive or operation on two arrays.
-   procedure Cv_Xor (Src1 : Cv_Arr_P;
-                     Src2 : Cv_Arr_P;
-                     Dst  : Cv_Arr_P;
-                     Mask : Cv_Arr_P := null);
-   procedure Cv_Xor (Src1 : Cv_Mat_P;
-                     Src2 : Cv_Mat_P;
-                     Dst  : Cv_Mat_P;
-                     Mask : Cv_Mat_P := null);
-   procedure Cv_Xor (Src1 : Ipl_Image_P;
-                     Src2 : Ipl_Image_P;
-                     Dst  : Ipl_Image_P;
-                     Mask : Ipl_Image_P := null);
+   procedure Cv_Xor (Src1 : Cv_Arr_Ptr;
+                     Src2 : Cv_Arr_Ptr;
+                     Dst  : Cv_Arr_Ptr;
+                     Mask : Cv_Arr_Ptr := null);
+   procedure Cv_Xor (Src1 : Cv_Mat_Ptr;
+                     Src2 : Cv_Mat_Ptr;
+                     Dst  : Cv_Mat_Ptr;
+                     Mask : Cv_Mat_Ptr := null);
+   procedure Cv_Xor (Src1 : Ipl_Image_Ptr;
+                     Src2 : Ipl_Image_Ptr;
+                     Dst  : Ipl_Image_Ptr;
+                     Mask : Ipl_Image_Ptr := null);
 
    --     Performs per-element bit-wise exclusive or operation on an array
    --     and a scalar.
-   procedure Cv_Xor_S (Src   : Cv_Arr_P;
+   procedure Cv_Xor_S (Src   : Cv_Arr_Ptr;
                        Value : Cv_Scalar;
-                       Dst   : Cv_Arr_P;
-                       Mask  : Cv_Arr_P := null);
-   procedure Cv_Xor_S (Src   : Cv_Mat_P;
+                       Dst   : Cv_Arr_Ptr;
+                       Mask  : Cv_Arr_Ptr := null);
+   procedure Cv_Xor_S (Src   : Cv_Mat_Ptr;
                        Value : Cv_Scalar;
-                       Dst   : Cv_Mat_P;
-                       Mask  : Cv_Mat_P := null);
-   procedure Cv_Xor_S (Src   : Ipl_Image_P;
+                       Dst   : Cv_Mat_Ptr;
+                       Mask  : Cv_Mat_Ptr := null);
+   procedure Cv_Xor_S (Src   : Ipl_Image_Ptr;
                        Value : Cv_Scalar;
-                       Dst   : Ipl_Image_P;
-                       Mask  : Ipl_Image_P := null);
+                       Dst   : Ipl_Image_Ptr;
+                       Mask  : Ipl_Image_Ptr := null);
 
    --     Performs per-element bit-wise inversion of array elements.
-   procedure Cv_Not (Src : Cv_Arr_P;
-                     Dst : Cv_Arr_P);
-   procedure Cv_Not (Src : Cv_Mat_P;
-                     Dst : Cv_Mat_P);
-   procedure Cv_Not (Src : Ipl_Image_P;
-                     Dst : Ipl_Image_P);
+   procedure Cv_Not (Src : Cv_Arr_Ptr;
+                     Dst : Cv_Arr_Ptr);
+   procedure Cv_Not (Src : Cv_Mat_Ptr;
+                     Dst : Cv_Mat_Ptr);
+   procedure Cv_Not (Src : Ipl_Image_Ptr;
+                     Dst : Ipl_Image_Ptr);
 
    --     Checks that array elements lie between the elements of two other
    --     arrays.
-   procedure Cv_In_Range (Src   : Cv_Arr_P;
-                          Lower : Cv_Arr_P;
-                          Upper : Cv_Arr_P;
-                          Dst   : Cv_Arr_P);
-   procedure Cv_In_Range (Src   : Cv_Mat_P;
-                          Lower : Cv_Mat_P;
-                          Upper : Cv_Mat_P;
-                          Dst   : Cv_Mat_P);
-   procedure Cv_In_Range (Src   : Ipl_Image_P;
-                          Lower : Ipl_Image_P;
-                          Upper : Ipl_Image_P;
-                          Dst   : Ipl_Image_P);
+   procedure Cv_In_Range (Src   : Cv_Arr_Ptr;
+                          Lower : Cv_Arr_Ptr;
+                          Upper : Cv_Arr_Ptr;
+                          Dst   : Cv_Arr_Ptr);
+   procedure Cv_In_Range (Src   : Cv_Mat_Ptr;
+                          Lower : Cv_Mat_Ptr;
+                          Upper : Cv_Mat_Ptr;
+                          Dst   : Cv_Mat_Ptr);
+   procedure Cv_In_Range (Src   : Ipl_Image_Ptr;
+                          Lower : Ipl_Image_Ptr;
+                          Upper : Ipl_Image_Ptr;
+                          Dst   : Ipl_Image_Ptr);
 
    --     Checks that array elements lie between two scalars.
-   procedure Cv_In_Range_S (Src   : Cv_Arr_P;
+   procedure Cv_In_Range_S (Src   : Cv_Arr_Ptr;
                             Lower : Cv_Scalar;
                             Upper : Cv_Scalar;
-                            Dst   : Cv_Arr_P);
-   procedure Cv_In_Range_S (Src   : Cv_Mat_P;
+                            Dst   : Cv_Arr_Ptr);
+   procedure Cv_In_Range_S (Src   : Cv_Mat_Ptr;
                             Lower : Cv_Scalar;
                             Upper : Cv_Scalar;
-                            Dst   : Cv_Mat_P);
-   procedure Cv_In_Range_S (Src   : Ipl_Image_P;
+                            Dst   : Cv_Mat_Ptr);
+   procedure Cv_In_Range_S (Src   : Ipl_Image_Ptr;
                             Lower : Cv_Scalar;
                             Upper : Cv_Scalar;
-                            Dst   : Ipl_Image_P);
+                            Dst   : Ipl_Image_Ptr);
 
    type Compare_Op is new Integer; -- (Cv_Cmp_Eq, Cv_Cmp_Gt,
    --                         Cv_Cmp_Ge, Cv_Cmp_Lt,
@@ -1223,104 +1223,104 @@ package Core.Operations is
    Cv_Cmp_Ne : constant Compare_Op := 5;
 
    --     Performs per-element comparison of two arrays.
-   procedure Cv_Cmp (Src1   : Cv_Arr_P;
-                     Src2   : Cv_Arr_P;
-                     Dst    : Cv_Arr_P;
+   procedure Cv_Cmp (Src1   : Cv_Arr_Ptr;
+                     Src2   : Cv_Arr_Ptr;
+                     Dst    : Cv_Arr_Ptr;
                      Cmp_Op : Compare_Op);
-   procedure Cv_Cmp (Src1   : Cv_Mat_P;
-                     Src2   : Cv_Mat_P;
-                     Dst    : Cv_Mat_P;
+   procedure Cv_Cmp (Src1   : Cv_Mat_Ptr;
+                     Src2   : Cv_Mat_Ptr;
+                     Dst    : Cv_Mat_Ptr;
                      Cmp_Op : Compare_Op);
-   procedure Cv_Cmp (Src1   : Ipl_Image_P;
-                     Src2   : Ipl_Image_P;
-                     Dst    : Ipl_Image_P;
+   procedure Cv_Cmp (Src1   : Ipl_Image_Ptr;
+                     Src2   : Ipl_Image_Ptr;
+                     Dst    : Ipl_Image_Ptr;
                      Cmp_Op : Compare_Op);
 
 
    --     Performs per-element comparison of an array and a scalar.
-   procedure Cv_Cmp_S (Src    : Cv_Arr_P;
+   procedure Cv_Cmp_S (Src    : Cv_Arr_Ptr;
                        Value  : Long_Float;
-                       Dst    : Cv_Arr_P;
+                       Dst    : Cv_Arr_Ptr;
                        Cmp_Op : Compare_Op);
-   procedure Cv_Cmp_S (Src    : Cv_Mat_P;
+   procedure Cv_Cmp_S (Src    : Cv_Mat_Ptr;
                        Value  : Long_Float;
-                       Dst    : Cv_Mat_P;
+                       Dst    : Cv_Mat_Ptr;
                        Cmp_Op : Compare_Op);
-   procedure Cv_Cmp_S (Src    : Ipl_Image_P;
+   procedure Cv_Cmp_S (Src    : Ipl_Image_Ptr;
                        Value  : Long_Float;
-                       Dst    : Ipl_Image_P;
+                       Dst    : Ipl_Image_Ptr;
                        Cmp_Op : Compare_Op);
 
    --     Finds per-element minimum of two arrays.
-   procedure Cv_Min (Src1 : Cv_Arr_P;
-                     Src2 : Cv_Arr_P;
-                     Dst  : Cv_Arr_P);
-   procedure Cv_Min (Src1 : Cv_Mat_P;
-                     Src2 : Cv_Mat_P;
-                     Dst  : Cv_Mat_P);
-   procedure Cv_Min (Src1 : Ipl_Image_P;
-                     Src2 : Ipl_Image_P;
-                     Dst  : Ipl_Image_P);
+   procedure Cv_Min (Src1 : Cv_Arr_Ptr;
+                     Src2 : Cv_Arr_Ptr;
+                     Dst  : Cv_Arr_Ptr);
+   procedure Cv_Min (Src1 : Cv_Mat_Ptr;
+                     Src2 : Cv_Mat_Ptr;
+                     Dst  : Cv_Mat_Ptr);
+   procedure Cv_Min (Src1 : Ipl_Image_Ptr;
+                     Src2 : Ipl_Image_Ptr;
+                     Dst  : Ipl_Image_Ptr);
 
    --     Finds per-element maximum of two arrays.
-   procedure Cv_Max (Src1 : Cv_Arr_P;
-                     Src2 : Cv_Arr_P;
-                     Dst  : Cv_Arr_P);
-   procedure Cv_Max (Src1 : Cv_Mat_P;
-                     Src2 : Cv_Mat_P;
-                     Dst  : Cv_Mat_P);
-   procedure Cv_Max (Src1 : Ipl_Image_P;
-                     Src2 : Ipl_Image_P;
-                     Dst  : Ipl_Image_P);
+   procedure Cv_Max (Src1 : Cv_Arr_Ptr;
+                     Src2 : Cv_Arr_Ptr;
+                     Dst  : Cv_Arr_Ptr);
+   procedure Cv_Max (Src1 : Cv_Mat_Ptr;
+                     Src2 : Cv_Mat_Ptr;
+                     Dst  : Cv_Mat_Ptr);
+   procedure Cv_Max (Src1 : Ipl_Image_Ptr;
+                     Src2 : Ipl_Image_Ptr;
+                     Dst  : Ipl_Image_Ptr);
 
    --     Finds per-element minimum of an array and a scalar.
-   procedure Cv_Min_S (Src   : Cv_Arr_P;
+   procedure Cv_Min_S (Src   : Cv_Arr_Ptr;
                        Value : Long_Float;
-                       Dst   : Cv_Arr_P);
-   procedure Cv_Min_S (Src   : Cv_Mat_P;
+                       Dst   : Cv_Arr_Ptr);
+   procedure Cv_Min_S (Src   : Cv_Mat_Ptr;
                        Value : Long_Float;
-                       Dst   : Cv_Mat_P);
-   procedure Cv_Min_S (Src   : Ipl_Image_P;
+                       Dst   : Cv_Mat_Ptr);
+   procedure Cv_Min_S (Src   : Ipl_Image_Ptr;
                        Value : Long_Float;
-                       Dst   : Ipl_Image_P);
+                       Dst   : Ipl_Image_Ptr);
 
    --     Finds per-element maximum of array and scalar.
-   procedure Cv_Max_S (Src   : Cv_Arr_P;
+   procedure Cv_Max_S (Src   : Cv_Arr_Ptr;
                        Value : Long_Float;
-                       Dst   : Cv_Arr_P);
-   procedure Cv_Max_S (Src   : Cv_Mat_P;
+                       Dst   : Cv_Arr_Ptr);
+   procedure Cv_Max_S (Src   : Cv_Mat_Ptr;
                        Value : Long_Float;
-                       Dst   : Cv_Mat_P);
-   procedure Cv_Max_S (Src   : Ipl_Image_P;
+                       Dst   : Cv_Mat_Ptr);
+   procedure Cv_Max_S (Src   : Ipl_Image_Ptr;
                        Value : Long_Float;
-                       Dst   : Ipl_Image_P);
+                       Dst   : Ipl_Image_Ptr);
 
    --     Calculates absolute difference between two arrays.
-   procedure Cv_Abs_Diff (Src1 : Cv_Arr_P;
-                          Src2 : Cv_Arr_P;
-                          Dst  : Cv_Arr_P);
-   procedure Cv_Abs_Diff (Src1 : Cv_Mat_P;
-                          Src2 : Cv_Mat_P;
-                          Dst  : Cv_Mat_P);
-   procedure Cv_Abs_Diff (Src1 : Ipl_Image_P;
-                          Src2 : Ipl_Image_P;
-                          Dst  : Ipl_Image_P);
+   procedure Cv_Abs_Diff (Src1 : Cv_Arr_Ptr;
+                          Src2 : Cv_Arr_Ptr;
+                          Dst  : Cv_Arr_Ptr);
+   procedure Cv_Abs_Diff (Src1 : Cv_Mat_Ptr;
+                          Src2 : Cv_Mat_Ptr;
+                          Dst  : Cv_Mat_Ptr);
+   procedure Cv_Abs_Diff (Src1 : Ipl_Image_Ptr;
+                          Src2 : Ipl_Image_Ptr;
+                          Dst  : Ipl_Image_Ptr);
 
    --     Calculates absolute difference between an array and a scalar.
-   procedure Cv_Abs_Diff_S (Src   : Cv_Arr_P;
-                            Dst   : Cv_Arr_P;
+   procedure Cv_Abs_Diff_S (Src   : Cv_Arr_Ptr;
+                            Dst   : Cv_Arr_Ptr;
                             S1    : Long_Float;
                             S2    : Long_Float;
                             S3    : Long_Float;
                             S4    : Long_Float);
-   procedure Cv_Abs_Diff_S (Src   : Cv_Mat_P;
-                            Dst   : Cv_Mat_P;
+   procedure Cv_Abs_Diff_S (Src   : Cv_Mat_Ptr;
+                            Dst   : Cv_Mat_Ptr;
                             S1    : Long_Float;
                             S2    : Long_Float;
                             S3    : Long_Float;
                             S4    : Long_Float);
-   procedure Cv_Abs_Diff_S (Src   : Ipl_Image_P;
-                            Dst   : Ipl_Image_P;
+   procedure Cv_Abs_Diff_S (Src   : Ipl_Image_Ptr;
+                            Dst   : Ipl_Image_Ptr;
                             S1    : Long_Float;
                             S2    : Long_Float;
                             S3    : Long_Float;
@@ -1330,66 +1330,66 @@ package Core.Operations is
    -- Math Operations
    -----------------------------------------------------------------------------
    --     Calculates the magnitude and/or angle of 2d vectors.
-   procedure Cv_Cart_To_Polar (X              : Cv_Arr_P;
-                               Y              : Cv_Arr_P;
-                               Magnitude      : Cv_Arr_P;
-                               Angle          : Cv_Arr_P := null;
+   procedure Cv_Cart_To_Polar (X              : Cv_Arr_Ptr;
+                               Y              : Cv_Arr_Ptr;
+                               Magnitude      : Cv_Arr_Ptr;
+                               Angle          : Cv_Arr_Ptr := null;
                                Angleindegrees : Integer := 0);
-   procedure Cv_Cart_To_Polar (X              : Cv_Mat_P;
-                               Y              : Cv_Mat_P;
-                               Magnitude      : Cv_Mat_P;
-                               Angle          : Cv_Mat_P := null;
+   procedure Cv_Cart_To_Polar (X              : Cv_Mat_Ptr;
+                               Y              : Cv_Mat_Ptr;
+                               Magnitude      : Cv_Mat_Ptr;
+                               Angle          : Cv_Mat_Ptr := null;
                                Angleindegrees : Integer := 0);
-   procedure Cv_Cart_To_Polar (X              : Ipl_Image_P;
-                               Y              : Ipl_Image_P;
-                               Magnitude      : Ipl_Image_P;
-                               Angle          : Ipl_Image_P := null;
+   procedure Cv_Cart_To_Polar (X              : Ipl_Image_Ptr;
+                               Y              : Ipl_Image_Ptr;
+                               Magnitude      : Ipl_Image_Ptr;
+                               Angle          : Ipl_Image_Ptr := null;
                                Angleindegrees : Integer := 0);
 
    --     Calculates Cartesian coordinates of 2d vectors represented in
    --     polar form.
-   procedure Cv_Polar_To_Cart (Magnitude        : Cv_Arr_P;
-                               Angle            : Cv_Arr_P;
-                               X                : Cv_Arr_P;
-                               Y                : Cv_Arr_P;
+   procedure Cv_Polar_To_Cart (Magnitude        : Cv_Arr_Ptr;
+                               Angle            : Cv_Arr_Ptr;
+                               X                : Cv_Arr_Ptr;
+                               Y                : Cv_Arr_Ptr;
                                Angle_In_Degrees : Integer := 0);
-   procedure Cv_Polar_To_Cart (Magnitude        : Cv_Mat_P;
-                               Angle            : Cv_Mat_P;
-                               X                : Cv_Mat_P;
-                               Y                : Cv_Mat_P;
+   procedure Cv_Polar_To_Cart (Magnitude        : Cv_Mat_Ptr;
+                               Angle            : Cv_Mat_Ptr;
+                               X                : Cv_Mat_Ptr;
+                               Y                : Cv_Mat_Ptr;
                                Angle_In_Degrees : Integer := 0);
-   procedure Cv_Polar_To_Cart (Magnitude        : Ipl_Image_P;
-                               Angle            : Ipl_Image_P;
-                               X                : Ipl_Image_P;
-                               Y                : Ipl_Image_P;
+   procedure Cv_Polar_To_Cart (Magnitude        : Ipl_Image_Ptr;
+                               Angle            : Ipl_Image_Ptr;
+                               X                : Ipl_Image_Ptr;
+                               Y                : Ipl_Image_Ptr;
                                Angle_In_Degrees : Integer := 0);
 
    --     Raises every array element to a power.
-   procedure Cv_Pow (Src   : Cv_Arr_P;
-                     Dst   : Cv_Arr_P;
+   procedure Cv_Pow (Src   : Cv_Arr_Ptr;
+                     Dst   : Cv_Arr_Ptr;
                      Power : Long_Float);
-   procedure Cv_Pow (Src   : Cv_Mat_P;
-                     Dst   : Cv_Mat_P;
+   procedure Cv_Pow (Src   : Cv_Mat_Ptr;
+                     Dst   : Cv_Mat_Ptr;
                      Power : Long_Float);
-   procedure Cv_Pow (Src   : Ipl_Image_P;
-                     Dst   : Ipl_Image_P;
+   procedure Cv_Pow (Src   : Ipl_Image_Ptr;
+                     Dst   : Ipl_Image_Ptr;
                      Power : Long_Float);
 
    --     Calculates the exponent of every array element.
-   procedure Cv_Exp (Src : Cv_Arr_P;
-                     Dst : Cv_Arr_P);
-   procedure Cv_Exp (Src : Cv_Mat_P;
-                     Dst : Cv_Mat_P);
-   procedure Cv_Exp (Src : Ipl_Image_P;
-                     Dst : Ipl_Image_P);
+   procedure Cv_Exp (Src : Cv_Arr_Ptr;
+                     Dst : Cv_Arr_Ptr);
+   procedure Cv_Exp (Src : Cv_Mat_Ptr;
+                     Dst : Cv_Mat_Ptr);
+   procedure Cv_Exp (Src : Ipl_Image_Ptr;
+                     Dst : Ipl_Image_Ptr);
 
    --     Calculates the natural logarithm of every array elements absolute value.
-   procedure Cv_Log (Src : Cv_Arr_P;
-                     Dst : Cv_Arr_P);
-   procedure Cv_Log (Src : Cv_Mat_P;
-                     Dst : Cv_Mat_P);
-   procedure Cv_Log (Src : Ipl_Image_P;
-                     Dst : Ipl_Image_P);
+   procedure Cv_Log (Src : Cv_Arr_Ptr;
+                     Dst : Cv_Arr_Ptr);
+   procedure Cv_Log (Src : Cv_Mat_Ptr;
+                     Dst : Cv_Mat_Ptr);
+   procedure Cv_Log (Src : Ipl_Image_Ptr;
+                     Dst : Ipl_Image_Ptr);
 
    --     Calculates the angle of a 2D vector.
    function Cv_Fast_Arctan (Y : Float;
@@ -1403,28 +1403,28 @@ package Core.Operations is
    Cv_Check_Range : constant := 1;
    Cv_Check_Quiet : constant := 2;
 
-   function Cv_Check_Arr (Arr     : Cv_Arr_P;
+   function Cv_Check_Arr (Arr     : Cv_Arr_Ptr;
                           Flags   : Integer := 0;
                           Minval  : Long_Float := 0.0;
                           Max_Val : Long_Float := 0.0) return Integer;
-   function Cv_Check_Arr (Arr     : Cv_Mat_P;
+   function Cv_Check_Arr (Arr     : Cv_Mat_Ptr;
                           Flags   : Integer := 0;
                           Minval  : Long_Float := 0.0;
                           Max_Val : Long_Float := 0.0) return Integer;
-   function Cv_Check_Arr (Arr     : Ipl_Image_P;
+   function Cv_Check_Arr (Arr     : Ipl_Image_Ptr;
                           Flags   : Integer := 0;
                           Minval  : Long_Float := 0.0;
                           Max_Val : Long_Float := 0.0) return Integer;
 
-   function Cv_Check_Array (Arr     : Cv_Arr_P;
+   function Cv_Check_Array (Arr     : Cv_Arr_Ptr;
                             Flags   : Integer := 0;
                             Minval  : Long_Float := 0.0;
                             Max_Val : Long_Float := 0.0) return Integer renames Cv_Check_Arr;
-   function Cv_Check_Array (Arr     : Cv_Mat_P;
+   function Cv_Check_Array (Arr     : Cv_Mat_Ptr;
                             Flags   : Integer := 0;
                             Minval  : Long_Float := 0.0;
                             Max_Val : Long_Float := 0.0) return Integer renames Cv_Check_Arr;
-   function Cv_Check_Array (Arr     : Ipl_Image_P;
+   function Cv_Check_Array (Arr     : Ipl_Image_Ptr;
                             Flags   : Integer := 0;
                             Minval  : Long_Float := 0.0;
                             Max_Val : Long_Float := 0.0) return Integer renames Cv_Check_Arr;
@@ -1434,28 +1434,28 @@ package Core.Operations is
 
    --     Fills an array with random numbers and updates the RNG state.
    procedure Cv_Rand_Arr (Rng       : Cv_Rng;
-                          Arr       : Cv_Arr_P;
+                          Arr       : Cv_Arr_Ptr;
                           Dist_Type : Integer;
                           Param1    : Cv_Scalar;
                           Param2    : Cv_Scalar);
    procedure Cv_Rand_Arr (Rng       : Cv_Rng;
-                          Arr       : Cv_Mat_P;
+                          Arr       : Cv_Mat_Ptr;
                           Dist_Type : Integer;
                           Param1    : Cv_Scalar;
                           Param2    : Cv_Scalar);
    procedure Cv_Rand_Arr (Rng       : Cv_Rng;
-                          Arr       : Ipl_Image_P;
+                          Arr       : Ipl_Image_Ptr;
                           Dist_Type : Integer;
                           Param1    : Cv_Scalar;
                           Param2    : Cv_Scalar);
 
-   procedure Cv_Rand_Shuffle (Mat        : Cv_Arr_P;
+   procedure Cv_Rand_Shuffle (Mat        : Cv_Arr_Ptr;
                               Rng        : access Cv_Rng;
                               Iterfactor : Long_Float := 1.0);
-   procedure Cv_Rand_Shuffle (Mat        : Cv_Mat_P;
+   procedure Cv_Rand_Shuffle (Mat        : Cv_Mat_Ptr;
                               Rng        : access Cv_Rng;
                               Iterfactor : Long_Float := 1.0);
-   procedure Cv_Rand_Shuffle (Mat        : Ipl_Image_P;
+   procedure Cv_Rand_Shuffle (Mat        : Ipl_Image_Ptr;
                               Rng        : access Cv_Rng;
                               Iterfactor : Long_Float := 1.0);
 
@@ -1464,31 +1464,31 @@ package Core.Operations is
    Cv_Sort_Ascending : constant := 0;
    Cv_Sort_Descending : constant := 16;
 
-   procedure Cv_Sort (Src    : Cv_Arr_P;
-                      Dst    : Cv_Arr_P := null;
-                      Idxmat : Cv_Arr_P := null;
+   procedure Cv_Sort (Src    : Cv_Arr_Ptr;
+                      Dst    : Cv_Arr_Ptr := null;
+                      Idxmat : Cv_Arr_Ptr := null;
                       Flags  : Integer := 0);
-   procedure Cv_Sort (Src    : Cv_Mat_P;
-                      Dst    : Cv_Mat_P := null;
-                      Idxmat : Cv_Mat_P := null;
+   procedure Cv_Sort (Src    : Cv_Mat_Ptr;
+                      Dst    : Cv_Mat_Ptr := null;
+                      Idxmat : Cv_Mat_Ptr := null;
                       Flags  : Integer := 0);
-   procedure Cv_Sort (Src    : Ipl_Image_P;
-                      Dst    : Ipl_Image_P := null;
-                      Idxmat : Ipl_Image_P := null;
+   procedure Cv_Sort (Src    : Ipl_Image_Ptr;
+                      Dst    : Ipl_Image_Ptr := null;
+                      Idxmat : Ipl_Image_Ptr := null;
                       Flags  : Integer := 0);
 
    --     Finds the real roots of a cubic equation.
-   procedure Cv_Solve_Cubic (Coeffs : Cv_Arr_P;
-                             Roots  : Cv_Arr_P);
-   procedure Cv_Solve_Cubic (Coeffs : Cv_Mat_P;
-                             Roots  : Cv_Mat_P);
-   procedure Cv_Solve_Cubic (Coeffs : Ipl_Image_P;
-                             Roots  : Ipl_Image_P);
+   procedure Cv_Solve_Cubic (Coeffs : Cv_Arr_Ptr;
+                             Roots  : Cv_Arr_Ptr);
+   procedure Cv_Solve_Cubic (Coeffs : Cv_Mat_Ptr;
+                             Roots  : Cv_Mat_Ptr);
+   procedure Cv_Solve_Cubic (Coeffs : Ipl_Image_Ptr;
+                             Roots  : Ipl_Image_Ptr);
 
 
    -- /* Finds all real and complex roots of a polynomial equation */
-   procedure Cv_Solve_Poly (Coeffs  : Cv_Mat_P;
-                            Roots2  : Cv_Mat_P;
+   procedure Cv_Solve_Poly (Coeffs  : Cv_Mat_Ptr;
+                            Roots2  : Cv_Mat_Ptr;
                             Maxiter : Integer := 20;
                             Fig     : Integer := 100);
 
@@ -1496,178 +1496,178 @@ package Core.Operations is
    -- Matrix Operations
    -----------------------------------------------------------------------------
    --     Calculates the cross product of two 3D vectors.
-   procedure Cv_Cross_Product (Src1 : Cv_Arr_P;
-                               Src2 : Cv_Arr_P;
-                               Dst  : Cv_Arr_P);
-   procedure Cv_Cross_Product (Src1 : Cv_Mat_P;
-                               Src2 : Cv_Mat_P;
-                               Dst  : Cv_Mat_P);
-   procedure Cv_Cross_Product (Src1 : Ipl_Image_P;
-                               Src2 : Ipl_Image_P;
-                               Dst  : Ipl_Image_P);
+   procedure Cv_Cross_Product (Src1 : Cv_Arr_Ptr;
+                               Src2 : Cv_Arr_Ptr;
+                               Dst  : Cv_Arr_Ptr);
+   procedure Cv_Cross_Product (Src1 : Cv_Mat_Ptr;
+                               Src2 : Cv_Mat_Ptr;
+                               Dst  : Cv_Mat_Ptr);
+   procedure Cv_Cross_Product (Src1 : Ipl_Image_Ptr;
+                               Src2 : Ipl_Image_Ptr;
+                               Dst  : Ipl_Image_Ptr);
 
-   procedure Cv_Mat_Mul_Add (Src1  : Cv_Arr_P;
-                             Src2  : Cv_Arr_P;
-                             Src3  : Cv_Arr_P;
-                             Dst   : Cv_Arr_P);
-   procedure Cv_Mat_Mul_Add (Src1  : Cv_Mat_P;
-                             Src2  : Cv_Mat_P;
-                             Src3  : Cv_Mat_P;
-                             Dst   : Cv_Mat_P);
-   procedure Cv_Mat_Mul_Add (Src1  : Ipl_Image_P;
-                             Src2  : Ipl_Image_P;
-                             Src3  : Ipl_Image_P;
-                             Dst   : Ipl_Image_P);
+   procedure Cv_Mat_Mul_Add (Src1  : Cv_Arr_Ptr;
+                             Src2  : Cv_Arr_Ptr;
+                             Src3  : Cv_Arr_Ptr;
+                             Dst   : Cv_Arr_Ptr);
+   procedure Cv_Mat_Mul_Add (Src1  : Cv_Mat_Ptr;
+                             Src2  : Cv_Mat_Ptr;
+                             Src3  : Cv_Mat_Ptr;
+                             Dst   : Cv_Mat_Ptr);
+   procedure Cv_Mat_Mul_Add (Src1  : Ipl_Image_Ptr;
+                             Src2  : Ipl_Image_Ptr;
+                             Src3  : Ipl_Image_Ptr;
+                             Dst   : Ipl_Image_Ptr);
 
-   procedure Cv_Mat_Mul (Src1 : Cv_Arr_P;
-                         Src2 : Cv_Arr_P;
-                         Dst  : Cv_Arr_P);
-   procedure Cv_Mat_Mul (Src1 : Cv_Mat_P;
-                         Src2 : Cv_Mat_P;
-                         Dst  : Cv_Mat_P);
-   procedure Cv_Mat_Mul (Src1 : Ipl_Image_P;
-                         Src2 : Ipl_Image_P;
-                         Dst  : Ipl_Image_P);
+   procedure Cv_Mat_Mul (Src1 : Cv_Arr_Ptr;
+                         Src2 : Cv_Arr_Ptr;
+                         Dst  : Cv_Arr_Ptr);
+   procedure Cv_Mat_Mul (Src1 : Cv_Mat_Ptr;
+                         Src2 : Cv_Mat_Ptr;
+                         Dst  : Cv_Mat_Ptr);
+   procedure Cv_Mat_Mul (Src1 : Ipl_Image_Ptr;
+                         Src2 : Ipl_Image_Ptr;
+                         Dst  : Ipl_Image_Ptr);
 
    Cv_Gemm_A_T  : constant Integer := 1;
    Cv_Gemm_B_T  : constant Integer := 2;
    Cv_Gemm_C_T  : constant Integer := 4;
 
    --     Performs generalized matrix multiplication.
-   procedure Cv_Gemm (Src1  : Cv_Arr_P;
-                      Src2  : Cv_Arr_P;
+   procedure Cv_Gemm (Src1  : Cv_Arr_Ptr;
+                      Src2  : Cv_Arr_Ptr;
                       Alpha : Long_Float;
-                      Src3  : Cv_Arr_P;
+                      Src3  : Cv_Arr_Ptr;
                       Beta  : Long_Float;
-                      Dst   : Cv_Arr_P;
+                      Dst   : Cv_Arr_Ptr;
                       Tabc  : Integer := 0);
-   procedure Cv_Gemm (Src1  : Cv_Mat_P;
-                      Src2  : Cv_Mat_P;
+   procedure Cv_Gemm (Src1  : Cv_Mat_Ptr;
+                      Src2  : Cv_Mat_Ptr;
                       Alpha : Long_Float;
-                      Src3  : Cv_Mat_P;
+                      Src3  : Cv_Mat_Ptr;
                       Beta  : Long_Float;
-                      Dst   : Cv_Mat_P;
+                      Dst   : Cv_Mat_Ptr;
                       Tabc  : Integer := 0);
-   procedure Cv_Gemm (Src1  : Ipl_Image_P;
-                      Src2  : Ipl_Image_P;
+   procedure Cv_Gemm (Src1  : Ipl_Image_Ptr;
+                      Src2  : Ipl_Image_Ptr;
                       Alpha : Long_Float;
-                      Src3  : Ipl_Image_P;
+                      Src3  : Ipl_Image_Ptr;
                       Beta  : Long_Float;
-                      Dst   : Ipl_Image_P;
+                      Dst   : Ipl_Image_Ptr;
                       Tabc  : Integer := 0);
 
-   procedure Cv_Mat_Mul_Add_Ex (Src1  : Cv_Arr_P;
-                                Src2  : Cv_Arr_P;
-                                Src3  : Cv_Arr_P;
-                                Dst   : Cv_Arr_P)
+   procedure Cv_Mat_Mul_Add_Ex (Src1  : Cv_Arr_Ptr;
+                                Src2  : Cv_Arr_Ptr;
+                                Src3  : Cv_Arr_Ptr;
+                                Dst   : Cv_Arr_Ptr)
                                 renames Cv_Mat_Mul_Add;
-   procedure Cv_Mat_Mul_Add_Ex (Src1  : Cv_Mat_P;
-                                Src2  : Cv_Mat_P;
-                                Src3  : Cv_Mat_P;
-                                Dst   : Cv_Mat_P)
+   procedure Cv_Mat_Mul_Add_Ex (Src1  : Cv_Mat_Ptr;
+                                Src2  : Cv_Mat_Ptr;
+                                Src3  : Cv_Mat_Ptr;
+                                Dst   : Cv_Mat_Ptr)
                                 renames Cv_Mat_Mul_Add;
-   procedure Cv_Mat_Mul_Add_Ex (Src1  : Ipl_Image_P;
-                                Src2  : Ipl_Image_P;
-                                Src3  : Ipl_Image_P;
-                                Dst   : Ipl_Image_P)
+   procedure Cv_Mat_Mul_Add_Ex (Src1  : Ipl_Image_Ptr;
+                                Src2  : Ipl_Image_Ptr;
+                                Src3  : Ipl_Image_Ptr;
+                                Dst   : Ipl_Image_Ptr)
                                 renames Cv_Mat_Mul_Add;
 
    --     Performs matrix transformation of every array element.
-   procedure Cv_Transform (Src      : Cv_Arr_P;
-                           Dst      : Cv_Arr_P;
+   procedure Cv_Transform (Src      : Cv_Arr_Ptr;
+                           Dst      : Cv_Arr_Ptr;
                            Transmat : access Cv_Mat;
                            Shiftvec : access Cv_Mat := null);
-   procedure Cv_Transform (Src      : Cv_Mat_P;
-                           Dst      : Cv_Mat_P;
+   procedure Cv_Transform (Src      : Cv_Mat_Ptr;
+                           Dst      : Cv_Mat_Ptr;
                            Transmat : access Cv_Mat;
                            Shiftvec : access Cv_Mat := null);
-   procedure Cv_Transform (Src      : Ipl_Image_P;
-                           Dst      : Ipl_Image_P;
+   procedure Cv_Transform (Src      : Ipl_Image_Ptr;
+                           Dst      : Ipl_Image_Ptr;
                            Transmat : access Cv_Mat;
                            Shiftvec : access Cv_Mat := null);
 
-   procedure Cv_Mat_Mul_Add_S (Src      : Cv_Arr_P;
-                               Dst      : Cv_Arr_P;
+   procedure Cv_Mat_Mul_Add_S (Src      : Cv_Arr_Ptr;
+                               Dst      : Cv_Arr_Ptr;
                                Transmat : access Cv_Mat;
                                Shiftvec : access Cv_Mat := null) renames Cv_Transform;
-   procedure Cv_Mat_Mul_Add_S (Src      : Cv_Mat_P;
-                               Dst      : Cv_Mat_P;
+   procedure Cv_Mat_Mul_Add_S (Src      : Cv_Mat_Ptr;
+                               Dst      : Cv_Mat_Ptr;
                                Transmat : access Cv_Mat;
                                Shiftvec : access Cv_Mat := null) renames Cv_Transform;
-   procedure Cv_Mat_Mul_Add_S (Src      : Ipl_Image_P;
-                               Dst      : Ipl_Image_P;
+   procedure Cv_Mat_Mul_Add_S (Src      : Ipl_Image_Ptr;
+                               Dst      : Ipl_Image_Ptr;
                                Transmat : access Cv_Mat;
                                Shiftvec : access Cv_Mat := null) renames Cv_Transform;
 
    --     Performs perspective matrix transformation of a vector array.
-   procedure Cv_Perspective_Transform (Src : Cv_Arr_P;
-                                       Dst : Cv_Arr_P;
-                                       Mat : Cv_Arr_P);
-   procedure Cv_Perspective_Transform (Src : Cv_Mat_P;
-                                       Dst : Cv_Mat_P;
-                                       Mat : Cv_Mat_P);
-   procedure Cv_Perspective_Transform (Src : Ipl_Image_P;
-                                       Dst : Ipl_Image_P;
-                                       Mat : Ipl_Image_P);
+   procedure Cv_Perspective_Transform (Src : Cv_Arr_Ptr;
+                                       Dst : Cv_Arr_Ptr;
+                                       Mat : Cv_Arr_Ptr);
+   procedure Cv_Perspective_Transform (Src : Cv_Mat_Ptr;
+                                       Dst : Cv_Mat_Ptr;
+                                       Mat : Cv_Mat_Ptr);
+   procedure Cv_Perspective_Transform (Src : Ipl_Image_Ptr;
+                                       Dst : Ipl_Image_Ptr;
+                                       Mat : Ipl_Image_Ptr);
 
    --     Calculates the product of an array and a transposed array.
-   procedure Cv_Mul_Transposed (Src       : Cv_Arr_P;
-                                Dst       : Cv_Arr_P;
+   procedure Cv_Mul_Transposed (Src       : Cv_Arr_Ptr;
+                                Dst       : Cv_Arr_Ptr;
                                 Order     : Integer;
-                                Delta_Arr : Cv_Arr_P := null;
+                                Delta_Arr : Cv_Arr_Ptr := null;
                                 Scale     : Long_Float := 1.0);
-   procedure Cv_Mul_Transposed (Src       : Cv_Mat_P;
-                                Dst       : Cv_Mat_P;
+   procedure Cv_Mul_Transposed (Src       : Cv_Mat_Ptr;
+                                Dst       : Cv_Mat_Ptr;
                                 Order     : Integer;
-                                Delta_Arr : Cv_Mat_P := null;
+                                Delta_Arr : Cv_Mat_Ptr := null;
                                 Scale     : Long_Float := 1.0);
-   procedure Cv_Mul_Transposed (Src       : Ipl_Image_P;
-                                Dst       : Ipl_Image_P;
+   procedure Cv_Mul_Transposed (Src       : Ipl_Image_Ptr;
+                                Dst       : Ipl_Image_Ptr;
                                 Order     : Integer;
-                                Delta_Arr : Ipl_Image_P := null;
+                                Delta_Arr : Ipl_Image_Ptr := null;
                                 Scale     : Long_Float := 1.0);
 
    --     Transposes a matrix.
-   procedure Cv_Transpose (Src : Cv_Arr_P;
-                           Dst : Cv_Arr_P);
-   procedure Cv_Transpose (Src : Cv_Mat_P;
-                           Dst : Cv_Mat_P);
-   procedure Cv_Transpose (Src : Ipl_Image_P;
-                           Dst : Ipl_Image_P);
+   procedure Cv_Transpose (Src : Cv_Arr_Ptr;
+                           Dst : Cv_Arr_Ptr);
+   procedure Cv_Transpose (Src : Cv_Mat_Ptr;
+                           Dst : Cv_Mat_Ptr);
+   procedure Cv_Transpose (Src : Ipl_Image_Ptr;
+                           Dst : Ipl_Image_Ptr);
 
-   procedure Cv_T (Src : Cv_Arr_P;
-                   Dst : Cv_Arr_P) renames Cv_Transpose;
-   procedure Cv_T (Src : Cv_Mat_P;
-                   Dst : Cv_Mat_P) renames Cv_Transpose;
-   procedure Cv_T (Src : Ipl_Image_P;
-                   Dst : Ipl_Image_P) renames Cv_Transpose;
+   procedure Cv_T (Src : Cv_Arr_Ptr;
+                   Dst : Cv_Arr_Ptr) renames Cv_Transpose;
+   procedure Cv_T (Src : Cv_Mat_Ptr;
+                   Dst : Cv_Mat_Ptr) renames Cv_Transpose;
+   procedure Cv_T (Src : Ipl_Image_Ptr;
+                   Dst : Ipl_Image_Ptr) renames Cv_Transpose;
 
    --/* Completes the symmetric matrix from the lower (LtoR=0) or from the upper (LtoR!=0) part */
-   procedure Cv_Complete_Symm (Matrix : Cv_Mat_P;
+   procedure Cv_Complete_Symm (Matrix : Cv_Mat_Ptr;
                                Ltor   : Integer := 0);
 
    --     Flip a 2D array around vertical, horizontal or both axes.
-   procedure Cv_Flip (Src      : Cv_Arr_P;
-                      Dst      : Cv_Arr_P := null;
+   procedure Cv_Flip (Src      : Cv_Arr_Ptr;
+                      Dst      : Cv_Arr_Ptr := null;
                       Flipmode : Integer := 0);
-   procedure Cv_Flip (Src      : Cv_Mat_P;
-                      Dst      : Cv_Mat_P := null;
+   procedure Cv_Flip (Src      : Cv_Mat_Ptr;
+                      Dst      : Cv_Mat_Ptr := null;
                       Flipmode : Integer := 0);
-   procedure Cv_Flip (Src      : Ipl_Image_P;
-                      Dst      : Ipl_Image_P := null;
+   procedure Cv_Flip (Src      : Ipl_Image_Ptr;
+                      Dst      : Ipl_Image_Ptr := null;
                       Flipmode : Integer := 0);
 
    --     Synonym for Flip.
-   procedure Cv_Mirror (Src      : Cv_Arr_P;
-                        Dst      : Cv_Arr_P := null;
+   procedure Cv_Mirror (Src      : Cv_Arr_Ptr;
+                        Dst      : Cv_Arr_Ptr := null;
                         Flipmode : Integer := 0)
                         renames Cv_Flip;
-   procedure Cv_Mirror (Src      : Cv_Mat_P;
-                        Dst      : Cv_Mat_P := null;
+   procedure Cv_Mirror (Src      : Cv_Mat_Ptr;
+                        Dst      : Cv_Mat_Ptr := null;
                         Flipmode : Integer := 0)
                         renames Cv_Flip;
-   procedure Cv_Mirror (Src      : Ipl_Image_P;
-                        Dst      : Ipl_Image_P := null;
+   procedure Cv_Mirror (Src      : Ipl_Image_Ptr;
+                        Dst      : Ipl_Image_Ptr := null;
                         Flipmode : Integer := 0)
                         renames Cv_Flip;
 
@@ -1676,40 +1676,40 @@ package Core.Operations is
    Cv_Svd_V_T   : constant Unsigned_32 := 4;
 
    --     Performs singular value decomposition of a real floating-point matrix.
-   procedure Cv_Svdecomp (A     : Cv_Arr_P;
-                          W     : Cv_Arr_P;
-                          U     : Cv_Arr_P := null;
-                          V     : Cv_Arr_P := null;
+   procedure Cv_Svdecomp (A     : Cv_Arr_Ptr;
+                          W     : Cv_Arr_Ptr;
+                          U     : Cv_Arr_Ptr := null;
+                          V     : Cv_Arr_Ptr := null;
                           Flags : Unsigned_32 := 0);
-   procedure Cv_Svdecomp (A     : Cv_Mat_P;
-                          W     : Cv_Mat_P;
-                          U     : Cv_Mat_P := null;
-                          V     : Cv_Arr_P := null;
+   procedure Cv_Svdecomp (A     : Cv_Mat_Ptr;
+                          W     : Cv_Mat_Ptr;
+                          U     : Cv_Mat_Ptr := null;
+                          V     : Cv_Arr_Ptr := null;
                           Flags : Unsigned_32 := 0);
-   procedure Cv_Svdecomp (A     : Ipl_Image_P;
-                          W     : Ipl_Image_P;
-                          U     : Ipl_Image_P := null;
-                          V     : Ipl_Image_P := null;
+   procedure Cv_Svdecomp (A     : Ipl_Image_Ptr;
+                          W     : Ipl_Image_Ptr;
+                          U     : Ipl_Image_Ptr := null;
+                          V     : Ipl_Image_Ptr := null;
                           Flags : Unsigned_32 := 0);
 
    --     Performs singular value back substitution.
-   procedure Cv_Svbksb (W     : Cv_Arr_P;
-                        U     : Cv_Arr_P;
-                        V     : Cv_Arr_P;
-                        B     : Cv_Arr_P;
-                        X     : Cv_Arr_P;
+   procedure Cv_Svbksb (W     : Cv_Arr_Ptr;
+                        U     : Cv_Arr_Ptr;
+                        V     : Cv_Arr_Ptr;
+                        B     : Cv_Arr_Ptr;
+                        X     : Cv_Arr_Ptr;
                         Flags : Unsigned_32);
-   procedure Cv_Svbksb (W     : Cv_Mat_P;
-                        U     : Cv_Mat_P;
-                        V     : Cv_Mat_P;
-                        B     : Cv_Mat_P;
-                        X     : Cv_Mat_P;
+   procedure Cv_Svbksb (W     : Cv_Mat_Ptr;
+                        U     : Cv_Mat_Ptr;
+                        V     : Cv_Mat_Ptr;
+                        B     : Cv_Mat_Ptr;
+                        X     : Cv_Mat_Ptr;
                         Flags : Unsigned_32);
-   procedure Cv_Svbksb (W     : Ipl_Image_P;
-                        U     : Ipl_Image_P;
-                        V     : Ipl_Image_P;
-                        B     : Ipl_Image_P;
-                        X     : Ipl_Image_P;
+   procedure Cv_Svbksb (W     : Ipl_Image_Ptr;
+                        U     : Ipl_Image_Ptr;
+                        V     : Ipl_Image_Ptr;
+                        B     : Ipl_Image_Ptr;
+                        X     : Ipl_Image_Ptr;
                         Flags : Unsigned_32);
 
    Cv_Lu       : constant := 0;
@@ -1720,99 +1720,99 @@ package Core.Operations is
    Cv_Normal   : constant := 16;
 
    --     Finds the inverse or pseudo-inverse of a matrix.
-   function Cv_Invert (Src    : Cv_Arr_P;
-                       Dst    : Cv_Arr_P;
+   function Cv_Invert (Src    : Cv_Arr_Ptr;
+                       Dst    : Cv_Arr_Ptr;
                        Method : Integer := Cv_Lu)
                        return Long_Float;
-   function Cv_Invert (Src    : Cv_Mat_P;
-                       Dst    : Cv_Mat_P;
+   function Cv_Invert (Src    : Cv_Mat_Ptr;
+                       Dst    : Cv_Mat_Ptr;
                        Method : Integer := Cv_Lu)
                        return Long_Float;
-   function Cv_Invert (Src    : Ipl_Image_P;
-                       Dst    : Ipl_Image_P;
+   function Cv_Invert (Src    : Ipl_Image_Ptr;
+                       Dst    : Ipl_Image_Ptr;
                        Method : Integer := Cv_Lu)
                        return Long_Float;
-   function Cv_Inv (Src    : Cv_Arr_P;
-                    Dst    : Cv_Arr_P;
+   function Cv_Inv (Src    : Cv_Arr_Ptr;
+                    Dst    : Cv_Arr_Ptr;
                     Method : Integer := Cv_Lu)
                     return Long_Float renames Cv_Invert;
-   function Cv_Inv (Src    : Cv_Mat_P;
-                    Dst    : Cv_Mat_P;
+   function Cv_Inv (Src    : Cv_Mat_Ptr;
+                    Dst    : Cv_Mat_Ptr;
                     Method : Integer := Cv_Lu)
                     return Long_Float renames Cv_Invert;
-   function Cv_Inv (Src    : Ipl_Image_P;
-                    Dst    : Ipl_Image_P;
+   function Cv_Inv (Src    : Ipl_Image_Ptr;
+                    Dst    : Ipl_Image_Ptr;
                     Method : Integer := Cv_Lu)
                     return Long_Float renames Cv_Invert;
 
    --     Solves a linear system or least-squares problem.
-   function Cv_Solve (Src1   : Cv_Arr_P;
-                      Src2   : Cv_Arr_P;
-                      Dst    : Cv_Arr_P;
+   function Cv_Solve (Src1   : Cv_Arr_Ptr;
+                      Src2   : Cv_Arr_Ptr;
+                      Dst    : Cv_Arr_Ptr;
                       Method : Integer := Cv_Lu)
                       return Integer;
-   function Cv_Solve (Src1   : Cv_Mat_P;
-                      Src2   : Cv_Mat_P;
-                      Dst    : Cv_Mat_P;
+   function Cv_Solve (Src1   : Cv_Mat_Ptr;
+                      Src2   : Cv_Mat_Ptr;
+                      Dst    : Cv_Mat_Ptr;
                       Method : Integer := Cv_Lu)
                       return Integer;
-   function Cv_Solve (Src1   : Ipl_Image_P;
-                      Src2   : Ipl_Image_P;
-                      Dst    : Ipl_Image_P;
+   function Cv_Solve (Src1   : Ipl_Image_Ptr;
+                      Src2   : Ipl_Image_Ptr;
+                      Dst    : Ipl_Image_Ptr;
                       Method : Integer := Cv_Lu)
                       return Integer;
 
    --     Returns the determinant of a matrix.
-   function Cv_Det (Mat : Cv_Arr_P)
+   function Cv_Det (Mat : Cv_Arr_Ptr)
                     return Long_Float;
-   function Cv_Det (Mat : Cv_Mat_P)
+   function Cv_Det (Mat : Cv_Mat_Ptr)
                     return Long_Float;
-   function Cv_Det (Mat : Ipl_Image_P)
+   function Cv_Det (Mat : Ipl_Image_Ptr)
                     return Long_Float;
 
    --     Returns the trace of a matrix.
-   function Cv_Trace (Mat : Cv_Arr_P) return Cv_Scalar;
-   function Cv_Trace (Mat : Cv_Mat_P) return Cv_Scalar;
-   function Cv_Trace (Mat : Ipl_Image_P) return Cv_Scalar;
+   function Cv_Trace (Mat : Cv_Arr_Ptr) return Cv_Scalar;
+   function Cv_Trace (Mat : Cv_Mat_Ptr) return Cv_Scalar;
+   function Cv_Trace (Mat : Ipl_Image_Ptr) return Cv_Scalar;
 
    --     Computes eigenvalues and eigenvectors of a symmetric matrix.
-   procedure Cv_Eigen_Vv (Mat       : Cv_Arr_P;
-                          Evects    : Cv_Arr_P;
-                          Evals     : Cv_Arr_P;
+   procedure Cv_Eigen_Vv (Mat       : Cv_Arr_Ptr;
+                          Evects    : Cv_Arr_Ptr;
+                          Evals     : Cv_Arr_Ptr;
                           Eps       : Long_Float := 0.0;
                           Lowindex  : Integer := -1;
                           Highindex : Integer := -1);
-   procedure Cv_Eigen_Vv (Mat       : Cv_Mat_P;
-                          Evects    : Cv_Mat_P;
-                          Evals     : Cv_Mat_P;
+   procedure Cv_Eigen_Vv (Mat       : Cv_Mat_Ptr;
+                          Evects    : Cv_Mat_Ptr;
+                          Evals     : Cv_Mat_Ptr;
                           Eps       : Long_Float := 0.0;
                           Lowindex  : Integer := -1;
                           Highindex : Integer := -1);
-   procedure Cv_Eigen_Vv (Mat       : Ipl_Image_P;
-                          Evects    : Ipl_Image_P;
-                          Evals     : Ipl_Image_P;
+   procedure Cv_Eigen_Vv (Mat       : Ipl_Image_Ptr;
+                          Evects    : Ipl_Image_Ptr;
+                          Evals     : Ipl_Image_Ptr;
                           Eps       : Long_Float := 0.0;
                           Lowindex  : Integer := -1;
                           Highindex : Integer := -1);
 
    --     Initializes a scaled identity matrix.
-   procedure Cv_Set_Identity (Mat   : Cv_Arr_P;
+   procedure Cv_Set_Identity (Mat   : Cv_Arr_Ptr;
                               Value : Cv_Scalar);
-   procedure Cv_Set_Identity (Mat   : Cv_Mat_P;
+   procedure Cv_Set_Identity (Mat   : Cv_Mat_Ptr;
                               Value : Cv_Scalar);
-   procedure Cv_Set_Identity (Mat   : Ipl_Image_P;
+   procedure Cv_Set_Identity (Mat   : Ipl_Image_Ptr;
                               Value : Cv_Scalar);
 
    -- /* Fills matrix with given range of numbers */
-   function Cv_Range (Mat   : Cv_Arr_P;
+   function Cv_Range (Mat   : Cv_Arr_Ptr;
                       Start : Long_Float;
-                      Ende  : Long_Float) return Cv_Arr_P;
-   function Cv_Range (Mat   : Cv_Mat_P;
+                      Ende  : Long_Float) return Cv_Arr_Ptr;
+   function Cv_Range (Mat   : Cv_Mat_Ptr;
                       Start : Long_Float;
-                      Ende  : Long_Float) return Cv_Arr_P;
-   function Cv_Range (Mat   : Ipl_Image_P;
+                      Ende  : Long_Float) return Cv_Arr_Ptr;
+   function Cv_Range (Mat   : Ipl_Image_Ptr;
                       Start : Long_Float;
-                      Ende  : Long_Float) return Cv_Arr_P;
+                      Ende  : Long_Float) return Cv_Arr_Ptr;
 
    Cv_Covar_Scrambled : constant Unsigned_32 := 0;
    Cv_Covar_Normal    : constant Unsigned_32 := 1;
@@ -1822,154 +1822,154 @@ package Core.Operations is
    Cv_Covar_Cols      : constant Unsigned_32 := 16;
 
    --     Calculates covariance matrix of a set of vectors.
-   procedure Cv_Calc_Covar_Matrix (Vects  : Cv_Arr_P;
+   procedure Cv_Calc_Covar_Matrix (Vects  : Cv_Arr_Ptr;
                                    Count  : Integer;
-                                   Covmat : Cv_Arr_P;
-                                   Avg    : Cv_Arr_P;
+                                   Covmat : Cv_Arr_Ptr;
+                                   Avg    : Cv_Arr_Ptr;
                                    Flags  : Unsigned_32);
-   procedure Cv_Calc_Covar_Matrix (Vects  : Cv_Mat_P;
+   procedure Cv_Calc_Covar_Matrix (Vects  : Cv_Mat_Ptr;
                                    Count  : Integer;
-                                   Covmat : Cv_Mat_P;
-                                   Avg    : Cv_Mat_P;
+                                   Covmat : Cv_Mat_Ptr;
+                                   Avg    : Cv_Mat_Ptr;
                                    Flags  : Unsigned_32);
-   procedure Cv_Calc_Covar_Matrix (Vects  : Ipl_Image_P;
+   procedure Cv_Calc_Covar_Matrix (Vects  : Ipl_Image_Ptr;
                                    Count  : Integer;
-                                   Covmat : Ipl_Image_P;
-                                   Avg    : Ipl_Image_P;
+                                   Covmat : Ipl_Image_Ptr;
+                                   Avg    : Ipl_Image_Ptr;
                                    Flags  : Unsigned_32);
 
    Cv_Pca_Data_As_Row : constant := 0;
    Cv_Pca_Data_As_Col : constant := 1;
    Cv_Pca_Use_Avg : constant := 2;
 
-   procedure Cv_Calc_Pca (Data       : Cv_Arr_P;
-                          Mean       : Cv_Arr_P;
-                          Eigenvals  : Cv_Arr_P;
-                          Eigenvects : Cv_Arr_P;
+   procedure Cv_Calc_Pca (Data       : Cv_Arr_Ptr;
+                          Mean       : Cv_Arr_Ptr;
+                          Eigenvals  : Cv_Arr_Ptr;
+                          Eigenvects : Cv_Arr_Ptr;
                           Flags      : Integer);
-   procedure Cv_Calc_Pca (Data       : Cv_Mat_P;
-                          Mean       : Cv_Mat_P;
-                          Eigenvals  : Cv_Mat_P;
-                          Eigenvects : Cv_Mat_P;
+   procedure Cv_Calc_Pca (Data       : Cv_Mat_Ptr;
+                          Mean       : Cv_Mat_Ptr;
+                          Eigenvals  : Cv_Mat_Ptr;
+                          Eigenvects : Cv_Mat_Ptr;
                           Flags      : Integer);
-   procedure Cv_Calc_Pca (Data       : Ipl_Image_P;
-                          Mean       : Ipl_Image_P;
-                          Eigenvals  : Ipl_Image_P;
-                          Eigenvects : Ipl_Image_P;
+   procedure Cv_Calc_Pca (Data       : Ipl_Image_Ptr;
+                          Mean       : Ipl_Image_Ptr;
+                          Eigenvals  : Ipl_Image_Ptr;
+                          Eigenvects : Ipl_Image_Ptr;
                           Flags      : Integer);
 
-   procedure Cv_Project_Pca (Data       : Cv_Arr_P;
-                             Mean       : Cv_Arr_P;
-                             Eigenvects : Cv_Arr_P;
-                             Result     : Cv_Arr_P);
-   procedure Cv_Project_Pca (Data       : Cv_Mat_P;
-                             Mean       : Cv_Mat_P;
-                             Eigenvects : Cv_Mat_P;
-                             Result     : Cv_Mat_P);
-   procedure Cv_Project_Pca (Data       : Ipl_Image_P;
-                             Mean       : Ipl_Image_P;
-                             Eigenvects : Ipl_Image_P;
-                             Result     : Ipl_Image_P);
+   procedure Cv_Project_Pca (Data       : Cv_Arr_Ptr;
+                             Mean       : Cv_Arr_Ptr;
+                             Eigenvects : Cv_Arr_Ptr;
+                             Result     : Cv_Arr_Ptr);
+   procedure Cv_Project_Pca (Data       : Cv_Mat_Ptr;
+                             Mean       : Cv_Mat_Ptr;
+                             Eigenvects : Cv_Mat_Ptr;
+                             Result     : Cv_Mat_Ptr);
+   procedure Cv_Project_Pca (Data       : Ipl_Image_Ptr;
+                             Mean       : Ipl_Image_Ptr;
+                             Eigenvects : Ipl_Image_Ptr;
+                             Result     : Ipl_Image_Ptr);
 
-   procedure Cv_Back_Project_Pca (Proj       : Cv_Arr_P;
-                                  Mean       : Cv_Arr_P;
-                                  Eigenvects : Cv_Arr_P;
-                                  Result     : Cv_Arr_P);
-   procedure Cv_Back_Project_Pca (Proj       : Cv_Mat_P;
-                                  Mean       : Cv_Mat_P;
-                                  Eigenvects : Cv_Mat_P;
-                                  Result     : Cv_Mat_P);
-   procedure Cv_Back_Project_Pca (Proj       : Ipl_Image_P;
-                                  Mean       : Ipl_Image_P;
-                                  Eigenvects : Ipl_Image_P;
-                                  Result     : Ipl_Image_P);
+   procedure Cv_Back_Project_Pca (Proj       : Cv_Arr_Ptr;
+                                  Mean       : Cv_Arr_Ptr;
+                                  Eigenvects : Cv_Arr_Ptr;
+                                  Result     : Cv_Arr_Ptr);
+   procedure Cv_Back_Project_Pca (Proj       : Cv_Mat_Ptr;
+                                  Mean       : Cv_Mat_Ptr;
+                                  Eigenvects : Cv_Mat_Ptr;
+                                  Result     : Cv_Mat_Ptr);
+   procedure Cv_Back_Project_Pca (Proj       : Ipl_Image_Ptr;
+                                  Mean       : Ipl_Image_Ptr;
+                                  Eigenvects : Ipl_Image_Ptr;
+                                  Result     : Ipl_Image_Ptr);
 
    --     Calculates the Mahalonobis distance between two vectors.
-   function Cv_Mahalanobis (Vec1 : Cv_Arr_P;
-                            Vec2 : Cv_Arr_P;
-                            Mat  : Cv_Arr_P)
+   function Cv_Mahalanobis (Vec1 : Cv_Arr_Ptr;
+                            Vec2 : Cv_Arr_Ptr;
+                            Mat  : Cv_Arr_Ptr)
                             return Long_Float;
-   function Cv_Mahalanobis (Vec1 : Cv_Mat_P;
-                            Vec2 : Cv_Mat_P;
-                            Mat  : Cv_Mat_P)
+   function Cv_Mahalanobis (Vec1 : Cv_Mat_Ptr;
+                            Vec2 : Cv_Mat_Ptr;
+                            Mat  : Cv_Mat_Ptr)
                             return Long_Float;
-   function Cv_Mahalanobis (Vec1 : Ipl_Image_P;
-                            Vec2 : Ipl_Image_P;
-                            Mat  : Ipl_Image_P)
+   function Cv_Mahalanobis (Vec1 : Ipl_Image_Ptr;
+                            Vec2 : Ipl_Image_Ptr;
+                            Mat  : Ipl_Image_Ptr)
                             return Long_Float;
-   function Cv_Mahalonobis (Vec1 : Cv_Arr_P;
-                            Vec2 : Cv_Arr_P;
-                            Mat  : Cv_Arr_P)
+   function Cv_Mahalonobis (Vec1 : Cv_Arr_Ptr;
+                            Vec2 : Cv_Arr_Ptr;
+                            Mat  : Cv_Arr_Ptr)
                             return Long_Float renames Cv_Mahalanobis;
-   function Cv_Mahalonobis (Vec1 : Cv_Mat_P;
-                            Vec2 : Cv_Mat_P;
-                            Mat  : Cv_Mat_P)
+   function Cv_Mahalonobis (Vec1 : Cv_Mat_Ptr;
+                            Vec2 : Cv_Mat_Ptr;
+                            Mat  : Cv_Mat_Ptr)
                             return Long_Float renames Cv_Mahalanobis;
-   function Cv_Mahalonobis (Vec1 : Ipl_Image_P;
-                            Vec2 : Ipl_Image_P;
-                            Mat  : Ipl_Image_P)
+   function Cv_Mahalonobis (Vec1 : Ipl_Image_Ptr;
+                            Vec2 : Ipl_Image_Ptr;
+                            Mat  : Ipl_Image_Ptr)
                             return Long_Float renames Cv_Mahalanobis;
 
    -----------------------------------------------------------------------------
    -- Array Statistics
    -----------------------------------------------------------------------------
    --     Adds up array elements.
-   function Cv_Sum (Arr : Cv_Arr_P) return Cv_Scalar;
-   function Cv_Sum (Arr : Cv_Mat_P) return Cv_Scalar;
-   function Cv_Sum (Arr : Ipl_Image_P) return Cv_Scalar;
+   function Cv_Sum (Arr : Cv_Arr_Ptr) return Cv_Scalar;
+   function Cv_Sum (Arr : Cv_Mat_Ptr) return Cv_Scalar;
+   function Cv_Sum (Arr : Ipl_Image_Ptr) return Cv_Scalar;
 
    --     Counts non-zero array elements.
-   function Cv_Count_Non_Zero (Arr : Cv_Arr_P)
+   function Cv_Count_Non_Zero (Arr : Cv_Arr_Ptr)
                                return Integer;
-   function Cv_Count_Non_Zero (Arr : Cv_Mat_P)
+   function Cv_Count_Non_Zero (Arr : Cv_Mat_Ptr)
                                return Integer;
-   function Cv_Count_Non_Zero (Arr : Ipl_Image_P)
+   function Cv_Count_Non_Zero (Arr : Ipl_Image_Ptr)
                                return Integer;
 
    --     Calculates average (mean) of array elements.
-   function Cv_Avg (Arr  : Cv_Arr_P;
-                    Mask : Cv_Arr_P := null)
+   function Cv_Avg (Arr  : Cv_Arr_Ptr;
+                    Mask : Cv_Arr_Ptr := null)
                     return Cv_Scalar;
-   function Cv_Avg (Arr  : Cv_Mat_P;
-                    Mask : Cv_Mat_P := null)
+   function Cv_Avg (Arr  : Cv_Mat_Ptr;
+                    Mask : Cv_Mat_Ptr := null)
                     return Cv_Scalar;
-   function Cv_Avg (Arr  : Ipl_Image_P;
-                    Mask : Ipl_Image_P := null)
+   function Cv_Avg (Arr  : Ipl_Image_Ptr;
+                    Mask : Ipl_Image_Ptr := null)
                     return Cv_Scalar;
 
    --     Calculates average (mean) of array elements.
-   procedure Cv_Avg_Sdv (Arr    : Cv_Arr_P;
+   procedure Cv_Avg_Sdv (Arr    : Cv_Arr_Ptr;
                          Mean   : access Cv_Scalar;
                          Stddev : access Cv_Scalar;
-                         Mask   : Cv_Arr_P := null);
-   procedure Cv_Avg_Sdv (Arr    : Cv_Mat_P;
+                         Mask   : Cv_Arr_Ptr := null);
+   procedure Cv_Avg_Sdv (Arr    : Cv_Mat_Ptr;
                          Mean   : access Cv_Scalar;
                          Stddev : access Cv_Scalar;
-                         Mask   : Cv_Mat_P := null);
-   procedure Cv_Avg_Sdv (Arr    : Ipl_Image_P;
+                         Mask   : Cv_Mat_Ptr := null);
+   procedure Cv_Avg_Sdv (Arr    : Ipl_Image_Ptr;
                          Mean   : access Cv_Scalar;
                          Stddev : access Cv_Scalar;
-                         Mask   : Ipl_Image_P := null);
+                         Mask   : Ipl_Image_Ptr := null);
 
    --     Finds global minimum and maximum in array or subarray.
-   procedure Cv_Min_Max_Loc (Arr     : Cv_Arr_P;
+   procedure Cv_Min_Max_Loc (Arr     : Cv_Arr_Ptr;
                              Min_Val : access Long_Float;
                              Max_Val : access Long_Float;
                              Min_Loc : access Cv_Point := null;
                              Max_Loc : access Cv_Point := null;
-                             Mask    : Cv_Arr_P := null);
-   procedure Cv_Min_Max_Loc (Arr     : Cv_Mat_P;
+                             Mask    : Cv_Arr_Ptr := null);
+   procedure Cv_Min_Max_Loc (Arr     : Cv_Mat_Ptr;
                              Min_Val : access Long_Float;
                              Max_Val : access Long_Float;
                              Min_Loc : access Cv_Point := null;
                              Max_Loc : access Cv_Point := null;
-                             Mask    : Cv_Mat_P := null);
-   procedure Cv_Min_Max_Loc (Arr     : Ipl_Image_P;
+                             Mask    : Cv_Mat_Ptr := null);
+   procedure Cv_Min_Max_Loc (Arr     : Ipl_Image_Ptr;
                              Min_Val : access Long_Float;
                              Max_Val : access Long_Float;
                              Min_Loc : access Cv_Point := null;
                              Max_Loc : access Cv_Point := null;
-                             Mask    : Ipl_Image_P := null);
+                             Mask    : Ipl_Image_Ptr := null);
 
    Cv_C         : constant Unsigned_32 := 1;
    Cv_L1        : constant Unsigned_32 := 2;
@@ -1987,40 +1987,40 @@ package Core.Operations is
    Cv_Relative_L2 : constant := (Cv_Relative or Cv_L2);
 
    --     Calculates absolute array norm, absolute difference norm, or relative difference norm.
-   function Cv_Norm (Arr1      : Cv_Arr_P;
-                     Arr2      : Cv_Arr_P := null;
+   function Cv_Norm (Arr1      : Cv_Arr_Ptr;
+                     Arr2      : Cv_Arr_Ptr := null;
                      Norm_Type : Unsigned_32 := Cv_L2;
-                     Mask      : Cv_Arr_P := null)
+                     Mask      : Cv_Arr_Ptr := null)
                      return Long_Float;
-   function Cv_Norm (Arr1      : Cv_Mat_P;
-                     Arr2      : Cv_Mat_P := null;
+   function Cv_Norm (Arr1      : Cv_Mat_Ptr;
+                     Arr2      : Cv_Mat_Ptr := null;
                      Norm_Type : Unsigned_32 := Cv_L2;
-                     Mask      : Cv_Mat_P := null)
+                     Mask      : Cv_Mat_Ptr := null)
                      return Long_Float;
-   function Cv_Norm (Arr1      : Ipl_Image_P;
-                     Arr2      : Ipl_Image_P := null;
+   function Cv_Norm (Arr1      : Ipl_Image_Ptr;
+                     Arr2      : Ipl_Image_Ptr := null;
                      Norm_Type : Unsigned_32 := Cv_L2;
-                     Mask      : Ipl_Image_P := null)
+                     Mask      : Ipl_Image_Ptr := null)
                      return Long_Float;
 
-   procedure Cv_Normalize (Src      : Cv_Arr_P;
-                           Dst      : Cv_Arr_P;
+   procedure Cv_Normalize (Src      : Cv_Arr_Ptr;
+                           Dst      : Cv_Arr_Ptr;
                            A        : Long_Float := 1.0;
                            B        : Long_Float := 0.0;
                            Normtype : Integer := Integer (Cv_L2);
-                           Mask     : Cv_Arr_P := null);
-   procedure Cv_Normalize (Src      : Cv_Mat_P;
-                           Dst      : Cv_Mat_P;
+                           Mask     : Cv_Arr_Ptr := null);
+   procedure Cv_Normalize (Src      : Cv_Mat_Ptr;
+                           Dst      : Cv_Mat_Ptr;
                            A        : Long_Float := 1.0;
                            B        : Long_Float := 0.0;
                            Normtype : Integer := Integer (Cv_L2);
-                           Mask     : Cv_Mat_P := null);
-   procedure Cv_Normalize (Src      : Ipl_Image_P;
-                           Dst      : Ipl_Image_P;
+                           Mask     : Cv_Mat_Ptr := null);
+   procedure Cv_Normalize (Src      : Ipl_Image_Ptr;
+                           Dst      : Ipl_Image_Ptr;
                            A        : Long_Float := 1.0;
                            B        : Long_Float := 0.0;
                            Normtype : Integer := Integer (Cv_L2);
-                           Mask     : Ipl_Image_P := null);
+                           Mask     : Ipl_Image_Ptr := null);
 
    Cv_Reduce_Sum : constant := 0;
    Cv_Reduce_Avg : constant := 1;
@@ -2028,16 +2028,16 @@ package Core.Operations is
    Cv_Reduce_Min : constant := 3;
 
    --     Reduces a matrix to a vector.
-   procedure Cv_Reduce (Src : Cv_Arr_P;
-                        Dst : Cv_Arr_P;
+   procedure Cv_Reduce (Src : Cv_Arr_Ptr;
+                        Dst : Cv_Arr_Ptr;
                         Dim : Integer := -1;
                         Op  : Integer := Cv_Reduce_Sum);
-   procedure Cv_Reduce (Src : Cv_Mat_P;
-                        Dst : Cv_Mat_P;
+   procedure Cv_Reduce (Src : Cv_Mat_Ptr;
+                        Dst : Cv_Mat_Ptr;
                         Dim : Integer := -1;
                         Op  : Integer := Cv_Reduce_Sum);
-   procedure Cv_Reduce (Src : Ipl_Image_P;
-                        Dst : Ipl_Image_P;
+   procedure Cv_Reduce (Src : Ipl_Image_Ptr;
+                        Dst : Ipl_Image_Ptr;
                         Dim : Integer := -1;
                         Op  : Integer := Cv_Reduce_Sum);
 
@@ -2054,43 +2054,43 @@ package Core.Operations is
 
    --     Performs a forward or inverse Discrete Fourier transform of a 1D or 2D
    --     floating - point array.
-   procedure Cv_Dft (Src         : Cv_Arr_P;
-                     Dst         : Cv_Arr_P;
+   procedure Cv_Dft (Src         : Cv_Arr_Ptr;
+                     Dst         : Cv_Arr_Ptr;
                      Flags       : Unsigned_32;
                      Nonzerorows : Integer := 0);
-   procedure Cv_Dft (Src         : Cv_Mat_P;
-                     Dst         : Cv_Mat_P;
+   procedure Cv_Dft (Src         : Cv_Mat_Ptr;
+                     Dst         : Cv_Mat_Ptr;
                      Flags       : Unsigned_32;
                      Nonzerorows : Integer := 0);
-   procedure Cv_Dft (Src         : Ipl_Image_P;
-                     Dst         : Ipl_Image_P;
+   procedure Cv_Dft (Src         : Ipl_Image_Ptr;
+                     Dst         : Ipl_Image_Ptr;
                      Flags       : Unsigned_32;
                      Nonzerorows : Integer := 0);
-   procedure Cv_Fft (Src         : Cv_Arr_P;
-                     Dst         : Cv_Arr_P;
+   procedure Cv_Fft (Src         : Cv_Arr_Ptr;
+                     Dst         : Cv_Arr_Ptr;
                      Flags       : Unsigned_32;
                      Nonzerorows : Integer := 0) renames Cv_Dft;
-   procedure Cv_Fft (Src         : Cv_Mat_P;
-                     Dst         : Cv_Mat_P;
+   procedure Cv_Fft (Src         : Cv_Mat_Ptr;
+                     Dst         : Cv_Mat_Ptr;
                      Flags       : Unsigned_32;
                      Nonzerorows : Integer := 0) renames Cv_Dft;
-   procedure Cv_Fft (Src         : Ipl_Image_P;
-                     Dst         : Ipl_Image_P;
+   procedure Cv_Fft (Src         : Ipl_Image_Ptr;
+                     Dst         : Ipl_Image_Ptr;
                      Flags       : Unsigned_32;
                      Nonzerorows : Integer := 0) renames Cv_Dft;
 
    --     Performs per-element multiplication of two Fourier spectrums.
-   procedure Cv_Mul_Spectrums (Src1  : Cv_Arr_P;
-                               Src2  : Cv_Arr_P;
-                               Dst   : Cv_Arr_P;
+   procedure Cv_Mul_Spectrums (Src1  : Cv_Arr_Ptr;
+                               Src2  : Cv_Arr_Ptr;
+                               Dst   : Cv_Arr_Ptr;
                                Flags : Unsigned_32);
-   procedure Cv_Mul_Spectrums (Src1  : Cv_Mat_P;
-                               Src2  : Cv_Mat_P;
-                               Dst   : Cv_Mat_P;
+   procedure Cv_Mul_Spectrums (Src1  : Cv_Mat_Ptr;
+                               Src2  : Cv_Mat_Ptr;
+                               Dst   : Cv_Mat_Ptr;
                                Flags : Unsigned_32);
-   procedure Cv_Mul_Spectrums (Src1  : Ipl_Image_P;
-                               Src2  : Ipl_Image_P;
-                               Dst   : Ipl_Image_P;
+   procedure Cv_Mul_Spectrums (Src1  : Ipl_Image_Ptr;
+                               Src2  : Ipl_Image_Ptr;
+                               Dst   : Ipl_Image_Ptr;
                                Flags : Unsigned_32);
 
    --     Returns optimal DFT size for a given vector size.
@@ -2099,14 +2099,14 @@ package Core.Operations is
 
    --     Performs a forward or inverse Discrete Cosine transform of a 1D or 2D
    --     floating - point array.
-   procedure Cv_Dct (Src   : Cv_Arr_P;
-                     Dst   : Cv_Arr_P;
+   procedure Cv_Dct (Src   : Cv_Arr_Ptr;
+                     Dst   : Cv_Arr_Ptr;
                      Flags : Unsigned_32);
-   procedure Cv_Dct (Src   : Cv_Mat_P;
-                     Dst   : Cv_Mat_P;
+   procedure Cv_Dct (Src   : Cv_Mat_Ptr;
+                     Dst   : Cv_Mat_Ptr;
                      Flags : Unsigned_32);
-   procedure Cv_Dct (Src   : Ipl_Image_P;
-                     Dst   : Ipl_Image_P;
+   procedure Cv_Dct (Src   : Ipl_Image_Ptr;
+                     Dst   : Ipl_Image_Ptr;
                      Flags : Unsigned_32);
 
    -----------------------------------------------------------------------------
@@ -2114,34 +2114,34 @@ package Core.Operations is
    -----------------------------------------------------------------------------
    --/  * Calculates Length of Sequence Slice (with Support of Negative Indices). *  /
    function Cv_Slice_Length (Slice : Cv_Slice;
-                             Seq   : Cv_Seq_P) return Integer;
+                             Seq   : Cv_Seq_Ptr) return Integer;
 
    --Creates memory storage.
-   function Cv_Create_Mem_Storage (Blocksize : Integer := 0) return Cv_Mem_Storage_P; -- 0 is about 64k...
+   function Cv_Create_Mem_Storage (Blocksize : Integer := 0) return Cv_Mem_Storage_Ptr; -- 0 is about 64k...
 
    -- Creates child memory storage.
-   function Cv_Create_Child_Mem_Storage (Parent : Cv_Mem_Storage_P) return Cv_Mem_Storage_P;
+   function Cv_Create_Child_Mem_Storage (Parent : Cv_Mem_Storage_Ptr) return Cv_Mem_Storage_Ptr;
 
    -- Releases memory storage.
-   procedure Cv_Release_Mem_Storage (Storage : access Cv_Mem_Storage_P);
+   procedure Cv_Release_Mem_Storage (Storage : access Cv_Mem_Storage_Ptr);
 
    -- Clears memory storage.
-   procedure Cv_Clear_Mem_Storage (Storage : Cv_Mem_Storage_P);
+   procedure Cv_Clear_Mem_Storage (Storage : Cv_Mem_Storage_Ptr);
 
    -- Saves memory storage position.
-   procedure Cv_Save_Mem_Storage_Pos (Storage : Cv_Mem_Storage_P;
-                                      Pos     : Cv_Mem_Storage_Pos_P);
+   procedure Cv_Save_Mem_Storage_Pos (Storage : Cv_Mem_Storage_Ptr;
+                                      Pos     : Cv_Mem_Storage_Pos_Ptr);
 
    -- Restores memory storage position.
-   procedure Cv_Restore_Mem_Storage_Pos (Storage : Cv_Mem_Storage_P;
-                                         Pos     : Cv_Mem_Storage_Pos_P);
+   procedure Cv_Restore_Mem_Storage_Pos (Storage : Cv_Mem_Storage_Ptr;
+                                         Pos     : Cv_Mem_Storage_Pos_Ptr);
 
    -- Allocates a memory buffer in a storage block.
-   function Cv_Mem_Storage_Alloc (Storage : Cv_Mem_Storage_P;
-                                  Size    : Interfaces.C.Size_T) return Cv_Void_P;
+   function Cv_Mem_Storage_Alloc (Storage : Cv_Mem_Storage_Ptr;
+                                  Size    : Interfaces.C.Size_T) return Cv_Void_Ptr;
 
    -- Allocates a memory buffer in a storage block.
-   function Cv_Mem_Storage_Alloc_String (Storage : Cv_Mem_Storage_P;
+   function Cv_Mem_Storage_Alloc_String (Storage : Cv_Mem_Storage_Ptr;
                                          Ptr     : String;
                                          Len     : Integer := -1) return Cv_String;
 
@@ -2149,207 +2149,207 @@ package Core.Operations is
    function Cv_Create_Seq (Seqflags   : Integer; -- No clue what this could be...
                            Headersize : Integer;
                            Elemsize   : Integer;
-                           Storage    : Cv_Mem_Storage_P) return Cv_Seq_P;
+                           Storage    : Cv_Mem_Storage_Ptr) return Cv_Seq_Ptr;
 
    -- Sets up sequence block size.
-   procedure Cv_Set_Seq_Block_Size (Seq        : Cv_Seq_P;
+   procedure Cv_Set_Seq_Block_Size (Seq        : Cv_Seq_Ptr;
                                     Deltaelems : Integer);
 
    -- Adds an element to the end of a sequence.
-   function Cv_Seq_Push (Seq     : Cv_Seq_P;
-                         Element : Cv_Void_P := null) return Cv_Void_P;
+   function Cv_Seq_Push (Seq     : Cv_Seq_Ptr;
+                         Element : Cv_Void_Ptr := null) return Cv_Void_Ptr;
 
    -- Adds an element to the beginning of a sequence.
-   function Cv_Seq_Push_Front (Seq     : Cv_Seq_P;
-                               Element : Cv_Void_P := null) return Cv_Void_P;
+   function Cv_Seq_Push_Front (Seq     : Cv_Seq_Ptr;
+                               Element : Cv_Void_Ptr := null) return Cv_Void_Ptr;
 
    -- Removes an element from the end of a sequence.
-   procedure Cv_Seq_Pop (Seq     : Cv_Seq_P;
-                         Element : Cv_Void_P := null);
+   procedure Cv_Seq_Pop (Seq     : Cv_Seq_Ptr;
+                         Element : Cv_Void_Ptr := null);
 
    -- Removes an element from the beginning of a sequence.
-   procedure Cv_Seq_Pop_Front (Seq     : Cv_Seq_P;
-                               Element : Cv_Void_P := null);
+   procedure Cv_Seq_Pop_Front (Seq     : Cv_Seq_Ptr;
+                               Element : Cv_Void_Ptr := null);
 
    -- Back and Front....
    Cv_Front : constant := 1;
    Cv_Back : constant := 0;
 
    -- Pushes several elements to either end of a sequence.
-   procedure Cv_Seq_Push_Multi (Seq      : Cv_Seq_P;
-                                Elements : Cv_Void_P; -- maybe not
+   procedure Cv_Seq_Push_Multi (Seq      : Cv_Seq_Ptr;
+                                Elements : Cv_Void_Ptr; -- maybe not
                                 Count    : Integer;
                                 Infron   : Integer := 0);
 
    -- Removes several elements from either end of a sequence.
-   procedure Cv_Seq_Pop_Multi (Seq      : Cv_Seq_P;
-                               Elements : Cv_Void_P;
+   procedure Cv_Seq_Pop_Multi (Seq      : Cv_Seq_Ptr;
+                               Elements : Cv_Void_Ptr;
                                Count    : Integer;
                                Infront  : Integer := 0);
 
    -- Inserts an element in the middle of a sequence.
-   function Cv_Seq_Insert (Seq         : Cv_Seq_P;
+   function Cv_Seq_Insert (Seq         : Cv_Seq_Ptr;
                            Beforeindex : Integer;
-                           Element     : Cv_Void_P := null) return Cv_Void_P; --return access Character;
+                           Element     : Cv_Void_Ptr := null) return Cv_Void_Ptr; --return access Character;
 
    --Removes an element from the middle of a sequence.
-   procedure Cv_Seq_Remove (Seq   : Cv_Seq_P;
+   procedure Cv_Seq_Remove (Seq   : Cv_Seq_Ptr;
                             Index : Integer);
 
    --Clears a sequence.
-   procedure Cv_Clear_Seq (Seq : Cv_Seq_P);
+   procedure Cv_Clear_Seq (Seq : Cv_Seq_Ptr);
 
    -- Returns a pointer to a sequence element according to its index.
-   function Cv_Get_Seq_Elem (Seq   : Cv_Seq_P;
-                             Index : Integer) return Cv_Void_P; --return access Character;
+   function Cv_Get_Seq_Elem (Seq   : Cv_Seq_Ptr;
+                             Index : Integer) return Cv_Void_Ptr; --return access Character;
 
    -- Returns the index of a specific sequence element.
-   function Cv_Seq_Elem_Idx (Seq     : Cv_Seq_P;
-                             Element : Cv_Void_P;
-                             Block   : access Cv_Seq_Block_P := null) return Integer;
+   function Cv_Seq_Elem_Idx (Seq     : Cv_Seq_Ptr;
+                             Element : Cv_Void_Ptr;
+                             Block   : access Cv_Seq_Block_Ptr := null) return Integer;
 
    -- Initializes the process of writing data to a sequence.
-   procedure Cv_Start_Append_To_Seq (Seq    : Cv_Seq_P;
-                                     Writer : Cv_Seq_Writer_P);
+   procedure Cv_Start_Append_To_Seq (Seq    : Cv_Seq_Ptr;
+                                     Writer : Cv_Seq_Writer_Ptr);
 
    -- Creates a new sequence and initializes a writer for it.
    procedure Cv_Start_Write_Seq (Seqflags   : Integer;
                                  Headersize : Integer;
                                  Elemsize   : Integer;
-                                 Storage    : Cv_Mem_Storage_P;
-                                 Writer     : Cv_Seq_Writer_P);
+                                 Storage    : Cv_Mem_Storage_Ptr;
+                                 Writer     : Cv_Seq_Writer_Ptr);
 
    -- Finishes the process of writing a sequence.
-   function Cv_End_Write_Seq ( Writer : Cv_Seq_Writer_P) return Cv_Seq_P;
+   function Cv_End_Write_Seq ( Writer : Cv_Seq_Writer_Ptr) return Cv_Seq_Ptr;
 
    -- Updates sequence headers from the writer.
-   procedure Cv_Flush_Seq_Writer (Writer : Cv_Seq_Writer_P);
+   procedure Cv_Flush_Seq_Writer (Writer : Cv_Seq_Writer_Ptr);
 
    -- Initializes the process of sequential reading from a sequence
-   procedure Cv_Start_Read_Seq (Seq       : Cv_Seq_P;
-                                Reader    : Cv_Seq_Reader_P;
+   procedure Cv_Start_Read_Seq (Seq       : Cv_Seq_Ptr;
+                                Reader    : Cv_Seq_Reader_Ptr;
                                 Isreverse : Integer := 0);
 
    -- Returns the current reader position.
-   function Cv_Get_Seq_Reader_Pos (Reader : Cv_Seq_Reader_P) return Integer;
+   function Cv_Get_Seq_Reader_Pos (Reader : Cv_Seq_Reader_Ptr) return Integer;
 
    --Moves the reader to the specified position.
-   procedure Cv_Set_Seq_Reader_Pos (Reader     : Cv_Seq_Reader_P;
+   procedure Cv_Set_Seq_Reader_Pos (Reader     : Cv_Seq_Reader_Ptr;
                                     Index      : Integer;
                                     Isrelative : Integer := 0);
 
    -- Copies a sequence to one continuous block of memory.
-   function Cv_Cvt_Seq_To_Array (Seq      : Cv_Seq_P;
-                                 Elements : Cv_Void_P;
-                                 Slice    : Cv_Slice := Cv_Create_Slice (0)) return Cv_Void_P;
+   function Cv_Cvt_Seq_To_Array (Seq      : Cv_Seq_Ptr;
+                                 Elements : Cv_Void_Ptr;
+                                 Slice    : Cv_Slice := Cv_Create_Slice (0)) return Cv_Void_Ptr;
 
    --Constructs a sequence header for an array.
    function Cv_Make_Seq_Header_For_Array (Seqtype    : Integer;
                                           Headersize : Integer;
                                           Elemsize   : Integer;
-                                          Elements   : Cv_Void_P;
-                                          Seq        : Cv_Seq_P;
-                                          Block      : Cv_Seq_Block_P) return Cv_Seq_P;
+                                          Elements   : Cv_Void_Ptr;
+                                          Seq        : Cv_Seq_Ptr;
+                                          Block      : Cv_Seq_Block_Ptr) return Cv_Seq_Ptr;
 
    -- Makes a separate header for a sequence slice.
-   function Cv_Seq_Slice (Seq      : Cv_Seq_P;
+   function Cv_Seq_Slice (Seq      : Cv_Seq_Ptr;
                           Slice    : Cv_Slice;
-                          Storage  : Cv_Mem_Storage_P := null;
-                          Copydata : Integer := 0) return Cv_Seq_P;
+                          Storage  : Cv_Mem_Storage_Ptr := null;
+                          Copydata : Integer := 0) return Cv_Seq_Ptr;
 
    -- Creates a copy of a sequence.
-   procedure Cv_Clone_Seq (Seq     : Cv_Seq_P;
-                           Storage : Cv_Mem_Storage_P := null);
+   procedure Cv_Clone_Seq (Seq     : Cv_Seq_Ptr;
+                           Storage : Cv_Mem_Storage_Ptr := null);
 
    -- Removes a sequence slice.
-   procedure Cv_Seq_Remove_Slice (Seq   : Cv_Seq_P;
-                                  Slice : Cv_Slice_P);
+   procedure Cv_Seq_Remove_Slice (Seq   : Cv_Seq_Ptr;
+                                  Slice : Cv_Slice_Ptr);
 
    -- Inserts an array in the middle of a sequence.
-   procedure Cv_Seq_Insert_Slice (Seq         : Cv_Seq_P;
+   procedure Cv_Seq_Insert_Slice (Seq         : Cv_Seq_Ptr;
                                   Before_Index : Integer;
-                                  From_Arr     : Cv_Arr_P);
-   procedure Cv_Seq_Insert_Slice (Seq         : Cv_Seq_P;
+                                  From_Arr     : Cv_Arr_Ptr);
+   procedure Cv_Seq_Insert_Slice (Seq         : Cv_Seq_Ptr;
                                   Before_Index : Integer;
-                                  From_Arr     : Cv_Mat_P);
-   procedure Cv_Seq_Insert_Slice (Seq         : Cv_Seq_P;
+                                  From_Arr     : Cv_Mat_Ptr);
+   procedure Cv_Seq_Insert_Slice (Seq         : Cv_Seq_Ptr;
                                   Before_Index : Integer;
-                                  From_Arr     : Ipl_Image_P);
+                                  From_Arr     : Ipl_Image_Ptr);
 
-   type Cv_Cmp_Func is access function (A        : Cv_Void_P;
-                                        B        : Cv_Void_P;
-                                        Userdata : Cv_Void_P)
+   type Cv_Cmp_Func is access function (A        : Cv_Void_Ptr;
+                                        B        : Cv_Void_Ptr;
+                                        Userdata : Cv_Void_Ptr)
                                         return Integer;
 
    -- Sorts sequence element using the specified comparison function.
-   procedure Cv_Seq_Sort (Seq      : Cv_Seq_P;
+   procedure Cv_Seq_Sort (Seq      : Cv_Seq_Ptr;
                           Func     : Cv_Cmp_Func;
-                          Userdata : Cv_Void_P := null);
+                          Userdata : Cv_Void_Ptr := null);
    pragma Convention (C, Cv_Cmp_Func);
 
    -- Searches for an element in a sequence.
-   function Cv_Seq_Search (Seq         : Cv_Seq_P;
-                           Elem        : Cv_Void_P;
+   function Cv_Seq_Search (Seq         : Cv_Seq_Ptr;
+                           Elem        : Cv_Void_Ptr;
                            Func        : Cv_Cmp_Func;
                            Issorted    : Integer;
                            Elemidx     : access Integer;
-                           Userdata    : Cv_Void_P := null) return Cv_Void_P; --return access Character;
+                           Userdata    : Cv_Void_Ptr := null) return Cv_Void_Ptr; --return access Character;
 
    -- Reverses the order of sequence elements.
-   procedure Cv_Seq_Invert (Seq : Cv_Seq_P);
+   procedure Cv_Seq_Invert (Seq : Cv_Seq_Ptr);
 
    --     Splits a sequence into equivalency classes.
-   function Cv_Seq_Partition (Seq      : Cv_Seq_P;
-                              Storage  : Cv_Mem_Storage_P;
-                              Labels   : access Cv_Seq_P;
+   function Cv_Seq_Partition (Seq      : Cv_Seq_Ptr;
+                              Storage  : Cv_Mem_Storage_Ptr;
+                              Labels   : access Cv_Seq_Ptr;
                               Is_Equal : Cv_Cmp_Func;
-                              Userdata : Cv_Void_P)
+                              Userdata : Cv_Void_Ptr)
                               return Integer;
 
-   procedure Cv_Change_Seq_Block (Reader    : Cv_Void_P;
+   procedure Cv_Change_Seq_Block (Reader    : Cv_Void_Ptr;
                                   Direction : Integer) renames Core.Cv_Change_Seq_Block;
-   procedure Cv_Create_Seq_Block (Writer : Cv_Seq_Writer_P) renames Core.Cv_Create_Seq_Block;
+   procedure Cv_Create_Seq_Block (Writer : Cv_Seq_Writer_Ptr) renames Core.Cv_Create_Seq_Block;
 
    -- Creates an empty set.
    function Cv_Create_Set ( Setflags  : Integer;
                            Headersize : Integer;
                            Elemsize   : Integer;
-                           Storage    : Cv_Mem_Storage_P) return Cv_Set_P;
+                           Storage    : Cv_Mem_Storage_Ptr) return Cv_Set_Ptr;
 
    -- Occupies a node in the set.
-   function Cv_Set_Add (Setheader    : Cv_Set_P;
-                        Elem         : Cv_Set_Elem_P := null;
-                        Insertedelem : access Cv_Set_Elem_P := null) return Integer;
+   function Cv_Set_Add (Setheader    : Cv_Set_Ptr;
+                        Elem         : Cv_Set_Elem_Ptr := null;
+                        Insertedelem : access Cv_Set_Elem_Ptr := null) return Integer;
 
    -- Adds an element to a set (fast variant).
-   function Cv_Set_New (Setheader : Cv_Set_P) return Cv_Set_Elem_P;
+   function Cv_Set_New (Setheader : Cv_Set_Ptr) return Cv_Set_Elem_Ptr;
 
    -- Removes a set element based on its pointer.
-   procedure Cv_Set_Remove_By_Ptr (Setheader : Cv_Set_P;
-                                   Elem      : Cv_Void_P);
+   procedure Cv_Set_Remove_By_Ptr (Setheader : Cv_Set_Ptr;
+                                   Elem      : Cv_Void_Ptr);
 
    -- Removes an element from a set.
-   procedure Cv_Set_Remove (Setheader : Cv_Set_P;
+   procedure Cv_Set_Remove (Setheader : Cv_Set_Ptr;
                             Index     : Integer);
 
    -- Finds a set element by its index.
-   function Cv_Get_Set_Elem (Setheader : Cv_Set_P;
-                             Index     : Integer) return Cv_Set_Elem_P;
+   function Cv_Get_Set_Elem (Setheader : Cv_Set_Ptr;
+                             Index     : Integer) return Cv_Set_Elem_Ptr;
 
    -- Clears a set.
-   procedure Cv_Clear_Set (Setheader : Cv_Set_P);
+   procedure Cv_Clear_Set (Setheader : Cv_Set_Ptr);
 
    -- Creates an empty graph.
    function Cv_Create_Graph (Graphflags : Integer;
                              Headersize : Integer;
                              Vtxsize    : Integer;
                              Edgesize   : Integer;
-                             Storage    : Cv_Mem_Storage_P) return Cv_Graph_P;
+                             Storage    : Cv_Mem_Storage_Ptr) return Cv_Graph_P;
 
    -- Adds a vertex to a graph.
    function Cv_Graph_Add_Vtx (Graph       : Cv_Graph_P;
-                              Vtx         : Cv_Graph_Vtx_P := null;
-                              Insertedvtx : access Cv_Graph_Vtx_P := null) return Integer;
+                              Vtx         : Cv_Graph_Vtx_Ptr := null;
+                              Insertedvtx : access Cv_Graph_Vtx_Ptr := null) return Integer;
 
    -- Removes a vertex from a graph.
    function Cv_Graph_Remove_Vtx (Graph : Cv_Graph_P;
@@ -2357,21 +2357,21 @@ package Core.Operations is
 
    --Removes a vertex from a graph by using its pointer.
    function Cv_Graph_Remove_Vtx_By_Ptr (Graph : Cv_Graph_P;
-                                        Vtx   : Cv_Graph_Vtx_P) return Integer;
+                                        Vtx   : Cv_Graph_Vtx_Ptr) return Integer;
 
    -- Adds an edge to a graph.
    function Cv_Graph_Add_Edge (Graph        : Cv_Graph_P;
                                Startidx     : Integer;
                                Endidx       : Integer;
-                               Edge         : Cv_Graph_Edge_P := null;
-                               Insertededge : access Cv_Graph_Edge_P := null) return Integer;
+                               Edge         : Cv_Graph_Edge_Ptr := null;
+                               Insertededge : access Cv_Graph_Edge_Ptr := null) return Integer;
 
    -- Adds an edge to a graph by using its pointer.
    function Cv_Graph_Add_Edge_By_Ptr (Graph        : Cv_Graph_P;
-                                      Startvtx     : Cv_Graph_Vtx_P;
-                                      Endvtx       : Cv_Graph_Vtx_P;
-                                      Edge         : Cv_Graph_Edge_P := null;
-                                      Insertededge : access Cv_Graph_Edge_P := null) return Integer;
+                                      Startvtx     : Cv_Graph_Vtx_Ptr;
+                                      Endvtx       : Cv_Graph_Vtx_Ptr;
+                                      Edge         : Cv_Graph_Edge_Ptr := null;
+                                      Insertededge : access Cv_Graph_Edge_Ptr := null) return Integer;
 
    -- Removes an edge from a graph.
    procedure Cv_Graph_Remove_Edge (Graph    : Cv_Graph_P;
@@ -2380,24 +2380,24 @@ package Core.Operations is
 
    --Removes an edge from a graph by using its pointer.
    procedure Cv_Graph_Remove_Edge_By_Ptr (Graph    : Cv_Graph_P;
-                                          Startvtx : Cv_Graph_Vtx_P;
-                                          Endvtx   : Cv_Graph_Vtx_P);
+                                          Startvtx : Cv_Graph_Vtx_Ptr;
+                                          Endvtx   : Cv_Graph_Vtx_Ptr);
 
    -- Finds an edge in a graph.
    function Cv_Find_Graph_Edge (Graph    : Cv_Graph_P;
                                 Startidx : Integer;
-                                Endidx   : Integer) return Cv_Graph_Edge_P;
+                                Endidx   : Integer) return Cv_Graph_Edge_Ptr;
    function Cv_Graph_Find_Edge (Graph    : Cv_Graph_P;
                                 Startidx : Integer;
-                                Endidx   : Integer) return Cv_Graph_Edge_P renames Cv_Find_Graph_Edge;
+                                Endidx   : Integer) return Cv_Graph_Edge_Ptr renames Cv_Find_Graph_Edge;
 
    -- Finds an edge in a graph by using its pointer.
    function Cv_Find_Graph_Edge_By_Ptr (Graph    : Cv_Graph_P;
-                                       Startvtx : Cv_Graph_Vtx_P;
-                                       Endvtx   : Cv_Graph_Vtx_P) return Cv_Graph_Edge_P;
+                                       Startvtx : Cv_Graph_Vtx_Ptr;
+                                       Endvtx   : Cv_Graph_Vtx_Ptr) return Cv_Graph_Edge_Ptr;
    function Cv_Graph_Find_Edge_By_Ptr (Graph    : Cv_Graph_P;
-                                       Startvtx : Cv_Graph_Vtx_P;
-                                       Endvtx   : Cv_Graph_Vtx_P) return Cv_Graph_Edge_P renames Cv_Find_Graph_Edge_By_Ptr;
+                                       Startvtx : Cv_Graph_Vtx_Ptr;
+                                       Endvtx   : Cv_Graph_Vtx_Ptr) return Cv_Graph_Edge_Ptr renames Cv_Find_Graph_Edge_By_Ptr;
 
    --Clears a graph.
    procedure Cv_Clear_Graph (Graph : Cv_Graph_P);
@@ -2408,19 +2408,19 @@ package Core.Operations is
 
    -- Finds an edge in a graph.
    function Cv_Graph_Vtx_Degree_By_Ptr (Graph : Cv_Graph_P;
-                                        Vtx   : Cv_Graph_Vtx_P) return Integer;
+                                        Vtx   : Cv_Graph_Vtx_Ptr) return Integer;
 
    -- Finds a graph vertex by using its index.
    function Cv_Get_Graph_Vtx (Graph  : Cv_Graph_P;
-                              Vtxidx : Integer) return Cv_Graph_Vtx_P;
+                              Vtxidx : Integer) return Cv_Graph_Vtx_Ptr;
 
    -- Returns the index of a graph vertex.
    function Cv_Graph_Vtx_Idx (Graph : Cv_Graph_P;
-                              Vtx   : Cv_Graph_Vtx_P) return Integer;
+                              Vtx   : Cv_Graph_Vtx_Ptr) return Integer;
 
    -- Returns the index of a graph edge.
    function Cv_Graph_Edge_Idx (Graph : Cv_Graph_P;
-                               Edge  : Cv_Graph_Edge_P) return Integer;
+                               Edge  : Cv_Graph_Edge_Ptr) return Integer;
 
    --#define cvGraphGetVtxCount( graph ) ((graph)->active_count)
    function Cv_Graph_Get_Vtx_Count (Graph : Cv_Graph_P) return Integer;
@@ -2442,11 +2442,11 @@ package Core.Operations is
 
    --     #define  CV_IS_GRAPH_VERTEX_VISITED(vtx) \
    --      (((CvGraphVtx*)(vtx))->flags & CV_GRAPH_ITEM_VISITED_FLAG)
-   function Cv_Is_Graph_Vertex_Visisted (Vtx : Cv_Graph_Vtx_P) return Integer;
+   function Cv_Is_Graph_Vertex_Visisted (Vtx : Cv_Graph_Vtx_Ptr) return Integer;
 
    --   #define  CV_IS_GRAPH_EDGE_VISITED(edge) \
    --      (((CvGraphEdge*)(edge))->flags & CV_GRAPH_ITEM_VISITED_FLAG)
-   function Cv_Is_Graph_Edge_Visited (Edge : Cv_Graph_Edge_P) return Integer;
+   function Cv_Is_Graph_Edge_Visited (Edge : Cv_Graph_Edge_Ptr) return Integer;
 
    --     #define  CV_GRAPH_SEARCH_TREE_NODE_FLAG   (1 << 29)
    Cv_Graph_Search_Tree_Node_Flag : constant := 16#20000000#;
@@ -2454,32 +2454,32 @@ package Core.Operations is
    Cv_Graph_Forward_Edge_Flag : constant := 16#10000000#;
 
    type Cv_Graph_Scanner is record
-      Vtx   : Cv_Graph_Vtx_P;
-      Dst   : Cv_Graph_Vtx_P;
-      Edge  : Cv_Graph_Edge_P;
+      Vtx   : Cv_Graph_Vtx_Ptr;
+      Dst   : Cv_Graph_Vtx_Ptr;
+      Edge  : Cv_Graph_Edge_Ptr;
 
       Graph : Cv_Graph_P;
-      Stack : Cv_Seq_P;
+      Stack : Cv_Seq_Ptr;
       Index : Integer;
       Mask  : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Graph_Scanner);
-   type Cv_Graph_Scanner_P is access all Cv_Graph_Scanner;
+   type Cv_Graph_Scanner_Ptr is access all Cv_Graph_Scanner;
 
    -- Creates structure for depth-first graph traversal.
    function Cv_Create_Graph_Scanner (Graph : Cv_Graph_P;
-                                     Vtx   : Cv_Graph_Vtx_P := null; --null = start from beginning
-                                     Mask  : Integer := Cv_Graph_All_Items) return Cv_Graph_Scanner_P;
+                                     Vtx   : Cv_Graph_Vtx_Ptr := null; --null = start from beginning
+                                     Mask  : Integer := Cv_Graph_All_Items) return Cv_Graph_Scanner_Ptr;
 
    -- Completes the graph traversal procedure.
-   procedure Cv_Release_Graph_Scanner (Scanner : access Cv_Graph_Scanner_P);
+   procedure Cv_Release_Graph_Scanner (Scanner : access Cv_Graph_Scanner_Ptr);
 
    -- Executes one or more steps of the graph traversal procedure.
-   function Cv_Next_Graph_Item (Scanner : Cv_Graph_Scanner_P) return Integer;
+   function Cv_Next_Graph_Item (Scanner : Cv_Graph_Scanner_Ptr) return Integer;
 
    -- Clones a graph.
    procedure Cv_Clone_Graph (Graph   : Cv_Graph_P;
-                             Storage : Cv_Mem_Storage_P);
+                             Storage : Cv_Mem_Storage_Ptr);
 
    -----------------------------------------------------------------------------
    -- DrawingCV_RGB
@@ -2493,21 +2493,21 @@ package Core.Operations is
    Cv_Aa : constant := 16;
 
    -- Draws a line segment connecting two points.
-   procedure Cv_Line (Img       : Cv_Arr_P;
+   procedure Cv_Line (Img       : Cv_Arr_Ptr;
                       Pt1       : Cv_Point;
                       Pt2       : Cv_Point;
                       Color     : Cv_Scalar;
                       Thickness : Integer := 1;
                       Line_Type : Integer := 8;
                       Shift     : Integer := 0);
-   procedure Cv_Line (Img       : Cv_Mat_P;
+   procedure Cv_Line (Img       : Cv_Mat_Ptr;
                       Pt1       : Cv_Point;
                       Pt2       : Cv_Point;
                       Color     : Cv_Scalar;
                       Thickness : Integer := 1;
                       Line_Type : Integer := 8;
                       Shift     : Integer := 0);
-   procedure Cv_Line (Img       : Ipl_Image_P;
+   procedure Cv_Line (Img       : Ipl_Image_Ptr;
                       Pt1       : Cv_Point;
                       Pt2       : Cv_Point;
                       Color     : Cv_Scalar;
@@ -2516,21 +2516,21 @@ package Core.Operations is
                       Shift     : Integer := 0);
 
    -- Draws a simple, thick, or filled rectangle.
-   procedure Cv_Rectangle (Img       : Cv_Arr_P;
+   procedure Cv_Rectangle (Img       : Cv_Arr_Ptr;
                            Pt1       : Cv_Point;
                            Pt2       : Cv_Point;
                            Color     : Cv_Scalar;
                            Thickness : Integer :=  1;
                            Linetype  : Integer := 8;
                            Shift     : Integer := 0);
-   procedure Cv_Rectangle (Img       : Cv_Mat_P;
+   procedure Cv_Rectangle (Img       : Cv_Mat_Ptr;
                            Pt1       : Cv_Point;
                            Pt2       : Cv_Point;
                            Color     : Cv_Scalar;
                            Thickness : Integer :=  1;
                            Linetype  : Integer := 8;
                            Shift     : Integer := 0);
-   procedure Cv_Rectangle (Img       : Ipl_Image_P;
+   procedure Cv_Rectangle (Img       : Ipl_Image_Ptr;
                            Pt1       : Cv_Point;
                            Pt2       : Cv_Point;
                            Color     : Cv_Scalar;
@@ -2540,19 +2540,19 @@ package Core.Operations is
 
 
    -- /* Draws a rectangle specified by a CvRect structure */
-   procedure Cv_Rectangle_R (Img       : Cv_Arr_P;
+   procedure Cv_Rectangle_R (Img       : Cv_Arr_Ptr;
                              R         : Cv_Rect;
                              Color     : Cv_Scalar;
                              Thickness : Integer := 1;
                              Linetype  : Integer := 8;
                              Shift     : Integer := 0);
-   procedure Cv_Rectangle_R (Img       : Cv_Mat_P;
+   procedure Cv_Rectangle_R (Img       : Cv_Mat_Ptr;
                              R         : Cv_Rect;
                              Color     : Cv_Scalar;
                              Thickness : Integer := 1;
                              Linetype  : Integer := 8;
                              Shift     : Integer := 0);
-   procedure Cv_Rectangle_R (Img       : Ipl_Image_P;
+   procedure Cv_Rectangle_R (Img       : Ipl_Image_Ptr;
                              R         : Cv_Rect;
                              Color     : Cv_Scalar;
                              Thickness : Integer := 1;
@@ -2560,21 +2560,21 @@ package Core.Operations is
                              Shift     : Integer := 0);
 
    -- Draws a circle.
-   procedure Cv_Circle (Img       : Cv_Arr_P;
+   procedure Cv_Circle (Img       : Cv_Arr_Ptr;
                         Center    : Cv_Point;
                         Radius    : Integer;
                         Color     : Cv_Scalar;
                         Thickness : Integer := 1;
                         Linetype  : Integer := 8;
                         Shift     : Integer := 0);
-   procedure Cv_Circle (Img       : Cv_Mat_P;
+   procedure Cv_Circle (Img       : Cv_Mat_Ptr;
                         Center    : Cv_Point;
                         Radius    : Integer;
                         Color     : Cv_Scalar;
                         Thickness : Integer := 1;
                         Linetype  : Integer := 8;
                         Shift     : Integer := 0);
-   procedure Cv_Circle (Img       : Ipl_Image_P;
+   procedure Cv_Circle (Img       : Ipl_Image_Ptr;
                         Center    : Cv_Point;
                         Radius    : Integer;
                         Color     : Cv_Scalar;
@@ -2583,7 +2583,7 @@ package Core.Operations is
                         Shift     : Integer := 0);
 
    -- Draws a simple or thick elliptic arc or an fills ellipse sector.
-   procedure Cv_Ellipse (Img        : Cv_Arr_P;
+   procedure Cv_Ellipse (Img        : Cv_Arr_Ptr;
                          Center     : Cv_Point;
                          Axes       : Cv_Size;
                          Angle      : Long_Float;
@@ -2593,7 +2593,7 @@ package Core.Operations is
                          Thickness  : Integer := 1;
                          Linetype   : Integer := 8;
                          Shift      : Integer := 0);
-   procedure Cv_Ellipse (Img        : Cv_Mat_P;
+   procedure Cv_Ellipse (Img        : Cv_Mat_Ptr;
                          Center     : Cv_Point;
                          Axes       : Cv_Size;
                          Angle      : Long_Float;
@@ -2603,7 +2603,7 @@ package Core.Operations is
                          Thickness  : Integer := 1;
                          Linetype   : Integer := 8;
                          Shift      : Integer := 0);
-   procedure Cv_Ellipse (Img        : Ipl_Image_P;
+   procedure Cv_Ellipse (Img        : Ipl_Image_Ptr;
                          Center     : Cv_Point;
                          Axes       : Cv_Size;
                          Angle      : Long_Float;
@@ -2615,19 +2615,19 @@ package Core.Operations is
                          Shift      : Integer := 0);
 
    -- Draws a simple or thick elliptic arc or fills an ellipse sector.
-   procedure Cv_Ellipse_Box (Img       : Cv_Arr_P;
+   procedure Cv_Ellipse_Box (Img       : Cv_Arr_Ptr;
                              Box       : Cv_Box_2d;
                              Color     : Cv_Scalar;
                              Thickness : Integer;
                              Linetype  : Integer := 8;
                              Shift     : Integer := 0);
-   procedure Cv_Ellipse_Box (Img       : Cv_Mat_P;
+   procedure Cv_Ellipse_Box (Img       : Cv_Mat_Ptr;
                              Box       : Cv_Box_2d;
                              Color     : Cv_Scalar;
                              Thickness : Integer;
                              Linetype  : Integer := 8;
                              Shift     : Integer := 0);
-   procedure Cv_Ellipse_Box (Img       : Ipl_Image_P;
+   procedure Cv_Ellipse_Box (Img       : Ipl_Image_Ptr;
                              Box       : Cv_Box_2d;
                              Color     : Cv_Scalar;
                              Thickness : Integer;
@@ -2635,19 +2635,19 @@ package Core.Operations is
                              Shift     : Integer := 0);
 
    -- Fills a convex polygon.
-   procedure Cv_Fill_Convex_Poly (Img      : Cv_Arr_P;
+   procedure Cv_Fill_Convex_Poly (Img      : Cv_Arr_Ptr;
                                   Pts      : Cv_Point_Array;
                                   Npts     : Integer;
                                   Color    : Cv_Scalar;
                                   Linetype : Integer := 8;
                                   Shift    : Integer := 0);
-   procedure Cv_Fill_Convex_Poly (Img      : Cv_Mat_P;
+   procedure Cv_Fill_Convex_Poly (Img      : Cv_Mat_Ptr;
                                   Pts      : Cv_Point_Array;
                                   Npts     : Integer;
                                   Color    : Cv_Scalar;
                                   Linetype : Integer := 8;
                                   Shift    : Integer := 0);
-   procedure Cv_Fill_Convex_Poly (Img      : Ipl_Image_P;
+   procedure Cv_Fill_Convex_Poly (Img      : Ipl_Image_Ptr;
                                   Pts      : Cv_Point_Array;
                                   Npts     : Integer;
                                   Color    : Cv_Scalar;
@@ -2655,21 +2655,21 @@ package Core.Operations is
                                   Shift    : Integer := 0);
 
    -- Fills a polygon's interior.
-   procedure Cv_Fill_Poly (Img      : Cv_Arr_P;
+   procedure Cv_Fill_Poly (Img      : Cv_Arr_Ptr;
                            Pts      : Cv_Point_Pointer_Array;
                            Npts     : Cv_32u_Array;
                            Contours : Integer;
                            Color    : Cv_Scalar;
                            Linetype : Integer := 8;
                            Shift    : Integer := 0);
-   procedure Cv_Fill_Poly (Img      : Cv_Mat_P;
+   procedure Cv_Fill_Poly (Img      : Cv_Mat_Ptr;
                            Pts      : Cv_Point_Pointer_Array;
                            Npts     : Cv_32u_Array;
                            Contours : Integer;
                            Color    : Cv_Scalar;
                            Linetype : Integer := 8;
                            Shift    : Integer := 0);
-   procedure Cv_Fill_Poly (Img      : Ipl_Image_P;
+   procedure Cv_Fill_Poly (Img      : Ipl_Image_Ptr;
                            Pts      : Cv_Point_Pointer_Array;
                            Npts     : Cv_32u_Array;
                            Contours : Integer;
@@ -2678,7 +2678,7 @@ package Core.Operations is
                            Shift    : Integer := 0);
 
    -- Draws simple or thick polygons.
-   procedure Cv_Poly_Line (Img       : Cv_Arr_P;
+   procedure Cv_Poly_Line (Img       : Cv_Arr_Ptr;
                            Pts       : Cv_Point_Pointer_Array;
                            Npts      : Cv_32u_Array;
                            Contours  : Integer;
@@ -2687,7 +2687,7 @@ package Core.Operations is
                            Thickness : Integer := 1;
                            Linetyoe  : Integer := 8;
                            Shift     : Integer := 0);
-   procedure Cv_Poly_Line (Img       : Cv_Mat_P;
+   procedure Cv_Poly_Line (Img       : Cv_Mat_Ptr;
                            Pts       : Cv_Point_Pointer_Array;
                            Npts      : Cv_32u_Array;
                            Contours  : Integer;
@@ -2696,7 +2696,7 @@ package Core.Operations is
                            Thickness : Integer := 1;
                            Linetyoe  : Integer := 8;
                            Shift     : Integer := 0);
-   procedure Cv_Poly_Line (Img       : Ipl_Image_P;
+   procedure Cv_Poly_Line (Img       : Ipl_Image_Ptr;
                            Pts       : Cv_Point_Pointer_Array;
                            Npts      : Cv_32u_Array;
                            Contours  : Integer;
@@ -2706,21 +2706,21 @@ package Core.Operations is
                            Linetyoe  : Integer := 8;
                            Shift     : Integer := 0);
 
-   procedure Cv_Draw_Rect (Img       : Cv_Arr_P;
+   procedure Cv_Draw_Rect (Img       : Cv_Arr_Ptr;
                            Pt1       : Cv_Point;
                            Pt2       : Cv_Point;
                            Color     : Cv_Scalar;
                            Thickness : Integer :=  1;
                            Linetype  : Integer := 8;
                            Shift     : Integer := 0) renames Cv_Rectangle;
-   procedure Cv_Draw_Rect (Img       : Cv_Mat_P;
+   procedure Cv_Draw_Rect (Img       : Cv_Mat_Ptr;
                            Pt1       : Cv_Point;
                            Pt2       : Cv_Point;
                            Color     : Cv_Scalar;
                            Thickness : Integer :=  1;
                            Linetype  : Integer := 8;
                            Shift     : Integer := 0) renames Cv_Rectangle;
-   procedure Cv_Draw_Rect (Img       : Ipl_Image_P;
+   procedure Cv_Draw_Rect (Img       : Ipl_Image_Ptr;
                            Pt1       : Cv_Point;
                            Pt2       : Cv_Point;
                            Color     : Cv_Scalar;
@@ -2728,21 +2728,21 @@ package Core.Operations is
                            Linetype  : Integer := 8;
                            Shift     : Integer := 0) renames Cv_Rectangle;
 
-   procedure Cv_Draw_Line (Img       : Cv_Arr_P;
+   procedure Cv_Draw_Line (Img       : Cv_Arr_Ptr;
                            Pt1       : Cv_Point;
                            Pt2       : Cv_Point;
                            Color     : Cv_Scalar;
                            Thickness : Integer := 1;
                            Line_Type : Integer := 8;
                            Shift     : Integer := 0) renames Cv_Line;
-   procedure Cv_Draw_Line (Img       : Cv_Mat_P;
+   procedure Cv_Draw_Line (Img       : Cv_Mat_Ptr;
                            Pt1       : Cv_Point;
                            Pt2       : Cv_Point;
                            Color     : Cv_Scalar;
                            Thickness : Integer := 1;
                            Line_Type : Integer := 8;
                            Shift     : Integer := 0) renames Cv_Line;
-   procedure Cv_Draw_Line (Img       : Ipl_Image_P;
+   procedure Cv_Draw_Line (Img       : Ipl_Image_Ptr;
                            Pt1       : Cv_Point;
                            Pt2       : Cv_Point;
                            Color     : Cv_Scalar;
@@ -2750,21 +2750,21 @@ package Core.Operations is
                            Line_Type : Integer := 8;
                            Shift     : Integer := 0) renames Cv_Line;
 
-   procedure Cv_Draw_Circle (Img       : Cv_Arr_P;
+   procedure Cv_Draw_Circle (Img       : Cv_Arr_Ptr;
                              Center    : Cv_Point;
                              Radius    : Integer;
                              Color     : Cv_Scalar;
                              Thickness : Integer := 1;
                              Linetype  : Integer := 8;
                              Shift     : Integer := 0) renames Cv_Circle;
-   procedure Cv_Draw_Circle (Img       : Cv_Mat_P;
+   procedure Cv_Draw_Circle (Img       : Cv_Mat_Ptr;
                              Center    : Cv_Point;
                              Radius    : Integer;
                              Color     : Cv_Scalar;
                              Thickness : Integer := 1;
                              Linetype  : Integer := 8;
                              Shift     : Integer := 0) renames Cv_Circle;
-   procedure Cv_Draw_Circle (Img       : Ipl_Image_P;
+   procedure Cv_Draw_Circle (Img       : Ipl_Image_Ptr;
                              Center    : Cv_Point;
                              Radius    : Integer;
                              Color     : Cv_Scalar;
@@ -2772,7 +2772,7 @@ package Core.Operations is
                              Linetype  : Integer := 8;
                              Shift     : Integer := 0) renames Cv_Circle;
 
-   procedure Cv_Draw_Ellipse (Img        : Cv_Arr_P;
+   procedure Cv_Draw_Ellipse (Img        : Cv_Arr_Ptr;
                               Center     : Cv_Point;
                               Axes       : Cv_Size;
                               Angle      : Long_Float;
@@ -2782,7 +2782,7 @@ package Core.Operations is
                               Thickness  : Integer := 1;
                               Linetype   : Integer := 8;
                               Shift      : Integer := 0) renames Cv_Ellipse;
-   procedure Cv_Draw_Ellipse (Img        : Cv_Mat_P;
+   procedure Cv_Draw_Ellipse (Img        : Cv_Mat_Ptr;
                               Center     : Cv_Point;
                               Axes       : Cv_Size;
                               Angle      : Long_Float;
@@ -2792,7 +2792,7 @@ package Core.Operations is
                               Thickness  : Integer := 1;
                               Linetype   : Integer := 8;
                               Shift      : Integer := 0) renames Cv_Ellipse;
-   procedure Cv_Draw_Ellipse (Img        : Ipl_Image_P;
+   procedure Cv_Draw_Ellipse (Img        : Ipl_Image_Ptr;
                               Center     : Cv_Point;
                               Axes       : Cv_Size;
                               Angle      : Long_Float;
@@ -2803,7 +2803,7 @@ package Core.Operations is
                               Linetype   : Integer := 8;
                               Shift      : Integer := 0) renames Cv_Ellipse;
 
-   procedure Cv_Draw_Poly_Line (Img       : Cv_Arr_P;
+   procedure Cv_Draw_Poly_Line (Img       : Cv_Arr_Ptr;
                                 Pts       : Cv_Point_Pointer_Array;
                                 Npts      : Cv_32u_Array;
                                 Contours  : Integer;
@@ -2812,7 +2812,7 @@ package Core.Operations is
                                 Thickness : Integer := 1;
                                 Linetyoe  : Integer := 8;
                                 Shift     : Integer := 0) renames Cv_Poly_Line;
-   procedure Cv_Draw_Poly_Line (Img       : Cv_Mat_P;
+   procedure Cv_Draw_Poly_Line (Img       : Cv_Mat_Ptr;
                                 Pts       : Cv_Point_Pointer_Array;
                                 Npts      : Cv_32u_Array;
                                 Contours  : Integer;
@@ -2821,7 +2821,7 @@ package Core.Operations is
                                 Thickness : Integer := 1;
                                 Linetyoe  : Integer := 8;
                                 Shift     : Integer := 0) renames Cv_Poly_Line;
-   procedure Cv_Draw_Poly_Line (Img       : Ipl_Image_P;
+   procedure Cv_Draw_Poly_Line (Img       : Ipl_Image_Ptr;
                                 Pts       : Cv_Point_Pointer_Array;
                                 Npts      : Cv_32u_Array;
                                 Contours  : Integer;
@@ -2837,26 +2837,26 @@ package Core.Operations is
                           Pt2     : access Cv_Point) return Integer;
 
    -- Initializes the line iterator.
-   function Cv_Init_Line_Iterator (Image          : Cv_Arr_P;
+   function Cv_Init_Line_Iterator (Image          : Cv_Arr_Ptr;
                                    Pt1            : Cv_Point;
                                    Pt2            : Cv_Point;
                                    Line_Iterator  : access Cv_Line_Iterator;
                                    Connectivity   : Integer := 8;
                                    Left_To_Right  : Integer := 0) return Integer;
-   function Cv_Init_Line_Iterator (Image          : Cv_Mat_P;
+   function Cv_Init_Line_Iterator (Image          : Cv_Mat_Ptr;
                                    Pt1            : Cv_Point;
                                    Pt2            : Cv_Point;
                                    Line_Iterator  : access Cv_Line_Iterator;
                                    Connectivity   : Integer := 8;
                                    Left_To_Right  : Integer := 0) return Integer;
-   function Cv_Init_Line_Iterator (Image          : Ipl_Image_P;
+   function Cv_Init_Line_Iterator (Image          : Ipl_Image_Ptr;
                                    Pt1            : Cv_Point;
                                    Pt2            : Cv_Point;
                                    Line_Iterator  : access Cv_Line_Iterator;
                                    Connectivity   : Integer := 8;
                                    Left_To_Right  : Integer := 0) return Integer;
 
-   procedure Cv_Next_Line_Point (Lineiterator : Cv_Line_Iterator_P);
+   procedure Cv_Next_Line_Point (Lineiterator : Cv_Line_Iterator_Ptr);
 
    -- Fonts
    type Cv_Font_Face is new Integer;
@@ -2888,7 +2888,7 @@ package Core.Operations is
       Line_Type         : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Font);
-   type Cv_Font_P is access all Cv_Font;
+   type Cv_Font_Ptr is access all Cv_Font;
 
 
 
@@ -2904,17 +2904,17 @@ package Core.Operations is
    function Cv_Create_Font (Scale     : Long_Float;
                             Thickness : Integer := 1) return Cv_Font;
 
-   procedure Cv_Put_Text (Img   : Cv_Arr_P;
+   procedure Cv_Put_Text (Img   : Cv_Arr_Ptr;
                           Text  : String;
                           Org   : Cv_Point;
-                          Font  : Cv_Font_P;
+                          Font  : Cv_Font_Ptr;
                           Color : Cv_Scalar);
-   procedure Cv_Put_Text (Img   : Cv_Mat_P;
+   procedure Cv_Put_Text (Img   : Cv_Mat_Ptr;
                           Text  : String;
                           Org   : Cv_Point;
                           Font  : access Cv_Font;
                           Color : Cv_Scalar);
-   procedure Cv_Put_Text (Img   : Ipl_Image_P;
+   procedure Cv_Put_Text (Img   : Ipl_Image_Ptr;
                           Text  : String;
                           Org   : Cv_Point;
                           Font  : access Cv_Font;
@@ -2947,24 +2947,24 @@ package Core.Operations is
                                 Deltaval    : Integer) return Integer;
 
    -- Draws contour outlines or interiors in an image.
-   procedure Cv_Draw_Contours (Img           : Cv_Arr_P;
-                               Contour       : Cv_Seq_P;
+   procedure Cv_Draw_Contours (Img           : Cv_Arr_Ptr;
+                               Contour       : Cv_Seq_Ptr;
                                Externalcolor : Cv_Scalar;
                                Holecolor     : Cv_Scalar;
                                Maxlevel      : Integer;
                                Thickness     : Integer := 1;
                                Linetype      : Integer := 8;
                                Offset        : Cv_Point := Cv_Create_Point (0, 0));
-   procedure Cv_Draw_Contours (Img           : Cv_Mat_P;
-                               Contour       : Cv_Seq_P;
+   procedure Cv_Draw_Contours (Img           : Cv_Mat_Ptr;
+                               Contour       : Cv_Seq_Ptr;
                                Externalcolor : Cv_Scalar;
                                Holecolor     : Cv_Scalar;
                                Maxlevel      : Integer;
                                Thickness     : Integer := 1;
                                Linetype      : Integer := 8;
                                Offset        : Cv_Point := Cv_Create_Point (0, 0));
-   procedure Cv_Draw_Contours (Img           : Ipl_Image_P;
-                               Contour       : Cv_Seq_P;
+   procedure Cv_Draw_Contours (Img           : Ipl_Image_Ptr;
+                               Contour       : Cv_Seq_Ptr;
                                Externalcolor : Cv_Scalar;
                                Holecolor     : Cv_Scalar;
                                Maxlevel      : Integer;
@@ -2973,83 +2973,83 @@ package Core.Operations is
                                Offset        : Cv_Point := Cv_Create_Point (0, 0));
 
    --     Performs a look-up table transform of an array.
-   procedure Cv_Lut (Src : Cv_Arr_P;
-                     Dst : Cv_Arr_P;
-                     Lut : Cv_Arr_P);
-   procedure Cv_Lut (Src : Cv_Mat_P;
-                     Dst : Cv_Mat_P;
-                     Lut : Cv_Mat_P);
-   procedure Cv_Lut (Src : Ipl_Image_P;
-                     Dst : Ipl_Image_P;
-                     Lut : Ipl_Image_P);
+   procedure Cv_Lut (Src : Cv_Arr_Ptr;
+                     Dst : Cv_Arr_Ptr;
+                     Lut : Cv_Arr_Ptr);
+   procedure Cv_Lut (Src : Cv_Mat_Ptr;
+                     Dst : Cv_Mat_Ptr;
+                     Lut : Cv_Mat_Ptr);
+   procedure Cv_Lut (Src : Ipl_Image_Ptr;
+                     Dst : Ipl_Image_Ptr;
+                     Lut : Ipl_Image_Ptr);
 
    -----------------------------------------------------------------------------
    -- Iteration through the sequence tree
    -----------------------------------------------------------------------------
    type Cv_Tree_Node_Iterator is record
-      Node      : Cv_Void_P; -- Note: This is actually a void*
+      Node      : Cv_Void_Ptr; -- Note: This is actually a void*
       Level     : Integer;
       Max_Level : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Tree_Node_Iterator);
-   type Cv_Tree_Node_Iterator_P is access all Cv_Tree_Node_Iterator;
+   type Cv_Tree_Node_Iterator_Ptr is access all Cv_Tree_Node_Iterator;
 
    -- Initializes the tree node iterator.
-   procedure Cv_Init_Tree_Node_Iterator (Treeiterator : Cv_Tree_Node_Iterator_P;
-                                         First        : Cv_Void_P;
+   procedure Cv_Init_Tree_Node_Iterator (Treeiterator : Cv_Tree_Node_Iterator_Ptr;
+                                         First        : Cv_Void_Ptr;
                                          Maxlevel     : Integer);
 
    -- Returns the currently observed node and moves the iterator toward the next node.
-   function Cv_Next_Tree_Node (Treeiterator : Cv_Tree_Node_Iterator_P) return Cv_Void_P;
+   function Cv_Next_Tree_Node (Treeiterator : Cv_Tree_Node_Iterator_Ptr) return Cv_Void_Ptr;
 
    -- Returns the currently observed node and moves the iterator toward the previous node.
-   function Cv_Prev_Tree_Node (Treeiterator : Cv_Tree_Node_Iterator_P) return Cv_Void_P;
+   function Cv_Prev_Tree_Node (Treeiterator : Cv_Tree_Node_Iterator_Ptr) return Cv_Void_Ptr;
 
    --Adds a new node to a tree.
-   procedure Cv_Insert_Node_Into_Tree (Node   : Cv_Void_P;
-                                       Parent : Cv_Void_P;
-                                       Fram   : Cv_Void_P);
+   procedure Cv_Insert_Node_Into_Tree (Node   : Cv_Void_Ptr;
+                                       Parent : Cv_Void_Ptr;
+                                       Fram   : Cv_Void_Ptr);
 
    --/* Removes contour from tree (together with the contour children). */
-   procedure Cv_Remove_Node_From_Tree (Node  : Cv_Void_P;
-                                       Frame : Cv_Void_P);
+   procedure Cv_Remove_Node_From_Tree (Node  : Cv_Void_Ptr;
+                                       Frame : Cv_Void_Ptr);
 
    --Gathers all node pointers to a single sequence.
-   function Cv_Tree_To_Node_Seq (First      : Cv_Void_P;
+   function Cv_Tree_To_Node_Seq (First      : Cv_Void_Ptr;
                                  Headersize : Integer;
-                                 Storage    : Cv_Mem_Storage_P) return Cv_Seq_P;
+                                 Storage    : Cv_Mem_Storage_Ptr) return Cv_Seq_Ptr;
 
    Cv_Kmeans_Use_Initial_Labels : constant := 1;
 
-   function Cv_K_Means2 (Samples     : Cv_Arr_P;
-                         Labels      : Cv_Arr_P;
+   function Cv_K_Means2 (Samples     : Cv_Arr_Ptr;
+                         Labels      : Cv_Arr_Ptr;
                          Termcrit    : Cv_Term_Criteria;
                          Attempts    : Integer := 1;
                          Rng         : Integer_64 := 0;
                          Flags       : Unsigned_32 := 0;
-                         Centers     : Cv_Arr_P := null;
+                         Centers     : Cv_Arr_Ptr := null;
                          Compactness : access Long_Float := null) return Integer;
-   function Cv_K_Means2 (Samples     : Cv_Mat_P;
-                         Labels      : Cv_Mat_P;
+   function Cv_K_Means2 (Samples     : Cv_Mat_Ptr;
+                         Labels      : Cv_Mat_Ptr;
                          Termcrit    : Cv_Term_Criteria;
                          Attempts    : Integer := 1;
                          Rng         : Integer_64 := 0;
                          Flags       : Unsigned_32 := 0;
-                         Centers     : Cv_Mat_P := null;
+                         Centers     : Cv_Mat_Ptr := null;
                          Compactness : access Long_Float := null) return Integer;
-   function Cv_K_Means2 (Samples     : Ipl_Image_P;
-                         Labels      : Ipl_Image_P;
+   function Cv_K_Means2 (Samples     : Ipl_Image_Ptr;
+                         Labels      : Ipl_Image_Ptr;
                          Termcrit    : Cv_Term_Criteria;
                          Attempts    : Integer := 1;
                          Rng         : Integer_64 := 0;
                          Flags       : Unsigned_32 := 0;
-                         Centers     : Ipl_Image_P := null;
+                         Centers     : Ipl_Image_Ptr := null;
                          Compactness : access Long_Float := null) return Integer;
    -----------------------------------------------------------------------------
    -- System Functions
    -----------------------------------------------------------------------------
    --     Registers another module.
-   function Cv_Register_Module (Module_Info : Cv_Module_Info_P)
+   function Cv_Register_Module (Module_Info : Cv_Module_Info_Ptr)
                                 return Integer;
 
    --     Switches between optimized/non-optimized modes.
@@ -3062,19 +3062,19 @@ package Core.Operations is
                                  Loaded_Addon_Plugins : access Interfaces.C.Strings.Chars_Ptr);
 
    type Cv_Alloc_Func is access function (Size     : Interfaces.C.Size_T;
-                                          Userdata : Cv_Void_P)
-                                          return Cv_Void_P;
+                                          Userdata : Cv_Void_Ptr)
+                                          return Cv_Void_Ptr;
    pragma Convention (C, Cv_Alloc_Func);
 
-   type Cv_Free_Func is access function (Pptr     : Cv_Void_P;
-                                         Userdata : Cv_Void_P)
+   type Cv_Free_Func is access function (Pptr     : Cv_Void_Ptr;
+                                         Userdata : Cv_Void_Ptr)
                                          return Integer;
    pragma Convention (C, Cv_Free_Func);
 
    --     Accesses custom/default memory managing functions.
    procedure Cv_Set_Memory_Manager (Alloc_Func : Cv_Alloc_Func := null;
                                     Free_Func  : Cv_Free_Func := null;
-                                    Userdata   : Cv_Void_P := null);
+                                    Userdata   : Cv_Void_Ptr := null);
 
    -- typedef IplImage* (CV_STDCALL* Cv_iplCreateImageHeader)
    --   (int,int,int,char*,char*,int,int,int,int,int,IplROI*,IplImage*,void*,IplTileInfo*);
@@ -3090,20 +3090,20 @@ package Core.Operations is
                                                        Align         : Integer;
                                                        Width         : Integer;
                                                        Height        : Integer;
-                                                       Roi           : Ipl_Roi_P;
-                                                       Image         : Ipl_Image_P;
-                                                       Image_Id      : Cv_Void_P)
-                                                       return Ipl_Image_P;
+                                                       Roi           : Ipl_Roi_Ptr;
+                                                       Image         : Ipl_Image_Ptr;
+                                                       Image_Id      : Cv_Void_Ptr)
+                                                       return Ipl_Image_Ptr;
    pragma Convention (C, Cv_Ipl_Create_Image_Header);
 
    -- typedef void (CV_STDCALL * Cv_iplAllocateImageData) (IplImage * , int, int);
-   type Cv_Ipl_Allocate_Image_Data is access procedure (Image  : Ipl_Image_P;
+   type Cv_Ipl_Allocate_Image_Data is access procedure (Image  : Ipl_Image_Ptr;
                                                         Width  : Integer;
                                                         Height : Integer);
    pragma Convention (C, Cv_Ipl_Allocate_Image_Data);
 
    -- typedef void (CV_STDCALL * Cv_iplDeallocate) (IplImage * , int);
-   type Cv_Ipl_Deallocate is access procedure (Image : Ipl_Image_P;
+   type Cv_Ipl_Deallocate is access procedure (Image : Ipl_Image_Ptr;
                                                I     : Integer);
    pragma Convention (C, Cv_Ipl_Deallocate);
 
@@ -3113,12 +3113,12 @@ package Core.Operations is
                                               Width    : Integer;
                                               X_Offset : Integer;
                                               Y_Offset : Integer)
-                                              return Ipl_Roi_P;
+                                              return Ipl_Roi_Ptr;
    pragma Convention (C, Cv_Ipl_Create_Roi);
 
    -- typedef IplImage * (CV_STDCALL * Cv_iplCloneImage) (const IplImage * );
-   type Cv_Ipl_Clone_Image is access function (Image : Ipl_Image_P)
-                                               return Ipl_Image_P;
+   type Cv_Ipl_Clone_Image is access function (Image : Ipl_Image_Ptr)
+                                               return Ipl_Image_Ptr;
    pragma Convention (C, Cv_Ipl_Clone_Image);
 
    --     Switches to IPL functions for image allocation/deallocation.
@@ -3140,203 +3140,203 @@ package Core.Operations is
    -----------------------------------------------------------------------------
    --     Opens file storage for reading or writing data.
    function Cv_Open_File_Storage (Fílename   : Interfaces.C.Strings.Chars_Ptr;
-                                  Memstorage : Cv_Mem_Storage_P;
+                                  Memstorage : Cv_Mem_Storage_Ptr;
                                   Flags      : Unsigned_32)
-                                  return Cv_File_Storage_P;
+                                  return Cv_File_Storage_Ptr;
 
    --     Releases file storage.
-   procedure Cv_Release_File_Storage (Fs : access Cv_File_Storage_P);
+   procedure Cv_Release_File_Storage (Fs : access Cv_File_Storage_Ptr);
 
    --/* returns attribute value or 0 (NULL) if there is no such attribute */
-   function Cv_Attr_Value (Attr       : Cv_Attr_List_P;
+   function Cv_Attr_Value (Attr       : Cv_Attr_List_Ptr;
                            Attr_Name  : Interfaces.C.Strings.Chars_Ptr) return Interfaces.C.Strings.Chars_Ptr;
 
    --     Starts writing a new structure.
-   procedure Cv_Start_Write_Struct (Fs           : Cv_File_Storage_P;
+   procedure Cv_Start_Write_Struct (Fs           : Cv_File_Storage_Ptr;
                                     Name         : Interfaces.C.Strings.Chars_Ptr;
                                     Struct_Flags : Unsigned_32;
                                     Type_Name    : Interfaces.C.Strings.Chars_Ptr := Interfaces.C.Strings.Null_Ptr;
                                     Attributes   : Cv_Attr_List := Cv_Create_Attr_List);
 
    --     Ends the writing of a structure.
-   procedure Cv_End_Write_Struct (Fs : Cv_File_Storage_P);
+   procedure Cv_End_Write_Struct (Fs : Cv_File_Storage_Ptr);
 
    --     Writes an integer value.
-   procedure Cv_Write_Int (Fs    : Cv_File_Storage_P;
+   procedure Cv_Write_Int (Fs    : Cv_File_Storage_Ptr;
                            Name  : Interfaces.C.Strings.Chars_Ptr;
                            Value : Integer);
 
    --     Writes a floating-point value.
-   procedure Cv_Write_Real (Fs    : Cv_File_Storage_P;
+   procedure Cv_Write_Real (Fs    : Cv_File_Storage_Ptr;
                             Name  : Interfaces.C.Strings.Chars_Ptr;
                             Value : Long_Float);
 
    --     Writes a text string.
-   procedure Cv_Write_String (Fs    : Cv_File_Storage_P;
+   procedure Cv_Write_String (Fs    : Cv_File_Storage_Ptr;
                               Name  : Interfaces.C.Strings.Chars_Ptr;
                               Str   : Interfaces.C.Strings.Chars_Ptr;
                               Quote : Integer := 0);
 
    --     Writes a comment.
-   procedure Cv_Write_Comment (Fs          : Cv_File_Storage_P;
+   procedure Cv_Write_Comment (Fs          : Cv_File_Storage_Ptr;
                                Comment     : Interfaces.C.Strings.Chars_Ptr;
                                Eol_Comment : Integer);
 
    --     Writes a user object.
-   procedure Cv_Write (Fs         : Cv_File_Storage_P;
+   procedure Cv_Write (Fs         : Cv_File_Storage_Ptr;
                        Name       : Interfaces.C.Strings.Chars_Ptr;
-                       Ptr        : Cv_Void_P;
+                       Ptr        : Cv_Void_Ptr;
                        Attributes : Cv_Attr_List := Cv_Create_Attr_List);
 
    --     Starts the next stream.
-   procedure Cv_Start_Next_Stream (Fs : Cv_File_Storage_P);
+   procedure Cv_Start_Next_Stream (Fs : Cv_File_Storage_Ptr);
 
    --     Writes multiple numbers.
-   procedure Cv_Write_Raw_Data (Fs  : Cv_File_Storage_P;
-                                Src : Cv_Void_P;
+   procedure Cv_Write_Raw_Data (Fs  : Cv_File_Storage_Ptr;
+                                Src : Cv_Void_Ptr;
                                 Len : Integer;
                                 Dt  : Interfaces.C.Strings.Chars_Ptr);
 
    --     Returns a unique pointer for a given name.
-   function Cv_Get_Hashed_Key (Fs             : Cv_File_Storage_P;
+   function Cv_Get_Hashed_Key (Fs             : Cv_File_Storage_Ptr;
                                Name           : String_C;
                                Len            : Integer := -1;
                                Create_Missing : Integer := 0)
-                               return Cv_String_Hash_Node_P;
+                               return Cv_String_Hash_Node_Ptr;
 
    --     Retrieves one of the top-level nodes of the file storage.
-   function Cv_Get_Root_File_Node (Fs           : Cv_File_Storage_P;
+   function Cv_Get_Root_File_Node (Fs           : Cv_File_Storage_Ptr;
                                    Stream_Index : Integer := 0)
-                                   return Cv_File_Node_P;
+                                   return Cv_File_Node_Ptr;
 
    --     Finds a node in a map or file storage.
-   function Cv_Get_File_Node (Fs             : Cv_File_Storage_P;
-                              Map            : Cv_File_Node_P;
-                              Key            : Cv_String_Hash_Node_P;
+   function Cv_Get_File_Node (Fs             : Cv_File_Storage_Ptr;
+                              Map            : Cv_File_Node_Ptr;
+                              Key            : Cv_String_Hash_Node_Ptr;
                               Create_Missing : Integer := 0)
-                              return Cv_File_Node_P;
+                              return Cv_File_Node_Ptr;
 
    --     Finds a node in a map or file storage.
-   function Cv_Get_File_Node_By_Name (Fs   : Cv_File_Storage_P;
-                                      Map  : Cv_File_Node_P;
+   function Cv_Get_File_Node_By_Name (Fs   : Cv_File_Storage_Ptr;
+                                      Map  : Cv_File_Node_Ptr;
                                       Name : Interfaces.C.Strings.Chars_Ptr)
-                                      return Cv_File_Node_P;
+                                      return Cv_File_Node_Ptr;
 
    --     Finds a file node and returns its value.
-   function Cv_Read_Int (Node          : Cv_File_Node_P;
+   function Cv_Read_Int (Node          : Cv_File_Node_Ptr;
                          Default_Value : Integer := 0)
                          return Integer;
 
-   function Cv_Read_Int_By_Name (Fs            : Cv_File_Storage_P;
-                                 Map           : Cv_File_Node_P ;
+   function Cv_Read_Int_By_Name (Fs            : Cv_File_Storage_Ptr;
+                                 Map           : Cv_File_Node_Ptr ;
                                  Name          : Interfaces.C.Strings.Chars_Ptr;
                                  Default_Value : Integer := 0) return Integer;
 
    --     Retrieves a floating-point value from a file node.
-   function Cv_Read_Real (Node          : Cv_File_Node_P;
+   function Cv_Read_Real (Node          : Cv_File_Node_Ptr;
                           Default_Value : Long_Float := 0.0)
                           return Long_Float;
 
    --     Finds a file node and returns its value.
-   function Cv_Read_Real_By_Name (Fs            : Cv_File_Storage_P;
-                                  Map           : Cv_File_Node_P;
+   function Cv_Read_Real_By_Name (Fs            : Cv_File_Storage_Ptr;
+                                  Map           : Cv_File_Node_Ptr;
                                   Name          : Interfaces.C.Strings.Chars_Ptr;
                                   Default_Value : Long_Float := 0.0)
                                   return Long_Float;
 
    --     Retrieves a text string from a file node.
-   function Cv_Read_String (Node          : Cv_File_Node_P;
+   function Cv_Read_String (Node          : Cv_File_Node_Ptr;
                             Default_Value : Interfaces.C.Strings.Chars_Ptr := Interfaces.C.Strings.Null_Ptr)
                             return Interfaces.C.Strings.Chars_Ptr;
 
    --     Finds a file node by its name and returns its value.
-   function Cv_Read_String_By_Name (Fs            : Cv_File_Storage_P;
-                                    Map           : Cv_File_Node_P;
+   function Cv_Read_String_By_Name (Fs            : Cv_File_Storage_Ptr;
+                                    Map           : Cv_File_Node_Ptr;
                                     Name          : Interfaces.C.Strings.Chars_Ptr;
                                     Default_Value : Interfaces.C.Strings.Chars_Ptr := Interfaces.C.Strings.Null_Ptr)
                                     return Interfaces.C.Strings.Chars_Ptr;
 
    --     Decodes an object and returns a pointer to it.
-   function Cv_Read (Fs         : Cv_File_Storage_P;
-                     Node       : Cv_File_Node_P;
+   function Cv_Read (Fs         : Cv_File_Storage_Ptr;
+                     Node       : Cv_File_Node_Ptr;
                      Attributes : access Cv_Attr_List := null)
-                     return Cv_Void_P;
+                     return Cv_Void_Ptr;
 
    --     Finds an object by name and decodes it.
-   function Cv_Read_By_Name (Fs         : Cv_File_Storage_P;
-                             Map        : Cv_File_Node_P;
+   function Cv_Read_By_Name (Fs         : Cv_File_Storage_Ptr;
+                             Map        : Cv_File_Node_Ptr;
                              Name       : Interfaces.C.Strings.Chars_Ptr;
                              Attributes : access Cv_Attr_List := null)
-                             return Cv_Void_P;
+                             return Cv_Void_Ptr;
 
    --     Initializes the file node sequence reader.
-   procedure Cv_Start_Read_Raw_Data (Fs     : Cv_File_Storage_P;
-                                     Src    : Cv_File_Node_P;
-                                     Reader : Cv_Seq_Reader_P);
+   procedure Cv_Start_Read_Raw_Data (Fs     : Cv_File_Storage_Ptr;
+                                     Src    : Cv_File_Node_Ptr;
+                                     Reader : Cv_Seq_Reader_Ptr);
 
    --     Initializes file node sequence reader.
-   procedure Cv_Read_Raw_Data_Slice (Fs     : Cv_File_Storage_P;
-                                     Reader : Cv_Seq_Reader_P;
+   procedure Cv_Read_Raw_Data_Slice (Fs     : Cv_File_Storage_Ptr;
+                                     Reader : Cv_Seq_Reader_Ptr;
                                      Count  : Integer;
-                                     Dst    : Cv_Void_P;
+                                     Dst    : Cv_Void_Ptr;
                                      Dt     : Interfaces.C.Strings.Chars_Ptr);
 
    --     Reads multiple numbers.
-   procedure Cv_Read_Raw_Data (Fs  : Cv_File_Storage_P;
-                               Src : Cv_File_Node_P;
-                               Dst : Cv_Void_P;
+   procedure Cv_Read_Raw_Data (Fs  : Cv_File_Storage_Ptr;
+                               Src : Cv_File_Node_Ptr;
+                               Dst : Cv_Void_Ptr;
                                Dt  : Interfaces.C.Strings.Chars_Ptr);
 
    --     Writes a file node to another file storage.
-   procedure Cv_Write_File_Node (Fs            : Cv_File_Storage_P;
+   procedure Cv_Write_File_Node (Fs            : Cv_File_Storage_Ptr;
                                  New_Node_Name : Interfaces.C.Strings.Chars_Ptr;
-                                 Node          : Cv_File_Node_P;
+                                 Node          : Cv_File_Node_Ptr;
                                  Embed         : Integer);
 
    --     Returns the name of a file node.
-   function Cv_Get_File_Node_Name (Node : Cv_File_Node_P)
+   function Cv_Get_File_Node_Name (Node : Cv_File_Node_Ptr)
                                    return Interfaces.C.Strings.Chars_Ptr;
 
    -----------------------------------------------------------------------------
    -- Adding own types
    -----------------------------------------------------------------------------
    --     Registers a new type.
-   procedure Cv_Register_Type (Info : Cv_Type_Info_P);
+   procedure Cv_Register_Type (Info : Cv_Type_Info_Ptr);
 
    --     Unregisters the type.
    procedure Cv_Unregister_Type (Type_Name : Interfaces.C.Strings.Chars_Ptr);
 
    --     Returns the beginning of a type list.
-   function Cv_First_Type return Cv_Type_Info_P;
+   function Cv_First_Type return Cv_Type_Info_Ptr;
 
    --     Finds a type by its name.
    function Cv_Find_Type (Type_Name : Interfaces.C.Strings.Chars_Ptr)
-                          return Cv_Type_Info_P;
+                          return Cv_Type_Info_Ptr;
 
    --     Returns the type of an object.
-   function Cv_Type_Of (Struct_Ptr : Cv_Void_P)
-                        return Cv_Type_Info_P;
+   function Cv_Type_Of (Struct_Ptr : Cv_Void_Ptr)
+                        return Cv_Type_Info_Ptr;
 
    --     Releases an object.
-   procedure Cv_Release (Struct_Ptr : access Cv_Void_P);
+   procedure Cv_Release (Struct_Ptr : access Cv_Void_Ptr);
 
    --     Makes a clone of an object.
-   function Cv_Clone (Struct_Ptr : Cv_Void_P)
-                      return Cv_Void_P;
+   function Cv_Clone (Struct_Ptr : Cv_Void_Ptr)
+                      return Cv_Void_Ptr;
 
    --     Saves an object to a file.
    procedure Cv_Save (Filename   : Interfaces.C.Strings.Chars_Ptr;
-                      Struct_Ptr : Cv_Void_P;
+                      Struct_Ptr : Cv_Void_Ptr;
                       Name       : Interfaces.C.Strings.Chars_Ptr;
                       Comment    : Interfaces.C.Strings.Chars_Ptr;
                       Attributes : Cv_Attr_List := Cv_Create_Attr_List);
 
    --     Loads an object from a file.
    function Cv_Load (Filename  : String_C;
-                     Storage   : Cv_Mem_Storage_P := null;
+                     Storage   : Cv_Mem_Storage_Ptr := null;
                      Name      : Interfaces.C.Strings.Chars_Ptr := Null_Ptr;
                      Real_Name : access Interfaces.C.Strings.Chars_Ptr := null)
-                     return Cv_Void_P;
+                     return Cv_Void_Ptr;
 
    -----------------------------------------------------------------------------
    -- Measuring Execution Time
@@ -3427,8 +3427,8 @@ package Core.Operations is
 
    --     Sets a new error handler.
    function Cv_Redirect_Error (Error_Handler : Cv_Error_Callback;
-                               Userdata      : Cv_Void_P;
-                               Prev_Userdata : access Cv_Void_P)
+                               Userdata      : Cv_Void_Ptr;
+                               Prev_Userdata : access Cv_Void_Ptr)
                                return Cv_Error_Callback;
 
    --     Provide standard error handling.
@@ -3437,7 +3437,7 @@ package Core.Operations is
                                Err_Msg   : Interfaces.C.Strings.Chars_Ptr;
                                File_Name : Interfaces.C.Strings.Chars_Ptr;
                                Line      : Integer;
-                               Userdata  : Cv_Void_P)
+                               Userdata  : Cv_Void_Ptr)
                                return Integer;
 
    function Cv_Std_Err_Report (Status    : Integer;
@@ -3445,14 +3445,14 @@ package Core.Operations is
                                Err_Msg   : Interfaces.C.Strings.Chars_Ptr;
                                File_Name : Interfaces.C.Strings.Chars_Ptr;
                                Line      : Integer;
-                               Userdata  : Cv_Void_P) return Integer;
+                               Userdata  : Cv_Void_Ptr) return Integer;
 
    function Cv_Gui_Box_Report (Status    : Integer;
                                Func_Name : Interfaces.C.Strings.Chars_Ptr;
                                Err_Msg   : Interfaces.C.Strings.Chars_Ptr;
                                File_Name : Interfaces.C.Strings.Chars_Ptr;
                                Line      : Integer;
-                               Userdata  : Cv_Void_P) return Integer;
+                               Userdata  : Cv_Void_Ptr) return Integer;
 
    procedure Opencv_Error (Status  : Integer;
                            Func    : String := Gnat.Source_Info.Enclosing_Entity;
@@ -3506,23 +3506,23 @@ package Core.Operations is
    -- Private
    -----------------------------------------------------------------------------
 private
-   procedure Cv_Free_Wrapper (Ptr : access Cv_Void_P);
+   procedure Cv_Free_Wrapper (Ptr : access Cv_Void_Ptr);
    -- Wrapper due to String
-   function W_Cv_Mem_Storage_Alloc_String (Storage : Cv_Mem_Storage_P;
+   function W_Cv_Mem_Storage_Alloc_String (Storage : Cv_Mem_Storage_Ptr;
                                            Ptr     : String_C;
                                            Len     : Integer := -1) return Cv_String;
 
-   procedure W_Cv_Put_Text (Img   : Cv_Arr_P;
+   procedure W_Cv_Put_Text (Img   : Cv_Arr_Ptr;
                             Text  : String_C;
                             Org   : Cv_Point;
                             Font  : access Cv_Font;
                             Color : Cv_Scalar);
-   procedure W_Cv_Put_Text (Img   : Cv_Mat_P;
+   procedure W_Cv_Put_Text (Img   : Cv_Mat_Ptr;
                             Text  : String_C;
                             Org   : Cv_Point;
                             Font  : access Cv_Font;
                             Color : Cv_Scalar);
-   procedure W_Cv_Put_Text (Img   : Ipl_Image_P;
+   procedure W_Cv_Put_Text (Img   : Ipl_Image_Ptr;
                             Text  : String_C;
                             Org   : Cv_Point;
                             Font  : access Cv_Font;

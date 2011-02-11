@@ -71,22 +71,22 @@ package Video.Blob_Track is
       Temp1                   : Cv_32f_Pointer;
       Temp2                   : Cv_32f_Pointer;
 
-      State_Pre               : Cv_Mat_P;
-      State_Post              : Cv_Mat_P;
-      Transition_Matrix       : Cv_Mat_P;
-      Control_Matrix          : Cv_Mat_P;
-      Measurement_Matrix      : Cv_Mat_P;
-      Process_Noise_Cov       : Cv_Mat_P;
-      Measurement_Noise_Cov   : Cv_Mat_P;
-      Error_Cov_Pre           : Cv_Mat_P;
-      Gain                    : Cv_Mat_P;
-      Error_Cov_Post          : Cv_Mat_P;
+      State_Pre               : Cv_Mat_Ptr;
+      State_Post              : Cv_Mat_Ptr;
+      Transition_Matrix       : Cv_Mat_Ptr;
+      Control_Matrix          : Cv_Mat_Ptr;
+      Measurement_Matrix      : Cv_Mat_Ptr;
+      Process_Noise_Cov       : Cv_Mat_Ptr;
+      Measurement_Noise_Cov   : Cv_Mat_Ptr;
+      Error_Cov_Pre           : Cv_Mat_Ptr;
+      Gain                    : Cv_Mat_Ptr;
+      Error_Cov_Post          : Cv_Mat_Ptr;
 
-      Mat_Temp1               : Cv_Mat_P;
-      Mat_Temp2               : Cv_Mat_P;
-      Mat_Temp3               : Cv_Mat_P;
-      Mat_Temp4               : Cv_Mat_P;
-      Mat_Temp5               : Cv_Mat_P;
+      Mat_Temp1               : Cv_Mat_Ptr;
+      Mat_Temp2               : Cv_Mat_Ptr;
+      Mat_Temp3               : Cv_Mat_Ptr;
+      Mat_Temp4               : Cv_Mat_Ptr;
+      Mat_Temp5               : Cv_Mat_Ptr;
    end record;
    type Cv_Kalman_P is access all Cv_Kalman;
    pragma Convention (C_Pass_By_Copy, Cv_Kalman);
@@ -97,8 +97,8 @@ package Video.Blob_Track is
    type Elem_Format_Array is private;
 
    type Cv_Blob_Seq is record
-      Mem_P       : Cv_Mem_Storage_P;
-      Seq_P       : Cv_Seq_P;
+      Mem_P       : Cv_Mem_Storage_Ptr;
+      Seq_P       : Cv_Seq_Ptr;
       Elem_Format : Elem_Format_Array;
    end record;
    type Cv_Blob_Seq_P is access all Cv_Blob_Seq;
@@ -142,8 +142,8 @@ package Video.Blob_Track is
    pragma Convention (C, Cv_Blob_Track_Predictor_P);
 
    type Cv_Blob_Track_Seq is record
-      Mem_P : Cv_Mem_Storage_P;
-      Seq_P : Cv_Seq_P;
+      Mem_P : Cv_Mem_Storage_Ptr;
+      Seq_P : Cv_Seq_Ptr;
    end record;
    type Cv_Blob_Track_Seq_P is access Cv_Blob_Track_Seq;
    pragma Convention (C_Pass_By_Copy, Cv_Blob_Track_Seq);
@@ -198,10 +198,10 @@ package Video.Blob_Track is
       Confidence_Type_Str : Interfaces.C.Strings.Chars_Ptr;
       Blob_List           : Cv_Blob_Seq;
       Blob_List_New       : Cv_Blob_Seq;
-      Mem_P               : Cv_Mem_Storage_P;
+      Mem_P               : Cv_Mem_Storage_Ptr;
       Clear_Hyp           : Integer;
-      Img_P               : Ipl_Image_P;
-      Img_FG              : Ipl_Image_P;
+      Img_P               : Ipl_Image_Ptr;
+      Img_FG              : Ipl_Image_Ptr;
    end record;
    type Cv_Blob_Tracker_CC_P is access all cv_Blob_Tracker_Cc;
    pragma Convention (C_Pass_By_Copy, Cv_Blob_Tracker_CC);
@@ -216,7 +216,7 @@ package Video.Blob_Track is
    pragma Convention (C, Cv_FG_Detector_P);
 
    type Cv_Image_Drawer is record
-      Image : Ipl_Image_P;
+      Image : Ipl_Image_Ptr;
       Shape : Cv_Draw_Shape_Array (1 .. 16);
    end record;
    type Cv_Image_Drawer_P is access all cv_Image_Drawer;
@@ -659,12 +659,12 @@ package Video.Blob_Track is
 
       function AddBlob (This     : Cv_Blob_Tracker_CC_P;
                         Blob_P   : Cv_Blob_P;
-                        Img_FG_P : Ipl_Image_P := null)
+                        Img_FG_P : Ipl_Image_Ptr := null)
                      return Cv_Blob_P;
 
       procedure Process (This     : Cv_Blob_Tracker_CC_P;
-                         Img_P    : Ipl_Image_P;
-                         Img_FG_P : Ipl_Image_P := null);
+                         Img_P    : Ipl_Image_Ptr;
+                         Img_FG_P : Ipl_Image_Ptr := null);
 
       procedure ProcessBlob (This     : Cv_Blob_Tracker_CC_P;
                              Blob_P   : Cv_Blob_P);
@@ -672,22 +672,22 @@ package Video.Blob_Track is
       function GetConfidence (This       : Cv_Blob_Tracker_CC_P;
                               Blob_Index : Integer;
                               Blob_P     : Cv_Blob_P;
-                              Img_FG_P   : Ipl_Image_P := null)
+                              Img_FG_P   : Ipl_Image_Ptr := null)
                            return Long_Float;
 
       function GetConfidenceList (This        : Cv_Blob_Tracker_CC_P;
                                   Blob_List_P : Cv_Blob_Seq_P;
-                                  Img_P       : Ipl_Image_P;
-                                  Img_FG_P    : Ipl_Image_P)
+                                  Img_P       : Ipl_Image_Ptr;
+                                  Img_FG_P    : Ipl_Image_Ptr)
                                return Long_Float;
 
       procedure UpdateBlob (This       : Cv_Blob_Tracker_CC_P;
                             Blob_Index : Integer;
-                            Img_FG_P   : Ipl_Image_P);
+                            Img_FG_P   : Ipl_Image_Ptr);
 
       procedure Update (This     : Cv_Blob_Tracker_CC_P;
-                        Img_P    : Ipl_Image_P;
-                        Img_FG_P : Ipl_Image_P := null);
+                        Img_P    : Ipl_Image_Ptr;
+                        Img_FG_P : Ipl_Image_Ptr := null);
 
       function GetBlobIndexByID (This    : Cv_Blob_Tracker_CC_P;
                                  Blob_ID : Integer)
@@ -791,13 +791,13 @@ package Video.Blob_Track is
                            Num    : Integer);
 
       function Draw (This     : Cv_Image_Drawer_P;
-                     Src      : Cv_Arr_P;
+                     Src      : Cv_Arr_Ptr;
                      Blob_Seq : Cv_Blob_Seq_P;
-                     Roi_Seq  : Cv_Seq_P)
-                     return Ipl_Image_P;
+                     Roi_Seq  : Cv_Seq_Ptr)
+                     return Ipl_Image_Ptr;
 
       function GetImage (This : Cv_Image_Drawer_P)
-                      return Ipl_Image_P;
+                      return Ipl_Image_Ptr;
 
    private
       pragma Import (C, New_CvImageDrawer, "new_CvImageDrawer");
@@ -850,12 +850,12 @@ package Video.Blob_Track is
                            return Integer;
 
       procedure Write (This : Cv_Blob_Seq_P;
-                       Fs   : Cv_File_Storage_P;
+                       Fs   : Cv_File_Storage_Ptr;
                        Name : Chars_Ptr);
 
       procedure Load (This : Cv_Blob_Seq_P;
-                      Fs   : Cv_File_Storage_P;
-                      Node : Cv_File_Node_P);
+                      Fs   : Cv_File_Storage_Ptr;
+                      Node : Cv_File_Node_Ptr);
 
       procedure AddFormat (This : Cv_Blob_Seq_P;
                            Str  : Chars_Ptr); -- Wrap string

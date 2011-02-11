@@ -8,8 +8,8 @@ with Core.Operations;
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Histogram_Demo is
-   Capture : aliased Cv_Capture_P := Highgui.Cv_Create_Camera_Capture (0);
-   Image   : aliased Ipl_Image_P := null;
+   Capture : aliased Cv_Capture_Ptr := Highgui.Cv_Create_Camera_Capture (0);
+   Image   : aliased Ipl_Image_Ptr := null;
    Ret     : Integer;
    pragma Unreferenced (Ret);
 
@@ -27,40 +27,40 @@ procedure Histogram_Demo is
    S_Bins  : constant Integer := 32;
    Scale   : constant Integer := 1;
 
-   Hist    : aliased Cv_Histogram_P;
-   Target_Hist : aliased Cv_Histogram_P;
+   Hist    : aliased Cv_Histogram_Ptr;
+   Target_Hist : aliased Cv_Histogram_Ptr;
 
    Max_Value : aliased Float := 1.0;
    Value   : aliased Float := 0.0;
    Intensity : Integer := 0;
 
    -- hsv images
-   Hist_Image, Hist_Image_2 , H, S, V, Hsv : aliased Ipl_Image_P;
+   Hist_Image, Hist_Image_2 , H, S, V, Hsv : aliased Ipl_Image_Ptr;
    Arr_Hsv : Core.Ipl_Image_P_Array := (H, S, V);
-   Target  : aliased Ipl_Image_P := Highgui.Cv_Load_Image ("target.jpg");
+   Target  : aliased Ipl_Image_Ptr := Highgui.Cv_Load_Image ("target.jpg");
 
    -- float
 
-   function Get_Hist (Image : Ipl_Image_P) return Cv_Histogram_P is
+   function Get_Hist (Image : Ipl_Image_Ptr) return Cv_Histogram_Ptr is
 
-      Hist    : aliased constant Cv_Histogram_P := Imgproc.Operations.Cv_Create_Hist (3,
+      Hist    : aliased constant Cv_Histogram_Ptr := Imgproc.Operations.Cv_Create_Hist (3,
                                                                                     (H_Bins, S_Bins, 30),
                                                                                     0,
                                                                                     Core.To_2d_Pointer (Arr1'Access));
 
-      Hsv     : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image ( (Image.all.Width,
+      Hsv     : aliased Ipl_Image_Ptr := Core.Operations.Cv_Create_Image ( (Image.all.Width,
                                                                         Image.all.Height),
                                                                         Image.all.Depth,
                                                                         Image.all.N_Channels);
-      H       : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image ( (Image.all.Width,
+      H       : aliased Ipl_Image_Ptr := Core.Operations.Cv_Create_Image ( (Image.all.Width,
                                                                         Image.all.Height),
                                                                         Image.all.Depth,
                                                                         1);
-      S       : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image ( (Image.all.Width,
+      S       : aliased Ipl_Image_Ptr := Core.Operations.Cv_Create_Image ( (Image.all.Width,
                                                                         Image.all.Height),
                                                                         Image.all.Depth,
                                                                         1);
-      V       : aliased Ipl_Image_P := Core.Operations.Cv_Create_Image ((Image.all.Width,
+      V       : aliased Ipl_Image_Ptr := Core.Operations.Cv_Create_Image ((Image.all.Width,
                                                                         Image.all.Height),
                                                                         Image.all.Depth,
         1);

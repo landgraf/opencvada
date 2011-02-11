@@ -25,22 +25,22 @@ package Calib_3d.Compat is
                                          Method    : Integer;
                                          Matrix    : Cv_32f_Array);
 
-   function Cv_Find_Chess_Board_Corner_Guesses (Arr          : Cv_Arr_P;
-                                                Thresharr    : Cv_Arr_P;
+   function Cv_Find_Chess_Board_Corner_Guesses (Arr          : Cv_Arr_Ptr;
+                                                Thresharr    : Cv_Arr_Ptr;
                                                 Storage      : Cv_Mem_Storage;
                                                 Pattern_Size : Cv_Size;
                                                 Corners      : Cv_Point_2d_32f_Array;
                                                 Corner_Count : access Integer)
                                                 return Integer;
-   function Cv_Find_Chess_Board_Corner_Guesses (Arr          : Cv_Mat_P;
-                                                Thresharr    : Cv_Mat_P;
+   function Cv_Find_Chess_Board_Corner_Guesses (Arr          : Cv_Mat_Ptr;
+                                                Thresharr    : Cv_Mat_Ptr;
                                                 Storage      : Cv_Mem_Storage;
                                                 Pattern_Size : Cv_Size;
                                                 Corners      : Cv_Point_2d_32f_Array;
                                                 Corner_Count : access Integer)
                                                    return Integer;
-   function Cv_Find_Chess_Board_Corner_Guesses (Arr          : Ipl_Image_P;
-                                                Thresharr    : Ipl_Image_P;
+   function Cv_Find_Chess_Board_Corner_Guesses (Arr          : Ipl_Image_Ptr;
+                                                Thresharr    : Ipl_Image_Ptr;
                                                 Storage      : Cv_Mem_Storage;
                                                 Pattern_Size : Cv_Size;
                                                 Corners      : Cv_Point_2d_32f_Array;
@@ -97,9 +97,9 @@ package Calib_3d.Compat is
    Cv_Rodrigues_V2m : constant := 0;
 
    --     Converts rotation_matrix matrix to rotation_matrix vector or vice versa
-   procedure Cv_Rodrigues (Rotation_Matrix : Cv_Mat_P;
-                           Rotation_Vector : Cv_Mat_P;
-                           Jacobian        : Cv_Mat_P;
+   procedure Cv_Rodrigues (Rotation_Matrix : Cv_Mat_Ptr;
+                           Rotation_Vector : Cv_Mat_Ptr;
+                           Jacobian        : Cv_Mat_Ptr;
                            Conv_Type       : Integer);
 
    procedure Cv_Project_Points (Point_Count                    : Integer;

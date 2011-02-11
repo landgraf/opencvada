@@ -34,12 +34,12 @@ package Video.Background_Segm is
    Cv_Bg_Model_Fgd_Simple : constant := 2;
 
    type Cv_Bg_Stat_Model;
-   type Cv_Bg_Stat_Model_P is access all Cv_Bg_Stat_Model;
+   type Cv_Bg_Stat_Model_Ptr is access all Cv_Bg_Stat_Model;
 
-   type Cv_Release_Bg_Stat_Model_Func is access procedure (Bg_Model : access Cv_Bg_Stat_Model_P);
+   type Cv_Release_Bg_Stat_Model_Func is access procedure (Bg_Model : access Cv_Bg_Stat_Model_Ptr);
 
-   type Cv_Update_Bg_Stat_Model_Func is access function (Curr_Frame    : Ipl_Image_P;
-                                                         Bg_Model      : Cv_Bg_Stat_Model_P;
+   type Cv_Update_Bg_Stat_Model_Func is access function (Curr_Frame    : Ipl_Image_Ptr;
+                                                         Bg_Model      : Cv_Bg_Stat_Model_Ptr;
                                                          Learning_Rate : Long_Float)
                                                          return Integer;
 
@@ -47,12 +47,12 @@ package Video.Background_Segm is
       Model_Type         : Integer;           -- Type of BG model
       Release            : Cv_Release_Bg_Stat_Model_Func;
       Update             : Cv_Update_Bg_Stat_Model_Func;
-      Background         : Ipl_Image_P;       -- 8UC3 reference background image
-      Foreground         : Ipl_Image_P;       -- 8UC1 foreground image
+      Background         : Ipl_Image_Ptr;       -- 8UC3 reference background image
+      Foreground         : Ipl_Image_Ptr;       -- 8UC1 foreground image
       Layers             : Cv_Ipl_Image_P_Pointer; -- 8UC3 reference background image, can be null
       Layer_Count        : Integer;           -- Can be zero
-      Storage            : Cv_Mem_Storage_P;  -- Storage for foreground_regions
-      Foreground_Regions : Cv_Seq_P;          -- Foreground object contours
+      Storage            : Cv_Mem_Storage_Ptr;  -- Storage for foreground_regions
+      Foreground_Regions : Cv_Seq_Ptr;          -- Foreground object contours
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Bg_Stat_Model);
 
@@ -61,8 +61,8 @@ package Video.Background_Segm is
 
    --     Updates statistical model and returns number of found foreground
    --     regions
-   function Cv_Update_Bg_Stat_Model (Current_Frame : Ipl_Image_P;
-                                     Bg_Model      : Cv_Bg_Stat_Model_P;
+   function Cv_Update_Bg_Stat_Model (Current_Frame : Ipl_Image_Ptr;
+                                     Bg_Model      : Cv_Bg_Stat_Model_Ptr;
                                      Learning_Rate : Long_Float := -1.0)
                                      return Integer;
 
@@ -73,13 +73,13 @@ package Video.Background_Segm is
    --        segments - pointer to result of segmentation (for example
    --                   MeanShiftSegmentation)
    --        bg_model - pointer to CvBGStatModel structure
-   procedure Cv_Refine_Foreground_Mask_By_Segm (Segments : Cv_Seq_P;
-                                                Bg_Mode  : Cv_Bg_Stat_Model_P);
+   procedure Cv_Refine_Foreground_Mask_By_Segm (Segments : Cv_Seq_Ptr;
+                                                Bg_Mode  : Cv_Bg_Stat_Model_Ptr);
 
    --     Common use change detection function
-   function Cv_Change_Detection (Prev_Frame  : Ipl_Image_P;
-                                 Curr_Frame  : Ipl_Image_P;
-                                 Change_Mask : Ipl_Image_P)
+   function Cv_Change_Detection (Prev_Frame  : Ipl_Image_Ptr;
+                                 Curr_Frame  : Ipl_Image_Ptr;
+                                 Change_Mask : Ipl_Image_Ptr)
                                  return Integer;
 
    -- Interface of ACM MM2003 algorithm ----------------------------------------
@@ -168,32 +168,32 @@ package Video.Background_Segm is
       Is_Trained_Dyn_Model : Unsigned_8; -- uchar
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Bg_Pixel_Stat);
-   type Cv_Bg_Pixel_Stat_P is access all Cv_Bg_Pixel_Stat;
+   type Cv_Bg_Pixel_Stat_Ptr is access all Cv_Bg_Pixel_Stat;
 
    type Cv_Fgd_Stat_Model is record
       Model_Type         : Integer;           -- Type of BG model
       Release            : Cv_Release_Bg_Stat_Model_Func;
       Update             : Cv_Release_Bg_Stat_Model_Func;
-      Background         : Ipl_Image_P;       -- 8UC3 reference background image
-      Foreground         : Ipl_Image_P;       -- 8UC1 foreground image
+      Background         : Ipl_Image_Ptr;       -- 8UC3 reference background image
+      Foreground         : Ipl_Image_Ptr;       -- 8UC1 foreground image
       Layers             : Cv_Ipl_Image_P_Pointer; -- 8UC3 reference background image, can be null
       Layer_Count        : Integer;           -- Can be zero
-      Storage            : Cv_Mem_Storage_P;  -- Storage for foreground_regions
-      Foreground_Regions : Cv_Seq_P;          -- Foreground object contours
+      Storage            : Cv_Mem_Storage_Ptr;  -- Storage for foreground_regions
+      Foreground_Regions : Cv_Seq_Ptr;          -- Foreground object contours
 
-      Pixel_Stat         : Cv_Bg_Pixel_Stat_P;
-      Ftd                : Ipl_Image_P;
-      Fbd                : Ipl_Image_P;
-      Prev_Frame         : Ipl_Image_P;
+      Pixel_Stat         : Cv_Bg_Pixel_Stat_Ptr;
+      Ftd                : Ipl_Image_Ptr;
+      Fbd                : Ipl_Image_Ptr;
+      Prev_Frame         : Ipl_Image_Ptr;
       Params             : Cv_Fgd_Stat_Model_Params;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Fgd_Stat_Model);
-   type Cv_Fgd_Stat_Model_P is access all Cv_Fgd_Stat_Model;
+   type Cv_Fgd_Stat_Model_Ptr is access all Cv_Fgd_Stat_Model;
 
 
-   function Cv_Create_Fgd_Stat_Model (First_Frame : Ipl_Image_P;
-                                      Parameters  : Cv_Fgd_Stat_Model_P := null)
-                                      return Cv_Bg_Stat_Model_P;
+   function Cv_Create_Fgd_Stat_Model (First_Frame : Ipl_Image_Ptr;
+                                      Parameters  : Cv_Fgd_Stat_Model_Ptr := null)
+                                      return Cv_Bg_Stat_Model_Ptr;
 
    --     Interface of Gaussian mixture algorithm
    --
@@ -226,7 +226,7 @@ package Video.Background_Segm is
       Variance_Init : Long_Float;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Gauss_Bg_Stat_Model_Params);
-   type Cv_Gauss_Bg_Stat_Model_Params_P is access all Cv_Gauss_Bg_Stat_Model_Params;
+   type Cv_Gauss_Bg_Stat_Model_Params_Ptr is access all Cv_Gauss_Bg_Stat_Model_Params;
 
    subtype Cv_64f_Array_Ncolors is Cv_64f_Array (1 .. Cv_Bgfg_Mog_Ncolors);
 
@@ -237,48 +237,48 @@ package Video.Background_Segm is
       Mean      : Cv_64f_Array_Ncolors;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Gauss_Bg_Values);
-   type Cv_Gauss_Bg_Values_P is access all Cv_Gauss_Bg_Values;
+   type Cv_Gauss_Bg_Values_Ptr is access all Cv_Gauss_Bg_Values;
 
    type Cv_Gauss_Bg_Points is record
-      G_Values : Cv_Gauss_Bg_Values_P;
+      G_Values : Cv_Gauss_Bg_Values_Ptr;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Gauss_Bg_Points);
-   type Cv_Gauss_Bg_Points_P is access all Cv_Gauss_Bg_Points;
+   type Cv_Gauss_Bg_Points_Ptr is access all Cv_Gauss_Bg_Points;
 
    type Cv_Gauss_Bg_Model is record
       Model_Type         : Integer;           -- Type of BG model
       Release            : Cv_Release_Bg_Stat_Model_Func;
       Update             : Cv_Release_Bg_Stat_Model_Func;
-      Background         : Ipl_Image_P;       -- 8UC3 reference background image
-      Foreground         : Ipl_Image_P;       -- 8UC1 foreground image
+      Background         : Ipl_Image_Ptr;       -- 8UC3 reference background image
+      Foreground         : Ipl_Image_Ptr;       -- 8UC1 foreground image
       Layers             : Cv_Ipl_Image_P_Pointer; -- 8UC3 reference background image, can be null
       Layer_Count        : Integer;           -- Can be zero
-      Storage            : Cv_Mem_Storage_P;  -- Storage for foreground_regions
-      Foreground_Regions : Cv_Seq_P;          -- Foreground object contours
+      Storage            : Cv_Mem_Storage_Ptr;  -- Storage for foreground_regions
+      Foreground_Regions : Cv_Seq_Ptr;          -- Foreground object contours
 
       Params             : Cv_Gauss_Bg_Stat_Model_Params;
-      G_Point            : Cv_Gauss_Bg_Points_P;
+      G_Point            : Cv_Gauss_Bg_Points_Ptr;
       Count_Frames       : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Gauss_Bg_Model);
-   type Cv_Gauss_Bg_Model_P is access all Cv_Gauss_Bg_Model;
+   type Cv_Gauss_Bg_Model_Ptr is access all Cv_Gauss_Bg_Model;
 
    --     Creates Gaussian mixture background model
-   function Cv_Create_Gaussian_Bg_Model (First_Frame : Ipl_Image_P;
-                                         Parameters  : Cv_Gauss_Bg_Stat_Model_Params_P := null)
-                                         return Cv_Bg_Stat_Model_P;
+   function Cv_Create_Gaussian_Bg_Model (First_Frame : Ipl_Image_Ptr;
+                                         Parameters  : Cv_Gauss_Bg_Stat_Model_Params_Ptr := null)
+                                         return Cv_Bg_Stat_Model_Ptr;
 
    type Cv_Bg_Code_Book_Elem;
-   type Cv_Bg_Code_Book_Elem_P is access all Cv_Bg_Code_Book_Elem;
+   type Cv_Bg_Code_Book_Elem_Ptr is access all Cv_Bg_Code_Book_Elem;
 
-   type Cv_Bg_Code_Book_Elem_P_Array is array (Integer range <>) of aliased Cv_Bg_Code_Book_Elem_P;
+   type Cv_Bg_Code_Book_Elem_P_Array is array (Integer range <>) of aliased Cv_Bg_Code_Book_Elem_Ptr;
 
    package Cv_Bg_Code_Book_Elem_Pointer_Pkg is
-     new Interfaces.C.Pointers (Integer, Cv_Bg_Code_Book_Elem_P, Cv_Bg_Code_Book_Elem_P_Array, null);
+     new Interfaces.C.Pointers (Integer, Cv_Bg_Code_Book_Elem_Ptr, Cv_Bg_Code_Book_Elem_P_Array, null);
    subtype Cv_Bg_Code_Book_Elem_Pointer is Cv_Bg_Code_Book_Elem_Pointer_Pkg.Pointer;
 
    type Cv_Bg_Code_Book_Elem is record
-      Next          : Cv_Bg_Code_Book_Elem_P;
+      Next          : Cv_Bg_Code_Book_Elem_Ptr;
       T_Last_Update : Integer;
       Stale         : Integer;
       Box_Min       : Cv_8u_Array (1 .. 3);
@@ -295,67 +295,67 @@ package Video.Background_Segm is
       Mod_Min   : Cv_8u_Array (1 .. 3);
       Mod_Max   : Cv_8u_Array (1 .. 3);
       Cb_Map    : Cv_Bg_Code_Book_Elem_Pointer;
-      Storage   : Cv_Mem_Storage_P;
-      Free_List : Cv_Bg_Code_Book_Elem_P;
+      Storage   : Cv_Mem_Storage_Ptr;
+      Free_List : Cv_Bg_Code_Book_Elem_Ptr;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Bg_Code_Book_Model);
-   type Cv_Bg_Code_Book_Model_P is access all Cv_Bg_Code_Book_Model;
+   type Cv_Bg_Code_Book_Model_Ptr is access all Cv_Bg_Code_Book_Model;
 
-   function Cv_Create_Bg_Code_Book_Model return Cv_Bg_Code_Book_Model_P;
-   procedure Cv_Release_Bg_Code_Book_Model (Model : access Cv_Bg_Code_Book_Model_P);
+   function Cv_Create_Bg_Code_Book_Model return Cv_Bg_Code_Book_Model_Ptr;
+   procedure Cv_Release_Bg_Code_Book_Model (Model : access Cv_Bg_Code_Book_Model_Ptr);
 
-   procedure Cv_Bg_Code_Book_Update (Model : Cv_Bg_Code_Book_Model_P;
-                                     Image : Cv_Arr_P;
+   procedure Cv_Bg_Code_Book_Update (Model : Cv_Bg_Code_Book_Model_Ptr;
+                                     Image : Cv_Arr_Ptr;
                                      Roi   : Cv_Rect := Cv_Create_Rect (0, 0, 0, 0);
-                                     Mask  : Cv_Arr_P := null);
-   procedure Cv_Bg_Code_Book_Update (Model : Cv_Bg_Code_Book_Model_P;
-                                     Image : Cv_Mat_P;
+                                     Mask  : Cv_Arr_Ptr := null);
+   procedure Cv_Bg_Code_Book_Update (Model : Cv_Bg_Code_Book_Model_Ptr;
+                                     Image : Cv_Mat_Ptr;
                                      Roi   : Cv_Rect := Cv_Create_Rect (0, 0, 0, 0);
-                                     Mask  : Cv_Mat_P := null);
-   procedure Cv_Bg_Code_Book_Update (Model : Cv_Bg_Code_Book_Model_P;
-                                     Image : Ipl_Image_P;
+                                     Mask  : Cv_Mat_Ptr := null);
+   procedure Cv_Bg_Code_Book_Update (Model : Cv_Bg_Code_Book_Model_Ptr;
+                                     Image : Ipl_Image_Ptr;
                                      Roi   : Cv_Rect := Cv_Create_Rect (0, 0, 0, 0);
-                                     Mask  : Ipl_Image_P := null);
+                                     Mask  : Ipl_Image_Ptr := null);
 
-   function Cv_Bg_Code_Book_Diff (Model  : Cv_Bg_Code_Book_Model_P;
-                                  Image  : Cv_Arr_P;
-                                  Fgmask : Cv_Arr_P;
+   function Cv_Bg_Code_Book_Diff (Model  : Cv_Bg_Code_Book_Model_Ptr;
+                                  Image  : Cv_Arr_Ptr;
+                                  Fgmask : Cv_Arr_Ptr;
                                   Roi    : Cv_Rect := Cv_Create_Rect (0, 0, 0, 0))
                                   return Integer;
-   function Cv_Bg_Code_Book_Diff (Model  : Cv_Bg_Code_Book_Model_P;
-                                  Image  : Cv_Mat_P;
-                                  Fgmask : Cv_Mat_P;
+   function Cv_Bg_Code_Book_Diff (Model  : Cv_Bg_Code_Book_Model_Ptr;
+                                  Image  : Cv_Mat_Ptr;
+                                  Fgmask : Cv_Mat_Ptr;
                                   Roi    : Cv_Rect := Cv_Create_Rect (0, 0, 0, 0))
                                   return Integer;
-   function Cv_Bg_Code_Book_Diff (Model  : Cv_Bg_Code_Book_Model_P;
-                                  Image  : Ipl_Image_P;
-                                  Fgmask : Ipl_Image_P;
+   function Cv_Bg_Code_Book_Diff (Model  : Cv_Bg_Code_Book_Model_Ptr;
+                                  Image  : Ipl_Image_Ptr;
+                                  Fgmask : Ipl_Image_Ptr;
                                   Roi    : Cv_Rect := Cv_Create_Rect (0, 0, 0, 0))
                                   return Integer;
 
-   procedure Cv_Bg_Code_Book_Clear_Stale (Model        : Cv_Bg_Code_Book_Model_P;
+   procedure Cv_Bg_Code_Book_Clear_Stale (Model        : Cv_Bg_Code_Book_Model_Ptr;
                                           Stale_Thresh : Integer;
                                           Roi          : Cv_Rect := Cv_Create_Rect (0, 0, 0, 0);
-                                          Mask         : Cv_Arr_P := null);
+                                          Mask         : Cv_Arr_Ptr := null);
 
-   function Cv_Segment_Fg_Mask (Fgmask      : Cv_Arr_P;
+   function Cv_Segment_Fg_Mask (Fgmask      : Cv_Arr_Ptr;
                                 Poly1_Hull0 : Integer := 1;
                                 Perim_Scale : Float := 4.0;
-                                Storage     : Cv_Mem_Storage_P := null;
+                                Storage     : Cv_Mem_Storage_Ptr := null;
                                 Offset      : Cv_Point := Cv_Create_Point (0, 0))
-                                return Cv_Seq_P;
-   function Cv_Segment_Fg_Mask (Fgmask      : Cv_Mat_P;
+                                return Cv_Seq_Ptr;
+   function Cv_Segment_Fg_Mask (Fgmask      : Cv_Mat_Ptr;
                                 Poly1_Hull0 : Integer := 1;
                                 Perim_Scale : Float := 4.0;
-                                Storage     : Cv_Mem_Storage_P := null;
+                                Storage     : Cv_Mem_Storage_Ptr := null;
                                 Offset      : Cv_Point := Cv_Create_Point (0, 0))
-                                return Cv_Seq_P;
-   function Cv_Segment_Fg_Mask (Fgmask      : Ipl_Image_P;
+                                return Cv_Seq_Ptr;
+   function Cv_Segment_Fg_Mask (Fgmask      : Ipl_Image_Ptr;
                                 Poly1_Hull0 : Integer := 1;
                                 Perim_Scale : Float := 4.0;
-                                Storage     : Cv_Mem_Storage_P := null;
+                                Storage     : Cv_Mem_Storage_Ptr := null;
                                 Offset      : Cv_Point := Cv_Create_Point (0, 0))
-                                return Cv_Seq_P;
+                                return Cv_Seq_Ptr;
 private
    --
    pragma Import (C, Cv_Release_Bg_Stat_Model, "cvReleaseBGStatModel");

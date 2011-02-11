@@ -40,7 +40,7 @@ package Core is
    type Cv_Set;
    type Cv_Point;
    type Cv_File_Node;
-   type Cv_File_Node_P is access all Cv_File_Node;
+   type Cv_File_Node_Ptr is access all Cv_File_Node;
    -- Moved since we use them early.
    CV_8U       : constant := 0;
    CV_8S       : constant := 1;
@@ -186,15 +186,15 @@ package Core is
    --    into functions where the particular
    --    array type is recognized at runtime:
    type Cv_Arr is new Integer;
-   type Cv_Arr_P is access all Cv_Arr;
-   type Cv_Void_P is access all Cv_Arr;
+   type Cv_Arr_Ptr is access all Cv_Arr;
+   type Cv_Void_Ptr is access all Cv_Arr;
 
-   type Cv_Arr_P_Array is array (Integer range <>) of aliased Cv_Arr_P;
+   type Cv_Arr_P_Array is array (Integer range <>) of aliased Cv_Arr_Ptr;
    type Cv_Arr_P_Array_P is access Cv_Arr_P_Array;
 
    package Cv_Arr_Pointer_Pkg is
-     new Interfaces.C.Pointers (Integer, Cv_Arr_P, Cv_Arr_P_Array, null);
-   subtype Cv_Arr_Pointer is new Cv_Arr_Pointer_Pkg.Pointer;
+     new Interfaces.C.Pointers (Integer, Cv_Arr_Ptr, Cv_Arr_P_Array, null);
+   subtype Cv_Arr_Pointer is Cv_Arr_Pointer_Pkg.Pointer;
 
 
    type Suf is (S, U, F);
@@ -368,8 +368,8 @@ package Core is
       null;
    end record;
    pragma Convention (C_Pass_By_Copy, Ipl_Tile_Info);
-   type Ipl_Tile_Info_P is access all Ipl_Tile_Info;
-   pragma Convention (C, Ipl_Tile_Info_P);
+   type Ipl_Tile_Info_Ptr is access all Ipl_Tile_Info;
+   pragma Convention (C, Ipl_Tile_Info_Ptr);
 
    -- Ipl_ROI ------------------------------------------------------------------
    -----------------------------------------------------------------------------
@@ -381,13 +381,13 @@ package Core is
       Y_Offset : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Ipl_ROI);
-   type Ipl_ROI_P is access all ipl_Roi;
-   pragma Convention (C, Ipl_ROI_P);
+   type Ipl_ROI_Ptr is access all ipl_Roi;
+   pragma Convention (C, Ipl_Roi_Ptr);
 
    -- Ipl_Image ----------------------------------------------------------------
    -----------------------------------------------------------------------------
-   type Ipl_Image_P is access all ipl_Image;
-   pragma Convention (C, Ipl_Image_P);
+   type Ipl_Image_Ptr is access all ipl_Image;
+   pragma Convention (C, Ipl_Image_Ptr);
    type Ipl_Image is record
       N_Size            : Integer;
       ID                : Integer;
@@ -401,10 +401,10 @@ package Core is
       Align             : Integer;
       Width             : Integer;
       Height            : Integer;
-      ROI               : Ipl_ROI_P;
-      Mask_ROI          : Ipl_Image_P;
+      ROI               : Ipl_Roi_Ptr;
+      Mask_ROI          : Ipl_Image_Ptr;
       Image_ID          : Void_P;
-      Tile_Info         : Ipl_Tile_Info_P;
+      Tile_Info         : Ipl_Tile_Info_Ptr;
       Image_Size        : Integer;
       Image_Data        : Cv_8u_Pointer;
 --        Image_Data        : C_Strings.Chars_Ptr; -- Test with a cv_8u_array later, same with Data_Origin
@@ -416,11 +416,11 @@ package Core is
    end record;
    pragma Convention (C_Pass_By_Copy, Ipl_Image);
    --   type Ipl_Image_Array is array (Integer range <>) of aliased Ipl_Image;
-   type Ipl_Image_P_Array is array (Integer range<>) of aliased Ipl_Image_P;
+   type Ipl_Image_P_Array is array (Integer range<>) of aliased Ipl_Image_Ptr;
 
 
    package Cv_Ipl_Image_P_Pointer_Pkg is
-     new Interfaces.C.Pointers (Integer, Ipl_Image_P, Ipl_Image_P_Array, null);
+     new Interfaces.C.Pointers (Integer, Ipl_Image_Ptr, Ipl_Image_P_Array, null);
    subtype Cv_Ipl_Image_P_Pointer is Cv_Ipl_Image_P_Pointer_Pkg.Pointer;
 
    type Ipl_Conv_Kernel is
@@ -433,7 +433,7 @@ package Core is
          N_Shift_R  : Integer;
       end record;
    pragma Convention (C_Pass_By_Copy, Ipl_Conv_Kernel);
-   type Ipl_Conv_Kernel_P is access all Ipl_Conv_Kernel;
+   type Ipl_Conv_Kernel_Ptr is access all Ipl_Conv_Kernel;
 
    type Ipl_Conv_Kernel_FP is
       record
@@ -451,8 +451,8 @@ package Core is
    Ipl_Border_Reflect_101 : constant := 4;
    Ipl_Image_Magic_Val : constant := 112; -- ipl_image'size/8
 
-   function Cv_Is_Image_Hdr (Img : Ipl_Image_P) return Integer;
-   function Cv_Is_Image (Img : Ipl_Image_P) return Integer;
+   function Cv_Is_Image_Hdr (Img : Ipl_Image_Ptr) return Integer;
+   function Cv_Is_Image (Img : Ipl_Image_Ptr) return Integer;
 
    Ipl_Depth_64f          : constant := 64;
 
@@ -511,7 +511,7 @@ package Core is
    end record;
    pragma Unchecked_Union (Mat_Data);
    pragma Convention (C_Pass_By_Copy, Mat_Data);
-   type Mat_Data_P is access all Mat_Data;
+   type Mat_Data_Ptr is access all Mat_Data;
 
    type Cv_Mat is record
       Mat_Type     : Unsigned_32; -- used to be Integer
@@ -523,28 +523,28 @@ package Core is
       Cols         : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Mat);
-   type Cv_Mat_P is access all cv_Mat;
+   type Cv_Mat_Ptr is access all cv_Mat;
    type Cv_Mat_Array_AxB is array (Integer range <>, Integer range <>) of aliased Cv_Mat;
 
-   function Cv_Is_Mat_Hdr (Mat : Cv_Mat_P) return Integer;
+   function Cv_Is_Mat_Hdr (Mat : Cv_Mat_Ptr) return Integer;
 
-   function Cv_Is_Mat (Mat : Cv_Mat_P) return Integer;
+   function Cv_Is_Mat (Mat : Cv_Mat_Ptr) return Integer;
 
-   function Cv_Is_Mask_Arr (Mat : Cv_Mat_P) return Integer;
+   function Cv_Is_Mask_Arr (Mat : Cv_Mat_Ptr) return Integer;
 
-   function Cv_Are_Types_Eq (Mat1 : Cv_Mat_P;
-                             Mat2 : Cv_Mat_P) return Integer;
+   function Cv_Are_Types_Eq (Mat1 : Cv_Mat_Ptr;
+                             Mat2 : Cv_Mat_Ptr) return Integer;
 
-   function Cv_Are_Cns_Eq (Mat1 : Cv_Mat_P;
-                           Mat2 : Cv_Mat_P) return Integer;
+   function Cv_Are_Cns_Eq (Mat1 : Cv_Mat_Ptr;
+                           Mat2 : Cv_Mat_Ptr) return Integer;
 
-   function Cv_Are_Depths_Eq (Mat1 : Cv_Mat_P;
-                              Mat2 : Cv_Mat_P) return Integer;
+   function Cv_Are_Depths_Eq (Mat1 : Cv_Mat_Ptr;
+                              Mat2 : Cv_Mat_Ptr) return Integer;
 
-   function Cv_Are_Sizes_Eq (Mat1 : Cv_Mat_P;
-                             Mat2 : Cv_Mat_P) return Integer;
+   function Cv_Are_Sizes_Eq (Mat1 : Cv_Mat_Ptr;
+                             Mat2 : Cv_Mat_Ptr) return Integer;
 
-   function Cv_Is_Mat_Const (Mat : Cv_Mat_P) return Integer;
+   function Cv_Is_Mat_Const (Mat : Cv_Mat_Ptr) return Integer;
 
    function Cv_Elem_Size_1 (E_Type : Unsigned_32) return Unsigned_32; -- used to be Integer
    function Cv_Elem_Size (E_Type : Unsigned_32) return Unsigned_32; -- used to be Integer
@@ -554,20 +554,20 @@ package Core is
    function Cv_Create_Mat (Rows   : Integer;
                            Cols   : Integer;
                            M_Type : Unsigned_32; -- used to be Integer
-                           Data   : Cv_Void_P := null)
+                           Data   : Cv_Void_Ptr := null)
                            return Cv_Mat;
 
 
-   function Cv_Mat_Elem_Ptr_Fast (Mat      : Cv_Mat_P;
+   function Cv_Mat_Elem_Ptr_Fast (Mat      : Cv_Mat_Ptr;
                                   Row      : Integer;
                                   Col      : Integer;
                                   Pix_Size : Unsigned_32) return Cv_8u_Pointer;
 
-   function Cv_Mat_Elem_Ptr (Mat : Cv_Mat_P;
+   function Cv_Mat_Elem_Ptr (Mat : Cv_Mat_Ptr;
                              Row : Integer;
                              Col : Integer) return Cv_8u_Pointer;
 
-   function Cv_Mat_Elem (Mat      : Cv_Mat_P;
+   function Cv_Mat_Elem (Mat      : Cv_Mat_Ptr;
                          Elemtype : Unsigned_32; -- used to be Integer
                          Row      : Integer;
                          Col      : Integer) return Cv_8u_Pointer;
@@ -638,26 +638,26 @@ package Core is
       Size      : Cv_32s_Array (1 .. Cv_Max_Dim);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Sparse_Mat);
-   type Cv_Sparse_Mat_P is access all cv_Sparse_Mat;
+   type Cv_Sparse_Mat_Ptr is access all cv_Sparse_Mat;
 
-   function Cv_Is_Sparse_Mat_Hdr (Mat : Cv_Sparse_Mat_P) return Integer;
-   function Cv_Is_Sparse_Mat (Mat : Cv_Sparse_Mat_P) return Integer renames Cv_Is_Sparse_Mat_Hdr;
+   function Cv_Is_Sparse_Mat_Hdr (Mat : Cv_Sparse_Mat_Ptr) return Integer;
+   function Cv_Is_Sparse_Mat (Mat : Cv_Sparse_Mat_Ptr) return Integer renames Cv_Is_Sparse_Mat_Hdr;
 
    type Cv_Sparse_Node;
-   type Cv_Sparse_Node_P is access all cv_Sparse_Node;
+   type Cv_Sparse_Node_Ptr is access all cv_Sparse_Node;
    type Cv_Sparse_Node is record
       Hashval : Natural;
-      Next    : aliased Cv_Sparse_Node_P;
+      Next    : aliased Cv_Sparse_Node_Ptr;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Sparse_Node);
 
    type Cv_Sparse_Mat_Iterator is record
-      Mat    : aliased Cv_Sparse_Mat_P;
-      Node   : aliased Cv_Sparse_Node_P;
+      Mat    : aliased Cv_Sparse_Mat_Ptr;
+      Node   : aliased Cv_Sparse_Node_Ptr;
       Curidx : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Sparse_Mat_Iterator);
-   type Cv_Sparse_Mat_Iterator_P is access all cv_Sparse_Mat_Iterator;
+   type Cv_Sparse_Mat_Iterator_Ptr is access all cv_Sparse_Mat_Iterator;
 
    -- Fix these two!
    --     #define CV_NODE_VAL(mat,node)   ((void*)((uchar*)(node) + (mat)->valoffset))
@@ -692,24 +692,24 @@ package Core is
    type Cv_Histogram is
       record
          HistType : Integer;
-         Bins     : Cv_Arr_P;
+         Bins     : Cv_Arr_Ptr;
          Thresh   : Thresh_Arr;
          Thresh2  : Cv_32F_Pointer_Array_P;
          Mat      : Cv_Mat_ND;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Histogram);
-   type Cv_Histogram_P is access all cv_Histogram;
+   type Cv_Histogram_Ptr is access all cv_Histogram;
 
-   type Cv_Histogram_P_Array is array (Integer range <>) of aliased Cv_Histogram_P;
+   type Cv_Histogram_P_Array is array (Integer range <>) of aliased Cv_Histogram_Ptr;
 
    package Cv_Histogram_P_Pointer_Pkg is
-     new Interfaces.C.Pointers (Integer, Cv_Histogram_P, Cv_Histogram_P_Array, null);
+     new Interfaces.C.Pointers (Integer, Cv_Histogram_Ptr, Cv_Histogram_P_Array, null);
    subtype Cv_Histogram_P_Pointer is Cv_Histogram_P_Pointer_Pkg.Pointer;
 
-   function Cv_Is_Hist (Hist : Cv_Histogram_P) return Integer;
-   function Cv_Is_Uniform_Hist (Hist : Cv_Histogram_P) return Integer;
-   function Cv_Is_Sparse_Hist (Hist : Cv_Histogram_P) return Integer;
-   function Cv_Hist_Has_Ranges (Hist : Cv_Histogram_P) return Integer;
+   function Cv_Is_Hist (Hist : Cv_Histogram_Ptr) return Integer;
+   function Cv_Is_Uniform_Hist (Hist : Cv_Histogram_Ptr) return Integer;
+   function Cv_Is_Sparse_Hist (Hist : Cv_Histogram_Ptr) return Integer;
+   function Cv_Hist_Has_Ranges (Hist : Cv_Histogram_Ptr) return Integer;
 
    -----------------------------------------------------------------------------
    -- Other supplementary data type definitions
@@ -725,7 +725,7 @@ package Core is
       Height : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Rect);
-   type Cv_Rect_P is access all Cv_Rect;
+   type Cv_Rect_Ptr is access all Cv_Rect;
    type Cv_Rect_Array is array (Integer range <>) of aliased Cv_Rect;
 
    function Cv_Create_Rect (X : Integer; Y : Integer; Width : Integer; Height : Integer)
@@ -759,9 +759,9 @@ package Core is
       Y : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Point);
-   type Cv_Point_P is access all Cv_Point;
+   type Cv_Point_Ptr is access all Cv_Point;
    type Cv_Point_Array is array (Integer range <>) of aliased Cv_Point;
-   type Cv_Point_Array_P is access all Cv_Point_Array;
+   type Cv_Point_Array_Ptr is access all Cv_Point_Array;
    type Cv_Point_2d_Array is array (Integer range <>, Integer range <>) of aliased Cv_Point;
    Cv_Point_Dummy        : Cv_Point;
 
@@ -782,9 +782,9 @@ package Core is
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Point_2D_32f);
    Cv_Point_2d_32f_Dummy : Cv_Point_2d_32f;
-   type Cv_Point_2d_32f_P is access all Cv_Point_2d_32f;
+   type Cv_Point_2d_32f_Ptr is access all Cv_Point_2d_32f;
    type Cv_Point_2D_32F_Array is array (Integer range <>) of aliased Cv_Point_2D_32f;
-   type Cv_Point_2d_32f_Array_P is access all Cv_Point_2d_32f_Array;
+   type Cv_Point_2d_32f_Array_Ptr is access all Cv_Point_2d_32f_Array;
    Cv_Point_2d_32f_Array_Null : Cv_Point_2d_32f_Array (1 .. 0);
 
    package Cv_Point_2d_32f_Pointer_Pkg is
@@ -804,7 +804,7 @@ package Core is
       Z : Float;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Point_3d_32f);
-   type Cv_Point_3d_32f_P is access all Cv_Point_3d_32f;
+   type Cv_Point_3d_32f_Ptr is access all Cv_Point_3d_32f;
    type Cv_Point_3D_32F_Array is array (Integer range <>) of aliased Cv_Point_3D_32F;
    Cv_Point_3d_32f_Array_Null : Cv_Point_3d_32f_Array (1 .. 0);
 
@@ -817,7 +817,7 @@ package Core is
       Y : Long_Float;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Point_2d_64f);
-   type Cv_Point_2d_64f_P is access all Cv_Point_2d_64f;
+   type Cv_Point_2d_64f_Ptr is access all Cv_Point_2d_64f;
    type Cv_Point_2d_64f_Array is array (Integer range <>) of aliased Cv_Point_2d_64f;
    Cv_Point_2d_64f_Array_Null : Cv_Point_2d_64f_Array (1 .. 0);
    Cv_Point_2d_64f_Dummy : Cv_Point_2d_64f;
@@ -831,7 +831,7 @@ package Core is
       Z : Long_Float;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Point_3d_64f);
-   type Cv_Point_3d_64f_P is access all Cv_Point_3d_64f;
+   type Cv_Point_3d_64f_Ptr is access all Cv_Point_3d_64f;
    type Cv_Point_3d_64f_Array is array (Integer range <>) of aliased Cv_Point_3d_64f;
    Cv_Point_3d_64f_Array_Null : Cv_Point_3d_64f_Array ( 1 .. 0);
    --     Cv_Point_3d_64f_Dummy : Cv_Point_3d_64f;
@@ -848,7 +848,7 @@ package Core is
       Height : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Size);
-   type Cv_Size_P is access all cv_Size;
+   type Cv_Size_Ptr is access all cv_Size;
 
    function Cv_Create_Size (Width : Integer; Height : Integer) return Cv_Size;
 
@@ -869,7 +869,7 @@ package Core is
          Angle  : Float;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Box_2d);
-   type Cv_Box_2d_P is access all cv_Box_2d;
+   type Cv_Box_2d_Ptr is access all cv_Box_2d;
 
    type Cv_Line_Iterator is
       record
@@ -881,7 +881,7 @@ package Core is
          Minus_Step  : Integer;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Line_Iterator);
-   type Cv_Line_Iterator_P is access all cv_Line_Iterator;
+   type Cv_Line_Iterator_Ptr is access all cv_Line_Iterator;
 
    -----------------------------------------------------------------------------
    -- CvSlice
@@ -892,7 +892,7 @@ package Core is
       End_Index   : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Slice);
-   type Cv_Slice_P is access all cv_Slice;
+   type Cv_Slice_Ptr is access all cv_Slice;
 
    Cv_Whole_Seq_End_Index : constant := 16#3fff_Ffff#;
 
@@ -909,7 +909,7 @@ package Core is
       Val : aliased Cv_64f_Array (1 .. 4);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Scalar);
-   type Cv_Scalar_P is access all cv_Scalar;
+   type Cv_Scalar_Ptr is access all cv_Scalar;
    type Cv_Scalar_Array is array (Integer range <>) of Cv_Scalar;
 
    function Cv_Create_Scalar (V0 : Long_Float; V1 : Long_Float := 0.0;
@@ -947,16 +947,16 @@ package Core is
       Block_Size : Integer;
       Free_Space : Integer;
    end record;
-   type Cv_Mem_Storage_P is access all Cv_Mem_Storage;
+   type Cv_Mem_Storage_Ptr is access all Cv_Mem_Storage;
 
-   function Cv_Is_Storage (Storage : Cv_Mem_Storage_P) return Integer;
+   function Cv_Is_Storage (Storage : Cv_Mem_Storage_Ptr) return Integer;
 
    type Cv_Mem_Storage_Pos is record
       Top        : access Cv_Mem_Block;
       Free_Space : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Mem_Storage_Pos);
-   type Cv_Mem_Storage_Pos_P is access all cv_Mem_Storage_Pos;
+   type Cv_Mem_Storage_Pos_Ptr is access all cv_Mem_Storage_Pos;
 
    -----------------------------------------------------------------------------
    -- Sequence
@@ -969,30 +969,30 @@ package Core is
       Data        : Interfaces.C.Strings.Chars_Ptr;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Seq_Block);
-   type Cv_Seq_Block_P is access all cv_Seq_Block;
+   type Cv_Seq_Block_Ptr is access all cv_Seq_Block;
 
-   procedure Cv_Change_Seq_Block (Reader    : Cv_Void_P;
+   procedure Cv_Change_Seq_Block (Reader    : Cv_Void_Ptr;
                                Direction : Integer);
 
-   type Cv_Seq_P is access all Cv_Seq;
+   type Cv_Seq_Ptr is access all Cv_Seq;
    type Cv_Seq is record
       Flags       : Unsigned_32;
       Header_Size : Integer;
-      H_Prev      : Cv_Seq_P;
-      H_Next      : Cv_Seq_P;
-      V_Prev      : Cv_Seq_P;
-      V_Next      : Cv_Seq_P;
+      H_Prev      : Cv_Seq_Ptr;
+      H_Next      : Cv_Seq_Ptr;
+      V_Prev      : Cv_Seq_Ptr;
+      V_Next      : Cv_Seq_Ptr;
       Total       : Integer;
       Elem_Size   : Integer;
       Block_Max   : Interfaces.C.Strings.Chars_Ptr;
       Ptr         : Cv_Arr_Pointer; --test this
       Delta_Elems : Integer;
-      Storage     : Cv_Mem_Storage_P;
-      Free_Blocks : Cv_Seq_Block_P;
-      First       : Cv_Seq_Block_P;
+      Storage     : Cv_Mem_Storage_Ptr;
+      Free_Blocks : Cv_Seq_Block_Ptr;
+      First       : Cv_Seq_Block_Ptr;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Seq);
-   type Cv_Seq_P_Array is array (Integer range <>) of aliased Cv_Seq_P;
+   type Cv_Seq_P_Array is array (Integer range <>) of aliased Cv_Seq_Ptr;
 
    Cv_Type_Name_Seq : constant String := "opencv-sequence";
    Cv_Type_Name_Seq_Tree : constant String := "opencv-sequence-tree";
@@ -1005,7 +1005,7 @@ package Core is
       Next_Free : access Cv_Set_Elem;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Set_Elem);
-   type Cv_Set_Elem_P is access all cv_Set_Elem;
+   type Cv_Set_Elem_Ptr is access all cv_Set_Elem;
    type Cv_Set_Elem_Array is array (Integer range <>) of aliased Cv_Set_Elem;
    Cv_Set_Elem_Dummy : Cv_Set_Elem;
 
@@ -1032,7 +1032,7 @@ package Core is
       Active_Count : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Set);
-   type Cv_Set_P is access all cv_Set;
+   type Cv_Set_Ptr is access all cv_Set;
    type Cv_Set_Array is array (Integer range <>) of aliased Cv_Set;
    Cv_Set_Dummy : Cv_Set;
 
@@ -1043,17 +1043,17 @@ package Core is
    Cv_Set_Elem_Idx_Mask : constant := (16#4000000# - 1);
    Cv_Set_Elem_Free_Flag : constant := 16#80000000#;
 
-   function Cv_Is_Set_Elem (Ptr : Cv_Set_Elem_P) return Integer;
+   function Cv_Is_Set_Elem (Ptr : Cv_Set_Elem_Ptr) return Integer;
 
    -----------------------------------------------------------------------------
    -- Cv_Graph
    -----------------------------------------------------------------------------
    --type Cv_Graph_Edge;
-   type Cv_Graph_Edge_P is access all Cv_Graph_Edge;
-   type Cv_Graph_Edge_P_Array is array (1 .. 2) of Cv_Graph_Edge_P;
+   type Cv_Graph_Edge_Ptr is access all Cv_Graph_Edge;
+   type Cv_Graph_Edge_P_Array is array (1 .. 2) of Cv_Graph_Edge_Ptr;
 
-   type Cv_Graph_Vtx_P is access all Cv_Graph_Vtx;
-   type Cv_Graph_Vtx_P_Array is array (1 .. 2) of Cv_Graph_Vtx_P;
+   type Cv_Graph_Vtx_Ptr is access all Cv_Graph_Vtx;
+   type Cv_Graph_Vtx_P_Array is array (1 .. 2) of Cv_Graph_Vtx_Ptr;
 
    type Cv_Graph_Edge is record
       Flags  : Integer;
@@ -1072,11 +1072,11 @@ package Core is
    type Cv_Graph_Vtx_2D is
       record
          Flags : Integer; --CV_GRAPH_VERTEX_FIELDS()
-         First : Cv_Graph_Edge_P;
-         Ptr   : Cv_Point_2D_32F_P;
+         First : Cv_Graph_Edge_Ptr;
+         Ptr   : Cv_Point_2d_32f_Ptr;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Graph_Vtx_2d);
-   type Cv_Graph_Vtx_2D_P is access all cv_Graph_Vtx_2d;
+   type Cv_Graph_Vtx_2D_Ptr is access all cv_Graph_Vtx_2d;
 
    type Cv_Graph is record
       Flags        : Integer;
@@ -1118,8 +1118,8 @@ package Core is
          -- CV_SEQUENCE_FIELDS
          Total        : Integer;
          Elem_Size    : Integer;
-         Block_Max    : Cv_Void_P;
-         Ptr          : Cv_Void_P;
+         Block_Max    : Cv_Void_Ptr;
+         Ptr          : Cv_Void_Ptr;
          Delta_Elems  : Integer;
          Storage      : access Cv_Mem_Storage;
          Free_Blocks  : access Cv_Seq_Block;
@@ -1128,7 +1128,7 @@ package Core is
          Origin       : Cv_Point;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Chain);
-   type Cv_Chain_P is access all cv_Chain;
+   type Cv_Chain_Ptr is access all cv_Chain;
 
 
    --/* Freeman chain reader state */
@@ -1136,8 +1136,8 @@ package Core is
       record
       --CV_SEQ_READER_FIELDS()
          HeaderSize : Integer;
-         Seq        : Cv_Seq_P;
-         Block      : Cv_Seq_Block_P;
+         Seq        : Cv_Seq_Ptr;
+         Block      : Cv_Seq_Block_Ptr;
          Ptr        : Cv_Arr_Pointer;
          BlockMin   : Cv_Arr_Pointer;
          BlockMax   : Cv_Arr_Pointer;
@@ -1149,7 +1149,7 @@ package Core is
          Deltas     : Cv_8u_2d_Array (1 .. 8, 1 .. 2);
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Chain_Pt_Reader);
-   type Cv_Chain_Pt_Reader_P is access all cv_Chain_Pt_Reader;
+   type Cv_Chain_Pt_Reader_Ptr is access all cv_Chain_Pt_Reader;
 
    type Cv_Contour is
       record
@@ -1164,8 +1164,8 @@ package Core is
          -- CV_SEQUENCE_FIELDS
          Total        : Integer;
          Elem_Size    : Integer;
-         Block_Max    : Cv_Void_P;
-         Ptr          : Cv_Void_P;
+         Block_Max    : Cv_Void_Ptr;
+         Ptr          : Cv_Void_Ptr;
          Delta_Elems  : Integer;
          Storage      : access Cv_Mem_Storage;
          Free_Blocks  : access Cv_Seq_Block;
@@ -1176,7 +1176,7 @@ package Core is
          Reserved     : Cv_32s_Array (1 .. 3);
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Contour);
-   type Cv_Contour_P is access all cv_Contour;
+   type Cv_Contour_Ptr is access all cv_Contour;
    type Cv_Point_2D_Seq is new Cv_Contour;
 
 
@@ -1188,13 +1188,13 @@ package Core is
 
    --#define CV_IS_SEQ(seq) \
    --    ((seq) != NULL && (((CvSeq*)(seq))->flags & CV_MAGIC_MASK) == CV_SEQ_MAGIC_VAL)
-   function Cv_Is_Seq (Seq : Cv_Seq_P) return Integer;
+   function Cv_Is_Seq (Seq : Cv_Seq_Ptr) return Integer;
 
    Cv_Set_Magic_Val : constant := 16#42980000#;
 
    --#define CV_IS_SET(set) \
    --((set) != NULL && (((CvSeq*)(set))->flags & CV_MAGIC_MASK) == CV_SET_MAGIC_VAL)
-   function Cv_Is_Set (Set : Cv_Seq_P) return Integer;
+   function Cv_Is_Set (Set : Cv_Seq_Ptr) return Integer;
 
    Cv_Seq_Eltype_Bits : constant := 12;
 
@@ -1260,40 +1260,40 @@ package Core is
    --/* sequence of the integer numbers */
    function Cv_Seq_Index return Integer; --(CV_SEQ_KIND_GENERIC  | CV_SEQ_ELTYPE_INDEX)
 
-   function  Cv_Seq_Eltype ( Seq : Cv_Seq_P ) return Unsigned_32;  -- ((Seq)- > Flags & CV_SEQ_ELTYPE_MASK) -- used to be Integer
-   function Cv_Seq_Kind ( Seq : Cv_Seq_P ) return Integer;    --((Seq)- > Flags & CV_SEQ_KIND_MASK )
+   function  Cv_Seq_Eltype ( Seq : Cv_Seq_Ptr ) return Unsigned_32;  -- ((Seq)- > Flags & CV_SEQ_ELTYPE_MASK) -- used to be Integer
+   function Cv_Seq_Kind ( Seq : Cv_Seq_Ptr ) return Integer;    --((Seq)- > Flags & CV_SEQ_KIND_MASK )
 
    --/* flag checking */
-   function Cv_Is_Seq_Index ( Seq : Cv_Seq_P) return Integer;
+   function Cv_Is_Seq_Index ( Seq : Cv_Seq_Ptr) return Integer;
 
-   function Cv_Is_Seq_Curve ( Seq : Cv_Seq_P) return Integer; --      (CV_SEQ_KIND (Seq) =  = CV_SEQ_KIND_CURVE)
-   function Cv_Is_Seq_Closed ( Seq : Cv_Seq_P) return Integer; --     (((Seq)- > Flags & CV_SEQ_FLAG_CLOSED) ! = 0)
-   function Cv_Is_Seq_Convex ( Seq : Cv_Seq_P) return Integer; -- (((Seq)- > Flags & CV_SEQ_FLAG_CONVEX) ! = 0)
-   function Cv_Is_Seq_Hole ( Seq : Cv_Seq_P) return Integer; --      (((Seq)- > Flags & CV_SEQ_FLAG_HOLE) ! = 0)
-   function Cv_Is_Seq_Simple ( Seq : Cv_Seq_P) return Integer; --    ((((Seq)- > Flags & CV_SEQ_FLAG_SIMPLE) ! = 0) |  | CV_IS_SEQ_CONVEX(seq))
+   function Cv_Is_Seq_Curve ( Seq : Cv_Seq_Ptr) return Integer; --      (CV_SEQ_KIND (Seq) =  = CV_SEQ_KIND_CURVE)
+   function Cv_Is_Seq_Closed ( Seq : Cv_Seq_Ptr) return Integer; --     (((Seq)- > Flags & CV_SEQ_FLAG_CLOSED) ! = 0)
+   function Cv_Is_Seq_Convex ( Seq : Cv_Seq_Ptr) return Integer; -- (((Seq)- > Flags & CV_SEQ_FLAG_CONVEX) ! = 0)
+   function Cv_Is_Seq_Hole ( Seq : Cv_Seq_Ptr) return Integer; --      (((Seq)- > Flags & CV_SEQ_FLAG_HOLE) ! = 0)
+   function Cv_Is_Seq_Simple ( Seq : Cv_Seq_Ptr) return Integer; --    ((((Seq)- > Flags & CV_SEQ_FLAG_SIMPLE) ! = 0) |  | CV_IS_SEQ_CONVEX(seq))
 
    --/* type checking macros */
-   function Cv_Is_Seq_Point_Set ( Seq : Cv_Seq_P) return Integer;
+   function Cv_Is_Seq_Point_Set ( Seq : Cv_Seq_Ptr) return Integer;
 
-   function Cv_Is_Seq_Point_Subset ( Seq : Cv_Seq_P) return Integer;
+   function Cv_Is_Seq_Point_Subset ( Seq : Cv_Seq_Ptr) return Integer;
 
-   function Cv_Is_Seq_Polyline ( Seq : Cv_Seq_P ) return Integer; --      (CV_SEQ_KIND(seq) == CV_SEQ_KIND_CURVE && CV_IS_SEQ_POINT_SET(seq))
+   function Cv_Is_Seq_Polyline ( Seq : Cv_Seq_Ptr ) return Integer; --      (CV_SEQ_KIND(seq) == CV_SEQ_KIND_CURVE && CV_IS_SEQ_POINT_SET(seq))
 
-   function Cv_Is_Seq_Polygon ( Seq : Cv_Seq_P) return Integer; --      (CV_IS_SEQ_POLYLINE(seq) && CV_IS_SEQ_CLOSED(seq))
+   function Cv_Is_Seq_Polygon ( Seq : Cv_Seq_Ptr) return Integer; --      (CV_IS_SEQ_POLYLINE(seq) && CV_IS_SEQ_CLOSED(seq))
 
-   function Cv_Is_Seq_Chain ( Seq : Cv_Seq_P) return Integer; --      (CV_SEQ_KIND(seq) == CV_SEQ_KIND_CURVE && (seq)->elem_size == 1)
+   function Cv_Is_Seq_Chain ( Seq : Cv_Seq_Ptr) return Integer; --      (CV_SEQ_KIND(seq) == CV_SEQ_KIND_CURVE && (seq)->elem_size == 1)
 
-   function Cv_Is_Seq_Contour ( Seq : Cv_Seq_P) return Integer; --      (CV_IS_SEQ_CLOSED(seq) && (CV_IS_SEQ_POLYLINE(seq) || CV_IS_SEQ_CHAIN(seq)))
+   function Cv_Is_Seq_Contour ( Seq : Cv_Seq_Ptr) return Integer; --      (CV_IS_SEQ_CLOSED(seq) && (CV_IS_SEQ_POLYLINE(seq) || CV_IS_SEQ_CHAIN(seq)))
 
-   function Cv_Is_Seq_Chain_Contour ( Seq : Cv_Seq_P ) return Integer; --      (CV_IS_SEQ_CHAIN( seq ) && CV_IS_SEQ_CLOSED( seq ))
+   function Cv_Is_Seq_Chain_Contour ( Seq : Cv_Seq_Ptr ) return Integer; --      (CV_IS_SEQ_CHAIN( seq ) && CV_IS_SEQ_CLOSED( seq ))
 
-   function Cv_Is_Seq_Polygon_Tree ( Seq  : Cv_Seq_P) return Integer; --      (CV_SEQ_ELTYPE (seq) ==  CV_SEQ_ELTYPE_TRIAN_ATR &&    \
+   function Cv_Is_Seq_Polygon_Tree ( Seq  : Cv_Seq_Ptr) return Integer; --      (CV_SEQ_ELTYPE (seq) ==  CV_SEQ_ELTYPE_TRIAN_ATR &&    \
 
-   function Cv_Is_Graph ( Seq : Cv_Seq_P) return Integer; --(CV_IS_SET(seq) && CV_SEQ_KIND((CvSet*)(seq)) == CV_SEQ_KIND_GRAPH)
+   function Cv_Is_Graph ( Seq : Cv_Seq_Ptr) return Integer; --(CV_IS_SET(seq) && CV_SEQ_KIND((CvSet*)(seq)) == CV_SEQ_KIND_GRAPH)
 
-   function Cv_Is_Graph_Oriented ( Seq : Cv_Seq_P) return Integer; --      (((seq)->flags & CV_GRAPH_FLAG_ORIENTED) != 0)
+   function Cv_Is_Graph_Oriented ( Seq : Cv_Seq_Ptr) return Integer; --      (((seq)->flags & CV_GRAPH_FLAG_ORIENTED) != 0)
 
-   function Cv_Is_Subdiv2d ( Seq : Cv_Seq_P) return Integer; --      (CV_IS_SET(seq) && CV_SEQ_KIND((CvSet*)(seq)) == CV_SEQ_KIND_SUBDIV2D)
+   function Cv_Is_Subdiv2d ( Seq : Cv_Seq_Ptr) return Integer; --      (CV_IS_SET(seq) && CV_SEQ_KIND((CvSet*)(seq)) == CV_SEQ_KIND_SUBDIV2D)
 
    -----------------------------------------------------------------------------
    -- Sequence writer & reader
@@ -1301,23 +1301,23 @@ package Core is
    type Cv_Seq_Writer is
       record
          Header_Size : Integer;
-         Seq         : Cv_Seq_P;
-         Block       : Cv_Seq_Block_P;
+         Seq         : Cv_Seq_Ptr;
+         Block       : Cv_Seq_Block_Ptr;
          Ptr         : Cv_Arr_Pointer;
          Block_Min   : Cv_Arr_Pointer;
          Block_Max   : Cv_Arr_Pointer;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Seq_Writer);
-   type Cv_Seq_Writer_P is access all cv_Seq_Writer;
+   type Cv_Seq_Writer_Ptr is access all cv_Seq_Writer;
 
    --Should not be here
-   procedure Cv_Create_Seq_Block (Writer : Cv_Seq_Writer_P);
+   procedure Cv_Create_Seq_Block (Writer : Cv_Seq_Writer_Ptr);
 
    type Cv_Seq_Reader is
       record
          HeaderSize : Integer;
-         Seq        : Cv_Seq_P;
-         Block      : Cv_Seq_Block_P;
+         Seq        : Cv_Seq_Ptr;
+         Block      : Cv_Seq_Block_Ptr;
          Ptr        : Cv_Arr_Pointer;
          BlockMin   : Cv_Arr_Pointer;
          BlockMax   : Cv_Arr_Pointer;
@@ -1325,7 +1325,7 @@ package Core is
          PrevElem   : Cv_Arr_Pointer;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Seq_Reader);
-   type Cv_Seq_Reader_P is access all Cv_Seq_Reader;
+   type Cv_Seq_Reader_Ptr is access all Cv_Seq_Reader;
 
    -----------------------------------------------------------------------------
    -- Operations on sequences
@@ -1343,47 +1343,47 @@ package Core is
 
    --  /* Add element to sequence: */
    procedure Cv_Write_Seq_Elem_Var ( Elem_Ptr : Cv_Arr_Pointer;
-                                    Writer   : Cv_Seq_Writer_P );
+                                    Writer   : Cv_Seq_Writer_Ptr );
 
    -- Not portable to Ada.
    procedure Cv_Write_Seq_Elem ( Elem_Ptr : Cv_Arr_Pointer;
-                                Writer   : Cv_Seq_Writer_P ) renames Cv_Write_Seq_Elem_Var;
+                                Writer   : Cv_Seq_Writer_Ptr ) renames Cv_Write_Seq_Elem_Var;
 
    --  /* Move reader position forward: */
    procedure Cv_Next_Seq_Elem (Elem_Size : Integer;
-                               Reader    : Cv_Seq_Reader_P);
+                               Reader    : Cv_Seq_Reader_Ptr);
 
 
    --  /* Move reader position backward: */
    procedure Cv_Prev_Seq_Elem ( Elem_Size : Integer;
-                               Reader    : Cv_Seq_Reader_P );
+                               Reader    : Cv_Seq_Reader_Ptr );
 
    --  /* Read element and move read position forward: */
    procedure Cv_Read_Seq_Elem ( Elem  : Cv_Arr_Pointer;
-                               Reader : Cv_Seq_Reader_P );
+                               Reader : Cv_Seq_Reader_Ptr );
    procedure Cv_Read_Seq_Elem ( Elem  : Unsigned_8;
-                               Reader : Cv_Chain_Pt_Reader_P );
+                               Reader : Cv_Chain_Pt_Reader_Ptr );
 
    --  /* Read element and move read position backward: */
    procedure Cv_Rev_Read_Seq_Elem ( Elem  : Cv_Arr_Pointer;
-                                   Reader : Cv_Seq_Reader_P );
+                                   Reader : Cv_Seq_Reader_Ptr );
 
    procedure Cv_Read_Chain_Point ( Pt    : out Cv_Point;
-                                  Reader : Cv_Chain_Pt_Reader_P );
+                                  Reader : Cv_Chain_Pt_Reader_Ptr );
 
-   function Cv_Current_Point ( Reader : Cv_Chain_Pt_Reader_P ) return Cv_Point_P; --  (*((CvPoint*)((reader).ptr)))
-   function Cv_Prev_Point ( Reader : Cv_Chain_Pt_Reader_P) return Cv_Point_P; -- ( * ((CvPoint * ) ((Reader).Prev_Elem)))
+   function Cv_Current_Point ( Reader : Cv_Chain_Pt_Reader_Ptr ) return Cv_Point_Ptr; --  (*((CvPoint*)((reader).ptr)))
+   function Cv_Prev_Point ( Reader : Cv_Chain_Pt_Reader_Ptr) return Cv_Point_Ptr; -- ( * ((CvPoint * ) ((Reader).Prev_Elem)))
 
-   procedure Cv_Read_Edge ( Pt1   : out Cv_Point_P;
-                           Pt2    : out Cv_Point_P;
-                           Reader : Cv_Chain_Pt_Reader_P );
+   procedure Cv_Read_Edge ( Pt1   : out Cv_Point_Ptr;
+                           Pt2    : out Cv_Point_Ptr;
+                           Reader : Cv_Chain_Pt_Reader_Ptr );
 
    -----------------------------------------------------------------------------
    -- Graph macros
    -----------------------------------------------------------------------------
    --  /* Return next graph edge for given vertex: */
-   function Cv_Next_Graph_Edge ( Edge  : Cv_Graph_Edge_P;
-                                Vertex : Cv_Graph_Vtx_P ) return Cv_Graph_Edge_P;
+   function Cv_Next_Graph_Edge ( Edge  : Cv_Graph_Edge_Ptr;
+                                Vertex : Cv_Graph_Vtx_Ptr ) return Cv_Graph_Edge_Ptr;
 
    -----------------------------------------------------------------------------
    -- Data structures for persistence (a.k.a serialization) functionality
@@ -1392,7 +1392,7 @@ package Core is
 
    type Cv_File_Storage is null record;
    pragma Convention (C_Pass_By_Copy, Cv_File_Storage);
-   type Cv_File_Storage_P is access all cv_File_Storage;
+   type Cv_File_Storage_Ptr is access all cv_File_Storage;
 
    Cv_Storage_Read         : constant := 0;
    Cv_Storage_Write        : constant := 1;
@@ -1401,51 +1401,51 @@ package Core is
    Cv_Storage_Append       : constant := 2;
 
    type Cv_Attr_List;
-   type Cv_Attr_List_P is access all Cv_Attr_List;
+   type Cv_Attr_List_Ptr is access all Cv_Attr_List;
    type Cv_Attr_List is record
       Attr : Cv_String_Pointer;
-      Next : Cv_Attr_List_P;
+      Next : Cv_Attr_List_Ptr;
    end record;
    pragma Convention(C_Pass_By_Copy, Cv_Attr_List);
 
 
    function Cv_Create_Attr_List (Attr : Cv_String_Pointer := null;
-                                 Next : Cv_Attr_List_P := null)
+                                 Next : Cv_Attr_List_Ptr := null)
                                  return Cv_Attr_List;
 
    -- Black box type only use the access type
    type Cv_Type_Info;
-   type Cv_Type_Info_P is access all cv_Type_Info;
+   type Cv_Type_Info_Ptr is access all cv_Type_Info;
 
 
-   type Cv_Is_Instance_Func is access function (Struct_Pointer : Cv_Void_P)
+   type Cv_Is_Instance_Func is access function (Struct_Pointer : Cv_Void_Ptr)
                                                 return Integer;
    pragma Convention (C, Cv_Is_Instance_Func);
 
-   type Cv_Release_Proc is access procedure (Struct_Dblptr : access Cv_Void_P);
+   type Cv_Release_Proc is access procedure (Struct_Dblptr : access Cv_Void_Ptr);
    pragma Convention (C, Cv_Release_Proc);
 
-   type Cv_Read_Func is access function (Storage : Cv_File_Storage_P;
-                                         Node    : Cv_File_Node_P)
-                                         return Cv_Void_P;
+   type Cv_Read_Func is access function (Storage : Cv_File_Storage_Ptr;
+                                         Node    : Cv_File_Node_Ptr)
+                                         return Cv_Void_Ptr;
    pragma Convention (C, Cv_Read_Func);
 
-   type Cv_Write_Proc is access procedure (Storage    : Cv_File_Storage_P;
+   type Cv_Write_Proc is access procedure (Storage    : Cv_File_Storage_Ptr;
                                            Name       : Interfaces.C.Strings.Chars_Ptr;
-                                           Struct_Ptr : Cv_Void_P;
+                                           Struct_Ptr : Cv_Void_Ptr;
                                            Attributes : Cv_Attr_List);
    pragma Convention (C, Cv_Write_Proc);
 
-   type Cv_Clone_Func is access function (Struct_Pointer : Cv_Void_P)
-                                          return Cv_Void_P;
+   type Cv_Clone_Func is access function (Struct_Pointer : Cv_Void_Ptr)
+                                          return Cv_Void_Ptr;
    pragma Convention (C, Cv_Clone_Func);
 
 
    type Cv_Type_Info is record
       Flags       : Unsigned_32;
       Header_Size : Integer;
-      Prev        : Cv_Type_Info_P;
-      Next        : Cv_Type_Info_P;
+      Prev        : Cv_Type_Info_Ptr;
+      Next        : Cv_Type_Info_Ptr;
       Type_Name   : Interfaces.C.Strings.Chars_Ptr; -- Will require wrapper?
       Is_Instance : Cv_Is_Instance_Func;
       Release     : Cv_Release_Proc;
@@ -1519,11 +1519,11 @@ package Core is
    pragma Convention (C_Pass_By_Copy, Cv_String);
 
    type Cv_String_Hash_Node;
-   type Cv_String_Hash_Node_P is access all Cv_String_Hash_Node;
+   type Cv_String_Hash_Node_Ptr is access all Cv_String_Hash_Node;
    type Cv_String_Hash_Node is record
       Hashval : Unsigned_32;
       Str     : Cv_String;
-      Next    : Cv_String_Hash_Node_P;
+      Next    : Cv_String_Hash_Node_Ptr;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_String_Hash_Node);
 
@@ -1540,8 +1540,8 @@ package Core is
       -- CV_SEQUENCE_FIELDS
       Total        : Integer;
       Elem_Size    : Integer;
-      Block_Max    : Cv_Void_P;
-      Ptr          : Cv_Void_P;
+      Block_Max    : Cv_Void_Ptr;
+      Ptr          : Cv_Void_Ptr;
       Delta_Elems  : Integer;
       Storage      : access Cv_Mem_Storage;
       Free_Blocks  : access Cv_Seq_Block;
@@ -1552,11 +1552,11 @@ package Core is
       Active_Count : Integer;
 
       Tab_Size     : Integer;
-      Table        : access Cv_Void_P;
+      Table        : access Cv_Void_Ptr;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Generic_Hash);
    subtype Cv_File_Node_Hash is Cv_Generic_Hash;
-   type Cv_File_Node_Hash_P is access all Cv_File_Node_Hash;
+   type Cv_File_Node_Hash_Ptr is access all Cv_File_Node_Hash;
 
    type Cv_File_Node_Data_Enum is (F, I, Str, Seq, Map);
    type Cv_File_Node_Data (Option : Cv_File_Node_Data_Enum := Str) is record
@@ -1568,9 +1568,9 @@ package Core is
          when Str =>
             Str : Interfaces.C.Strings.Chars_Ptr;
          when Seq =>
-            Seq : Cv_Seq_P;
+            Seq : Cv_Seq_Ptr;
          when Map =>
-            Map : Cv_File_Node_Hash_P;
+            Map : Cv_File_Node_Hash_Ptr;
       end case;
    end record;
    pragma Unchecked_Union (Cv_File_Node_Data);
@@ -1579,28 +1579,28 @@ package Core is
 
    type Cv_File_Node is record
       Tag  : Integer;
-      Info : Cv_Type_Info_P;
+      Info : Cv_Type_Info_Ptr;
       Data : Cv_File_Node_Data;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_File_Node);
 
    type Cv_Plugin_Func_Info is record
-      Func_Addr         : access Cv_Void_P;
-      Default_Func_Addr : Cv_Void_P;
+      Func_Addr         : access Cv_Void_Ptr;
+      Default_Func_Addr : Cv_Void_Ptr;
       Func_Names        : Interfaces.C.Strings.Chars_Ptr;
       Search_Modules    : Integer;
       Loaded_From       : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Plugin_Func_Info);
-   type Cv_Plugin_Func_Info_P is access all Cv_Plugin_Func_Info;
+   type Cv_Plugin_Func_Info_Ptr is access all Cv_Plugin_Func_Info;
 
    type Cv_Module_Info;
-   type Cv_Module_Info_P is access all Cv_Module_Info;
+   type Cv_Module_Info_Ptr is access all Cv_Module_Info;
    type Cv_Module_Info is record
-      Next     : Cv_Module_Info_P;
+      Next     : Cv_Module_Info_Ptr;
       Name     : Interfaces.C.Strings.Chars_Ptr;
       Version  : Interfaces.C.Strings.Chars_Ptr;
-      Func_Tab : Cv_Plugin_Func_Info_P;
+      Func_Tab : Cv_Plugin_Func_Info_Ptr;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Module_Info);
 
@@ -1609,200 +1609,200 @@ package Core is
    --     pragma Warnings (Off);
 
    function To_Arr is
-     new Ada.Unchecked_Conversion (Source => Cv_Contour_P,
-                                   Target => Cv_Arr_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Contour_Ptr,
+                                   Target => Cv_Arr_Ptr);
 
    function To_Arr is
-     new Ada.Unchecked_Conversion (Source => Ipl_Image_P,
-                                   Target => Cv_Arr_P);
+     new Ada.Unchecked_Conversion (Source => Ipl_Image_Ptr,
+                                   Target => Cv_Arr_Ptr);
 
    function To_Arr is
-     new Ada.Unchecked_Conversion (Source => Cv_Scalar_P,
-                                   Target => Cv_Arr_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Scalar_Ptr,
+                                   Target => Cv_Arr_Ptr);
 
    function To_Arr is
-     new Ada.Unchecked_Conversion (Source => Cv_Mat_P,
-                                   Target => Cv_Arr_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Mat_Ptr,
+                                   Target => Cv_Arr_Ptr);
 
    function From_Arr is
-     new Ada.Unchecked_Conversion (Source => Cv_Arr_P,
-                                   Target => Ipl_Image_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
+                                   Target => Ipl_Image_Ptr);
 
    function From_Arr is
-     new Ada.Unchecked_Conversion (Source => Cv_Arr_P,
-                                   Target => Cv_Scalar_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
+                                   Target => Cv_Scalar_Ptr);
 
    function From_Arr is
-     new Ada.Unchecked_Conversion (Source => Cv_Arr_P,
-                                   Target => Cv_Mat_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
+                                   Target => Cv_Mat_Ptr);
 
    function From_Arr is
-     new Ada.Unchecked_Conversion (Source => Cv_Arr_P,
-                                   Target => Cv_Sparse_Mat_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
+                                   Target => Cv_Sparse_Mat_Ptr);
 
    function From_Arr is
-     new Ada.Unchecked_Conversion (Source => Cv_Arr_P,
-                                   Target => Cv_Point_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
+                                   Target => Cv_Point_Ptr);
 
    -- Unchecked Conversions ----------------------------------------------------
    ------------ Void conversions -----------------------------------------------
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_8u_Pointer);
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_8s_Pointer);
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_16u_Pointer);
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_16s_Pointer);
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_32s_Pointer);
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_32f_Pointer);
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_64f_Pointer);
 
    function To_Void is
      new Ada.Unchecked_Conversion (Source => Cv_8u_Pointer,
-                                   Target => Cv_Void_P);
+                                   Target => Cv_Void_Ptr);
 
    function To_Void is
      new Ada.Unchecked_Conversion (Source => Cv_8s_Pointer,
-                                   Target => Cv_Void_P);
+                                   Target => Cv_Void_Ptr);
 
    function To_Void is
      new Ada.Unchecked_Conversion (Source => Cv_16u_Pointer,
-                                   Target => Cv_Void_P);
+                                   Target => Cv_Void_Ptr);
 
    function To_Void is
      new Ada.Unchecked_Conversion (Source => Cv_16s_Pointer,
-                                   Target => Cv_Void_P);
+                                   Target => Cv_Void_Ptr);
 
    function To_Void is
      new Ada.Unchecked_Conversion (Source => Cv_32s_Pointer,
-                                   Target => Cv_Void_P);
+                                   Target => Cv_Void_Ptr);
 
    function To_Void is
      new Ada.Unchecked_Conversion (Source => Cv_32f_Pointer,
-                                   Target => Cv_Void_P);
+                                   Target => Cv_Void_Ptr);
 
    function To_Void is
      new Ada.Unchecked_Conversion (Source => Cv_64f_Pointer,
-                                   Target => Cv_Void_P);
+                                   Target => Cv_Void_Ptr);
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
-                                   Target => Cv_Point_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
+                                   Target => Cv_Point_Ptr);
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
-                                   Target => Cv_Seq_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
+                                   Target => Cv_Seq_Ptr);
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
-                                   Target => Cv_Contour_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
+                                   Target => Cv_Contour_Ptr);
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
-                                   Target => Ipl_Image_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
+                                   Target => Ipl_Image_Ptr);
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
-                                   Target => Cv_Scalar_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
+                                   Target => Cv_Scalar_Ptr);
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
-                                   Target => Cv_Arr_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
+                                   Target => Cv_Arr_Ptr);
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
-                                   Target => Cv_Mat_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
+                                   Target => Cv_Mat_Ptr);
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Float_P);
 
    function To_Void is
-     new Ada.Unchecked_Conversion (Source => Ipl_Image_P,
-                                   Target => Cv_Void_P);
+     new Ada.Unchecked_Conversion (Source => Ipl_Image_Ptr,
+                                   Target => Cv_Void_Ptr);
 
    function To_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Scalar_P,
-                                   Target => Cv_Void_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Scalar_Ptr,
+                                   Target => Cv_Void_Ptr);
 
    function To_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Arr_P,
-                                   Target => Cv_Void_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
+                                   Target => Cv_Void_Ptr);
 
    function To_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Mat_P,
-                                   Target => Cv_Void_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Mat_Ptr,
+                                   Target => Cv_Void_Ptr);
 
    function To_Void is
      new Ada.Unchecked_Conversion (Source => Float_P,
-                                   Target => Cv_Void_P);
+                                   Target => Cv_Void_Ptr);
    function Image_To_Arr is
-     new Ada.Unchecked_Conversion (Source => Ipl_Image_P,
-                                   Target => Cv_Arr_P);
+     new Ada.Unchecked_Conversion (Source => Ipl_Image_Ptr,
+                                   Target => Cv_Arr_Ptr);
 
    function Scalar_To_Arr is
-     new Ada.Unchecked_Conversion (Source => Cv_Scalar_P,
-                                   Target => Cv_Arr_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Scalar_Ptr,
+                                   Target => Cv_Arr_Ptr);
    function Mat_To_Arr is
-     new Ada.Unchecked_Conversion (Source => Cv_Mat_P,
-                                   Target => Cv_Arr_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Mat_Ptr,
+                                   Target => Cv_Arr_Ptr);
 
    function Arr_To_Image is
-     new Ada.Unchecked_Conversion (Source => Cv_Arr_P,
-                                   Target => Ipl_Image_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
+                                   Target => Ipl_Image_Ptr);
 
    function Arr_To_Scalar is
-     new Ada.Unchecked_Conversion (Source => Cv_Arr_P,
-                                   Target => Cv_Scalar_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
+                                   Target => Cv_Scalar_Ptr);
 
    function Arr_To_Mat is
-     new Ada.Unchecked_Conversion (Source => Cv_Arr_P,
-                                   Target => Cv_Mat_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
+                                   Target => Cv_Mat_Ptr);
 
    function Void_To_Char is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Interfaces.C.Strings.Chars_Ptr);
 
 
 
-   function "+" (Right : Ipl_Image_P) return Cv_Arr_P;
+   function "+" (Right : Ipl_Image_Ptr) return Cv_Arr_Ptr;
 
    function To_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Chain_Pt_Reader_P,
-                                   Target => Cv_Void_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Chain_Pt_Reader_Ptr,
+                                   Target => Cv_Void_Ptr);
 
    function To_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Seq_Reader_P,
-                                   Target => Cv_Void_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Seq_Reader_Ptr,
+                                   Target => Cv_Void_Ptr);
 
    function To_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Seq_P,
-                                   Target => Cv_Void_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Seq_Ptr,
+                                   Target => Cv_Void_Ptr);
 
    -----------------------------------------------------------------------------
    -- Cv_Seq conversions
    -----------------------------------------------------------------------------
 
    function To_Seq is
-     new Ada.Unchecked_Conversion (Source => Cv_Set_P,
-                                   Target => Cv_Seq_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Set_Ptr,
+                                   Target => Cv_Seq_Ptr);
 
    pragma Warnings (On);
 
@@ -1812,24 +1812,24 @@ package Core is
    -- START Unbounded array pointers --
    Mat_Data_Requirement : Mat_Data; -- This is just a dummy, do not use!
    type Cv_Mat_Array is array (Integer range <>) of aliased Cv_Mat;
-   type Cv_Mat_P_Array is array (Integer range <>) of aliased Cv_Mat_P;
+   type Cv_Mat_P_Array is array (Integer range <>) of aliased Cv_Mat_Ptr;
    type Cv_Size_Array is array (Integer range <>) of aliased Cv_Size;
-   type Cv_Size_P_Array is array (Integer range <>) of aliased Cv_Size_P;
+   type Cv_Size_P_Array is array (Integer range <>) of aliased Cv_Size_Ptr;
 
 
    package C_Mat_P_Pointer_Pkg is
-     new Interfaces.C.Pointers (Integer, Cv_Mat_P, Cv_Mat_P_Array, null);
+     new Interfaces.C.Pointers (Integer, Cv_Mat_Ptr, Cv_Mat_P_Array, null);
    subtype Cv_Mat_P_Pointer is C_Mat_P_Pointer_Pkg.Pointer;
 
    package C_Size_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Cv_Size, Cv_Size_Array, (0, 0));
    subtype Cv_Size_Pointer is C_Size_Pointer_Pkg.Pointer;
 
-   function Cv_Mat_Elem (Mat       : Cv_Mat_P;
+   function Cv_Mat_Elem (Mat       : Cv_Mat_Ptr;
                          Elem_Size : Integer;
                          Row       : Integer;
                          Col       : Integer)
-                         return Cv_Void_P;
+                         return Cv_Void_Ptr;
 
 
    -----------------------------------------------------------------------------

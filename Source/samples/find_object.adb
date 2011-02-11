@@ -61,19 +61,19 @@ procedure Find_Object is
    --  				    const CvSeq* model_descriptors );
    function Naive_Nearest_Neighbor (Vec               : Cv_32f_Pointer;
                                     Laplacian         : Integer;
-                                    Model_Keypoints   : Cv_Seq_P;
-                                    Model_Descriptors : Cv_Seq_P) return Integer is
+                                    Model_Keypoints   : Cv_Seq_Ptr;
+                                    Model_Descriptors : Cv_Seq_Ptr) return Integer is
       Length          : Integer := Model_Descriptors.all.Elem_Size / (Float'Size / 8);
       Neighbor        : Integer := -1;
       Dist1, Dist2    : Long_Float := 1.0e6;
       D               : Long_Float;
       Reader, Kreader : aliased Cv_Seq_Reader;
-      Kp              : Cv_Surf_Point_P;
+      Kp              : Cv_Surf_Point_Ptr;
       Mvec            : Cv_32f_Pointer;
 
       function From_Arr is
         new Ada.Unchecked_Conversion (Source => Cv_Arr_Pointer,
-                                      Target => Cv_Surf_Point_P);
+                                      Target => Cv_Surf_Point_Ptr);
       function From_Arr is
         new Ada.Unchecked_Conversion (Source => Cv_Arr_Pointer,
                                       Target => Cv_32f_Pointer);
@@ -108,10 +108,10 @@ procedure Find_Object is
 
    --    void find_obj_findPairs( const CvSeq* objectKeypoints, const CvSeq* objectDescriptors,
    --  			  const CvSeq* imageKeypoints, const CvSeq* imageDescriptors, vector<int>& ptpairs );
-   procedure Find_Pairs (Object_Keypoints   : Cv_Seq_P;
-                         Object_Descriptors : Cv_Seq_P;
-                         Image_Keypoints    : Cv_Seq_P;
-                         Image_Descriptors  : Cv_Seq_P;
+   procedure Find_Pairs (Object_Keypoints   : Cv_Seq_Ptr;
+                         Object_Descriptors : Cv_Seq_Ptr;
+                         Image_Keypoints    : Cv_Seq_Ptr;
+                         Image_Descriptors  : Cv_Seq_Ptr;
                          Pt_Pairs           : access Core.Cv_32s_Pointer;
                          Length             : access Integer) is
 
@@ -119,12 +119,12 @@ procedure Find_Object is
         Ada.Containers.Vectors (Natural, Integer);
 
       Reader, Kreader : aliased Cv_Seq_Reader;
-      Kp : Cv_Surf_Point_P;
+      Kp : Cv_Surf_Point_Ptr;
       Descriptor : Cv_32f_Pointer;
 
       function From_Arr is
         new Ada.Unchecked_Conversion (Source => Cv_Arr_Pointer,
-                                      Target => Cv_Surf_Point_P);
+                                      Target => Cv_Surf_Point_Ptr);
       function From_Arr is
         new Ada.Unchecked_Conversion (Source => Cv_Arr_Pointer,
                                       Target => Cv_32f_Pointer);
@@ -162,18 +162,18 @@ procedure Find_Object is
    --       int find_obj_locatePlanarObject( const CvSeq* objectKeypoints, const CvSeq* objectDescriptors,
    --  				  const CvSeq* imageKeypoints, const CvSeq* imageDescriptors,
    --  				  const CvPoint src_corners[4], CvPoint dst_corners[4] ):
-   function Locate_Planar_Object (Object_Keypoints   : Cv_Seq_P;
-                                  Object_Descriptors : Cv_Seq_P;
-                                  Image_Keypoints    : Cv_Seq_P;
-                                  Image_Descriptors  : Cv_Seq_P;
+   function Locate_Planar_Object (Object_Keypoints   : Cv_Seq_Ptr;
+                                  Object_Descriptors : Cv_Seq_Ptr;
+                                  Image_Keypoints    : Cv_Seq_Ptr;
+                                  Image_Descriptors  : Cv_Seq_Ptr;
                                   Src_Corners        : Cv_Point_Array;
-                                  Dst_Corners        : Cv_Point_Array_P) return Integer is
+                                  Dst_Corners        : Cv_Point_Array_Ptr) return Integer is
       H                     : aliased Cv_64f_Array (0 .. 8) := (others => 0.0);
       H_Ptr                 : Cv_64f_Pointer := H (0)'Unchecked_Access;
       H_Mat                 : aliased Cv_Mat := Cv_Create_Mat (3, 3, Cv_Make_Type (Cv_64f, 1), To_Void (H_Ptr));
       Pt_Pairs_P            : aliased Cv_32s_Pointer := null;
       Pt_Pairs              : Cv_32s_Array_P;
-      Pt1, Pt2              : Cv_Point_2d_32f_Array_P;
+      Pt1, Pt2              : Cv_Point_2d_32f_Array_Ptr;
       Pt1_Ptr, Pt2_Ptr      : Cv_Point_2d_32f_Pointer;
       Pt1_Mat, Pt2_Mat      : aliased Cv_Mat;
       Pt_Length             : aliased Integer := 0;
@@ -182,11 +182,11 @@ procedure Find_Object is
 
 
       function From_Void is
-        new Ada.Unchecked_Conversion (Source => Cv_Void_P,
-                                      Target => Cv_Surf_Point_P);
+        new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
+                                      Target => Cv_Surf_Point_Ptr);
       function To_Void is
         new Ada.Unchecked_Conversion (Source => Cv_Point_2d_32f_Pointer,
-                                      Target => Cv_Void_P);
+                                      Target => Cv_Void_Ptr);
    begin
       Find_Pairs (Object_Keypoints,
                   Object_Descriptors,
@@ -241,24 +241,24 @@ procedure Find_Object is
    ---
    Object_Filename : constant String := ("C:\MDH\master_thesis\opencvada\Exec\box.png");
    Scene_Filename : constant String := ("C:\MDH\master_thesis\opencvada\Exec\box_in_scene.png");
-   Storage : Cv_Mem_Storage_P := Cv_Create_Mem_Storage (0);
-   Object : Ipl_Image_P := Cv_Load_Image (Object_Filename, Cv_Load_Image_Grayscale);
-   Image : Ipl_Image_P := Cv_Load_Image (Scene_Filename, Cv_Load_Image_Grayscale);
-   Object_Color : Ipl_Image_P := Cv_Create_Image (Cv_Get_Size (+Object), 8, 3);
-   Correspond : Ipl_Image_P := Cv_Create_Image (Cv_Create_Size (Image.all.Width, Object.all.Height + Image.all.Height), 8, 1);
-   Object_Keypoints, Object_Descriptors, Image_Keypoints, Image_Descriptors  : aliased Cv_Seq_P := null;
+   Storage : Cv_Mem_Storage_Ptr := Cv_Create_Mem_Storage (0);
+   Object : Ipl_Image_Ptr := Cv_Load_Image (Object_Filename, Cv_Load_Image_Grayscale);
+   Image : Ipl_Image_Ptr := Cv_Load_Image (Scene_Filename, Cv_Load_Image_Grayscale);
+   Object_Color : Ipl_Image_Ptr := Cv_Create_Image (Cv_Get_Size (+Object), 8, 3);
+   Correspond : Ipl_Image_Ptr := Cv_Create_Image (Cv_Create_Size (Image.all.Width, Object.all.Height + Image.all.Height), 8, 1);
+   Object_Keypoints, Object_Descriptors, Image_Keypoints, Image_Descriptors  : aliased Cv_Seq_Ptr := null;
 
    Params : Cv_Surf_Params := Cv_Create_Surf_Params (500.0, 1);
    Src_Corners : Cv_Point_Array (0 .. 3)  := ((0, 0), (Object.all.Width, 0), (Object.all.Width, Object.all.Height), (0, Object.all.Height));
-   Dst_Corners : aliased Cv_Point_Array_P := new Cv_Point_Array (0 .. 3);
+   Dst_Corners : aliased Cv_Point_Array_Ptr := new Cv_Point_Array (0 .. 3);
    Pt_Pairs : aliased Cv_32s_Pointer;
    Pt_Length : aliased Integer := 0;
    N : Integer;
-   R1, R2 : Cv_Surf_Point_P;
+   R1, R2 : Cv_Surf_Point_Ptr;
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
-                                   Target => Cv_Surf_Point_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
+                                   Target => Cv_Surf_Point_Ptr);
 begin
    Cv_Cvt_Color (+Object, +Object_Color, Cv_Gray2bgr);
    Cv_Extract_Surf (+Object, null, Object_Keypoints'Access, Object_Descriptors'Access, Storage, Params);

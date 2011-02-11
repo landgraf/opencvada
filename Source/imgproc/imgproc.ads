@@ -31,11 +31,11 @@ package Imgproc is
          Contour : access Cv_Seq;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Connected_Comp);
-   type Cv_Connected_Comp_P is access all Cv_Connected_Comp;
+   type Cv_Connected_Comp_Ptr is access all Cv_Connected_Comp;
 
    function From_Void is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_P,
-                                   Target => Cv_Connected_Comp_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
+                                   Target => Cv_Connected_Comp_Ptr);
 
    -- Image smooth Methods
    type Smooth_Type is new Integer;
@@ -171,7 +171,7 @@ package Imgproc is
          Inv_Sqrt_M00                                     : Long_Float; --/* m00 != 0 ? 1/sqrt(m00) : 0 */
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Moments);
-   type Cv_Moments_P is access all cv_Moments;
+   type Cv_Moments_Ptr is access all cv_Moments;
 
    --/* Hu invariants */
    type Cv_Hu_Moments is
@@ -179,7 +179,7 @@ package Imgproc is
          Hu1, Hu2, Hu3, Hu4, Hu5, Hu6, Hu7 : Long_Float; --/  * Hu invariants *  /
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Hu_Moments);
-   type Cv_Hu_Moments_P is access all cv_Hu_Moments;
+   type Cv_Hu_Moments_Ptr is access all cv_Hu_Moments;
 
    -- Template matching methods
    type Cv_Tm is new Integer;
@@ -192,7 +192,7 @@ package Imgproc is
 
    type Cv_Distance_Function is access function (A          : access Float;
                                                  B          : access Float;
-                                                 User_Param : Cv_Void_P)
+                                                 User_Param : Cv_Void_Ptr)
                                                  return Float;
    pragma Convention (C, Cv_Distance_Function);
 
@@ -216,7 +216,7 @@ package Imgproc is
    -- It supports both hierarchical and plane variants of Suzuki algorithm.
    type Cv_Contour_Scanner is null record;
    pragma Convention (C_Pass_By_Copy, Cv_Contour_Scanner);
-   type Cv_Contour_Scanner_P is access all cv_Contour_Scanner;
+   type Cv_Contour_Scanner_Ptr is access all cv_Contour_Scanner;
 
    -- initializes 8-element array for fast access to 3x3 neighborhood of a pixel
    procedure Cv_Init_3x3_Deltas (Deltas        : in out Cv_32s_Array;
@@ -227,7 +227,7 @@ package Imgproc is
    -- Planar subdivisions
    -----------------------------------------------------------------------------
    type Cv_Subdiv_2d_Edge is new Interfaces.C.Size_T;
-   type Cv_Subdiv_2d_Edge_P is access all Cv_Subdiv_2d_Edge;
+   type Cv_Subdiv_2d_Edge_Ptr is access all Cv_Subdiv_2d_Edge;
 
    --#define CV_SUBDIV2D_VIRTUAL_POINT_FLAG (1 << 30)
    Cv_Subdiv2d_Virtual_Point_Flag : constant := 16#40000000#;
@@ -241,10 +241,10 @@ package Imgproc is
          Id    : Integer;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Subdiv_2d_Point);
-   type Cv_Subdiv_2d_Point_P is access all cv_Subdiv_2d_Point;
+   type Cv_Subdiv_2d_Point_Ptr is access all cv_Subdiv_2d_Point;
 
    -- Array for Cv_Quad_Edge_2D
-   type Cv_Subdiv_2d_Point_P_Arr is array (Integer range <>) of Cv_Subdiv_2d_Point_P;
+   type Cv_Subdiv_2d_Point_P_Arr is array (Integer range <>) of Cv_Subdiv_2d_Point_Ptr;
    type Cv_Subdiv_2d_Edge_Arr is array (Integer range <>) of Cv_Subdiv_2d_Edge;
 
    --/* quad-edge structure fields */
@@ -255,31 +255,31 @@ package Imgproc is
          Next  : Cv_Subdiv_2d_Edge_Arr (1 .. 4);
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Quad_Edge_2d);
-   type Cv_Quad_Edge_2d_P is access all cv_Quad_Edge_2d;
+   type Cv_Quad_Edge_2d_Ptr is access all cv_Quad_Edge_2d;
 
    -- Planar subdivision
    type Cv_Subdiv_2d is
       record
          Flags           : Integer;       --CV_TREE_NODE_FIELDS(CvSeq);
          Headersize      : Integer;
-         Hprev           : Cv_Seq_P;
-         Hnext           : Cv_Seq_P;
-         Vprev           : Cv_Seq_P;
-         Vnext           : Cv_Seq_P;
+         Hprev           : Cv_Seq_Ptr;
+         Hnext           : Cv_Seq_Ptr;
+         Vprev           : Cv_Seq_Ptr;
+         Vnext           : Cv_Seq_Ptr;
 
          Total           : Integer; --CV_SEQUENCE_FIELDS
          Elemsize        : Integer;
-         Blockmax        : Cv_Void_P;
-         Ptr             : Cv_Void_P;
+         Blockmax        : Cv_Void_Ptr;
+         Ptr             : Cv_Void_Ptr;
          Deltaelems      : Integer;
-         Storage         : Cv_Mem_Storage_P;
-         Freeblocks      : Cv_Seq_Block_P;
-         First           : Cv_Seq_Block_P;
+         Storage         : Cv_Mem_Storage_Ptr;
+         Freeblocks      : Cv_Seq_Block_Ptr;
+         First           : Cv_Seq_Block_Ptr;
 
-         Freeelem        : Cv_Set_Elem_P; -- CV_SET_FIELDS()
+         Freeelem        : Cv_Set_Elem_Ptr; -- CV_SET_FIELDS()
          Activecount     : Integer;
 
-         Edges           : Cv_Set_P; -- Cv_Graph_Fields
+         Edges           : Cv_Set_Ptr; -- Cv_Graph_Fields
 
          Quadedges       : Integer;
          Isgeometryvalid : Integer;
@@ -288,11 +288,11 @@ package Imgproc is
          Bottomright     : Cv_Point_2d_32f;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Subdiv_2d);
-   type Cv_Subdiv_2d_P is access all Cv_Subdiv_2d;
+   type Cv_Subdiv_2d_Ptr is access all Cv_Subdiv_2d;
 
    function To_Arr is
-     new Ada.Unchecked_Conversion (Source => Cv_Subdiv_2d_P,
-                                   Target => Cv_Arr_P);
+     new Ada.Unchecked_Conversion (Source => Cv_Subdiv_2d_Ptr,
+                                   Target => Cv_Arr_Ptr);
 
    type Cv_Subdiv_2d_Point_Location is range -2 .. 2;
    Cv_Ptloc_Error : Cv_Subdiv_2d_Point_Location := -2;
@@ -312,7 +312,7 @@ package Imgproc is
    Cv_Prev_Around_Dst : constant Cv_Next_Edge_Type := 16#33#;
 
    -- get the next edge with the same origin point (counterwise)
-   function Cv_Subdiv2d_Next_Edge (Edge : Cv_Quad_Edge_2d) return Cv_Quad_Edge_2d_P;
+   function Cv_Subdiv2d_Next_Edge (Edge : Cv_Quad_Edge_2d) return Cv_Quad_Edge_2d_Ptr;
 
    -- Contour approximation algorithms
    Cv_Poly_Approx_Dp : constant := 0;
@@ -387,7 +387,7 @@ package Imgproc is
    -- Fast search data structure
    type Cv_Feature_Tree is null record;
    pragma Convention (C_Pass_By_Copy, Cv_Feature_Tree);
-   type Cv_Feature_Tree_P is access all Cv_Feature_Tree;
+   type Cv_Feature_Tree_Ptr is access all Cv_Feature_Tree;
 
    type Cv_Lsh is null record;
    pragma Convention (C_Pass_By_Copy, Cv_Lsh);
@@ -395,7 +395,7 @@ package Imgproc is
 
    type Cv_Lsh_Operations is null record;
    pragma Convention (C_Pass_By_Copy, Cv_Lsh_Operations);
-   type Cv_Lsh_Operations_P is access all cv_Lsh_Operations;
+   type Cv_Lsh_Operations_Ptr is access all cv_Lsh_Operations;
 
    -----------------------------------------------------------------------------
    -- Mmoved

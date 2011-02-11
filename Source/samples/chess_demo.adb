@@ -9,9 +9,9 @@ with Imgproc; use Imgproc;
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Chess_Demo is
-   Capture      : aliased Cv_Capture_P;
-   Image        : Ipl_Image_P;
-   Bw           : aliased Ipl_Image_P;
+   Capture      : aliased Cv_Capture_Ptr;
+   Image        : Ipl_Image_Ptr;
+   Bw           : aliased Ipl_Image_Ptr;
    Retval       : Integer;
    Corners      : Cv_Point_2d_32f_Array (1 .. 49);
    Corner_Count : aliased Integer;

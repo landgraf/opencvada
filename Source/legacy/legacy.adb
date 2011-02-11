@@ -28,7 +28,7 @@ package body Legacy is
       Num_Obs.Height := (Roi.Height - Win.Height + Delta_Obs.Height) / Delta_Obs.Height;
    end Cv_Count_Obs;
    --
-   function Ipl_Width (Img : Ipl_Image_P)
+   function Ipl_Width (Img : Ipl_Image_Ptr)
                       return Integer is
    begin
       if Img = null then
@@ -41,7 +41,7 @@ package body Legacy is
    end Ipl_Width;
 
    --
-   function Ipl_Height (Img : Ipl_Image_P)
+   function Ipl_Height (Img : Ipl_Image_Ptr)
                        return Integer is
    begin
       if Img = null then
