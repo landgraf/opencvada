@@ -104,7 +104,7 @@ procedure Motempl is
             Color := Cv_Rgb (255, 255, 255);
             Magnitude := 100.0;
          else
-            Comp_Rect := Imgproc.From_Void (Cv_Get_Seq_Elem (Seq, I)).all.Rect;
+            Comp_Rect := Imgproc.To_Connected_Comp_Ptr (Cv_Get_Seq_Elem (Seq, I)).all.Rect;
             if Comp_Rect.Width + Comp_Rect.Height < 100 then
                Skip := True;
             else

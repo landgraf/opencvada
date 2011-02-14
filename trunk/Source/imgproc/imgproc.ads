@@ -33,7 +33,7 @@ package Imgproc is
    pragma Convention (C_Pass_By_Copy, Cv_Connected_Comp);
    type Cv_Connected_Comp_Ptr is access all Cv_Connected_Comp;
 
-   function From_Void is
+   function To_Connected_Comp_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_Connected_Comp_Ptr);
 

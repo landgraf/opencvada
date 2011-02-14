@@ -49,14 +49,14 @@ package body Highgui is
                           Org  : Cv_Point;
                           Arg2 : Cv_Font_Ptr) is
    begin
-      W_Cv_Add_Text (To_Arr (Img), +Text, Org, Arg2);
+      W_Cv_Add_Text (To_Arr_Ptr (Img), +Text, Org, Arg2);
    end Cv_Add_Text;
    procedure Cv_Add_Text (Img  : Ipl_Image_Ptr;
                           Text : String;
                           Org  : Cv_Point;
                           Arg2 : Cv_Font_Ptr) is
    begin
-      W_Cv_Add_Text (To_Arr (Img), +Text, Org, Arg2);
+      W_Cv_Add_Text (To_Arr_Ptr (Img), +Text, Org, Arg2);
    end Cv_Add_Text;
 
    procedure Cv_Display_Overlay (Name     : String;
@@ -162,12 +162,12 @@ package body Highgui is
    procedure Cv_Show_Image (Windowname  : String;
                             Image       : Cv_Mat_Ptr) is
    begin
-      W_Cv_Show_Image (+Windowname, To_Arr (Image));
+      W_Cv_Show_Image (+Windowname, To_Arr_Ptr (Image));
    end Cv_Show_Image;
    procedure Cv_Show_Image (Windowname  : String;
                             Image       : Ipl_Image_Ptr) is
    begin
-      W_Cv_Show_Image (+Windowname, To_Arr (Image));
+      W_Cv_Show_Image (+Windowname, To_Arr_Ptr (Image));
    end Cv_Show_Image;
 
    procedure Cv_Resize_Window (Windowname   : String;

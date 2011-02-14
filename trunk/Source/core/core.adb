@@ -172,7 +172,7 @@ package body Core is
    begin
       Reader.all.Ptr := Reader.all.Ptr + Ptrdiff_T (Elem_Size);
       if (Reader.all.Ptr - Reader.all.Blockmax) >= 0 then
-         Cv_Change_Seq_Block (To_Void (Reader), 1);
+         Cv_Change_Seq_Block (To_Void_Ptr (Reader), 1);
       end if;
    end Cv_Next_Seq_Elem;
 
@@ -182,7 +182,7 @@ package body Core is
    begin
       Reader.all.Ptr := Reader.all.Ptr - Ptrdiff_T (Elem_Size);
       if (Reader.all.Blockmin - Reader.all.Ptr) > 0 then
-         Cv_Change_Seq_Block (To_Void (Reader), -1);
+         Cv_Change_Seq_Block (To_Void_Ptr (Reader), -1);
       end if;
    end Cv_Prev_Seq_Elem;
 
@@ -226,13 +226,13 @@ package body Core is
    function Cv_Current_Point ( Reader : Cv_Chain_Pt_Reader_Ptr ) return Cv_Point_Ptr is
       use Core.Cv_Arr_Pointer_Pkg;
    begin
-      return From_Arr (Value (Reader.all.Ptr) (1));
+      return To_Point_Ptr (Value (Reader.all.Ptr) (1));
    end Cv_Current_Point;
 
    function Cv_Prev_Point ( Reader : Cv_Chain_Pt_Reader_Ptr) return Cv_Point_Ptr is
       use Core.Cv_Arr_Pointer_Pkg;
    begin
-      return From_Arr (Value (Reader.all.Prevelem) (1));
+      return To_Point_Ptr (Value (Reader.all.Prevelem) (1));
    end Cv_Prev_Point;
 
    procedure Cv_Read_Edge ( Pt1   : out Cv_Point_Ptr;
@@ -558,7 +558,7 @@ package body Core is
 
    function Cv_Is_Sparse_Hist (Hist : Cv_Histogram_Ptr) return Integer is
    begin
-      return Cv_Is_Sparse_Mat (From_Arr (Hist.all.Bins));
+      return Cv_Is_Sparse_Mat (To_Sparse_Mat_Ptr (Hist.all.Bins));
    end Cv_Is_Sparse_Hist;
 
    function Cv_Hist_Has_Ranges (Hist : Cv_Histogram_Ptr) return Integer is
@@ -678,7 +678,7 @@ package body Core is
 --     end Cv_Mat_Elem;
 
 
-   function Cv_Is_Matnd_Hdr (Mat : Cv_Mat_ND_Ptr) return Integer is
+   function Cv_Is_Matnd_Hdr (Mat : Cv_Mat_Nd_Ptr) return Integer is
    begin
       if not (Mat = null) then
          if ( Unsigned_32 (Mat.all.Mat_Type) and Cv_Magic_Mask) = Cv_Matnd_Magic_Val then
@@ -975,7 +975,7 @@ package body Core is
 
    function "+" (Right : Ipl_Image_Ptr) return Cv_Arr_Ptr is
    begin
-      return Image_To_Arr (Right);
+      return To_Arr_Ptr (Right);
    end "+";
 
    function Cv_Is_Mat (Mat : Cv_Mat_Ptr) return Integer is

@@ -612,7 +612,7 @@ package Core is
       Dim      : Mat_Dimensions_Array (1 .. CV_MAX_DIM);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Mat_ND);
-   type Cv_Mat_ND_Ptr is access Cv_Mat_ND;
+   type Cv_Mat_ND_Ptr is access all Cv_Mat_ND;
 
    function Cv_Is_Matnd_Hdr (Mat : Cv_Mat_Nd_Ptr) return Integer;
    function Cv_Is_Matnd ( Mat : Cv_Mat_Nd_Ptr) return Integer renames Cv_Is_Matnd_Hdr;
@@ -693,7 +693,7 @@ package Core is
          Bins     : Cv_Arr_Ptr;
          Thresh   : Thresh_Arr;
          Thresh2  : Cv_32f_Pointer_Array_Ptr;
-         Mat      : Cv_Mat_ND;
+--           Mat      : Cv_Mat_ND;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Histogram);
    type Cv_Histogram_Ptr is access all cv_Histogram;
@@ -1606,191 +1606,163 @@ package Core is
    ------------ Arr conversions ------------------------------------------------
    --     pragma Warnings (Off);
 
-   function To_Arr is
+   function To_Arr_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Contour_Ptr,
                                    Target => Cv_Arr_Ptr);
 
-   function To_Arr is
+   function To_Arr_Ptr is
      new Ada.Unchecked_Conversion (Source => Ipl_Image_Ptr,
                                    Target => Cv_Arr_Ptr);
 
-   function To_Arr is
+   function To_Arr_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Scalar_Ptr,
                                    Target => Cv_Arr_Ptr);
 
-   function To_Arr is
+   function To_Arr_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Mat_Ptr,
                                    Target => Cv_Arr_Ptr);
 
-   function From_Arr is
+   function To_Image_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
                                    Target => Ipl_Image_Ptr);
 
-   function From_Arr is
+   function To_Scalar_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
                                    Target => Cv_Scalar_Ptr);
 
-   function From_Arr is
+   function To_Mat_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
                                    Target => Cv_Mat_Ptr);
 
-   function From_Arr is
+   function To_Sparse_Mat_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
                                    Target => Cv_Sparse_Mat_Ptr);
 
-   function From_Arr is
+   function To_Point_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
                                    Target => Cv_Point_Ptr);
 
    -- Unchecked Conversions ----------------------------------------------------
    ------------ Void conversions -----------------------------------------------
-   function From_Void is
+   function To_8u_Pointer is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_8u_Pointer);
 
-   function From_Void is
+   function To_8s_Pointer is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_8s_Pointer);
 
-   function From_Void is
+   function To_16u_Pointer is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_16u_Pointer);
 
-   function From_Void is
+   function To_16s_Pointer is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_16s_Pointer);
 
-   function From_Void is
+   function To_32s_Pointer is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_32s_Pointer);
 
-   function From_Void is
+   function To_32f_Pointer is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_32f_Pointer);
 
-   function From_Void is
+   function To_64f_Pointer is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_64f_Pointer);
 
-   function To_Void is
+   function To_Void_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_8u_Pointer,
                                    Target => Cv_Void_Ptr);
 
-   function To_Void is
+   function To_Void_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_8s_Pointer,
                                    Target => Cv_Void_Ptr);
 
-   function To_Void is
+   function To_Void_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_16u_Pointer,
                                    Target => Cv_Void_Ptr);
 
-   function To_Void is
+   function To_Void_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_16s_Pointer,
                                    Target => Cv_Void_Ptr);
 
-   function To_Void is
+   function To_Void_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_32s_Pointer,
                                    Target => Cv_Void_Ptr);
 
-   function To_Void is
+   function To_Void_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_32f_Pointer,
                                    Target => Cv_Void_Ptr);
 
-   function To_Void is
+   function To_Void_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_64f_Pointer,
                                    Target => Cv_Void_Ptr);
 
-   function From_Void is
+   function To_Point_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_Point_Ptr);
 
-   function From_Void is
+   function To_Seq_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_Seq_Ptr);
 
-   function From_Void is
+   function To_Contour_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_Contour_Ptr);
 
-   function From_Void is
+   function To_Image_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Ipl_Image_Ptr);
 
-   function From_Void is
+   function To_Scalar_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_Scalar_Ptr);
 
-   function From_Void is
+   function To_Arr_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_Arr_Ptr);
 
-   function From_Void is
+   function To_Mat_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_Mat_Ptr);
 
-   function To_Void is
+   function To_Void_Ptr is
      new Ada.Unchecked_Conversion (Source => Ipl_Image_Ptr,
                                    Target => Cv_Void_Ptr);
 
-   function To_Void is
+   function To_Void_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Scalar_Ptr,
                                    Target => Cv_Void_Ptr);
 
-   function To_Void is
+   function To_Void_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
                                    Target => Cv_Void_Ptr);
 
-   function To_Void is
+   function To_Void_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Mat_Ptr,
                                    Target => Cv_Void_Ptr);
-   function Image_To_Arr is
-     new Ada.Unchecked_Conversion (Source => Ipl_Image_Ptr,
-                                   Target => Cv_Arr_Ptr);
 
-   function Scalar_To_Arr is
-     new Ada.Unchecked_Conversion (Source => Cv_Scalar_Ptr,
-                                   Target => Cv_Arr_Ptr);
-   function Mat_To_Arr is
-     new Ada.Unchecked_Conversion (Source => Cv_Mat_Ptr,
-                                   Target => Cv_Arr_Ptr);
-
-   function Arr_To_Image is
-     new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
-                                   Target => Ipl_Image_Ptr);
-
-   function Arr_To_Scalar is
-     new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
-                                   Target => Cv_Scalar_Ptr);
-
-   function Arr_To_Mat is
-     new Ada.Unchecked_Conversion (Source => Cv_Arr_Ptr,
-                                   Target => Cv_Mat_Ptr);
-
-   function Void_To_Char is
-     new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
-                                   Target => Interfaces.C.Strings.Chars_Ptr);
-
-
-
-   function "+" (Right : Ipl_Image_Ptr) return Cv_Arr_Ptr;
-
-   function To_Void is
+   function To_Void_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Chain_Pt_Reader_Ptr,
                                    Target => Cv_Void_Ptr);
 
-   function To_Void is
+   function To_Void_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Seq_Reader_Ptr,
                                    Target => Cv_Void_Ptr);
 
-   function To_Void is
+   function To_Void_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Seq_Ptr,
                                    Target => Cv_Void_Ptr);
+
+   function "+" (Right : Ipl_Image_Ptr) return Cv_Arr_Ptr;
 
    -----------------------------------------------------------------------------
    -- Cv_Seq conversions
    -----------------------------------------------------------------------------
 
-   function To_Seq is
+   function To_Seq_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Set_Ptr,
                                    Target => Cv_Seq_Ptr);
 

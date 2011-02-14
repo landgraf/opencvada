@@ -36,7 +36,7 @@ procedure Latentsvmdetect is
       Bounding_Box  : Cv_Rect;
 
 
-      function From_Void is
+      function To_Object_Detection_Ptr is
         new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                       Target => Cv_Object_Detection_Ptr);
 
@@ -48,7 +48,7 @@ procedure Latentsvmdetect is
 
       for I in Integer range 0 .. Detections.all.Total-1
       loop
-         Detection := From_Void (Cv_Get_Seq_Elem (Detections, I)).all;
+         Detection := To_Object_Detection_Ptr (Cv_Get_Seq_Elem (Detections, I)).all;
          Bounding_Box := Detection.Rect;
          Cv_Rectangle (+Image,
                       Cv_Create_Point (Bounding_Box.X, Bounding_Box.Y),

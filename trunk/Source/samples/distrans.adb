@@ -50,20 +50,20 @@ procedure Distrans is
 
    procedure On_Trackbar (Position : Integer) is
    begin
-      Cv_Threshold (To_Arr (Gray), To_Arr (Edge), Long_Float (Position), Long_Float (Position), CV_THRESH_BINARY);
-      Cv_Dist_Transform (To_Arr (Edge), To_Arr (Dist), CV_DIST_L2, CV_DIST_MASK_5);
+      Cv_Threshold (To_Arr_Ptr (Gray), To_Arr_Ptr (Edge), Long_Float (Position), Long_Float (Position), CV_THRESH_BINARY);
+      Cv_Dist_Transform (To_Arr_Ptr (Edge), To_Arr_Ptr (Dist), CV_DIST_L2, CV_DIST_MASK_5);
 
-      Cv_Convert_Scale (To_Arr (Dist), To_Arr (Dist), 5000.0);
-      Cv_Pow (To_Arr (Dist), To_Arr (Dist), 0.5);
+      Cv_Convert_Scale (To_Arr_Ptr (Dist), To_Arr_Ptr (Dist), 5000.0);
+      Cv_Pow (To_Arr_Ptr (Dist), To_Arr_Ptr (Dist), 0.5);
 
-      Cv_Convert_Scale (To_Arr (Dist), To_Arr (Dist_32s), 1.0, 0.5);
-      Cv_And_S (To_Arr (Dist_32s), Cv_Scalar_All (255.0), To_Arr (Dist_32s));
-      Cv_Convert_Scale (To_Arr (Dist_32s), To_Arr (Dist_8u1), 1.0);
-      Cv_Convert_Scale (To_Arr (Dist_32s), To_Arr (Dist_32s), -1.0);
-      Cv_Add_S (To_Arr (Dist_32s), Cv_Scalar_All (255.0), To_Arr (Dist_32s));
-      Cv_Convert_Scale (To_Arr (Dist_32s), To_Arr (Dist_8u2), 1.0);
-      Cv_Merge (To_Arr (Dist_8u1), To_Arr (Dist_8u2), To_Arr (Dist_8u2), null, To_Arr (Dist_8u));
-      Cv_Show_Image (Window_Name, To_Arr (Dist_8u));
+      Cv_Convert_Scale (To_Arr_Ptr (Dist), To_Arr_Ptr (Dist_32s), 1.0, 0.5);
+      Cv_And_S (To_Arr_Ptr (Dist_32s), Cv_Scalar_All (255.0), To_Arr_Ptr (Dist_32s));
+      Cv_Convert_Scale (To_Arr_Ptr (Dist_32s), To_Arr_Ptr (Dist_8u1), 1.0);
+      Cv_Convert_Scale (To_Arr_Ptr (Dist_32s), To_Arr_Ptr (Dist_32s), -1.0);
+      Cv_Add_S (To_Arr_Ptr (Dist_32s), Cv_Scalar_All (255.0), To_Arr_Ptr (Dist_32s));
+      Cv_Convert_Scale (To_Arr_Ptr (Dist_32s), To_Arr_Ptr (Dist_8u2), 1.0);
+      Cv_Merge (To_Arr_Ptr (Dist_8u1), To_Arr_Ptr (Dist_8u2), To_Arr_Ptr (Dist_8u2), null, To_Arr_Ptr (Dist_8u));
+      Cv_Show_Image (Window_Name, To_Arr_Ptr (Dist_8u));
    end On_Trackbar;
 
    Filename    : Unbounded_String := To_Unbounded_String ("stuff.jpg");

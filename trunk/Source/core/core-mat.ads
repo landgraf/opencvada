@@ -7,9 +7,9 @@ with Ada.Text_IO; use Ada.Text_IO;
 generic
    type Element_T is private;
 package Core.Mat is
-   type Element_P is access all Element_T;
+   type Element_Ptr is access all Element_T;
    type Element_Array is array (Integer range <>) of aliased Element_T;
-   type Element_Array_P is access all Element_Array;
+   type Element_Array_Ptr is access all Element_Array;
 
    Dummy : Element_T;
 
@@ -32,62 +32,68 @@ package Core.Mat is
    end record;
    pragma Unchecked_Union (Mat_Data);
    pragma Convention (C_Pass_By_Copy, Mat_Data);
-   type Mat_Data_P is access Mat_Data;
-   pragma Convention (C, Mat_Data_P);
+   type Mat_Data_Ptr is access all Mat_Data;
+   pragma Convention (C, Mat_Data_Ptr);
 
    type Cv_Mat is record
       Mat_Type     : Unsigned_32;
       Step         : Integer;
       Refcount     : access Integer := null;
       Hdr_Refcount : Integer := 0;
-      Data         : aliased Mat_Data;
+      Data         : aliased Cv_Pointer;
+--        Data         : aliased Mat_Data;
       Rows         : Integer;
       Cols         : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Mat);
-   type Cv_Mat_P is access Cv_Mat;
-   pragma Convention (C, Cv_Mat_P);
+   type Cv_Mat_Ptr is access Cv_Mat;
+   pragma Convention (C, Cv_Mat_Ptr);
 
    function Cv_Create_Mat (Rows     : Integer;
                            Cols     : Integer;
                            Depth    : Integer;
                            Channels : Integer;
                            Data     : access Element_Array := null)
-                           return Cv_Mat_P;
+                           return Cv_Mat_Ptr;
 
-   function Cv_Number_Of_Elements (Mat : Cv_Mat_P)
+   function Cv_Number_Of_Elements (Mat : Cv_Mat_Ptr)
                                    return Integer;
 
-   function Cv_Get_Mat_Data (Mat : Cv_Mat_P)
+   function Cv_Get_Mat_Data (Mat : Cv_Mat_Ptr)
                              return Element_Array;
 
 --     procedure Deallocate (Mat : out Cv_Mat_P);
 
-   function To_Arr is new Ada.Unchecked_Conversion    (Target => Cv_Arr_Ptr,
-                                                       Source => Cv_Mat_P);
-   function From_Arr is new Ada.Unchecked_Conversion  (Target => Cv_Mat_P,
-                                                       Source => Cv_Arr_Ptr);
-   function To_Void is new Ada.Unchecked_Conversion   (Target => Cv_Void_Ptr,
-                                                       Source => Cv_Mat_P);
-   function From_Void is new Ada.Unchecked_Conversion (Target => Cv_Mat_P,
-                                                       Source => Cv_Void_Ptr);
+   function To_Arr_Ptr is new Ada.Unchecked_Conversion    (Target => Cv_Arr_Ptr,
+                                                       Source => Cv_Mat_Ptr);
+   function To_Mat_Ptr is new Ada.Unchecked_Conversion  (Target => Cv_Mat_Ptr,
+                                                     Source => Cv_Arr_Ptr);
+   function To_Void_Ptr is new Ada.Unchecked_Conversion   (Target => Cv_Void_Ptr,
+                                                       Source => Cv_Mat_Ptr);
+   function To_Mat_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Mat_Ptr,
+                                                    Source => Cv_Void_Ptr);
+
+   function To_Mat_Ptr is new Ada.Unchecked_Conversion (Target => Core.Cv_Mat,
+                                                        Source => Cv_Mat);
+   function To_Mat_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Mat,
+                                                        Source => Core.Cv_Mat);
 
 --     procedure Cv_Release_Mat (Mat : in out Cv_Mat_P);
 
-   procedure Cv_Release_Mat (Mat : in out Cv_Mat_P;
-                             Arr : access Element_Array_P := null);
+   procedure Cv_Release_Mat (Mat : in out Cv_Mat_Ptr;
+                             Arr : access Element_Array_Ptr := null);
 
    procedure Cv_Release_Element_Array is new Ada.Unchecked_Deallocation (Object => Element_Array,
-                                                                         Name   => Element_Array_P);
+                                                                         Name   => Element_Array_Ptr);
 private
-   type Cv_Pointer_P is access all Cv_Pointer;
-   pragma Convention (C, Cv_Pointer_P);
+   type Cv_Pointer_Ptr is access all Cv_Pointer;
+   pragma Convention (C, Cv_Pointer_Ptr);
 
    procedure Deallocate_Mat is new Ada.Unchecked_Deallocation (Object => Cv_Mat,
-                                                               Name   => Cv_Mat_P);
+                                                               Name   => Cv_Mat_Ptr);
 
    procedure Deallocate_Mat_Data is new Ada.Unchecked_Deallocation (Object => Cv_Pointer,
-                                                                    Name   => Cv_Pointer_P);
+                                                                    Name   => Cv_Pointer_Ptr);
 
    function To_Void is new Ada.Unchecked_Conversion (Target => Cv_Void_Ptr,
                                                      Source => Cv_Pointer);

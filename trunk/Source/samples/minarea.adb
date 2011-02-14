@@ -74,13 +74,13 @@ procedure Minarea is
    Circle_Radius : aliased Float;
 
    -- Test of new Cv_Mat structure
-   Mat_32s : aliased Cv_Mat_32s.Cv_Mat_P;
-   Arr_32s : aliased Cv_Mat_32s.Element_Array_P;
-   Mat_8u  : Cv_Mat_8u.Cv_Mat_P;
-   Arr_8u  : Cv_Mat_8u.Element_Array_P;
+   Mat_32s : aliased Cv_Mat_32s.Cv_Mat_Ptr;
+   Arr_32s : aliased Cv_Mat_32s.Element_Array_Ptr;
+   Mat_8u  : Cv_Mat_8u.Cv_Mat_Ptr;
+   Arr_8u  : Cv_Mat_8u.Element_Array_Ptr;
 
 
-   function To_Int is new Ada.Unchecked_Conversion (Source => Cv_Mat_32s.Cv_Mat_P,
+   function To_Int is new Ada.Unchecked_Conversion (Source => Cv_Mat_32s.Cv_Mat_Ptr,
                                                     Target => Integer);
 begin
    Arr_8u := new Cv_Mat_8u.Element_Array (0 .. Width * Height * Channels - 1);
@@ -102,37 +102,37 @@ begin
 
       Mat_32s := Cv_Mat_32s.Cv_Create_Mat (Count, 1, Cv_32s, 2, Arr_32s);
 
-      Min_Rect := Cv_Min_Area_Rect2 (Points  => Cv_Mat_32s.To_Arr (Mat_32s),
+      Min_Rect := Cv_Min_Area_Rect2 (Points  => Cv_Mat_32s.To_Arr_Ptr (Mat_32s),
                                      Storage => null);
 
-      I_Ret := Cv_Min_Enclosing_Circle (Points => Cv_Mat_32s.To_Arr (Mat_32s),
+      I_Ret := Cv_Min_Enclosing_Circle (Points => Cv_Mat_32s.To_Arr_Ptr (Mat_32s),
                                         Center => Circle_Center'Access,
                                         Radius => Circle_Radius'Access);
 
-      Cv_Zero (Cv_Mat_8u.To_Arr (Mat_8u));
+      Cv_Zero (Cv_Mat_8u.To_Arr_Ptr (Mat_8u));
 
       for I in Integer range 0 .. Count - 1 loop
          Index := I * 2;
-         Cv_Circle (Cv_Mat_8u.To_Arr (Mat_8u), Cv_Create_Point (Arr_32s.all (Index), Arr_32s.all (Index + 1)), 3, Cv_Create_Scalar (0.0, 0.0, 255.0), Cv_Filled, Cv_Aa);
+         Cv_Circle (Cv_Mat_8u.To_Arr_Ptr (Mat_8u), Cv_Create_Point (Arr_32s.all (Index), Arr_32s.all (Index + 1)), 3, Cv_Create_Scalar (0.0, 0.0, 255.0), Cv_Filled, Cv_Aa);
       end loop;
 
       Box_Corners := GetCorners (Min_Rect);
 
       for I in Integer range 0 .. 3 loop
-         Cv_Line (Cv_Mat_8u.To_Arr (Mat_8u), Cv_Create_Point (Cv_Round (Box_Corners (I).X), Cv_Round (Box_Corners (I).Y)), Cv_Create_Point (Cv_Round (Box_Corners ((I + 1) mod 4).X), Cv_Round (Box_Corners ((I + 1) mod 4).Y)), Cv_Create_Scalar (0.0, 255.0), 1, Cv_Aa);
+         Cv_Line (Cv_Mat_8u.To_Arr_Ptr (Mat_8u), Cv_Create_Point (Cv_Round (Box_Corners (I).X), Cv_Round (Box_Corners (I).Y)), Cv_Create_Point (Cv_Round (Box_Corners ((I + 1) mod 4).X), Cv_Round (Box_Corners ((I + 1) mod 4).Y)), Cv_Create_Scalar (0.0, 255.0), 1, Cv_Aa);
       end loop;
 
-      Cv_Circle (Cv_Mat_8u.To_Arr (Mat_8u), Cv_Create_Point (Cv_Round (Circle_Center.X), Cv_Round (Circle_Center.Y)), Cv_Round (Circle_Radius), Cv_Create_Scalar (255.0), 1, CV_AA);
+      Cv_Circle (Cv_Mat_8u.To_Arr_Ptr (Mat_8u), Cv_Create_Point (Cv_Round (Circle_Center.X), Cv_Round (Circle_Center.Y)), Cv_Round (Circle_Radius), Cv_Create_Scalar (255.0), 1, CV_AA);
 
       Cv_Show_Image (WindowName => "Red Penguin",
-                     Image      => Cv_Mat_8u.To_Arr (Mat_8u));
+                     Image      => Cv_Mat_8u.To_Arr_Ptr (Mat_8u));
 
       Cv_Mat_32s.Cv_Release_Mat (Mat_32s, Arr_32s'Access);
 
       C_Ret := Cv_Wait_Key (1);
 
       if C_Ret = Ascii.Esc then
-         Cv_Destroy_All_Windows;
+         Cv_Destroy_Window ("Red Penguin");
          exit;
       end if;
    end loop;

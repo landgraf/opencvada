@@ -96,12 +96,12 @@ begin
 
    Ret := Cv_Find_Contours (+Img, Storage, Contours'Access, Cv_Contour'Size / 8, Cv_Retr_Tree, CV_CHAIN_APPROX_SIMPLE, Cv_Create_point (0, 0));
 
-   Cv_Save (New_String ("contours.xml"), To_Void (Contours), Null_Ptr, Null_Ptr, Cv_Create_Attr_List (Attrs (0)'Unchecked_Access, null));
-   Contours := From_Void(Cv_Load (+"contours.xml", Storage));
+   Cv_Save (New_String ("contours.xml"), To_Void_Ptr (Contours), Null_Ptr, Null_Ptr, Cv_Create_Attr_List (Attrs (0)'Unchecked_Access, null));
+   Contours := To_Seq_Ptr(Cv_Load (+"contours.xml", Storage));
 
 
 
-   Contours := Cv_Approx_Poly (To_Void (Contours), Cv_Contour'Size / 8, Storage, Cv_Poly_Approx_Dp, 3.0, 1);
+   Contours := Cv_Approx_Poly (To_Void_Ptr (Contours), Cv_Contour'Size / 8, Storage, Cv_Poly_Approx_Dp, 3.0, 1);
 
    Ret := Cv_Named_Window ("contours", 1);
    Cv_Show_Image ("contours", +Img);

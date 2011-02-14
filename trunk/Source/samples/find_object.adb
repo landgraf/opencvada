@@ -71,10 +71,10 @@ procedure Find_Object is
       Kp              : Cv_Surf_Point_Ptr;
       Mvec            : Cv_32f_Pointer;
 
-      function From_Arr is
+      function To_Surf_Point_Ptr is
         new Ada.Unchecked_Conversion (Source => Cv_Arr_Pointer,
                                       Target => Cv_Surf_Point_Ptr);
-      function From_Arr is
+      function To_32f_Pointer is
         new Ada.Unchecked_Conversion (Source => Cv_Arr_Pointer,
                                       Target => Cv_32f_Pointer);
    begin
@@ -83,8 +83,8 @@ procedure Find_Object is
 
       for I in Integer range 0 .. Model_Descriptors.all.Total - 1
       loop
-         Kp := From_Arr (Kreader.Ptr);
-         Mvec := From_Arr (Reader.Ptr);
+         Kp := To_Surf_Point_Ptr (Kreader.Ptr);
+         Mvec := To_32f_Pointer (Reader.Ptr);
          Cv_Next_Seq_Elem (Kreader.Seq.all.Elem_Size, Kreader'Unchecked_Access);
          Cv_Next_Seq_Elem (Reader.Seq.all.Elem_Size, Reader'Unchecked_Access);
          if Laplacian = Kp.all.Laplacian then
@@ -122,10 +122,10 @@ procedure Find_Object is
       Kp : Cv_Surf_Point_Ptr;
       Descriptor : Cv_32f_Pointer;
 
-      function From_Arr is
+      function To_Surf_Point_Ptr is
         new Ada.Unchecked_Conversion (Source => Cv_Arr_Pointer,
                                       Target => Cv_Surf_Point_Ptr);
-      function From_Arr is
+      function To_32f_Pointer is
         new Ada.Unchecked_Conversion (Source => Cv_Arr_Pointer,
                                       Target => Cv_32f_Pointer);
       Nearest_Neighbor : Integer;
@@ -137,8 +137,8 @@ procedure Find_Object is
       Cv_Start_Read_Seq (Object_Descriptors, Reader'Unchecked_Access);
       for I in Integer range 0 .. Object_Descriptors.all.Total - 1
       loop
-         Kp := From_Arr (Kreader.Ptr);
-         Descriptor := From_Arr (Reader.Ptr);
+         Kp := To_Surf_Point_Ptr (Kreader.Ptr);
+         Descriptor := To_32f_Pointer (Reader.Ptr);
          Cv_Next_Seq_Elem (Kreader.Seq.all.Elem_Size, Kreader'Unchecked_Access);
          Cv_Next_Seq_Elem (Reader.Seq.all.Elem_Size, Reader'Unchecked_Access);
          Nearest_Neighbor := Naive_Nearest_Neighbor (Descriptor, Kp.all.Laplacian, Image_Keypoints, Image_Descriptors);
@@ -170,7 +170,7 @@ procedure Find_Object is
                                   Dst_Corners        : Cv_Point_Array_Ptr) return Integer is
       H                     : aliased Cv_64f_Array (0 .. 8) := (others => 0.0);
       H_Ptr                 : Cv_64f_Pointer := H (0)'Unchecked_Access;
-      H_Mat                 : aliased Cv_Mat := Cv_Create_Mat (3, 3, Cv_Make_Type (Cv_64f, 1), To_Void (H_Ptr));
+      H_Mat                 : aliased Cv_Mat := Cv_Create_Mat (3, 3, Cv_Make_Type (Cv_64f, 1), To_Void_Ptr (H_Ptr));
       Pt_Pairs_P            : aliased Cv_32s_Pointer := null;
       Pt_Pairs              : Cv_32s_Array_Ptr;
       Pt1, Pt2              : Cv_Point_2d_32f_Array_Ptr;
@@ -181,10 +181,10 @@ procedure Find_Object is
       X, Y, Z               : Long_Float;
 
 
-      function From_Void is
+      function To_Surf_Point_Ptr is
         new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                       Target => Cv_Surf_Point_Ptr);
-      function To_Void is
+      function To_Void_Ptr is
         new Ada.Unchecked_Conversion (Source => Cv_Point_2d_32f_Pointer,
                                       Target => Cv_Void_Ptr);
    begin
@@ -209,15 +209,15 @@ procedure Find_Object is
 
       for I in Integer range 0 .. N - 1
       loop
-         Pt1.all (I) := From_Void (Cv_Get_Seq_Elem (Object_Keypoints, Pt_Pairs.all (I * 2))).all.Pt;
-         Pt2.all (I) := From_Void (Cv_Get_Seq_Elem (Image_Keypoints, Pt_Pairs.all (I * 2 + 1))).all.Pt;
+         Pt1.all (I) := To_Surf_Point_Ptr (Cv_Get_Seq_Elem (Object_Keypoints, Pt_Pairs.all (I * 2))).all.Pt;
+         Pt2.all (I) := To_Surf_Point_Ptr (Cv_Get_Seq_Elem (Image_Keypoints, Pt_Pairs.all (I * 2 + 1))).all.Pt;
       end loop;
 
       Pt1_Ptr := Pt1.all (0)'Access;
       Pt2_Ptr := Pt2.all (0)'Access;
 
-      Pt1_Mat := Cv_Create_Mat (1, N, Cv_Make_Type (Cv_32f, 2), To_Void (Pt1_Ptr));
-      Pt2_Mat := Cv_Create_Mat (1, N, Cv_Make_Type (Cv_32f, 2), To_Void (Pt2_Ptr));
+      Pt1_Mat := Cv_Create_Mat (1, N, Cv_Make_Type (Cv_32f, 2), To_Void_Ptr (Pt1_Ptr));
+      Pt2_Mat := Cv_Create_Mat (1, N, Cv_Make_Type (Cv_32f, 2), To_Void_Ptr (Pt2_Ptr));
 
       if Cv_Find_Homography (Pt1_Mat'Unchecked_Access, Pt2_Mat'Unchecked_Access, H_Mat'Unchecked_Access, Cv_Ransac, 5.0) = 0 then
          return 0;
@@ -256,7 +256,7 @@ procedure Find_Object is
    N : Integer;
    R1, R2 : Cv_Surf_Point_Ptr;
 
-   function From_Void is
+   function To_Surf_Point_Ptr is
      new Ada.Unchecked_Conversion (Source => Cv_Void_Ptr,
                                    Target => Cv_Surf_Point_Ptr);
 begin
@@ -295,9 +295,9 @@ begin
    loop
       exit when N >= Pt_Length;
 
-      R1 := From_Void (Cv_Get_Seq_Elem (Object_Keypoints, Pt_Pairs.all));
+      R1 := To_Surf_Point_Ptr (Cv_Get_Seq_Elem (Object_Keypoints, Pt_Pairs.all));
       Core.Cv_32s_Pointer_Pkg.Increment (Pt_Pairs);
-      R2 := From_Void (Cv_Get_Seq_Elem (Image_Keypoints, Pt_Pairs.all));
+      R2 := To_Surf_Point_Ptr (Cv_Get_Seq_Elem (Image_Keypoints, Pt_Pairs.all));
       Core.Cv_32s_Pointer_Pkg.Increment (Pt_Pairs);
       Cv_Line (+Correspond,
                Cv_Point_From_32f (R1.all.Pt),
@@ -309,7 +309,7 @@ begin
    Cv_Show_Image ("correspond", +Correspond);
    for I in Integer range 0 .. Object_Keypoints.all.Total - 1
    loop
-      R1 := From_Void (Cv_Get_Seq_Elem (Object_Keypoints, I));
+      R1 := To_Surf_Point_Ptr (Cv_Get_Seq_Elem (Object_Keypoints, I));
       Cv_Circle (+Object_Color,
                  Cv_Create_Point (Cv_Round (R1.all.Pt.X), Cv_Round (R1.all.Pt.Y)),
                  Cv_Round (Float(r1.all.Size) * 1.2 / 9.0 * 2.0),
