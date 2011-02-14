@@ -96,7 +96,7 @@ procedure Delaunay is
       ---------
       -- Conversions
       ---------
-      function From_Arr is
+      function To_Quad_Edge_2d_Ptr is
         new Ada.Unchecked_Conversion (Source => Cv_Arr_Pointer,
                                       Target => Imgproc.Cv_Quad_Edge_2d_Ptr);
 
@@ -107,13 +107,13 @@ procedure Delaunay is
       Edge1     : Cv_Quad_Edge_2d_Ptr;
       use Core.Cv_Arr_Pointer_Pkg;
    begin
-      Cv_Start_Read_Seq (To_Seq (Subdiv.all.Edges), Reader'Unchecked_Access, 0);
+      Cv_Start_Read_Seq (To_Seq_Ptr (Subdiv.all.Edges), Reader'Unchecked_Access, 0);
 
       for I in Integer range 0 .. Total-1
       loop
 --             Put("draw_subdiv " & I'Img);
-         Edge := From_Arr (Reader.Ptr);
-         Edge1 := From_Arr(Reader.Ptr + 1);
+         Edge := To_Quad_Edge_2d_Ptr (Reader.Ptr);
+         Edge1 := To_Quad_Edge_2d_Ptr (Reader.Ptr + 1);
          if( Edge.all.Flags >= 0 ) then
             Draw_Subdiv_Edge (Img, Quad_To_Subdiv (Edge1), Voronoi_Color);
             Draw_Subdiv_Edge (Img, Quad_To_Subdiv (Edge), Delaunay_Color);
@@ -204,18 +204,18 @@ procedure Delaunay is
         new Ada.Unchecked_Conversion (Source => Cv_Quad_Edge_2d_Ptr,
                                       Target => Cv_Subdiv_2d_Edge);
 
-      function From_Arr is
+      function To_Quad_Edge_2d_Ptr is
         new Ada.Unchecked_Conversion (Source => Cv_Arr_Pointer,
                                       Target => Imgproc.Cv_Quad_Edge_2d_Ptr);
 
    begin
       Cv_Calc_Subdiv_Voronoi_2d (Subdiv);
-      Cv_Start_Read_Seq (To_Seq (Subdiv.all.Edges), Reader'Unchecked_Access, 0);
+      Cv_Start_Read_Seq (To_Seq_Ptr (Subdiv.all.Edges), Reader'Unchecked_Access, 0);
 
       for I in Integer range 0  .. Total - 1
       loop
 --           Put_Line("test" & I'Img);
-         Edge := From_Arr (Reader.Ptr);
+         Edge := To_Quad_Edge_2d_Ptr (Reader.Ptr);
 
          if( Edge.all.Flags >= 0 ) then
             E := Quad_To_Subdiv (Edge);
