@@ -149,6 +149,7 @@ procedure Find_Object is
          end if;
       end loop;
 
+      Put_Line(Temp_Length'Img);
       Temp_Array := new Cv_32s_Array (0 .. Temp_Length - 1);
       for N in Temp_Array'Range
       loop

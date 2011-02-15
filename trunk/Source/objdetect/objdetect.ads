@@ -305,4 +305,5 @@ private
    pragma Import (C, W_Cv_Load_Latent_Svm_Detector, "cvLoadLatentSvmDetector");
    pragma Import (C, Cv_Release_Latent_Svm_Detector, "cvReleaseLatentSvmDetector");
    pragma Import (C, Cv_Latent_Svm_Detect_Objects, "cvLatentSvmDetectObjects");
+   pragma Import (C, Cv_Is_Haar_Classifier, "Cv_Is_Haar_Classifier");
 end Objdetect;

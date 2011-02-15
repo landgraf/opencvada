@@ -403,7 +403,7 @@ package Imgproc.Operations is
                            Center     : Cv_Point_2d_32f;
                            M          : Long_Float;
                            Flags      : Integer := Integer (Cv_Inter_Linear) + Integer (Cv_Warp_Fill_Outliers));
---                             Flags      : Integer := Cv_Inter'Pos (Cv_Inter_Linear) + Cv_Warp'Pos (Cv_Warp_Fill_Outliers));
+   --                             Flags      : Integer := Cv_Inter'Pos (Cv_Inter_Linear) + Cv_Warp'Pos (Cv_Warp_Fill_Outliers));
    procedure Cv_Log_Polar (Src        : Cv_Mat_Ptr;
                            Dst        : Cv_Mat_Ptr;
                            Center     : Cv_Point_2d_32f;
@@ -421,7 +421,7 @@ package Imgproc.Operations is
                               Center     : Cv_Point_2d_32f;
                               Max_Radius : Long_Float;
                               Flags      : Integer := Integer (Cv_Inter_Linear) + Integer (Cv_Warp_Fill_Outliers));
---                                Flags      : Integer := Cv_Inter'Pos (Cv_Inter_Linear) + Cv_Warp'Pos (Cv_Warp_Fill_Outliers));
+   --                                Flags      : Integer := Cv_Inter'Pos (Cv_Inter_Linear) + Cv_Warp'Pos (Cv_Warp_Fill_Outliers));
    procedure Cv_Linear_Polar (Src        : Cv_Mat_Ptr;
                               Dst        : Cv_Mat_Ptr;
                               Center     : Cv_Point_2d_32f;
@@ -554,15 +554,15 @@ package Imgproc.Operations is
                                Iterations : Integer);
 
    -- Calculates all of the moments up to the third order of a polygon or rasterized shape.
-   procedure Cv_Moments (Arr     : Cv_Arr_Ptr;
-                         Moments : Cv_Moments_Ptr;
-                         Binary  : Integer := 0);
-   procedure Cv_Moments (Arr     : Cv_Mat_Ptr;
-                         Moments : Cv_Moments_Ptr;
-                         Binary  : Integer := 0);
-   procedure Cv_Moments (Arr     : Ipl_Image_Ptr;
-                         Moments : Cv_Moments_Ptr;
-                         Binary  : Integer := 0);
+   procedure Cv_Calc_Moments (Arr     : Cv_Arr_Ptr;
+                              Moments : Cv_Moments_Ptr;
+                              Binary  : Integer := 0);
+   procedure Cv_Calc_Moments (Arr     : Cv_Mat_Ptr;
+                              Moments : Cv_Moments_Ptr;
+                              Binary  : Integer := 0);
+   procedure Cv_Calc_Moments (Arr     : Ipl_Image_Ptr;
+                              Moments : Cv_Moments_Ptr;
+                              Binary  : Integer := 0);
 
    -- Retrieves the spatial moment from the moment state structure.
    function Cv_Get_Spatial_Moment (Moments : Cv_Moments_Ptr;
@@ -798,6 +798,8 @@ package Imgproc.Operations is
    -----------------------------------------------------------------------------
    -- Returns next edge around the edge origin
    function Cv_Subdiv_2d_Next_Edge (Edge : Cv_Subdiv_2d_Edge) return Cv_Subdiv_2d_Edge;
+   -- get the next edge with the same origin point (counterwise)
+   function Cv_Subdiv_2d_Next_Edge (Edge : Cv_Quad_Edge_2d) return Cv_Quad_Edge_2d_Ptr;
 
    -- Returns another edge of the same quad-edge.
    function Cv_Subdiv_2d_Rotate_Edge (Edge   : Cv_Subdiv_2d_Edge;
@@ -845,7 +847,7 @@ package Imgproc.Operations is
                               return Cv_Rect;
    function Cv_Bounding_Rect (Points : Cv_Mat_Ptr;
                               Update : Integer := 0)
-                                 return Cv_Rect;
+                              return Cv_Rect;
    function Cv_Bounding_Rect (Points : Ipl_Image_Ptr;
                               Update : Integer := 0)
                               return Cv_Rect;
@@ -1020,6 +1022,10 @@ package Imgproc.Operations is
                                Accumulate : Integer := 0;
                                Mask       : Cv_Arr_Ptr := null);
    procedure Cv_Calc_Arr_Hist (Arr        : Cv_Mat_Ptr_Pointer;
+                               Hist       : Cv_Histogram_Ptr;
+                               Accumulate : Integer := 0;
+                               Mask       : Cv_Arr_Ptr := null);
+   procedure Cv_Calc_Arr_Hist (Arr        : Ipl_Image_Ptr_Pointer;
                                Hist       : Cv_Histogram_Ptr;
                                Accumulate : Integer := 0;
                                Mask       : Cv_Arr_Ptr := null);
@@ -1534,7 +1540,7 @@ private
    pragma Import (C, Cv_Erode, "cvErode");
    pragma Import (C, Cv_Dilate, "cvDilate");
    pragma Import (C, Cv_Morphology_Ex, "cvMorphologyEx");
-   pragma Import (C, Cv_Moments, "cvMoments");
+   pragma Import (C, Cv_Calc_Moments, "cvMoments");
    pragma Import (C, Cv_Get_Spatial_Moment, "cvGetSpatialMoment");
    pragma Import (C, Cv_Get_Central_Moment, "cvGetCentralMoment");
    pragma Import (C, Cv_Get_Normalized_Central_Moment, "cvGetNormalizedCentralMoment");

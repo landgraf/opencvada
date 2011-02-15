@@ -417,9 +417,9 @@ package Core is
    type Ipl_Image_Ptr_Array is array (Integer range<>) of aliased Ipl_Image_Ptr;
 
 
-   package Cv_Ipl_Image_Ptr_Pointer_Pkg is
+   package Ipl_Image_Ptr_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Ipl_Image_Ptr, Ipl_Image_Ptr_Array, null);
-   subtype Cv_Ipl_Image_Ptr_Pointer is Cv_Ipl_Image_Ptr_Pointer_Pkg.Pointer;
+   subtype Ipl_Image_Ptr_Pointer is Ipl_Image_Ptr_Pointer_Pkg.Pointer;
 
    type Ipl_Conv_Kernel is
       record
@@ -1144,7 +1144,7 @@ package Core is
          --
          Code       : Unsigned_8;
          Pt         : Cv_Point;
-         Deltas     : Cv_8u_2d_Array (1 .. 8, 1 .. 2);
+         Deltas     : Cv_8s_2d_Array (1 .. 8, 1 .. 2);
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Chain_Pt_Reader);
    type Cv_Chain_Pt_Reader_Ptr is access all cv_Chain_Pt_Reader;
@@ -1341,20 +1341,22 @@ package Core is
 
    --  /* Add element to sequence: */
    procedure Cv_Write_Seq_Elem_Var ( Elem_Ptr : Cv_Arr_Pointer;
-                                    Writer   : Cv_Seq_Writer_Ptr );
+                                    Writer   : Cv_Seq_Writer );
 
    -- Not portable to Ada.
    procedure Cv_Write_Seq_Elem ( Elem_Ptr : Cv_Arr_Pointer;
-                                Writer   : Cv_Seq_Writer_Ptr ) renames Cv_Write_Seq_Elem_Var;
+                                Writer   : Cv_Seq_Writer ) renames Cv_Write_Seq_Elem_Var;
 
    --  /* Move reader position forward: */
    procedure Cv_Next_Seq_Elem (Elem_Size : Integer;
                                Reader    : Cv_Seq_Reader_Ptr);
+   procedure Cv_Next_Seq_Elem (Elem_Size : Integer;
+                               Reader    : Cv_Chain_Pt_Reader_Ptr);
 
 
    --  /* Move reader position backward: */
    procedure Cv_Prev_Seq_Elem ( Elem_Size : Integer;
-                               Reader    : Cv_Seq_Reader_Ptr );
+                               Reader    : Cv_Seq_Reader );
 
    --  /* Read element and move read position forward: */
    procedure Cv_Read_Seq_Elem ( Elem  : Cv_Arr_Pointer;
@@ -1364,15 +1366,15 @@ package Core is
 
    --  /* Read element and move read position backward: */
    procedure Cv_Rev_Read_Seq_Elem ( Elem  : Cv_Arr_Pointer;
-                                   Reader : Cv_Seq_Reader_Ptr );
+                                   Reader : Cv_Seq_Reader );
 
-   procedure Cv_Read_Chain_Point ( Pt    : out Cv_Point;
+   procedure Cv_Read_Chain_Point ( Pt    : access Cv_Point;
                                   Reader : Cv_Chain_Pt_Reader_Ptr );
 
-   function Cv_Current_Point ( Reader : Cv_Chain_Pt_Reader_Ptr ) return Cv_Point_Ptr; --  (*((CvPoint*)((reader).ptr)))
-   function Cv_Prev_Point ( Reader : Cv_Chain_Pt_Reader_Ptr) return Cv_Point_Ptr; -- ( * ((CvPoint * ) ((Reader).Prev_Elem)))
+   function Cv_Current_Point ( Reader : Cv_Chain_Pt_Reader ) return Cv_Point; --  (*((CvPoint*)((reader).ptr)))
+   function Cv_Prev_Point ( Reader : Cv_Chain_Pt_Reader) return Cv_Point; -- ( * ((CvPoint * ) ((Reader).Prev_Elem)))
 
-   procedure Cv_Read_Edge ( Pt1   : out Cv_Point_Ptr;
+   procedure Cv_Read_Edge ( Pt1   : Cv_Point_Ptr;
                            Pt2    : out Cv_Point_Ptr;
                            Reader : Cv_Chain_Pt_Reader_Ptr );
 
@@ -1380,8 +1382,8 @@ package Core is
    -- Graph macros
    -----------------------------------------------------------------------------
    --  /* Return next graph edge for given vertex: */
-   function Cv_Next_Graph_Edge ( Edge  : Cv_Graph_Edge_Ptr;
-                                Vertex : Cv_Graph_Vtx_Ptr ) return Cv_Graph_Edge_Ptr;
+   procedure Cv_Next_Graph_Edge ( Edge  : Cv_Graph_Edge_Ptr;
+                                 Vertex : Cv_Graph_Vtx_Ptr );
 
    -----------------------------------------------------------------------------
    -- Data structures for persistence (a.k.a serialization) functionality
@@ -1815,5 +1817,12 @@ private
    pragma Import (C, Cv_Change_Seq_Block, "cvChangeSeqBlock");
    pragma Import (C, Cv_Next_Seq_Elem, "cvNextSeqElem");
    pragma Import (C, Cv_Mat_Elem, "cvMatElem_wrap");
-
+   pragma Import (C, Cv_Mat_Elem_Ptr_Fast, "Cv_Mat_Elem_Ptr_Fast");
+   pragma Import (C, Cv_Write_Seq_Elem_Var, "Cv_Write_Seq_Elem_Var");
+   pragma Import (C, Cv_Prev_Seq_Elem, "Cv_Prev_Seq_Elem");
+   pragma Import (C, Cv_Rev_Read_Seq_Elem, "Cv_Rev_Read_Seq_Elem");
+   pragma Import (C, Cv_Read_Seq_Elem, "Cv_Read_Seq_Elem");
+   pragma Import (C, Cv_Read_Chain_Point, "Cv_Read_Chain_Point");
+   pragma Import (C, Cv_Next_Graph_Edge, "Cv_Next_Graph_Edge");
+   pragma Import (C, Cv_Read_Edge, "Cv_Read_Edge");
 end Core;

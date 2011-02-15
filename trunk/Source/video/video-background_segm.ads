@@ -49,7 +49,7 @@ package Video.Background_Segm is
       Update             : Cv_Update_Bg_Stat_Model_Func;
       Background         : Ipl_Image_Ptr;       -- 8UC3 reference background image
       Foreground         : Ipl_Image_Ptr;       -- 8UC1 foreground image
-      Layers             : Cv_Ipl_Image_Ptr_Pointer; -- 8UC3 reference background image, can be null
+      Layers             : Ipl_Image_Ptr_Pointer; -- 8UC3 reference background image, can be null
       Layer_Count        : Integer;           -- Can be zero
       Storage            : Cv_Mem_Storage_Ptr;  -- Storage for foreground_regions
       Foreground_Regions : Cv_Seq_Ptr;          -- Foreground object contours
@@ -176,7 +176,7 @@ package Video.Background_Segm is
       Update             : Cv_Release_Bg_Stat_Model_Func;
       Background         : Ipl_Image_Ptr;       -- 8UC3 reference background image
       Foreground         : Ipl_Image_Ptr;       -- 8UC1 foreground image
-      Layers             : Cv_Ipl_Image_Ptr_Pointer; -- 8UC3 reference background image, can be null
+      Layers             : Ipl_Image_Ptr_Pointer; -- 8UC3 reference background image, can be null
       Layer_Count        : Integer;           -- Can be zero
       Storage            : Cv_Mem_Storage_Ptr;  -- Storage for foreground_regions
       Foreground_Regions : Cv_Seq_Ptr;          -- Foreground object contours
@@ -251,7 +251,7 @@ package Video.Background_Segm is
       Update             : Cv_Release_Bg_Stat_Model_Func;
       Background         : Ipl_Image_Ptr;       -- 8UC3 reference background image
       Foreground         : Ipl_Image_Ptr;       -- 8UC1 foreground image
-      Layers             : Cv_Ipl_Image_Ptr_Pointer; -- 8UC3 reference background image, can be null
+      Layers             : Ipl_Image_Ptr_Pointer; -- 8UC3 reference background image, can be null
       Layer_Count        : Integer;           -- Can be zero
       Storage            : Cv_Mem_Storage_Ptr;  -- Storage for foreground_regions
       Foreground_Regions : Cv_Seq_Ptr;          -- Foreground object contours

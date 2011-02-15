@@ -843,9 +843,21 @@ package Core.Operations is
 
    --     Copies several channels from input arrays to certain channels of
    --     output arrays
-   procedure Cv_Mix_Channels (Src        : access Cv_Arr_Ptr;
+   procedure Cv_Mix_Channels (Src        : Cv_Arr_Ptr_Array;
                               Src_Count  : Integer;
-                              Dst        : access Cv_Arr_Ptr;
+                              Dst        : Cv_Arr_Ptr_Array;
+                              Dst_Count  : Integer;
+                              From_To    : Cv_32s_Array;
+                              Pair_Count : Integer);
+   procedure Cv_Mix_Channels (Src        : Cv_Mat_Ptr_Array;
+                              Src_Count  : Integer;
+                              Dst        : Cv_Mat_Ptr_Array;
+                              Dst_Count  : Integer;
+                              From_To    : Cv_32s_Array;
+                              Pair_Count : Integer);
+   procedure Cv_Mix_Channels (Src        : Ipl_Image_Ptr_Array;
+                              Src_Count  : Integer;
+                              Dst        : Ipl_Image_Ptr_Array;
                               Dst_Count  : Integer;
                               From_To    : Cv_32s_Array;
                               Pair_Count : Integer);
@@ -2856,7 +2868,7 @@ package Core.Operations is
                                    Connectivity   : Integer := 8;
                                    Left_To_Right  : Integer := 0) return Integer;
 
-   procedure Cv_Next_Line_Point (Lineiterator : Cv_Line_Iterator_Ptr);
+   procedure Cv_Next_Line_Point (Lineiterator : Cv_Line_Iterator);
 
    -- Fonts
    type Cv_Font_Face is new Integer;
@@ -3841,4 +3853,6 @@ private
    pragma Import (C, Cv_Nul_Dev_Report, "cvNulDevReport");
    pragma Import (C, Cv_Std_Err_Report, "cvStdErrReport");
    pragma Import (C, Cv_Gui_Box_Report, "cvGuiBoxReport");
+
+   pragma Import (C, Cv_Next_Line_Point, "Cv_Next_Line_Point");
 end Core.Operations;

@@ -146,115 +146,23 @@ package body Core is
       return L;
    end Cv_Create_Attr_List;
 
-   procedure Cv_Write_Seq_Elem_Var ( Elem_Ptr : Cv_Arr_Pointer;
-                                    Writer   : Cv_Seq_Writer_Ptr ) is
+   function Cv_Current_Point ( Reader : Cv_Chain_Pt_Reader ) return Cv_Point is
       use Core.Cv_Arr_Pointer_Pkg;
+            function Conv is
+     new Ada.Unchecked_Conversion (Source => Cv_Arr_Pointer,
+                                   Target => Cv_Point_Pointer);
    begin
-      if (Writer.all.Ptr - Writer.all.Block_Max) >= 0 then
-         Cv_Create_Seq_Block (Writer);
-      end if;
-      Memcpy (Writer.all.Ptr'Address, Elem_Ptr'Address, System.Crtl.Size_T (Writer.all.Seq.all.Elem_Size));
-      Writer.all.Ptr := Writer.all.Ptr + Ptrdiff_T (Writer.all.Seq.all.Elem_Size);
-   end Cv_Write_Seq_Elem_Var;
-
---     procedure Cv_Next_Seq_Elem (Elem_Size : Integer;
---                                 Reader    : Cv_Seq_Reader_P) is
---     begin
---        Reader.all.Ptr := Reader.all.Ptr + Ptrdiff_T (Elem_Size);
---        if (Reader.all.Ptr - Reader.all.Blockmax) >= 0 then
---           Cv_Change_Seq_Block (To_Void (Reader), 1);
---        end if;
---     end Cv_Next_Seq_Elem;
-
-   procedure Cv_Next_Seq_Elem (Elem_Size : Integer;
-                               Reader    : Cv_Chain_Pt_Reader_Ptr) is
-      use Core.Cv_Arr_Pointer_Pkg;
-   begin
-      Reader.all.Ptr := Reader.all.Ptr + Ptrdiff_T (Elem_Size);
-      if (Reader.all.Ptr - Reader.all.Blockmax) >= 0 then
-         Cv_Change_Seq_Block (To_Void_Ptr (Reader), 1);
-      end if;
-   end Cv_Next_Seq_Elem;
-
-   procedure Cv_Prev_Seq_Elem ( Elem_Size : Integer;
-                               Reader    : Cv_Seq_Reader_Ptr ) is
-      use Core.Cv_Arr_Pointer_Pkg;
-   begin
-      Reader.all.Ptr := Reader.all.Ptr - Ptrdiff_T (Elem_Size);
-      if (Reader.all.Blockmin - Reader.all.Ptr) > 0 then
-         Cv_Change_Seq_Block (To_Void_Ptr (Reader), -1);
-      end if;
-   end Cv_Prev_Seq_Elem;
-
-   procedure Cv_Read_Seq_Elem ( Elem  : Cv_Arr_Pointer;
-                               Reader : Cv_Seq_Reader_Ptr ) is
-   begin
-      Memcpy (Elem'Address, Reader.all.Ptr'Address, System.Crtl.Size_T (Reader.all.Seq.all.Elem_Size));
-      Cv_Next_Seq_Elem (Reader.all.Seq.all.Elem_Size, Reader);
-   end Cv_Read_Seq_Elem;
-
-   procedure Cv_Read_Seq_Elem ( Elem  : Unsigned_8;
-                               Reader : Cv_Chain_Pt_Reader_Ptr ) is
-   begin
-      Memcpy (Elem'Address, Reader.all.Ptr'Address, System.Crtl.Size_T (Reader.all.Seq.all.Elem_Size));
-      Cv_Next_Seq_Elem (Reader.all.Seq.all.Elem_Size, Reader);
-   end Cv_Read_Seq_Elem;
-
-   procedure Cv_Rev_Read_Seq_Elem ( Elem  : Cv_Arr_Pointer;
-                                   Reader : Cv_Seq_Reader_Ptr ) is
-   begin
-      Memcpy (Elem'Address, Reader.all.Ptr'Address, System.Crtl.Size_T (Reader.all.Seq.all.Elem_Size));
-      Cv_Prev_Seq_Elem (Reader.all.Seq.all.Elem_Size, Reader);
-   end Cv_Rev_Read_Seq_Elem;
-
-
-   procedure Cv_Read_Chain_Point ( Pt    : out Cv_Point;
-                                  Reader : Cv_Chain_Pt_Reader_Ptr ) is
-      use core.Cv_Arr_Pointer_Pkg;
-   begin
-      Pt := Reader.all.Pt;
-      if not (Reader.all.Ptr = null) then
-         Cv_Read_Seq_Elem (Reader.all.Code, Reader);
-         if ((Reader.all.Code and not (Unsigned_8 (7))) = 0) then
-            Reader.all.Pt.X := Reader.all.Pt.X + Integer (Reader.all.Deltas (Integer (Reader.all.Code), 1));
-            Reader.all.Pt.Y := Reader.all.Pt.Y + Integer (Reader.all.Deltas (Integer (Reader.all.Code), 2));
-         end if;
-      end if;
-
-   end Cv_Read_Chain_Point;
-
-   function Cv_Current_Point ( Reader : Cv_Chain_Pt_Reader_Ptr ) return Cv_Point_Ptr is
-      use Core.Cv_Arr_Pointer_Pkg;
-   begin
-      return To_Point_Ptr (Value (Reader.all.Ptr) (1));
+      return Conv(Reader.Ptr).all;
    end Cv_Current_Point;
 
-   function Cv_Prev_Point ( Reader : Cv_Chain_Pt_Reader_Ptr) return Cv_Point_Ptr is
+   function Cv_Prev_Point ( Reader : Cv_Chain_Pt_Reader) return Cv_Point is
       use Core.Cv_Arr_Pointer_Pkg;
+      function Conv is
+     new Ada.Unchecked_Conversion (Source => Cv_Arr_Pointer,
+                                   Target => Cv_Point_Pointer);
    begin
-      return To_Point_Ptr (Value (Reader.all.Prevelem) (1));
+      return Conv(Reader.PrevElem).all;
    end Cv_Prev_Point;
-
-   procedure Cv_Read_Edge ( Pt1   : out Cv_Point_Ptr;
-                           Pt2    : out Cv_Point_Ptr;
-                           Reader : Cv_Chain_Pt_Reader_Ptr ) is
-   begin
-      Pt1 := Cv_Prev_Point (Reader);
-      Pt2 := Cv_Current_Point (Reader);
-      Reader.all.Prevelem := Reader.all.Ptr;
-      Cv_Next_Seq_Elem (Cv_Point'Size / 8, Reader);
-   end Cv_Read_Edge;
-
-   function Cv_Next_Graph_Edge ( Edge  : Cv_Graph_Edge_Ptr;
-                                Vertex : Cv_Graph_Vtx_Ptr ) return Cv_Graph_Edge_Ptr is
-   begin
-      if (Edge.all.Vtx (1) = Vertex) then
-         return Edge.all.Next (1);
-      elsif (Edge.all.Vtx (2) = Vertex) then
-         return Edge.all.Next (2);
-      end if;
-      return null;
-   end Cv_Next_Graph_Edge;
 
    function Cv_Is_Storage (Storage : Cv_Mem_Storage_Ptr) return Integer is
    begin
@@ -669,15 +577,6 @@ package body Core is
       return Cv_Mat_Elem_Ptr_Fast (Mat, Row, Col, Cv_Elem_Size (Mat.all.Mat_Type));
    end Cv_Mat_Elem_Ptr;
 
---     function Cv_Mat_Elem (Mat      : Cv_Mat_P;
---                           Elemtype : Unsigned_32; -- used to be Integer
---                           Row      : Integer;
---                           Col      : Integer) return Cv_8u_Pointer is
---     begin
---        return Cv_Mat_Elem_Ptr_Fast (Mat, Row, Col, Elemtype);
---     end Cv_Mat_Elem;
-
-
    function Cv_Is_Matnd_Hdr (Mat : Cv_Mat_Nd_Ptr) return Integer is
    begin
       if not (Mat = null) then
@@ -698,35 +597,6 @@ package body Core is
       end if;
       return 0;
    end Cv_Is_Sparse_Mat_Hdr;
-
-   --     function CvMat (Rows   : Integer;
-   --                     Cols   : Integer;
-   --                     M_Type : Unsigned_32;
-   --                     Data   : Mat_Data_P)
-   --                     return Cv_Mat is
-   --        Mat      : Cv_Mat;
-   --        Mat_Type : Unsigned_32;
-   --     begin
-   --        Mat_Type := CV_MAT_TYPE (M_Type);
-   --
-   --        Mat.Mat_Type := CV_MAT_MAGIC_VAL or CV_MAT_CONT_FLAG or Unsigned_32 (Mat_Type);
-   --        Put_Line ("Mat_Type:" & Unsigned_32'Image (Mat_Type));
-   --        Put_Line ("mat.Mat_Type:" & Mat.Mat_Type'Img);
-   --        Put_Line ("CV_MAT_MAGIC_VAL:" & Cv_Mat_Magic_Val'Img);
-   --        Put_Line ("CV_MAT_CONT_FLAG:" & Cv_Mat_Cont_Flag'Img);
-   --  --        Mat.Mat_Type := CV_MAT_MAGIC_VAL or Unsigned_32 (Mat_Type);
-   --        Mat.Cols := Cols;
-   --        Mat.Rows := Rows;
-   --        Mat.Step := Mat.Cols * Integer(CV_ELEM_SIZE (Mat_Type));
-   --        if not (Data = null) then
-   --           Put_Line ("Data not null, adding...");
-   --           Mat.Data := Data.all;
-   --        end if;
-   --        Mat.Refcount := null;
-   --        Mat.Hdr_Refcount := 0;
-   --
-   --        return Mat;
-   --     end CvMat;
 
    function Cv_Mat_Cn_Mask return Unsigned_32 is
    begin
@@ -971,8 +841,6 @@ package body Core is
       return Cv_Create_Rect (Roi.X_Offset, Roi.Y_Offset, Roi.Width, Roi.Height);
    end Cv_Roi_To_Rect;
 
-
-
    function "+" (Right : Ipl_Image_Ptr) return Cv_Arr_Ptr is
    begin
       return To_Arr_Ptr (Right);
@@ -994,16 +862,6 @@ package body Core is
       end if;
       return 0;
    end Cv_Is_Mat;
-
-
-   function Cv_Mat_Elem_Ptr_Fast (Mat      : Cv_Mat_Ptr;
-                                  Row      : Integer;
-                                  Col      : Integer;
-                                  Pix_Size : Unsigned_32) return Cv_8u_Pointer is
-      use Core.Cv_8u_Pointer_Pkg;
-   begin
-      return Mat.all.Data.Cv_8u + Interfaces.C.Ptrdiff_T (Mat.all.Step * (Row) + Integer (Pix_Size) * (Col));
-   end Cv_Mat_Elem_Ptr_Fast;
 
    function "+" (Right : String) return String_C is
    begin
