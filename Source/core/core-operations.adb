@@ -179,26 +179,6 @@ package body Core.Operations is
                                0.0);
    end Cv_Rgb;
 
-   procedure Cv_Next_Line_Point (Lineiterator : Cv_Line_Iterator_Ptr) is
-      Lineiterator_Temp  : constant Cv_Line_Iterator_Ptr := Lineiterator;
-      Line_Iterator_Mask : Integer;
-      Diff               : Ptrdiff_T ;
-
-      use Core.Cv_Point_Pointer_Pkg;
-   begin
-      if (Lineiterator.all.Err < 0) then
-         Line_Iterator_Mask := -1;
-      else
-         Line_Iterator_Mask := 0;
-      end if;
-
-      Lineiterator_Temp.all.Err := Lineiterator.all.Err + Lineiterator.all.Minus_Delta + Integer (Unsigned_32 (Lineiterator.all.Plus_Delta) and Unsigned_32 (Line_Iterator_Mask));
-
-      Diff :=  Ptrdiff_T (Lineiterator.all.Minus_Step + Integer (Unsigned_32 (Lineiterator.all.Plus_Step) and Unsigned_32 (Line_Iterator_Mask))) ;
-      Lineiterator_Temp.all.Ptr := Lineiterator.all.Ptr + Diff;
-
-   end Cv_Next_Line_Point;
-
    -- Draws a text string.
    procedure Cv_Put_Text (Img   : Cv_Arr_Ptr;
                           Text  : String;

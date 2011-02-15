@@ -21,31 +21,24 @@ package body Imgproc is
 --
 
    -- /* initializes 8-element array for fast access to 3x3 neighborhood of a pixel */
-   procedure Cv_Init_3x3_Deltas (Deltas : in out Cv_32s_Array;
-                                Step          : Integer;
+   procedure Cv_Init_3x3_Deltas (Deltas        : in out Cv_8s_Array;
+                                 Step          : Integer;
                                  Nch           : Integer) is
+      Step_8 : constant Integer_8 := Integer_8 (Step);
+      Nch_8  : constant Integer_8 := Integer_8 (Nch);
    begin
 
       if not (Deltas'Length <= 8) then
-         Deltas (Deltas'First + 0) := Nch;
-         Deltas (Deltas'First + 1) := -(Step) + (Nch);
-         Deltas (Deltas'First + 2) := -(Step);
-         Deltas (Deltas'First + 3) := -(Step) - (Nch);
-         Deltas (Deltas'First + 4) := -(Nch);
-         Deltas (Deltas'First + 5) := (Step) - (Nch);
-         Deltas (Deltas'First + 6) := (Step);
-         Deltas (Deltas'First + 7) := (Step) + (Nch);
+         Deltas (Deltas'First + 0) := Nch_8;
+         Deltas (Deltas'First + 1) := -(Step_8) + (Nch_8);
+         Deltas (Deltas'First + 2) := -(Step_8);
+         Deltas (Deltas'First + 3) := -(Step_8) - (Nch_8);
+         Deltas (Deltas'First + 4) := -(Nch_8);
+         Deltas (Deltas'First + 5) := (Step_8) - (Nch_8);
+         Deltas (Deltas'First + 6) := (Step_8);
+         Deltas (Deltas'First + 7) := (Step_8) + (Nch_8);
       else
          null;
       end if;
    end Cv_Init_3x3_Deltas;
-
-   function Cv_Subdiv2d_Next_Edge (Edge : Cv_Quad_Edge_2d) return Cv_Quad_Edge_2d_Ptr is
-      pragma Unreferenced (Edge);
-   begin
-      -- #define  CV_SUBDIV2D_NEXT_EDGE( edge )  (((CvQuadEdge2D*)((edge) & ~3))->next[(edge)&3])
-      return null;
-   end Cv_Subdiv2d_Next_Edge;
-
-
 end Imgproc;

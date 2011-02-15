@@ -219,7 +219,7 @@ package Imgproc is
    type Cv_Contour_Scanner_Ptr is access all cv_Contour_Scanner;
 
    -- initializes 8-element array for fast access to 3x3 neighborhood of a pixel
-   procedure Cv_Init_3x3_Deltas (Deltas        : in out Cv_32s_Array;
+   procedure Cv_Init_3x3_Deltas (Deltas        : in out Cv_8s_Array;
                                  Step          : Integer;
                                  Nch           : Integer);
 
@@ -311,8 +311,7 @@ package Imgproc is
    Cv_Next_Around_Right : constant Cv_Next_Edge_Type := 16#31#;
    Cv_Prev_Around_Dst : constant Cv_Next_Edge_Type := 16#33#;
 
-   -- get the next edge with the same origin point (counterwise)
-   function Cv_Subdiv2d_Next_Edge (Edge : Cv_Quad_Edge_2d) return Cv_Quad_Edge_2d_Ptr;
+
 
    -- Contour approximation algorithms
    Cv_Poly_Approx_Dp : constant := 0;

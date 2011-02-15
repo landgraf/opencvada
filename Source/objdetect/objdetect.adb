@@ -20,19 +20,6 @@
 
 package body Objdetect is
 --
-
-
-   --     #define CV_IS_HAAR_CLASSIFIER( haar )                                                    \
-   --      ((haar) != NULL &&                                                                   \
-   --      (((const CvHaarClassifierCascade*)(haar))->flags & CV_MAGIC_MASK)==CV_HAAR_MAGIC_VAL)
-   function Cv_Is_Haar_Classifier (Haar : Cv_Haar_Classifier_Cascade_Ptr) return Integer is
-   begin
-      if not (Haar = null) and (Unsigned_32 (Haar.all.Flags) and Unsigned_32 (CV_MAGIC_MASK)) = CV_HAAR_MAGIC_VAL then
-         return 1;
-      else return 0;
-      end if;
-   end Cv_Is_Haar_Classifier;
-
    function Cv_Load_Haar_Classifier_Cascade (Directory      : String;
                                          OrigWindowSize : Cv_Size) return Cv_Haar_Classifier_Cascade_Ptr is
    begin
