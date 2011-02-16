@@ -1947,6 +1947,135 @@ package Core is
    pragma Convention (C, Cv_Error_Callback);
 
 
+   -----------------------------------------------------
+   -- Constants from core-operations
+   -----------------------------------------------------
+
+   -- Cv_Check_Arr
+   Cv_Check_Range : constant := 1;
+   Cv_Check_Quiet : constant := 2;
+
+   -- Cv_Rand_Arr
+   Cv_Rand_Uni    : constant := 0;
+   Cv_Rand_Normal : constant := 1;
+
+   -- Cv_Sort
+   Cv_Sort_Every_Row : constant := 0;
+   Cv_Sort_Every_Column : constant := 1;
+   Cv_Sort_Ascending : constant := 0;
+   Cv_Sort_Descending : constant := 16;
+
+   -- Cv_Gemm
+   Cv_Gemm_A_T  : constant Integer := 1;
+   Cv_Gemm_B_T  : constant Integer := 2;
+   Cv_Gemm_C_T  : constant Integer := 4;
+
+   -- Cv_Svdecomp
+   Cv_Svd_Modify_A : constant Unsigned_32 := 1;
+   Cv_Svd_U_T   : constant Unsigned_32 := 2;
+   Cv_Svd_V_T   : constant Unsigned_32 := 4;
+
+   -- Cv_Invert
+   Cv_Lu       : constant := 0;
+   Cv_Svd      : constant := 1;
+   Cv_Svd_Sym  : constant := 2;
+   Cv_Cholesky : constant := 3;
+   Cv_Qr       : constant := 4;
+   Cv_Normal   : constant := 16;
+
+   -- Cv_Calc_Covar_Matrix
+   Cv_Covar_Scrambled : constant Unsigned_32 := 0;
+   Cv_Covar_Normal    : constant Unsigned_32 := 1;
+   Cv_Covar_Use_Avg   : constant Unsigned_32 := 2;
+   Cv_Covar_Scale     : constant Unsigned_32 := 4;
+   Cv_Covar_Rows      : constant Unsigned_32 := 8;
+   Cv_Covar_Cols      : constant Unsigned_32 := 16;
+
+   -- Cv_Calc_Pca
+   Cv_Pca_Data_As_Row : constant := 0;
+   Cv_Pca_Data_As_Col : constant := 1;
+   Cv_Pca_Use_Avg : constant := 2;
+
+   -- Cv_Norm
+   Cv_C         : constant Unsigned_32 := 1;
+   Cv_L1        : constant Unsigned_32 := 2;
+   Cv_L2        : constant Unsigned_32 := 4;
+   Cv_Norm_Mask : constant Unsigned_32 := 7;
+   Cv_Relative  : constant Unsigned_32 := 8;
+   Cv_Diff      : constant Unsigned_32 := 16;
+   Cv_Minmax    : constant Unsigned_32 := 32;
+
+   -- Cv_Norm
+   Cv_Diff_C : constant := (Cv_Diff or Cv_C);
+   Cv_Diff_L1 : constant := (Cv_Diff or Cv_L1);
+   Cv_Diff_L2 : constant := (Cv_Diff or Cv_L2) ;
+   Cv_Relative_C : constant := (Cv_Relative or Cv_C);
+   Cv_Relative_L1 : constant := (Cv_Relative or Cv_L1);
+   Cv_Relative_L2 : constant := (Cv_Relative or Cv_L2);
+
+   -- Cv_Reduce
+   Cv_Reduce_Sum : constant := 0;
+   Cv_Reduce_Avg : constant := 1;
+   Cv_Reduce_Max : constant := 2;
+   Cv_Reduce_Min : constant := 3;
+
+   -- Discrete Linear Transforms and Related Functions
+   Cv_Dxt_Forward       : constant Unsigned_32 := 0;
+   Cv_Dxt_Inverse       : constant Unsigned_32 := 1;
+   Cv_Dxt_Scale         : constant Unsigned_32 := 2; -- Divide result by size of array
+   Cv_Dxt_Inv_Scale     : constant Unsigned_32 := Cv_Dxt_Inverse + Cv_Dxt_Scale;
+   Cv_Dxt_Inverse_Scale : constant Unsigned_32 := Cv_Dxt_Inv_Scale;
+   Cv_Dxt_Rows          : constant Unsigned_32 := 4; -- Transform each row individually
+   Cv_Dxt_Mul_Conj      : constant Unsigned_32 := 8; -- Conjugate the second argument of cvMulSpectrums
+
+   -- Back and Front....
+   Cv_Front : constant := 1;
+   Cv_Back : constant := 0;
+
+   -- Cv_Graph
+   Cv_Graph_Vertex : constant := 1;
+   Cv_Graph_Tree_Edge : constant := 2;
+   Cv_Graph_Back_Edge : constant :=  4;
+   Cv_Graph_Forward_Edge : constant := 8;
+   Cv_Graph_Cross_Edge : constant := 16;
+   Cv_Graph_Any_Edge : constant := 30;
+   Cv_Graph_New_Tree : constant := 32;
+   Cv_Graph_Backtracking : constant := 64;
+   Cv_Graph_Over : constant := -1;
+   Cv_Graph_All_Items : constant := -1;
+   Cv_Graph_Item_Visited_Flag : constant := 16#40000000#;
+   --     #define  CV_GRAPH_SEARCH_TREE_NODE_FLAG   (1 << 29)
+   Cv_Graph_Search_Tree_Node_Flag : constant := 16#20000000#;
+   --  #define  CV_GRAPH_FORWARD_EDGE_FLAG       (1 << 28)
+   Cv_Graph_Forward_Edge_Flag : constant := 16#10000000#;
+
+   -- Drawing
+   Cv_Filled : constant := -1;
+   Cv_Aa : constant := 16;
+
+   -- Fonts
+   Cv_Font_Italic : constant := 16;
+   Cv_Font_Vector0 : constant Cv_Font_Face := (Cv_Font_Hershey_Simplex);
+
+   -- Cv_K_Means2
+   Cv_Kmeans_Use_Initial_Labels : constant := 1;
+
+   -- Cv_Check_Hardware_Support
+   Cv_Cpu_None : constant := 0;
+   Cv_Cpu_Mmx : constant := 1;
+   Cv_Cpu_Sse : constant := 2;
+   Cv_Cpu_Sse2 : constant := 3;
+   Cv_Cpu_Sse3 : constant := 4;
+   Cv_Cpu_Ssse3 : constant := 5;
+   Cv_Cpu_Sse4_1 : constant := 6;
+   Cv_Cpu_Sse4_2 : constant := 7;
+   Cv_Cpu_Avx : constant := 10;
+   Cv_Hardware_Max_Feature : constant := 255;
+
+   -- Error stuff
+   Cv_Errmodeleaf   : constant := 0;
+   Cv_Errmodeparent : constant := 1;
+   Cv_Errmodesilent : constant := 2;
 private
 
    --------------

@@ -136,7 +136,7 @@ begin
                                          Cv_Create_Point (H_I * Scale, S_I * Scale),
                                          Cv_Create_point (((H_I + 1) * Scale)-1, ((S_I + 1) * Scale)-1),
                                          Core.Operations.Cv_RGB (Intensity, Intensity, Intensity),
-                                         Core.Operations.Cv_Filled);
+                                         Core.Cv_Filled);
          end loop;
       end loop;
 

@@ -1386,8 +1386,7 @@ package Core.Operations is
    function Cv_Cbrt (Value : Float)
                      return Float;
 
-   Cv_Check_Range : constant := 1;
-   Cv_Check_Quiet : constant := 2;
+
 
    function Cv_Check_Arr (Arr     : Cv_Arr_Ptr;
                           Flags   : Integer := 0;
@@ -1414,9 +1413,6 @@ package Core.Operations is
                             Flags   : Integer := 0;
                             Minval  : Long_Float := 0.0;
                             Max_Val : Long_Float := 0.0) return Integer renames Cv_Check_Arr;
-
-   Cv_Rand_Uni    : constant := 0;
-   Cv_Rand_Normal : constant := 1;
 
    --     Fills an array with random numbers and updates the RNG state.
    procedure Cv_Rand_Arr (Rng       : Cv_Rng;
@@ -1445,10 +1441,7 @@ package Core.Operations is
                               Rng        : access Cv_Rng;
                               Iterfactor : Long_Float := 1.0);
 
-   Cv_Sort_Every_Row : constant := 0;
-   Cv_Sort_Every_Column : constant := 1;
-   Cv_Sort_Ascending : constant := 0;
-   Cv_Sort_Descending : constant := 16;
+
 
    procedure Cv_Sort (Src    : Cv_Arr_Ptr;
                       Dst    : Cv_Arr_Ptr := null;
@@ -1514,10 +1507,6 @@ package Core.Operations is
    procedure Cv_Mat_Mul (Src1 : Ipl_Image_Ptr;
                          Src2 : Ipl_Image_Ptr;
                          Dst  : Ipl_Image_Ptr);
-
-   Cv_Gemm_A_T  : constant Integer := 1;
-   Cv_Gemm_B_T  : constant Integer := 2;
-   Cv_Gemm_C_T  : constant Integer := 4;
 
    --     Performs generalized matrix multiplication.
    procedure Cv_Gemm (Src1  : Cv_Arr_Ptr;
@@ -1657,9 +1646,7 @@ package Core.Operations is
                         Flipmode : Integer := 0)
                         renames Cv_Flip;
 
-   Cv_Svd_Modify_A : constant Unsigned_32 := 1;
-   Cv_Svd_U_T   : constant Unsigned_32 := 2;
-   Cv_Svd_V_T   : constant Unsigned_32 := 4;
+
 
    --     Performs singular value decomposition of a real floating-point matrix.
    procedure Cv_Svdecomp (A     : Cv_Arr_Ptr;
@@ -1698,12 +1685,7 @@ package Core.Operations is
                         X     : Ipl_Image_Ptr;
                         Flags : Unsigned_32);
 
-   Cv_Lu       : constant := 0;
-   Cv_Svd      : constant := 1;
-   Cv_Svd_Sym  : constant := 2;
-   Cv_Cholesky : constant := 3;
-   Cv_Qr       : constant := 4;
-   Cv_Normal   : constant := 16;
+
 
    --     Finds the inverse or pseudo-inverse of a matrix.
    function Cv_Invert (Src    : Cv_Arr_Ptr;
@@ -1800,13 +1782,6 @@ package Core.Operations is
                       Start : Long_Float;
                       Ende  : Long_Float) return Cv_Arr_Ptr;
 
-   Cv_Covar_Scrambled : constant Unsigned_32 := 0;
-   Cv_Covar_Normal    : constant Unsigned_32 := 1;
-   Cv_Covar_Use_Avg   : constant Unsigned_32 := 2;
-   Cv_Covar_Scale     : constant Unsigned_32 := 4;
-   Cv_Covar_Rows      : constant Unsigned_32 := 8;
-   Cv_Covar_Cols      : constant Unsigned_32 := 16;
-
    --     Calculates covariance matrix of a set of vectors.
    procedure Cv_Calc_Covar_Matrix (Vects  : Cv_Arr_Ptr;
                                    Count  : Integer;
@@ -1823,10 +1798,6 @@ package Core.Operations is
                                    Covmat : Ipl_Image_Ptr;
                                    Avg    : Ipl_Image_Ptr;
                                    Flags  : Unsigned_32);
-
-   Cv_Pca_Data_As_Row : constant := 0;
-   Cv_Pca_Data_As_Col : constant := 1;
-   Cv_Pca_Use_Avg : constant := 2;
 
    procedure Cv_Calc_Pca (Data       : Cv_Arr_Ptr;
                           Mean       : Cv_Arr_Ptr;
@@ -1957,21 +1928,6 @@ package Core.Operations is
                              Max_Loc : access Cv_Point := null;
                              Mask    : Ipl_Image_Ptr := null);
 
-   Cv_C         : constant Unsigned_32 := 1;
-   Cv_L1        : constant Unsigned_32 := 2;
-   Cv_L2        : constant Unsigned_32 := 4;
-   Cv_Norm_Mask : constant Unsigned_32 := 7;
-   Cv_Relative  : constant Unsigned_32 := 8;
-   Cv_Diff      : constant Unsigned_32 := 16;
-   Cv_Minmax    : constant Unsigned_32 := 32;
-
-   Cv_Diff_C : constant := (Cv_Diff or Cv_C);
-   Cv_Diff_L1 : constant := (Cv_Diff or Cv_L1);
-   Cv_Diff_L2 : constant := (Cv_Diff or Cv_L2) ;
-   Cv_Relative_C : constant := (Cv_Relative or Cv_C);
-   Cv_Relative_L1 : constant := (Cv_Relative or Cv_L1);
-   Cv_Relative_L2 : constant := (Cv_Relative or Cv_L2);
-
    --     Calculates absolute array norm, absolute difference norm, or relative difference norm.
    function Cv_Norm (Arr1      : Cv_Arr_Ptr;
                      Arr2      : Cv_Arr_Ptr := null;
@@ -2008,10 +1964,7 @@ package Core.Operations is
                            Normtype : Integer := Integer (Cv_L2);
                            Mask     : Ipl_Image_Ptr := null);
 
-   Cv_Reduce_Sum : constant := 0;
-   Cv_Reduce_Avg : constant := 1;
-   Cv_Reduce_Max : constant := 2;
-   Cv_Reduce_Min : constant := 3;
+
 
    --     Reduces a matrix to a vector.
    procedure Cv_Reduce (Src : Cv_Arr_Ptr;
@@ -2030,13 +1983,6 @@ package Core.Operations is
    -----------------------------------------------------------------------------
    -- Discrete Linear Transforms and Related Functions
    -----------------------------------------------------------------------------
-   Cv_Dxt_Forward       : constant Unsigned_32 := 0;
-   Cv_Dxt_Inverse       : constant Unsigned_32 := 1;
-   Cv_Dxt_Scale         : constant Unsigned_32 := 2; -- Divide result by size of array
-   Cv_Dxt_Inv_Scale     : constant Unsigned_32 := Cv_Dxt_Inverse + Cv_Dxt_Scale;
-   Cv_Dxt_Inverse_Scale : constant Unsigned_32 := Cv_Dxt_Inv_Scale;
-   Cv_Dxt_Rows          : constant Unsigned_32 := 4; -- Transform each row individually
-   Cv_Dxt_Mul_Conj      : constant Unsigned_32 := 8; -- Conjugate the second argument of cvMulSpectrums
 
    --     Performs a forward or inverse Discrete Fourier transform of a 1D or 2D
    --     floating - point array.
@@ -2157,9 +2103,7 @@ package Core.Operations is
    procedure Cv_Seq_Pop_Front (Seq     : Cv_Seq_Ptr;
                                Element : Cv_Void_Ptr := null);
 
-   -- Back and Front....
-   Cv_Front : constant := 1;
-   Cv_Back : constant := 0;
+
 
    -- Pushes several elements to either end of a sequence.
    procedure Cv_Seq_Push_Multi (Seq      : Cv_Seq_Ptr;
@@ -2252,13 +2196,13 @@ package Core.Operations is
                                   Slice : Cv_Slice_Ptr);
 
    -- Inserts an array in the middle of a sequence.
-   procedure Cv_Seq_Insert_Slice (Seq         : Cv_Seq_Ptr;
+   procedure Cv_Seq_Insert_Slice (Seq          : Cv_Seq_Ptr;
                                   Before_Index : Integer;
                                   From_Arr     : Cv_Arr_Ptr);
-   procedure Cv_Seq_Insert_Slice (Seq         : Cv_Seq_Ptr;
+   procedure Cv_Seq_Insert_Slice (Seq          : Cv_Seq_Ptr;
                                   Before_Index : Integer;
                                   From_Arr     : Cv_Mat_Ptr);
-   procedure Cv_Seq_Insert_Slice (Seq         : Cv_Seq_Ptr;
+   procedure Cv_Seq_Insert_Slice (Seq          : Cv_Seq_Ptr;
                                   Before_Index : Integer;
                                   From_Arr     : Ipl_Image_Ptr);
 
@@ -2408,19 +2352,6 @@ package Core.Operations is
    --#define cvGraphGetEdgeCount( graph ) ((graph)->edges->active_count)
    function Cv_Graph_Get_Edge_Count (Graph : Cv_Graph_Ptr) return Integer;
 
-   Cv_Graph_Vertex : constant := 1;
-   Cv_Graph_Tree_Edge : constant := 2;
-   Cv_Graph_Back_Edge : constant :=  4;
-   Cv_Graph_Forward_Edge : constant := 8;
-   Cv_Graph_Cross_Edge : constant := 16;
-   Cv_Graph_Any_Edge : constant := 30;
-   Cv_Graph_New_Tree : constant := 32;
-   Cv_Graph_Backtracking : constant := 64;
-   Cv_Graph_Over : constant := -1;
-   Cv_Graph_All_Items : constant := -1;
-
-   Cv_Graph_Item_Visited_Flag : constant := 16#40000000#;
-
    --     #define  CV_IS_GRAPH_VERTEX_VISITED(vtx) \
    --      (((CvGraphVtx*)(vtx))->flags & CV_GRAPH_ITEM_VISITED_FLAG)
    function Cv_Is_Graph_Vertex_Visisted (Vtx : Cv_Graph_Vtx_Ptr) return Integer;
@@ -2429,10 +2360,7 @@ package Core.Operations is
    --      (((CvGraphEdge*)(edge))->flags & CV_GRAPH_ITEM_VISITED_FLAG)
    function Cv_Is_Graph_Edge_Visited (Edge : Cv_Graph_Edge_Ptr) return Integer;
 
-   --     #define  CV_GRAPH_SEARCH_TREE_NODE_FLAG   (1 << 29)
-   Cv_Graph_Search_Tree_Node_Flag : constant := 16#20000000#;
-   --  #define  CV_GRAPH_FORWARD_EDGE_FLAG       (1 << 28)
-   Cv_Graph_Forward_Edge_Flag : constant := 16#10000000#;
+
 
    -- Creates structure for depth-first graph traversal.
    function Cv_Create_Graph_Scanner (Graph : Cv_Graph_Ptr;
@@ -2456,9 +2384,6 @@ package Core.Operations is
    function Cv_Rgb (R : Integer;
                     G : Integer;
                     B : Integer) return Cv_Scalar;
-
-   Cv_Filled : constant := -1;
-   Cv_Aa : constant := 16;
 
    -- Draws a line segment connecting two points.
    procedure Cv_Line (Img       : Cv_Arr_Ptr;
@@ -2828,9 +2753,7 @@ package Core.Operations is
 
    -- Fonts
 
-   Cv_Font_Italic : constant := 16;
 
-   Cv_Font_Vector0 : constant Cv_Font_Face := (Cv_Font_Hershey_Simplex);
 
    -- Initializes font structure.
    procedure Cv_Init_Font (Font      : access Cv_Font;
@@ -2950,8 +2873,6 @@ package Core.Operations is
    function Cv_Tree_To_Node_Seq (First      : Cv_Void_Ptr;
                                  Headersize : Integer;
                                  Storage    : Cv_Mem_Storage_Ptr) return Cv_Seq_Ptr;
-
-   Cv_Kmeans_Use_Initial_Labels : constant := 1;
 
    function Cv_K_Means2 (Samples     : Cv_Arr_Ptr;
                          Labels      : Cv_Arr_Ptr;
@@ -3231,17 +3152,6 @@ package Core.Operations is
    -----------------------------------------------------------------------------
    -- CPU capabilities
    -----------------------------------------------------------------------------
-   Cv_Cpu_None : constant := 0;
-   Cv_Cpu_Mmx : constant := 1;
-   Cv_Cpu_Sse : constant := 2;
-   Cv_Cpu_Sse2 : constant := 3;
-   Cv_Cpu_Sse3 : constant := 4;
-   Cv_Cpu_Ssse3 : constant := 5;
-   Cv_Cpu_Sse4_1 : constant := 6;
-   Cv_Cpu_Sse4_2 : constant := 7;
-   Cv_Cpu_Avx : constant := 10;
-   Cv_Hardware_Max_Feature : constant := 255;
-
    function Cv_Check_Hardware_Support (Feature : Integer) return Integer;
 
    -----------------------------------------------------------------------------
@@ -3264,10 +3174,6 @@ package Core.Operations is
 
    --     Sets the error status.
    procedure Cv_Set_Err_Status (Status : Integer);
-
-   Cv_Errmodeleaf   : constant := 0;
-   Cv_Errmodeparent : constant := 1;
-   Cv_Errmodesilent : constant := 2;
 
    --     Returns the current error mode.
    function Cv_Get_Err_Mode return Integer;
