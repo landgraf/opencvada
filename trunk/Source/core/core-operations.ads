@@ -301,25 +301,7 @@ package Core.Operations is
    -----------------------------------------------------------------------------
    -- matrix iterator: used for n-ary operations on dense arrays
    -----------------------------------------------------------------------------
-   Cv_Max_Arr : constant := 10;
 
-   type Cv_N_Array_Ptr_Array is array (Integer range 1 .. Cv_Max_Arr) of Cv_Void_Ptr;
-   type Cv_N_Array_Cv_mat_nd_Ptr_Array is array (Integer range 1 .. Cv_Max_Arr) of Cv_Mat_Nd_Ptr;
-
-   type Cv_N_Array_Iterator is
-      record
-         Count : Integer;
-         Dims  : Integer;
-         Size  : Cv_Size;
-         Ptr   : Cv_N_Array_Ptr_Array;
-         Stack : Cv_32s_Array (1 .. Cv_Max_Dim);
-         Hdr   : Cv_N_Array_Cv_Mat_Nd_Ptr_Array;
-      end record;
-   pragma Convention (C_Pass_By_Copy, Cv_N_Array_Iterator);
-
-   Cv_No_Depth_Check : constant := 1;
-   Cv_No_Cn_Check : constant := 2;
-   Cv_No_Size_Check : constant := 4;
 
    --     /* initializes iterator that traverses through several arrays simulteneously
    --     (the function together with cvNextArraySlice is used for
@@ -1224,15 +1206,7 @@ package Core.Operations is
                             Upper : Cv_Scalar;
                             Dst   : Ipl_Image_Ptr);
 
-   type Compare_Op is new Integer; -- (Cv_Cmp_Eq, Cv_Cmp_Gt,
-   --                         Cv_Cmp_Ge, Cv_Cmp_Lt,
-   --                         Cv_Cmp_Le, Cv_Cmp_Ne);
-   Cv_Cmp_Eq : constant Compare_Op := 0;
-   Cv_Cmp_Gt : constant Compare_Op := 1;
-   Cv_Cmp_Ge : constant Compare_Op := 2;
-   Cv_Cmp_Lt : constant Compare_Op := 3;
-   Cv_Cmp_Le : constant Compare_Op := 4;
-   Cv_Cmp_Ne : constant Compare_Op := 5;
+
 
    --     Performs per-element comparison of two arrays.
    procedure Cv_Cmp (Src1   : Cv_Arr_Ptr;
@@ -2288,16 +2262,11 @@ package Core.Operations is
                                   Before_Index : Integer;
                                   From_Arr     : Ipl_Image_Ptr);
 
-   type Cv_Cmp_Func is access function (A        : Cv_Void_Ptr;
-                                        B        : Cv_Void_Ptr;
-                                        Userdata : Cv_Void_Ptr)
-                                        return Integer;
-
    -- Sorts sequence element using the specified comparison function.
    procedure Cv_Seq_Sort (Seq      : Cv_Seq_Ptr;
                           Func     : Cv_Cmp_Func;
                           Userdata : Cv_Void_Ptr := null);
-   pragma Convention (C, Cv_Cmp_Func);
+
 
    -- Searches for an element in a sequence.
    function Cv_Seq_Search (Seq         : Cv_Seq_Ptr;
@@ -2464,19 +2433,6 @@ package Core.Operations is
    Cv_Graph_Search_Tree_Node_Flag : constant := 16#20000000#;
    --  #define  CV_GRAPH_FORWARD_EDGE_FLAG       (1 << 28)
    Cv_Graph_Forward_Edge_Flag : constant := 16#10000000#;
-
-   type Cv_Graph_Scanner is record
-      Vtx   : Cv_Graph_Vtx_Ptr;
-      Dst   : Cv_Graph_Vtx_Ptr;
-      Edge  : Cv_Graph_Edge_Ptr;
-
-      Graph : Cv_Graph_Ptr;
-      Stack : Cv_Seq_Ptr;
-      Index : Integer;
-      Mask  : Integer;
-   end record;
-   pragma Convention (C_Pass_By_Copy, Cv_Graph_Scanner);
-   type Cv_Graph_Scanner_Ptr is access all Cv_Graph_Scanner;
 
    -- Creates structure for depth-first graph traversal.
    function Cv_Create_Graph_Scanner (Graph : Cv_Graph_Ptr;
@@ -2871,38 +2827,10 @@ package Core.Operations is
    procedure Cv_Next_Line_Point (Lineiterator : Cv_Line_Iterator);
 
    -- Fonts
-   type Cv_Font_Face is new Integer;
-   Cv_Font_Hershey_Simplex  : constant Cv_Font_Face := 0;
-   Cv_Font_Hershey_Plain  : constant Cv_Font_Face := 1;
-   Cv_Font_Hershey_Duplex  : constant Cv_Font_Face :=  2;
-   Cv_Font_Hershey_Complex  : constant Cv_Font_Face := 3;
-   Cv_Font_Hershey_Triplex  : constant Cv_Font_Face := 4;
-   Cv_Font_Hershey_Complex_Small  : constant Cv_Font_Face := 5;
-   Cv_Font_Hershey_Script_Simplex  : constant Cv_Font_Face := 6;
-   Cv_Font_Hershey_Script_Complex  : constant Cv_Font_Face := 7;
 
    Cv_Font_Italic : constant := 16;
 
    Cv_Font_Vector0 : constant Cv_Font_Face := (Cv_Font_Hershey_Simplex);
-
-   --
-   type Cv_Font is record
-      Name_Font         : access String_C;
-      Color             : Cv_Scalar;
-      Font_Face         : Cv_Font_Face;
-      Ascii             : Cv_32u_Array_Ptr;
-      Greek             : Cv_32u_Array_Ptr;
-      Cyrillic          : Cv_32u_Array_Ptr;
-      Hscale, Vscale    : Float;
-      Shear             : Float;
-      Thickness         : Integer;
-      Dx                : Float;
-      Line_Type         : Integer;
-   end record;
-   pragma Convention (C_Pass_By_Copy, Cv_Font);
-   type Cv_Font_Ptr is access all Cv_Font;
-
-
 
    -- Initializes font structure.
    procedure Cv_Init_Font (Font      : access Cv_Font;
@@ -2998,14 +2926,6 @@ package Core.Operations is
    -----------------------------------------------------------------------------
    -- Iteration through the sequence tree
    -----------------------------------------------------------------------------
-   type Cv_Tree_Node_Iterator is record
-      Node      : Cv_Void_Ptr; -- Note: This is actually a void*
-      Level     : Integer;
-      Max_Level : Integer;
-   end record;
-   pragma Convention (C_Pass_By_Copy, Cv_Tree_Node_Iterator);
-   type Cv_Tree_Node_Iterator_Ptr is access all Cv_Tree_Node_Iterator;
-
    -- Initializes the tree node iterator.
    procedure Cv_Init_Tree_Node_Iterator (Treeiterator : Cv_Tree_Node_Iterator_Ptr;
                                          First        : Cv_Void_Ptr;
@@ -3073,65 +2993,14 @@ package Core.Operations is
                                  Version              : access Interfaces.C.Strings.Chars_Ptr;
                                  Loaded_Addon_Plugins : access Interfaces.C.Strings.Chars_Ptr);
 
-   type Cv_Alloc_Func is access function (Size     : Interfaces.C.Size_T;
-                                          Userdata : Cv_Void_Ptr)
-                                          return Cv_Void_Ptr;
-   pragma Convention (C, Cv_Alloc_Func);
 
-   type Cv_Free_Func is access function (Pptr     : Cv_Void_Ptr;
-                                         Userdata : Cv_Void_Ptr)
-                                         return Integer;
-   pragma Convention (C, Cv_Free_Func);
 
    --     Accesses custom/default memory managing functions.
    procedure Cv_Set_Memory_Manager (Alloc_Func : Cv_Alloc_Func := null;
                                     Free_Func  : Cv_Free_Func := null;
                                     Userdata   : Cv_Void_Ptr := null);
 
-   -- typedef IplImage* (CV_STDCALL* Cv_iplCreateImageHeader)
-   --   (int,int,int,char*,char*,int,int,int,int,int,IplROI*,IplImage*,void*,IplTileInfo*);
-   type Cv_Ipl_Create_Image_Header is access function (N_Size        : Integer;
-                                                       Id            : Integer;
-                                                       N_Channels    : Integer;
-                                                       Alpha_Channel : Integer;
-                                                       Depth         : Unsigned_32;
-                                                       Color_Model   : Interfaces.C.Strings.Chars_Ptr;
-                                                       Channel_Seq   : Interfaces.C.Strings.Chars_Ptr;
-                                                       Data_Order    : Integer;
-                                                       Origin        : Integer;
-                                                       Align         : Integer;
-                                                       Width         : Integer;
-                                                       Height        : Integer;
-                                                       Roi           : Ipl_Roi_Ptr;
-                                                       Image         : Ipl_Image_Ptr;
-                                                       Image_Id      : Cv_Void_Ptr)
-                                                       return Ipl_Image_Ptr;
-   pragma Convention (C, Cv_Ipl_Create_Image_Header);
 
-   -- typedef void (CV_STDCALL * Cv_iplAllocateImageData) (IplImage * , int, int);
-   type Cv_Ipl_Allocate_Image_Data is access procedure (Image  : Ipl_Image_Ptr;
-                                                        Width  : Integer;
-                                                        Height : Integer);
-   pragma Convention (C, Cv_Ipl_Allocate_Image_Data);
-
-   -- typedef void (CV_STDCALL * Cv_iplDeallocate) (IplImage * , int);
-   type Cv_Ipl_Deallocate is access procedure (Image : Ipl_Image_Ptr;
-                                               I     : Integer);
-   pragma Convention (C, Cv_Ipl_Deallocate);
-
-   -- typedef IplROI * (CV_STDCALL * Cv_iplCreateROI) (int, int, int, int, int);
-   type Cv_Ipl_Create_Roi is access function (Coi      : Integer;
-                                              Height   : Integer;
-                                              Width    : Integer;
-                                              X_Offset : Integer;
-                                              Y_Offset : Integer)
-                                              return Ipl_Roi_Ptr;
-   pragma Convention (C, Cv_Ipl_Create_Roi);
-
-   -- typedef IplImage * (CV_STDCALL * Cv_iplCloneImage) (const IplImage * );
-   type Cv_Ipl_Clone_Image is access function (Image : Ipl_Image_Ptr)
-                                               return Ipl_Image_Ptr;
-   pragma Convention (C, Cv_Ipl_Clone_Image);
 
    --     Switches to IPL functions for image allocation/deallocation.
    procedure Cv_Set_Ipl_Allocators (Create_Header : Cv_Ipl_Create_Image_Header;
@@ -3429,13 +3298,7 @@ package Core.Operations is
    --   /* Maps IPP error codes to the counterparts from OpenCV */
    function Cv_Error_From_Ipp_Status (Ippstatus : Integer) return Integer;
 
-   type Cv_Error_Callback is access function (Status    : Integer;
-                                              Func_Name : Interfaces.C.Strings.Chars_Ptr;
-                                              Err_Msg   : Interfaces.C.Strings.Chars_Ptr;
-                                              File_Name : Interfaces.C.Strings.Chars_Ptr;
-                                              Line      : Integer)
-                                              return Integer;
-   pragma Convention (C, Cv_Error_Callback);
+
 
    --     Sets a new error handler.
    function Cv_Redirect_Error (Error_Handler : Cv_Error_Callback;
