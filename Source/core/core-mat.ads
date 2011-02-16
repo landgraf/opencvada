@@ -41,12 +41,11 @@ package Core.Mat is
       Refcount     : access Integer := null;
       Hdr_Refcount : Integer := 0;
       Data         : aliased Cv_Pointer;
---        Data         : aliased Mat_Data;
       Rows         : Integer;
       Cols         : Integer;
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Mat);
-   type Cv_Mat_Ptr is access Cv_Mat;
+   type Cv_Mat_Ptr is access all Cv_Mat;
    pragma Convention (C, Cv_Mat_Ptr);
 
    function Cv_Create_Mat (Rows     : Integer;
@@ -65,16 +64,32 @@ package Core.Mat is
 --     procedure Deallocate (Mat : out Cv_Mat_P);
 
    function To_Arr_Ptr is new Ada.Unchecked_Conversion    (Target => Cv_Arr_Ptr,
-                                                       Source => Cv_Mat_Ptr);
-   function To_Mat_Ptr is new Ada.Unchecked_Conversion  (Target => Cv_Mat_Ptr,
-                                                     Source => Cv_Arr_Ptr);
+                                                           Source => Cv_Mat_Ptr);
+
+--     function To_Arr_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Arr_Ptr,
+--                                                          Source => Element_Array_Ptr);
+
+   function To_Arr_Ptr (Source : Element_Array_Ptr)
+                        return Cv_Arr_Ptr;
+
    function To_Void_Ptr is new Ada.Unchecked_Conversion   (Target => Cv_Void_Ptr,
-                                                       Source => Cv_Mat_Ptr);
+                                                           Source => Cv_Mat_Ptr);
+
+--     function To_Void_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Void_Ptr,
+--                                                           Source => Element_Array_Ptr);
+
+   function To_Void_Ptr (Source : Element_Array_Ptr)
+                         return Cv_Void_Ptr;
+
+   function To_Mat_Ptr is new Ada.Unchecked_Conversion  (Target => Cv_Mat_Ptr,
+                                                         Source => Cv_Arr_Ptr);
+
    function To_Mat_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Mat_Ptr,
-                                                    Source => Cv_Void_Ptr);
+                                                        Source => Cv_Void_Ptr);
 
    function To_Mat_Ptr is new Ada.Unchecked_Conversion (Target => Core.Cv_Mat,
                                                         Source => Cv_Mat);
+
    function To_Mat_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Mat,
                                                         Source => Core.Cv_Mat);
 
@@ -88,6 +103,12 @@ package Core.Mat is
 private
    type Cv_Pointer_Ptr is access all Cv_Pointer;
    pragma Convention (C, Cv_Pointer_Ptr);
+
+   function To_Arr_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Arr_Ptr,
+                                                        Source => Cv_Pointer);
+
+   function To_Void_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Void_Ptr,
+                                                         Source => Cv_Pointer);
 
    procedure Deallocate_Mat is new Ada.Unchecked_Deallocation (Object => Cv_Mat,
                                                                Name   => Cv_Mat_Ptr);

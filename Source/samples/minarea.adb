@@ -25,6 +25,7 @@ procedure Minarea is
    package Random_Unsigned is new Ada.Numerics.Discrete_Random (Unsigned_8);
 
    package Cv_Mat_32s is new Core.Mat (Integer);
+   use Cv_Mat_32s;
    package Cv_Mat_8u is new Core.Mat (Unsigned_8);
 
    use Cv_Mat_32s;
@@ -100,7 +101,10 @@ begin
          Arr_32s.all (Index + 1) := Point.Y;
       end loop;
 
-      Mat_32s := Cv_Mat_32s.Cv_Create_Mat (Count, 1, Cv_32s, 2, Arr_32s);
+--        Mat_32s := Cv_Mat_32s.Cv_Create_Mat (Count, 1, Cv_32s, 2, Arr_32s);
+
+      Mat_32s := Cv_Create_Mat (Count, 1, Cv_32s, 2);
+      Cv_Set_Data (To_Arr_Ptr (Mat_32s), To_Void_Ptr (Arr_32s), CV_AUTOSTEP);
 
       Min_Rect := Cv_Min_Area_Rect2 (Points  => Cv_Mat_32s.To_Arr_Ptr (Mat_32s),
                                      Storage => null);
