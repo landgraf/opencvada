@@ -709,25 +709,25 @@ package Imgproc.Operations is
                                     Headersize : Integer := Cv_Contour'Size;
                                     Mode       : Cv_Retr := Cv_Retr_List;
                                     Method     : Cv_Chain_Enum := Cv_Chain_Approx_Simple;
-                                    Offset     : Cv_Point := Cv_Create_Point (0, 0)) return Cv_Contour_Scanner;
+                                    Offset     : Cv_Point := Cv_Create_Point (0, 0)) return Cv_Contour_Scanner_Ptr;
    function Cv_Start_Find_Contours (Image      : Cv_Mat_Ptr;
                                     Storage    : Cv_Mem_Storage_Ptr;
                                     Headersize : Integer := Cv_Contour'Size;
                                     Mode       : Cv_Retr := Cv_Retr_List;
                                     Method     : Cv_Chain_Enum := Cv_Chain_Approx_Simple;
-                                    Offset     : Cv_Point := Cv_Create_Point (0, 0)) return Cv_Contour_Scanner;
+                                    Offset     : Cv_Point := Cv_Create_Point (0, 0)) return Cv_Contour_Scanner_Ptr;
    function Cv_Start_Find_Contours (Image      : Ipl_Image_Ptr;
                                     Storage    : Cv_Mem_Storage_Ptr;
                                     Headersize : Integer := Cv_Contour'Size;
                                     Mode       : Cv_Retr := Cv_Retr_List;
                                     Method     : Cv_Chain_Enum := Cv_Chain_Approx_Simple;
-                                    Offset     : Cv_Point := Cv_Create_Point (0, 0)) return Cv_Contour_Scanner;
+                                    Offset     : Cv_Point := Cv_Create_Point (0, 0)) return Cv_Contour_Scanner_Ptr;
 
    -- Finds the next contour in the image.
-   function Cv_Find_Next_Contour (Scanner : Cv_Contour_Scanner) return Cv_Seq_Ptr;
+   function Cv_Find_Next_Contour (Scanner : Cv_Contour_Scanner_Ptr) return Cv_Seq_Ptr;
 
    -- Replaces a retrieved contour.
-   procedure Cv_Substitute_Contour (Scanner    : Cv_Contour_Scanner;
+   procedure Cv_Substitute_Contour (Scanner    : Cv_Contour_Scanner_Ptr;
                                     Newcontour : Cv_Seq_Ptr);
 
    -- Finishes the scanning process.

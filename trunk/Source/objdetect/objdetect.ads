@@ -76,8 +76,7 @@ package Objdetect is
    type Cv_Haar_Stage_Classifier_Array is array (Integer range <>) of Cv_Haar_Stage_Classifier;
    type Cv_Haar_Stage_Classifier_Array_Ptr is access all Cv_Haar_Stage_Classifier_Array;
 
-   type Cv_Hid_Haar_Classifier_Cascade is null record;
-   pragma Convention (C_Pass_By_Copy, Cv_Hid_Haar_Classifier_Cascade);
+   type Cv_Hid_Haar_Classifier_Cascade_Ptr is access all null_Record;
 
    type Cv_Haar_Classifier_Cascade is
       record
@@ -87,7 +86,7 @@ package Objdetect is
          Realwindowsize  : Cv_Size;
          Scale           : Long_Float;
          Stageclassifier : Cv_Haar_Stage_Classifier_Array_Ptr;
-         Hidcascade      : Cv_Hid_Haar_Classifier_Cascade;
+         Hidcascade      : Cv_Hid_Haar_Classifier_Cascade_Ptr;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Haar_Classifier_Cascade);
 

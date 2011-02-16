@@ -41,6 +41,9 @@ package Core is
    type Cv_Point;
    type Cv_File_Node;
    type Cv_File_Node_Ptr is access all Cv_File_Node;
+
+   -- Never declare a variable of this type.
+   type Null_Record is private;
    -- Moved since we use them early.
    Cv_8u       : constant := 0;
    Cv_8s       : constant := 1;
@@ -1392,9 +1395,7 @@ package Core is
    -----------------------------------------------------------------------------
 
 
-   type Cv_File_Storage is null record;
-   pragma Convention (C_Pass_By_Copy, Cv_File_Storage);
-   type Cv_File_Storage_Ptr is access all Cv_File_Storage;
+   type Cv_File_Storage_Ptr is access all Null_Record;
 
    Cv_Storage_Read         : constant := 0;
    Cv_Storage_Write        : constant := 1;
@@ -1944,7 +1945,15 @@ package Core is
                                               Line      : Integer)
                                               return Integer;
    pragma Convention (C, Cv_Error_Callback);
+
+
 private
+
+   --------------
+   -- Null record type
+   --------------
+   type Null_Record is null record;
+
    pragma Import (C, Cv_Create_Mat, "CvMat_wrap");
    pragma Import (C, Cv_Ipl_Depth, "cvIplDepth");
    pragma Import (C, Cv_Floor, "cvFloor");
