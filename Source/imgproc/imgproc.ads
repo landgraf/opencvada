@@ -214,9 +214,7 @@ package Imgproc is
 
    -- Internal structure that is used for sequental retrieving contours from the image.
    -- It supports both hierarchical and plane variants of Suzuki algorithm.
-   type Cv_Contour_Scanner is null record;
-   pragma Convention (C_Pass_By_Copy, Cv_Contour_Scanner);
-   type Cv_Contour_Scanner_Ptr is access all cv_Contour_Scanner;
+   type Cv_Contour_Scanner_Ptr is access all Null_Record;
 
    -- initializes 8-element array for fast access to 3x3 neighborhood of a pixel
    procedure Cv_Init_3x3_Deltas (Deltas        : in out Cv_8s_Array;
@@ -384,17 +382,11 @@ package Imgproc is
    Cv_Hough_Gradient : constant := 3;
 
    -- Fast search data structure
-   type Cv_Feature_Tree is null record;
-   pragma Convention (C_Pass_By_Copy, Cv_Feature_Tree);
-   type Cv_Feature_Tree_Ptr is access all Cv_Feature_Tree;
+   type Cv_Feature_Tree_Ptr is access all Null_Record;
 
-   type Cv_Lsh is null record;
-   pragma Convention (C_Pass_By_Copy, Cv_Lsh);
-   type Cv_Lsh_P is access Cv_Lsh;
+   type Cv_Lsh_P is access Null_Record;
 
-   type Cv_Lsh_Operations is null record;
-   pragma Convention (C_Pass_By_Copy, Cv_Lsh_Operations);
-   type Cv_Lsh_Operations_Ptr is access all cv_Lsh_Operations;
+   type Cv_Lsh_Operations_Ptr is access all Null_Record;
 
    -----------------------------------------------------------------------------
    -- Mmoved

@@ -928,9 +928,7 @@ package Legacy is
 
    Num_Face_Elements : constant := 3;
 
-   type Cv_Face_Tracker is null record; -- Locally declared class in .cpp file
-   pragma Convention (C_Pass_By_Copy, Cv_Face_Tracker);
-   type Cv_Face_Tracker_Ptr is access all Cv_Face_Tracker;
+   type Cv_Face_Tracker_Ptr is access all Null_Record;
 
    type Cv_Face_Elements is new Integer;
    Cv_Face_Mouth : constant Cv_Face_Elements := 0;

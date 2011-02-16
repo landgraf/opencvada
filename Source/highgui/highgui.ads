@@ -32,8 +32,7 @@ package Highgui is
    -------
    -- Ada stuff
    ---------
-   type Cv_Capture is null record;
-   type Cv_Capture_Ptr is access all Cv_Capture;
+   type Cv_Capture_Ptr is access all Null_Record;
 
    type Compression_Type is new Integer;
    Cv_Imwrite_Jpeg_Quality : constant Compression_Type := 1;
@@ -442,9 +441,7 @@ package Highgui is
    function Cv_Get_Capture_Domain (Capture : Cv_Capture_Ptr) return Cv_Cap;
 
    -- "black box" video file writer structure
-   type Cv_Video_Writer is null record;
-   pragma Convention (C_Pass_By_Copy, Cv_Video_Writer);
-   type Cv_Video_Writer_Ptr is access all Cv_Video_Writer;
+   type Cv_Video_Writer_Ptr is access all Null_Record;
 
    -- Video codec
    -- C Macro #define CV_FOURCC(c1,c2,c3,c4) (((c1)&255) + (((c2)&255)<<8) + (((c3)&255)<<16) + (((c4)&255)<<24))
