@@ -733,14 +733,14 @@ package Core.Operations is
 
    --     Assigns user data to the array header.
    procedure Cv_Set_Data (Arr  : Cv_Arr_Ptr;
-                          Data : System.Address;
-                          Step : Integer);
+                          Data : Cv_Void_Ptr;
+                          Step : Unsigned_32);
    procedure Cv_Set_Data (Arr  : Cv_Mat_Ptr;
-                          Data : System.Address;
-                          Step : Integer);
+                          Data : Cv_Void_Ptr;
+                          Step : Unsigned_32);
    procedure Cv_Set_Data (Arr  : Ipl_Image_Ptr;
-                          Data : System.Address;
-                          Step : Integer);
+                          Data : Cv_Void_Ptr;
+                          Step : Unsigned_32);
 
    --     Retrieves low-level information about the array.
    procedure Cv_Get_Raw_Data (Arr      : Cv_Arr_Ptr;
