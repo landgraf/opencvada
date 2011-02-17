@@ -5,7 +5,7 @@ with Highgui; use Highgui;
 with Core; use Core;
 with Core.Operations; use Core.Operations;
 with Ada.Numerics.Generic_Elementary_Functions; use Core.Long_Float_Numerics;
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_Io; use Ada.Text_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 
 
@@ -96,9 +96,8 @@ begin
 
    Ret := Cv_Find_Contours (+Img, Storage, Contours'Access, Cv_Contour'Size / 8, Cv_Retr_Tree, CV_CHAIN_APPROX_SIMPLE, Cv_Create_point (0, 0));
 
-   Cv_Save (New_String ("contours.xml"), To_Void_Ptr (Contours), Null_Ptr, Null_Ptr, Cv_Create_Attr_List (Attrs (0)'Unchecked_Access, null));
-   Contours := To_Seq_Ptr(Cv_Load (+"contours.xml", Storage));
-
+   Cv_Save ("contours.xml", To_Void_Ptr (Contours), "", "", Cv_Create_Attr_List (Attrs (0)'Unchecked_Access, null));
+   Contours := To_Seq_Ptr(Cv_Load ("contours.xml", Storage));
 
 
    Contours := Cv_Approx_Poly (To_Void_Ptr (Contours), Cv_Contour'Size / 8, Storage, Cv_Poly_Approx_Dp, 3.0, 1);
