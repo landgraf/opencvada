@@ -3127,17 +3127,17 @@ package Core.Operations is
                       return Cv_Void_Ptr;
 
    --     Saves an object to a file.
-   procedure Cv_Save (Filename   : Interfaces.C.Strings.Chars_Ptr;
+   procedure Cv_Save (Filename   : String;
                       Struct_Ptr : Cv_Void_Ptr;
-                      Name       : Interfaces.C.Strings.Chars_Ptr;
-                      Comment    : Interfaces.C.Strings.Chars_Ptr;
+                      Name       : String;
+                      Comment    : String;
                       Attributes : Cv_Attr_List := Cv_Create_Attr_List);
 
    --     Loads an object from a file.
-   function Cv_Load (Filename  : String_C;
+   function Cv_Load (Filename  : String;
                      Storage   : Cv_Mem_Storage_Ptr := null;
-                     Name      : Interfaces.C.Strings.Chars_Ptr := Null_Ptr;
-                     Real_Name : access Interfaces.C.Strings.Chars_Ptr := null)
+                     Name      : String := "";
+                     Real_Name : access String := null)
                      return Cv_Void_Ptr;
 
    -----------------------------------------------------------------------------
@@ -3313,6 +3313,18 @@ private
                                  Font       : Cv_Font;
                                  Textsize   : access Cv_Size;
                                  Baseline   : access Integer);
+
+   procedure W_Cv_Save (Filename   : Chars_Ptr;
+                        Struct_Ptr : Cv_Void_Ptr;
+                        Name       : Chars_Ptr;
+                        Comment    : Chars_Ptr;
+                        Attributes : Cv_Attr_List := Cv_Create_Attr_List);
+
+   function W_Cv_Load (Filename  : Chars_Ptr;
+                       Storage   : Cv_Mem_Storage_Ptr := null;
+                       Name      : Chars_Ptr := Null_Ptr;
+                       Real_Name : access Interfaces.C.Strings.Chars_Ptr := null)
+                       return Cv_Void_Ptr;
 
    pragma Import (C, Cv_Alloc, "cvAlloc");
    pragma Import (C, Cv_Free_Wrapper, "cvFree_");
@@ -3602,8 +3614,8 @@ private
    pragma Import (C, Cv_Type_Of, "cvTypeOf");
    pragma Import (C, Cv_Release, "cvRelease");
    pragma Import (C, Cv_Clone, "cvClone");
-   pragma Import (C, Cv_Save, "cvSave");
-   pragma Import (C, Cv_Load, "cvLoad");
+   pragma Import (C, W_Cv_Save, "cvSave");
+   pragma Import (C, W_Cv_Load, "cvLoad");
    pragma Import (C, Cv_Get_Tick_Count, "cvGetTickCount");
    pragma Import (C, Cv_Get_Tick_Frequency, "cvGetTickFrequency");
    pragma Import (C, Cv_Check_Hardware_Support, "cvCheckHardwareSupport");

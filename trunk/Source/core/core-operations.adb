@@ -1,3 +1,4 @@
+with Ada.Text_IO; use Ada.Text_IO;
 -----------------------------------------------------------------------
 -- Ada bindings for OpenCV 2.1.1 (from SVN 3 October 2010, rev. 3703)
 -- Developed as a master thesis project at Mälardalens Högskola
@@ -285,4 +286,67 @@ package body Core.Operations is
    begin
       null;
    end Opencv_Call;
+
+
+
+   --     Saves an object to a file.
+   procedure Cv_Save (Filename   : String;
+                      Struct_Ptr : Cv_Void_Ptr;
+                      Name       : String;
+                      Comment    : String;
+                      Attributes : Cv_Attr_List := Cv_Create_Attr_List) is
+      C_Name : Chars_Ptr;
+      C_Comment : Chars_Ptr;
+   begin
+      if Name = "" then
+         C_Name := Null_Ptr;
+      else
+         C_Name := New_String(Name);
+      end if;
+      if Comment = "" then
+         C_Comment := Null_Ptr;
+      else
+         C_Comment := New_String (Comment);
+      end if;
+      W_Cv_Save (New_String (Filename), Struct_Ptr, C_Name, C_Comment, Attributes);
+      if Name /= "" then
+         Free (C_Name);
+      end if;
+      if Comment /= "" then
+         Free (C_Comment);
+      end if;
+   end Cv_Save;
+
+   --     Loads an object from a file.
+   function Cv_Load (Filename  : String;
+                     Storage   : Cv_Mem_Storage_Ptr := null;
+                     Name      : String := "";
+                     Real_Name : access String := null)
+                     return Cv_Void_Ptr is
+      Temp : aliased Interfaces.C.Strings.Chars_Ptr := Null_Ptr;
+      Ret  : Cv_Void_Ptr;
+      C_Name : Chars_Ptr := Null_Ptr;
+
+   begin
+      if Real_Name /= null then
+         Temp := New_String(Real_Name.all);
+      end if;
+      if Name /= "" then
+         C_Name := New_String (Name);
+      end if;
+      if Real_Name = null then
+         Ret := W_Cv_Load (New_String (Filename), Storage, C_Name, null);
+      else
+         Ret := W_Cv_Load (New_String (Filename), Storage, C_Name, Temp'Access);
+      end if;
+      if Temp /= Null_Ptr and Real_Name /= null then
+         Real_Name.all := Value (Temp);
+         Free (Temp);
+      end if;
+      if Name /= "" then
+         Free (C_Name);
+      end if;
+      return Ret;
+   end Cv_Load;
+
 end Core.Operations;
