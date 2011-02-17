@@ -20,6 +20,9 @@ with Ada.Numerics.Discrete_Random;
 use Core.Cv_8u_Pointer_Pkg;
 with Ada.Numerics.Generic_Elementary_Functions;
 
+with Core.Mat_Nd;
+with Core.Sparse_Mat;
+
 procedure Minarea is
    package Random_Integer is new Ada.Numerics.Discrete_Random (Integer);
    package Random_Unsigned is new Ada.Numerics.Discrete_Random (Unsigned_8);
@@ -27,6 +30,9 @@ procedure Minarea is
    package Cv_Mat_32s is new Core.Mat (Integer);
    use Cv_Mat_32s;
    package Cv_Mat_8u is new Core.Mat (Unsigned_8);
+
+   package Mat_Nd_8u is new Core.Mat_Nd (Unsigned_8);
+   package Sparse_Mat_8u is new Core.Sparse_Mat (Unsigned_8);
 
    use Cv_Mat_32s;
 

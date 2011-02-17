@@ -3,7 +3,7 @@ package body Core.Mat is
                            Cols     : Integer;
                            Depth    : Integer;
                            Channels : Integer;
-                           Data     : access Element_Array := null)
+                           Data     : Element_Array_Ptr := null)
                            return Cv_Mat_Ptr is
 
       function Cv_Create_Mat_I (Rows   : Integer;
@@ -26,6 +26,27 @@ package body Core.Mat is
 
       return Mat;
    end Cv_Create_Mat;
+
+   function Cv_Init_Mat_Header (Arr      : Cv_Mat_Ptr;
+                                Rows     : Integer;
+                                Cols     : Integer;
+                                Mat_Type : Unsigned_32;
+                                Data     : Element_Array_Ptr;
+                                Step     : Integer)
+                                return Cv_Mat_Ptr is
+      function Cv_Init_Mat_Header_Wrap (Arr      : Cv_Mat_Ptr;
+                                        Rows     : Integer;
+                                        Cols     : Integer;
+                                        Mat_Type : Unsigned_32;
+                                        Data     : Cv_Pointer;
+                                        Step     : Integer)
+                                        return Cv_Mat_Ptr;
+      pragma Import (C, Cv_Init_Mat_Header_Wrap, "cvInitMatHeader");
+
+      Ptr : constant Cv_Pointer := Data.all (Data'First)'Access;
+   begin
+      return Cv_Init_Mat_Header_Wrap (Arr, Rows, Cols, Mat_Type, Ptr, Step);
+   end Cv_Init_Mat_Header;
 
    function Cv_Number_Of_Elements (Mat : Cv_Mat_Ptr)
                                    return Integer is

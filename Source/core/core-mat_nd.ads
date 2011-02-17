@@ -18,9 +18,6 @@ package Core.Mat_Nd is
    subtype Cv_Pointer is Cv_Pointer_Pkg.Pointer;
    pragma Warnings (On);
 
---     type Mat_Dimensions is private;
---     type Mat_Dimensions_Array is private;
-
    type Mat_Dimensions is record
       Size : Integer;
       Step : Integer;
@@ -28,6 +25,9 @@ package Core.Mat_Nd is
    pragma Convention (C_Pass_By_Copy, Mat_Dimensions);
 
    type Mat_Dimensions_Array is array (Integer range 0 .. Cv_Max_Dim - 1) of aliased Mat_Dimensions;
+
+   type Mat_Sizes is array (Integer range <>) of aliased Integer;
+   type Mat_Sizes_Ptr is access all Mat_Sizes;
 
    type Cv_Mat_ND is record
       Mat_Type     : Unsigned_32;
@@ -42,6 +42,35 @@ package Core.Mat_Nd is
    pragma Convention (C_Pass_By_Copy, Cv_Mat_ND);
    type Cv_Mat_ND_Ptr is access all Cv_Mat_ND;
    pragma Convention (C, Cv_Mat_ND_Ptr);
+
+--     type Cv_N_Array_Iterator is record
+--
+--     end record;
+
+   function Cv_Init_Mat_ND_Header (Mat      : Cv_Mat_ND_Ptr;
+                                   Dims     : Integer;
+                                   Sizes    : Mat_Sizes_Ptr;
+                                   Mat_Type : Unsigned_32;
+                                   Data     : Element_Array_Ptr := null)
+                                   return Cv_Mat_ND_Ptr;
+
+   function Cv_Create_Mat_ND (Dims     : Integer;
+                              Sizes    : Mat_Sizes_Ptr;
+                              Mat_Type : Unsigned_32)
+                              return Cv_Mat_ND_Ptr;
+
+   function Cv_Clone_Mat_ND (Mat : Cv_Mat_ND_Ptr)
+                             return Cv_Mat_ND_Ptr;
+
+   function Cv_Get_Mat_ND (Arr    : Cv_Arr_Ptr;
+                           Mat_ND : Cv_Mat_ND_Ptr;
+                           Coi    : access Integer)
+                           return Cv_Mat_ND_Ptr;
+
+--     function Cv_Init_N_Array_Iterator (Count : Integer;
+--                                        Arrs  : Cv_Arr_Ptr_Array_Ptr;
+--                                        Stubs : Cv_Mat_ND;
+--                                        Iterator :
 
    function To_Arr_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Arr_Ptr,
                                                         Source => Cv_Mat_ND_Ptr);
@@ -73,9 +102,16 @@ package Core.Mat_Nd is
    function To_Mat_ND is new Ada.Unchecked_Conversion (Target => Core.Cv_Mat_ND,
                                                        Source => Cv_Mat_ND);
 private
+   package Mat_Sizes_Pointer_Pkg is
+     new Interfaces.C.Pointers (Integer, Integer, Mat_Sizes, 0);
+   subtype Mat_Sizes_Pointer is Mat_Sizes_Pointer_Pkg.Pointer;
+
    function To_Arr_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Arr_Ptr,
                                                         Source => Cv_Pointer);
 
    function To_Void_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Void_Ptr,
                                                          Source => Cv_Pointer);
+
+   pragma Import (C, Cv_Clone_Mat_ND, "cvCloneMatND");
+   pragma Import (C, Cv_Get_Mat_ND, "cvGetMatND");
 end Core.Mat_Nd;

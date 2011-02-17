@@ -29,4 +29,7 @@ extern "C" {
 
   CvMat CvMat_wrap(int rows, int cols, int type, void *data);
 
+  void *CvNodeVal_wrap(CvSparseNode *node, CvSparseMat *mat);
+  int *CvNodeIdx_wrap(CvSparseNode *node, CvSparseMat *mat);
+
 }
