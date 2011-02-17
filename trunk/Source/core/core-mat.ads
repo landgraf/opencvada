@@ -11,29 +11,15 @@ package Core.Mat is
    type Element_Array is array (Integer range <>) of aliased Element_T;
    type Element_Array_Ptr is access all Element_Array;
 
+   pragma Warnings (Off); -- "Dummy" may be referenced before it has a value
    Dummy : Element_T;
 
-
-
-   pragma Warnings (Off); -- "Dummy" may be referenced before it has a value
    package Cv_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Element_T, Element_Array, Dummy);
    pragma Warnings (On);
+
    use type Cv_Pointer_Pkg.Pointer;
    subtype Cv_Pointer is Cv_Pointer_Pkg.Pointer;
-
---     type Mat_Data is private;
-   type Cv_Mat_Type is (Cv_Mat_Pointer);
-   type Mat_Data (Option : Cv_Mat_Type := Cv_Mat_Pointer) is record
-      case Option is
-         when Cv_Mat_Pointer =>
-            Pointer : aliased Cv_Pointer;
-      end case;
-   end record;
-   pragma Unchecked_Union (Mat_Data);
-   pragma Convention (C_Pass_By_Copy, Mat_Data);
-   type Mat_Data_Ptr is access all Mat_Data;
-   pragma Convention (C, Mat_Data_Ptr);
 
    type Cv_Mat is record
       Mat_Type     : Unsigned_32;
@@ -52,8 +38,24 @@ package Core.Mat is
                            Cols     : Integer;
                            Depth    : Integer;
                            Channels : Integer;
-                           Data     : access Element_Array := null)
+                           Data     : Element_Array_Ptr := null)
                            return Cv_Mat_Ptr;
+
+   function Cv_Create_Mat_Header (Rows     : Integer;
+                                  Cols     : Integer;
+                                  Mat_Type : Unsigned_32)
+                                  return Cv_Mat_Ptr;
+
+   function Cv_Init_Mat_Header (Arr      : Cv_Mat_Ptr;
+                                Rows     : Integer;
+                                Cols     : Integer;
+                                Mat_Type : Unsigned_32;
+                                Data     : Element_Array_Ptr;
+                                Step     : Integer)
+                                return Cv_Mat_Ptr;
+
+   function Cv_Clone_Mat (Src : Cv_Mat_Ptr)
+                          return Cv_Mat_Ptr;
 
    function Cv_Number_Of_Elements (Mat : Cv_Mat_Ptr)
                                    return Integer;
@@ -61,22 +63,14 @@ package Core.Mat is
    function Cv_Get_Mat_Data (Mat : Cv_Mat_Ptr)
                              return Element_Array;
 
---     procedure Deallocate (Mat : out Cv_Mat_P);
-
    function To_Arr_Ptr is new Ada.Unchecked_Conversion    (Target => Cv_Arr_Ptr,
                                                            Source => Cv_Mat_Ptr);
-
---     function To_Arr_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Arr_Ptr,
---                                                          Source => Element_Array_Ptr);
 
    function To_Arr_Ptr (Source : Element_Array_Ptr)
                         return Cv_Arr_Ptr;
 
    function To_Void_Ptr is new Ada.Unchecked_Conversion   (Target => Cv_Void_Ptr,
                                                            Source => Cv_Mat_Ptr);
-
---     function To_Void_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Void_Ptr,
---                                                           Source => Element_Array_Ptr);
 
    function To_Void_Ptr (Source : Element_Array_Ptr)
                          return Cv_Void_Ptr;
@@ -92,8 +86,6 @@ package Core.Mat is
 
    function To_Mat_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Mat,
                                                         Source => Core.Cv_Mat);
-
---     procedure Cv_Release_Mat (Mat : in out Cv_Mat_P);
 
    procedure Cv_Release_Mat (Mat : in out Cv_Mat_Ptr;
                              Arr : access Element_Array_Ptr := null);
@@ -124,5 +116,6 @@ private
    procedure Free (Ptr : System.Address);
    pragma Import (C, Free, "free");
 
---     pragma Import (C, Cv_Release_Mat, "cvReleaseMat");
+   pragma Import (C, Cv_Create_Mat_Header, "cvCreateMatHeader");
+   pragma Import (C, Cv_Clone_Mat, "cvCloneMat");
 end Core.Mat;

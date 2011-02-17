@@ -76,3 +76,11 @@ void cvDecRefData_wrap(CvArr * arr ){
 CvMat CvMat_wrap(int rows, int cols, int type, void *data) {
   return cvMat(rows, cols, type, data);
 }
+
+void *CvNodeVal_wrap(CvSparseNode *node, CvSparseMat *mat) {
+  return CV_NODE_VAL(mat, node);
+}
+
+int *CvNodeIdx_wrap(CvSparseNode *node, CvSparseMat *mat) {
+  return CV_NODE_IDX(mat, node);
+}
