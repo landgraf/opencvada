@@ -305,25 +305,25 @@ package Highgui is
    -- save image to file
    function Cv_Save_Image (Filename      : String;
                            Image         : Cv_Arr_Ptr;
-                           Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer;
+                           Settings      : access Integer := null) return Integer;
 
    procedure Cv_Save_Image (Filename      : String;
                             Image         : Cv_Arr_Ptr;
-                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95));
+                            Settings      : access Integer := null);
    function Cv_Save_Image (Filename      : String;
                            Image         : Cv_Mat_Ptr;
-                           Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer;
+                           Settings      : access Integer := null) return Integer;
 
    procedure Cv_Save_Image (Filename      : String;
                             Image         : Cv_Mat_Ptr;
-                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95));
+                            Settings      : access Integer := null);
    function Cv_Save_Image (Filename      : String;
                            Image         : Ipl_Image_Ptr;
-                           Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer;
+                           Settings      : access Integer := null) return Integer;
 
    procedure Cv_Save_Image (Filename      : String;
                             Image         : Ipl_Image_Ptr;
-                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95));
+                            Settings      : access Integer := null);
 
    -- decode image stored in the buffer
    function Cv_Decode_Image (Buf      : Cv_Mat_Ptr;
@@ -568,13 +568,13 @@ private
 
    function W_Cv_Save_Image (Filename      : String_C;
                              Image         : Cv_Arr_Ptr;
-                             Settings      : File_Settings) return Integer;
+                             Settings      : access Integer := null) return Integer;
    function W_Cv_Save_Image (Filename      : String_C;
                              Image         : Cv_Mat_Ptr;
-                             Settings      : File_Settings) return Integer;
+                             Settings      : access Integer := null) return Integer;
    function W_Cv_Save_Image (Filename      : String_C;
                              Image         : Ipl_Image_Ptr;
-                             Settings      : File_Settings) return Integer;
+                             Settings      : access Integer := null) return Integer;
 
    function W_Cv_Encode_Image (Ext    : String_C;
                                Image  : Cv_Arr_Ptr;

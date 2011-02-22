@@ -262,39 +262,39 @@ package body Highgui is
 
    function Cv_Save_Image (Filename      : String;
                            Image         : Cv_Arr_Ptr;
-                           Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer is
+                           Settings      : access Integer := null) return Integer is
    begin
       return W_Cv_Save_Image (+Filename, Image, Settings);
    end Cv_Save_Image;
    procedure Cv_Save_Image (Filename      : String;
                             Image         : Cv_Arr_Ptr;
-                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) is
+                            Settings      : access Integer := null) is
       Dump : Integer;
    begin
       Dump :=  W_Cv_Save_Image (+Filename, Image, Settings);
    end Cv_Save_Image;
    function Cv_Save_Image (Filename      : String;
                            Image         : Cv_Mat_Ptr;
-                           Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer is
+                           Settings      : access Integer := null) return Integer is
    begin
       return W_Cv_Save_Image (+Filename, Image, Settings);
    end Cv_Save_Image;
    procedure Cv_Save_Image (Filename      : String;
                             Image         : Cv_Mat_Ptr;
-                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) is
+                            Settings      : access Integer := null) is
       Dump : Integer;
    begin
       Dump :=  W_Cv_Save_Image (+Filename, Image, Settings);
    end Cv_Save_Image;
    function Cv_Save_Image (Filename      : String;
                            Image         : Ipl_Image_Ptr;
-                           Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) return Integer is
+                           Settings      : access Integer := null) return Integer is
    begin
       return W_Cv_Save_Image (+Filename, Image, Settings);
    end Cv_Save_Image;
    procedure Cv_Save_Image (Filename      : String;
                             Image         : Ipl_Image_Ptr;
-                            Settings      : File_Settings := Create_File_Settings (Cv_Imwrite_Jpeg_Quality, 95)) is
+                            Settings      : access Integer := null) is
       Dump : Integer;
    begin
       Dump :=  W_Cv_Save_Image (+Filename, Image, Settings);
