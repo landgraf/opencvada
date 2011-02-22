@@ -48,12 +48,12 @@ procedure Contours is
 
    Attrs    : Cv_String_Array (0 .. 2) := (New_String ("recursive"), New_String ("1"), Null_Ptr);
 
-   function Cv_Load_Seq (Filename  : String_C;
-                       Storage   : Cv_Mem_Storage_Ptr := null;
-                       Name      : Interfaces.C.Strings.Chars_Ptr := Null_Ptr;
-                       Real_Name : Interfaces.C.Strings.Chars_Ptr := Null_Ptr)
-                          return Cv_Seq_Ptr;
-   pragma Import (C, Cv_Load_Seq, "cvLoad");
+--     function Cv_Load_Seq (Filename  : String_C;
+--                         Storage   : Cv_Mem_Storage_Ptr := null;
+--                         Name      : Interfaces.C.Strings.Chars_Ptr := Null_Ptr;
+--                         Real_Name : Interfaces.C.Strings.Chars_Ptr := Null_Ptr)
+--                            return Cv_Seq_Ptr;
+--     pragma Import (C, Cv_Load_Seq, "cvLoad");
 begin
    Cv_Zero (+Img);
 
