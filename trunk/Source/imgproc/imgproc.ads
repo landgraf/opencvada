@@ -171,7 +171,7 @@ package Imgproc is
          Inv_Sqrt_M00                                     : Long_Float; --/* m00 != 0 ? 1/sqrt(m00) : 0 */
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Moments);
-   type Cv_Moments_Ptr is access all cv_Moments;
+   type Cv_Moments_Ptr is access all Cv_Moments;
 
    --/* Hu invariants */
    type Cv_Hu_Moments is
@@ -179,7 +179,7 @@ package Imgproc is
          Hu1, Hu2, Hu3, Hu4, Hu5, Hu6, Hu7 : Long_Float; --/  * Hu invariants *  /
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Hu_Moments);
-   type Cv_Hu_Moments_Ptr is access all cv_Hu_Moments;
+   type Cv_Hu_Moments_Ptr is access all Cv_Hu_Moments;
 
    -- Template matching methods
    type Cv_Tm is new Integer;
@@ -239,7 +239,7 @@ package Imgproc is
          Id    : Integer;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Subdiv_2d_Point);
-   type Cv_Subdiv_2d_Point_Ptr is access all cv_Subdiv_2d_Point;
+   type Cv_Subdiv_2d_Point_Ptr is access all Cv_Subdiv_2d_Point;
 
    -- Array for Cv_Quad_Edge_2D
    type Cv_Subdiv_2d_Point_Ptr_Arr is array (Integer range <>) of Cv_Subdiv_2d_Point_Ptr;
@@ -253,7 +253,7 @@ package Imgproc is
          Next  : Cv_Subdiv_2d_Edge_Arr (1 .. 4);
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Quad_Edge_2d);
-   type Cv_Quad_Edge_2d_Ptr is access all cv_Quad_Edge_2d;
+   type Cv_Quad_Edge_2d_Ptr is access all Cv_Quad_Edge_2d;
 
    -- Planar subdivision
    type Cv_Subdiv_2d is

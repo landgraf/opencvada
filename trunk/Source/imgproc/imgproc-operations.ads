@@ -1353,7 +1353,7 @@ package Imgproc.Operations is
                              Param1    : Long_Float := 0.0;
                              Param2    : Long_Float := 0.0) return Cv_Seq_Ptr;
    function Cv_Hough_Lines2 (Image     : Cv_Mat_Ptr;
-                             Storage   : Cv_Void_Ptr;
+                             Storage   : Cv_Mem_Storage_Ptr;
                              Method    : Integer;
                              Rho       : Long_Float;
                              Theta     : Long_Float;
@@ -1361,7 +1361,7 @@ package Imgproc.Operations is
                              Param1    : Long_Float := 0.0;
                              Param2    : Long_Float := 0.0) return Cv_Seq_Ptr;
    function Cv_Hough_Lines2 (Image     : Ipl_Image_Ptr;
-                             Storage   : Cv_Void_Ptr;
+                             Storage   : Cv_Mem_Storage_Ptr;
                              Method    : Integer;
                              Rho       : Long_Float;
                              Theta     : Long_Float;
