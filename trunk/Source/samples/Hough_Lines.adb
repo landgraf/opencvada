@@ -6,7 +6,7 @@ with Imgproc.Operations; use Imgproc.Operations;
 with Ada.Unchecked_Conversion;
 
 
-procedure Camera_Test is
+procedure Hough_Lines is
 
    subtype Line_Array is Cv_Point_Array (0 .. 1);
    type Line_Array_Ptr is access Line_Array;
@@ -19,7 +19,7 @@ procedure Camera_Test is
    Capture                : aliased Cv_Capture_Ptr;
    Image                  : Ipl_Image_Ptr;
    Dst, Color_Dst, Gray   : aliased Ipl_Image_Ptr;
-   Storage                : aliased cv_Mem_Storage_Ptr;
+   Storage                : aliased Cv_Mem_Storage_Ptr;
    Lines                  : Cv_Seq_Ptr;
    Line                   : Line_Array;
 
@@ -39,7 +39,7 @@ begin
       Cv_Canny (Gray, Dst, 50.0, 200.0, 3);
       Cv_Cvt_Color (Dst, Color_Dst, Cv_Gray2bgr);
 
-      Lines := Cv_Hough_Lines2 (Dst, Storage, Cv_Hough_Probabilistic , 1.0, Cv_Pi / 180.0, 100, 5.0, 10.0);
+      Lines := Cv_Hough_Lines2 (Dst, To_Void_Ptr (Storage), Cv_Hough_Probabilistic , 1.0, Cv_Pi / 180.0, 100, 5.0, 10.0);
 
       for I in Integer range 0 .. Lines.all.Total - 1
       loop
@@ -61,4 +61,4 @@ begin
    Cv_Destroy_Window ("Hough");
    Cv_Release_Capture (Capture'Access);
 
-end Camera_Test;
+end Hough_Lines;
