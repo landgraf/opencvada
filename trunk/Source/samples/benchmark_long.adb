@@ -17,7 +17,7 @@ procedure Benchmark_Long is
    Frame   : Ipl_Image_Ptr;
    Frames  : Interfaces.Integer_64 := 0;
    Bw,Recolor      : aliased Ipl_Image_Ptr;
-   Storage         : aliased Cv_Mat_Ptr;
+   Storage         : aliased Cv_Mem_Storage_Ptr;
    Circles : Cv_Seq_Ptr;
    subtype Lf_Circle is Core.Cv_32f_Array (0 .. 2);
    Circle  : Lf_Circle;
@@ -39,7 +39,7 @@ begin
       Frame := Cv_Query_Frame (Capture);
       --waste a bit of time
       exit when Frame = null;
-      Storage := Cv_Create_Mat(1,100000,Cv_32f,3,null);
+      Storage := Cv_Create_Mem_Storage(0);
       Bw := Cv_Create_Image (Cv_Get_Size (Frame), 8, 1);
       Recolor := Cv_Create_Image (Cv_Get_Size (Frame), 8, 3);
       Cv_Cvt_Color (Frame, Bw, Cv_Bgr2gray);
