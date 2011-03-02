@@ -7,7 +7,7 @@ project OpenCVAda_Samples is
    for Exec_Dir use "Exec";
    for Languages use ("Ada");
    for Main use ("chess_demo.adb", "bgfg_codebook.adb", "Hough_Lines.adb", "contours.adb", "convert_cascade.adb", "delaunay.adb", "distrans.adb", "farneback_optical_flow.adb", "histogram_demo.adb", "latentsvmdetect.adb", "minarea.adb", 
-"morphology.adb", "motempl.adb", "mser.adb", "polar_transforms.adb", "pyramid_segmentation.adb", "find_object.adb", "benchmark_long.adb");
+"morphology.adb", "motempl.adb", "mser.adb", "polar_transforms.adb", "pyramid_segmentation.adb", "find_object.adb", "benchmark_long.adb", "benchmark_big.adb");
 
    package Builder is
       for Default_Switches ("ada") use ("-s", "-m");
