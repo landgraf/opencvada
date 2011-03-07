@@ -1,0 +1,10 @@
+benchmark_big.exe "C:\MDH\master_thesis\opencvada\Exec\heic0602a.jpg" 1000
+benchmark_big_c.exe "C:\MDH\master_thesis\opencvada\Exec\heic0602a.jpg" 1000
+dist\benchmark_big.exe "C:\MDH\master_thesis\opencvada\Exec\heic0602a.jpg" 1000
+benchmark_gui.exe "C:\MDH\master_thesis\opencvada\Exec\heic0602a.jpg_small.png" 1000
+benchmark_gui_c.exe "C:\MDH\master_thesis\opencvada\Exec\heic0602a.jpg_small.png" 1000
+dist\benchmark_gui.exe "C:\MDH\master_thesis\opencvada\Exec\heic0602a.jpg_small.png" 1000
+benchmark_long.exe "C:\MDH\master_thesis\opencvada\Exec\ksc_042010_sts131_landing_1080i.avi" 1
+benchmark_long_c.exe "C:\MDH\master_thesis\opencvada\Exec\ksc_042010_sts131_landing_1080i.avi" 1
+\dist\benchmark_long.exe "C:\MDH\master_thesis\opencvada\Exec\ksc_042010_sts131_landing_1080i.avi" 1
+
