@@ -51,7 +51,8 @@ begin
          Cv_Draw_Circle (Recolor, Cv_Create_Point (Cv_Round(Circle(0)), Cv_Round(Circle(1))), Cv_Round(Circle(2)), Cv_Rgb (255, 0, 0));
       end loop;
 --        Put_Line (Circles.all.Total'Img);
---        Cv_Show_Image("hej",Recolor);
+--        Cv_Show_Image ("hej", Recolor);
+--        Cv_Wait_Key (1);
       Frames := Frames + 1;
       Cv_Release_Image (Bw'Access);
       Cv_Release_Image (Recolor'Access);
