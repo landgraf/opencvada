@@ -212,7 +212,7 @@ package Imgproc.Operations is
    procedure Cv_Pyr_Segmentation (Src        : Ipl_Image_Ptr;
                                   Dst        : Ipl_Image_Ptr;
                                   Storage    : Cv_Mem_Storage_Ptr;
-                                  Comp       : Cv_Seq_Ptr_Array;
+                                  Comp       : access Cv_Seq_Ptr;
                                   Level      : Integer;
                                   Threshold1 : Long_Float;
                                   Threshold2 : Long_Float);

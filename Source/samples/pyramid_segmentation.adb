@@ -23,7 +23,7 @@ procedure Pyramid_Segmentation is
    Block_Size : constant Integer := 1000;
    Result : Integer;
    Filter : Pyr_Filter := Cv_Gaussian_5x5;
-   Comp : aliased Cv_Seq_Ptr_Array(0 .. 0);
+   Comp : aliased Cv_Seq_Ptr := null;
    Storage : aliased Cv_Mem_Storage_Ptr;
 
    procedure On_Segment (Position : Integer);
@@ -32,7 +32,7 @@ procedure Pyramid_Segmentation is
    procedure On_Segment (Position : Integer) is
    begin
       -- comp'Access
-      Cv_Pyr_Segmentation (Image(1), Image(2), Storage, Comp, Level, Long_Float(Threshold1 + 1), Long_Float(Threshold2 + 1));
+      Cv_Pyr_Segmentation (Image(1), Image(2), Storage, Comp'Access, Level, Long_Float(Threshold1 + 1), Long_Float(Threshold2 + 1));
       Cv_Show_Image ("Segmentation", +Image(2));
    end On_Segment;
 

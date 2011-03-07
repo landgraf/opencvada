@@ -12,9 +12,8 @@ with Ada.Unchecked_Conversion;
 
 
 -- benchmark_big file.image
-procedure Benchmark_Big is
+procedure Benchmark_Gui is
    Image         : aliased ipl_Image_Ptr;
-   Image_Small   : aliased Ipl_Image_Ptr;
 begin
    if Argument_Count > 0 then
       Image := Cv_Load_Image (Argument (1));
@@ -22,11 +21,18 @@ begin
       return;
    end if;
 
-   Image_Small := Cv_Create_Image ((640, 480), 8, 3);
-   Imgproc.Operations.Cv_Resize (Image, Image_Small);
 
-   Cv_Save_Image (Argument (1) & "_small.png", Image_Small);
+   for I in Integer range 1 .. 100 loop
+      Cv_Named_Window (I'Img);
+   end loop;
+
+   for I in Integer range 1 .. 100 loop
+      Cv_Show_Image (I'Img, Image);
+   end loop;
+
+   for I in Integer range 1 .. 100 loop
+      Cv_Destroy_Window (I'Img);
+   end loop;
 
    Cv_Release_Image (Image'Access);
-   Cv_Release_Image (Image_Small'Access);
-end Benchmark_Big;
+end Benchmark_Gui;
