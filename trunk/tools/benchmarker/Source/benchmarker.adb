@@ -67,21 +67,22 @@ begin
             declare
                Next_Space : Integer := Index (To_Unbounded_String (Line), " ");
                Next_Comment : Integer := Index (To_Unbounded_String (Line), "" & '"');
-               Second_Comment : Integer := Next_Comment + Index (To_Unbounded_String (Line (Next_Comment+1 .. Line_Last)), "" & '"');
+               Second_Comment : Integer := Next_Comment + Index (To_Unbounded_String (Line (Next_Comment + 1 .. Line_Last)), "" & '"');
             begin
                Put (Next_Comment'Img);
                Put (Second_Comment'Img);
                Put (Line (Next_Comment+1 .. Line_Last));
-               App := Unbounded_Slice (To_Unbounded_String (Line), 1, Next_Space);
+               App := Unbounded_Slice (To_Unbounded_String (Line), 1, Next_Space-1);
                App_Args := Unbounded_Slice (To_Unbounded_String (Line),
-                                                       Next_Comment,
-                                            Second_Comment);
+                                                       Next_Comment+1,
+                                            Second_Comment-1);
                Put_Line(Line (Second_Comment + 1 .. Line_Last));
                if Index (To_Unbounded_String (Line (Second_Comment + 1 .. Line_Last)), " ") > 0 then
                   Execs := Integer'Value((Line (Second_Comment + 1 .. Line_Last)));
                end if;
                Put_Debug (To_String (App), Debug);
-               Put_Debug (To_String (App_Args), Debug);
+               Put_Debug ("appargs: " & To_String (App_Args), Debug);
+               Put_Line("appli: " & To_String (App) & To_String (App) 'Length'Img);
                Ret := Run_Apps (To_String (App), Get_Arg_List (To_String (App_Args)), Out_Time, Execs, Debug);
                Put_Line (O_File, To_String (App) & "," & To_String (App_Args) & "," & To_String (Out_Time.all));
             end App_Parse;
@@ -111,7 +112,7 @@ begin
          else
             Ada.Text_IO.Open (O_File, Append_File, To_String (Output_File));
          end if;
-
+         Put_Line("app_args: " & To_String(App_Args));
          Ret := Run_Apps (To_String (App), Get_Arg_List (To_String (App_Args)), Out_Time, Execs, Debug);
          Put_Line (O_File, To_String (App) & "," & To_String (App_Args) & "," & To_String (Out_Time.all));
       end if;

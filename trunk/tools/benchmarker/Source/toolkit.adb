@@ -23,6 +23,7 @@ package body Toolkit is
       Timer.all.Execs := Timer.all.Execs + 1;
       Timer.all.Total := Timer.all.Total + App_Time;
       -- add timer stuffs
+      Put_Line("result:" & Boolean'Pos(Success)'img & To_String(Timer.all));
       return Boolean'Pos(Success);
    end Run_App;
 
