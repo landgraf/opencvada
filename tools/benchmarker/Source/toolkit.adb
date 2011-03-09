@@ -56,11 +56,11 @@ package body Toolkit is
       Pos    : Integer := 1;
    begin
       Put_Line(Args);
-      U_Args := Unbounded_Slice(U_Args,2,Args'Length-1);
+      U_Args := Unbounded_Slice(U_Args,1,Args'Length);
       for I in Integer range 1 .. N_Args
       loop
          if Ada.Strings.Unbounded.Count (U_Args, " ") > 0 then
-            Strs (I) := Ada.Strings.Unbounded.Unbounded_Slice (U_Args, Pos, Ada.Strings.Unbounded.Index (U_Args, " "));
+            Strs (I) := Ada.Strings.Unbounded.Unbounded_Slice (U_Args, Pos, Ada.Strings.Unbounded.Index (U_Args, " ")-1);
          else
             Strs (I) := Ada.Strings.Unbounded.Unbounded_Slice (U_Args, Pos, Length (U_Args));
          end if;
