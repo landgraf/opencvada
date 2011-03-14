@@ -464,10 +464,10 @@ package body Core is
       return 0;
    end Cv_Is_Uniform_Hist;
 
-   function Cv_Is_Sparse_Hist (Hist : Cv_Histogram_Ptr) return Integer is
-   begin
-      return Cv_Is_Sparse_Mat (To_Sparse_Mat_Ptr (Hist.all.Bins));
-   end Cv_Is_Sparse_Hist;
+--     function Cv_Is_Sparse_Hist (Hist : Cv_Histogram_Ptr) return Integer is
+--     begin
+--        return Cv_Is_Sparse_Mat (To_Sparse_Mat_Ptr (Hist.all.Bins));
+--     end Cv_Is_Sparse_Hist;
 
    function Cv_Hist_Has_Ranges (Hist : Cv_Histogram_Ptr) return Integer is
    begin
@@ -498,105 +498,105 @@ package body Core is
    end Ipl_To_Cv_Depth;
 
 
-   function Cv_Is_Mat_Hdr (Mat : Cv_Mat_Ptr) return Integer is
-   begin
-      if not (Mat = null) then
-         if (Unsigned_32 (Mat.all.Mat_Type) and Unsigned_32 (Cv_Magic_Mask)) = Cv_Mat_Magic_Val then
-            if (Mat.all.Cols > 0) and (Mat.all.Rows > 0) then
-               return 1;
-            end if;
-         else
-            Put_Line ("CV_IS_MAT_HDR: Mat magic val invalid, is" & Unsigned_32'Image (Unsigned_32 (Mat.all.Mat_Type) and Unsigned_32 (Cv_Magic_Mask)));
-            Put_Line ("CV_IS_MAT_HDR: Should be" & Cv_Mat_Magic_Val'Img);
-         end if;
-      end if;
-      return 0;
-   end Cv_Is_Mat_Hdr;
+--     function Cv_Is_Mat_Hdr (Mat : Cv_Mat_Ptr) return Integer is
+--     begin
+--        if not (Mat = null) then
+--           if (Unsigned_32 (Mat.all.Mat_Type) and Unsigned_32 (Cv_Magic_Mask)) = Cv_Mat_Magic_Val then
+--              if (Mat.all.Cols > 0) and (Mat.all.Rows > 0) then
+--                 return 1;
+--              end if;
+--           else
+--              Put_Line ("CV_IS_MAT_HDR: Mat magic val invalid, is" & Unsigned_32'Image (Unsigned_32 (Mat.all.Mat_Type) and Unsigned_32 (Cv_Magic_Mask)));
+--              Put_Line ("CV_IS_MAT_HDR: Should be" & Cv_Mat_Magic_Val'Img);
+--           end if;
+--        end if;
+--        return 0;
+--     end Cv_Is_Mat_Hdr;
+--
+--
+--     function Cv_Is_Mask_Arr (Mat : Cv_Mat_Ptr) return Integer is
+--     begin
+--        if (Unsigned_32 (Mat.all.Mat_Type) and (Cv_Mat_Type_Mask and (not Unsigned_32 (Cv_Make_Type (Cv_8s, 1))))) = 0 then
+--           return 1;
+--        else
+--           return 0;
+--        end if;
+--
+--     end Cv_Is_Mask_Arr;
+--
+--     function Cv_Are_Types_Eq (Mat1 : Cv_Mat_Ptr;
+--                               Mat2 : Cv_Mat_Ptr) return Integer is
+--     begin
+--        if ((Unsigned_32 (Mat1.all.Mat_Type) xor Unsigned_32 (Mat2.all.Mat_Type)) and Cv_Mat_Type_Mask) = 0 then
+--           return 1;
+--        end if;
+--        return 0;
+--     end Cv_Are_Types_Eq;
+--
+--     function Cv_Are_Cns_Eq (Mat1 : Cv_Mat_Ptr;
+--                             Mat2 : Cv_Mat_Ptr) return Integer is
+--     begin
+--        if ((Unsigned_32 (Mat1.all.Mat_Type) xor Unsigned_32 (Mat2.all.Mat_Type)) and Unsigned_32 (Cv_Mat_Cn_Mask)) = 0 then
+--           return 1;
+--        end if;
+--        return 0;
+--     end Cv_Are_Cns_Eq;
+--
+--     function Cv_Are_Depths_Eq (Mat1 : Cv_Mat_Ptr;
+--                                Mat2 : Cv_Mat_Ptr) return Integer is
+--     begin
+--        if ((Unsigned_32 (Mat1.all.Mat_Type) xor Unsigned_32 (Mat2.all.Mat_Type)) and Unsigned_32 (Cv_Mat_Depth_Mask)) = 0 then
+--           return 1;
+--        end if;
+--        return 0;
+--     end Cv_Are_Depths_Eq;
+--
+--     function Cv_Are_Sizes_Eq (Mat1 : Cv_Mat_Ptr;
+--                               Mat2 : Cv_Mat_Ptr) return Integer is
+--     begin
+--        if ((Mat1.all.Rows = Mat2.all.Rows) and (Mat1.all.Cols = Mat2.all.Cols)) then
+--           return 1;
+--        end if;
+--        return 0;
+--     end Cv_Are_Sizes_Eq;
+--
+--     function Cv_Is_Mat_Const (Mat : Cv_Mat_Ptr) return Integer is
+--     begin
+--        if (Unsigned_32 (Mat.all.Rows) or Unsigned_32 (Mat.all.Cols)) = 1 then
+--           return 1;
+--        end if;
+--        return 0;
+--     end Cv_Is_Mat_Const;
+--
+--
+--
+--     function Cv_Mat_Elem_Ptr (Mat : Cv_Mat_Ptr;
+--                               Row : Integer;
+--                               Col : Integer) return Cv_8u_Pointer is
+--     begin
+--        return Cv_Mat_Elem_Ptr_Fast (Mat, Row, Col, Cv_Elem_Size (Mat.all.Mat_Type));
+--     end Cv_Mat_Elem_Ptr;
+
+--     function Cv_Is_Matnd_Hdr (Mat : Cv_Mat_Nd_Ptr) return Integer is
+--     begin
+--        if not (Mat = null) then
+--           if ( Unsigned_32 (Mat.all.Mat_Type) and Cv_Magic_Mask) = Cv_Matnd_Magic_Val then
+--              return 1;
+--           end if;
+--        end if;
+--        return 0;
+--     end Cv_Is_Matnd_Hdr;
 
 
-   function Cv_Is_Mask_Arr (Mat : Cv_Mat_Ptr) return Integer is
-   begin
-      if (Unsigned_32 (Mat.all.Mat_Type) and (Cv_Mat_Type_Mask and (not Unsigned_32 (Cv_Make_Type (Cv_8s, 1))))) = 0 then
-         return 1;
-      else
-         return 0;
-      end if;
-
-   end Cv_Is_Mask_Arr;
-
-   function Cv_Are_Types_Eq (Mat1 : Cv_Mat_Ptr;
-                             Mat2 : Cv_Mat_Ptr) return Integer is
-   begin
-      if ((Unsigned_32 (Mat1.all.Mat_Type) xor Unsigned_32 (Mat2.all.Mat_Type)) and Cv_Mat_Type_Mask) = 0 then
-         return 1;
-      end if;
-      return 0;
-   end Cv_Are_Types_Eq;
-
-   function Cv_Are_Cns_Eq (Mat1 : Cv_Mat_Ptr;
-                           Mat2 : Cv_Mat_Ptr) return Integer is
-   begin
-      if ((Unsigned_32 (Mat1.all.Mat_Type) xor Unsigned_32 (Mat2.all.Mat_Type)) and Unsigned_32 (Cv_Mat_Cn_Mask)) = 0 then
-         return 1;
-      end if;
-      return 0;
-   end Cv_Are_Cns_Eq;
-
-   function Cv_Are_Depths_Eq (Mat1 : Cv_Mat_Ptr;
-                              Mat2 : Cv_Mat_Ptr) return Integer is
-   begin
-      if ((Unsigned_32 (Mat1.all.Mat_Type) xor Unsigned_32 (Mat2.all.Mat_Type)) and Unsigned_32 (Cv_Mat_Depth_Mask)) = 0 then
-         return 1;
-      end if;
-      return 0;
-   end Cv_Are_Depths_Eq;
-
-   function Cv_Are_Sizes_Eq (Mat1 : Cv_Mat_Ptr;
-                             Mat2 : Cv_Mat_Ptr) return Integer is
-   begin
-      if ((Mat1.all.Rows = Mat2.all.Rows) and (Mat1.all.Cols = Mat2.all.Cols)) then
-         return 1;
-      end if;
-      return 0;
-   end Cv_Are_Sizes_Eq;
-
-   function Cv_Is_Mat_Const (Mat : Cv_Mat_Ptr) return Integer is
-   begin
-      if (Unsigned_32 (Mat.all.Rows) or Unsigned_32 (Mat.all.Cols)) = 1 then
-         return 1;
-      end if;
-      return 0;
-   end Cv_Is_Mat_Const;
-
-
-
-   function Cv_Mat_Elem_Ptr (Mat : Cv_Mat_Ptr;
-                             Row : Integer;
-                             Col : Integer) return Cv_8u_Pointer is
-   begin
-      return Cv_Mat_Elem_Ptr_Fast (Mat, Row, Col, Cv_Elem_Size (Mat.all.Mat_Type));
-   end Cv_Mat_Elem_Ptr;
-
-   function Cv_Is_Matnd_Hdr (Mat : Cv_Mat_Nd_Ptr) return Integer is
-   begin
-      if not (Mat = null) then
-         if ( Unsigned_32 (Mat.all.Mat_Type) and Cv_Magic_Mask) = Cv_Matnd_Magic_Val then
-            return 1;
-         end if;
-      end if;
-      return 0;
-   end Cv_Is_Matnd_Hdr;
-
-
-   function Cv_Is_Sparse_Mat_Hdr (Mat : Cv_Sparse_Mat_Ptr) return Integer is
-   begin
-      if not (Mat = null) then
-         if (Unsigned_32 (Mat.all.Mat_Type) and Cv_Magic_Mask) = Cv_Sparse_Mat_Magic_Val then
-            return 1;
-         end if;
-      end if;
-      return 0;
-   end Cv_Is_Sparse_Mat_Hdr;
+--     function Cv_Is_Sparse_Mat_Hdr (Mat : Cv_Sparse_Mat_Ptr) return Integer is
+--     begin
+--        if not (Mat = null) then
+--           if (Unsigned_32 (Mat.all.Mat_Type) and Cv_Magic_Mask) = Cv_Sparse_Mat_Magic_Val then
+--              return 1;
+--           end if;
+--        end if;
+--        return 0;
+--     end Cv_Is_Sparse_Mat_Hdr;
 
    function Cv_Mat_Cn_Mask return Unsigned_32 is
    begin
@@ -846,22 +846,22 @@ package body Core is
       return To_Arr_Ptr (Right);
    end "+";
 
-   function Cv_Is_Mat (Mat : Cv_Mat_Ptr) return Integer is
-      use Core.Cv_8u_Pointer_Pkg;
-   begin
-      if not ( Mat = null) then
-         if (Cv_Is_Mat_Hdr (Mat) > 0) and Mat.all.Data.Cv_8u /= null then
-            return 1;
-         elsif Cv_Is_Mat_Hdr (Mat) = 0 then
-            Put_Line ("CV_IS_MAT: Header for Mat invalid");
-         elsif Mat.all.Data.Cv_8u = null then
-            Put_Line ("CV_IS_MAT: Data in Mat is (null)");
-         end if;
-      else
-         Put_Line ("CV_IS_MAT: Mat is (null)");
-      end if;
-      return 0;
-   end Cv_Is_Mat;
+--     function Cv_Is_Mat (Mat : Cv_Mat_Ptr) return Integer is
+--        use Core.Cv_8u_Pointer_Pkg;
+--     begin
+--        if not ( Mat = null) then
+--           if (Cv_Is_Mat_Hdr (Mat) > 0) and Mat.all.Data.Cv_8u /= null then
+--              return 1;
+--           elsif Cv_Is_Mat_Hdr (Mat) = 0 then
+--              Put_Line ("CV_IS_MAT: Header for Mat invalid");
+--           elsif Mat.all.Data.Cv_8u = null then
+--              Put_Line ("CV_IS_MAT: Data in Mat is (null)");
+--           end if;
+--        else
+--           Put_Line ("CV_IS_MAT: Mat is (null)");
+--        end if;
+--        return 0;
+--     end Cv_Is_Mat;
 
    function "+" (Right : String) return String_C is
    begin

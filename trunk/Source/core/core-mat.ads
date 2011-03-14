@@ -41,6 +41,13 @@ package Core.Mat is
                            Data     : Element_Array_Ptr := null)
                            return Cv_Mat_Ptr;
 
+   function Cv_Create_Mat (Rows     : Integer;
+                           Cols     : Integer;
+                           Depth    : Integer;
+                           Channels : Integer;
+                           Data     : Element_Array)
+                           return Cv_Mat_Ptr;
+
    function Cv_Create_Mat_Header (Rows     : Integer;
                                   Cols     : Integer;
                                   Mat_Type : Unsigned_32)
@@ -81,11 +88,11 @@ package Core.Mat is
    function To_Mat_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Mat_Ptr,
                                                         Source => Cv_Void_Ptr);
 
-   function To_Mat_Ptr is new Ada.Unchecked_Conversion (Target => Core.Cv_Mat,
-                                                        Source => Cv_Mat);
+   function To_Mat_Ptr is new Ada.Unchecked_Conversion (Target => Core.Cv_Mat_Ptr,
+                                                        Source => Cv_Mat_Ptr);
 
-   function To_Mat_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Mat,
-                                                        Source => Core.Cv_Mat);
+   function To_Mat_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Mat_Ptr,
+                                                        Source => Core.Cv_Mat_Ptr);
 
    procedure Cv_Release_Mat (Mat : in out Cv_Mat_Ptr;
                              Arr : access Element_Array_Ptr := null);

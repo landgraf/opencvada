@@ -43,9 +43,12 @@ package Core.Mat_Nd is
    type Cv_Mat_ND_Ptr is access all Cv_Mat_ND;
    pragma Convention (C, Cv_Mat_ND_Ptr);
 
---     type Cv_N_Array_Iterator is record
---
---     end record;
+   type Cv_N_Array_Iterator is record
+      Count : Integer;
+      Dims  : Integer;
+      Size  : Cv_Size;
+
+   end record;
 
    function Cv_Init_Mat_ND_Header (Mat      : Cv_Mat_ND_Ptr;
                                    Dims     : Integer;
