@@ -516,6 +516,10 @@ package Core is
    pragma Convention (C_Pass_By_Copy, Mat_Data);
    type Mat_Data_Ptr is access all Mat_Data;
 
+--     type Cv_Mat is null record;
+--     pragma Warnings (Off); -- 224 bits of "Cv_Mat" unused
+--     for Cv_Mat'Size use 224;
+--     pragma Warnings (On);
    type Cv_Mat is record
       Mat_Type     : Unsigned_32; -- used to be Integer
       Step         : Integer;
@@ -530,24 +534,84 @@ package Core is
    type Cv_Mat_Array_Axb is array (Integer range <>, Integer range <>) of aliased Cv_Mat;
 
    function Cv_Is_Mat_Hdr (Mat : Cv_Mat_Ptr) return Integer;
+   function Cv_Is_Mat_Hdr (Mat : Cv_Arr_Ptr) return Integer;
 
    function Cv_Is_Mat (Mat : Cv_Mat_Ptr) return Integer;
+   function Cv_Is_Mat (Mat : Cv_Arr_Ptr) return Integer;
 
    function Cv_Is_Mask_Arr (Mat : Cv_Mat_Ptr) return Integer;
+   function Cv_Is_Mask_Arr (Mat : Cv_Arr_Ptr) return Integer;
 
    function Cv_Are_Types_Eq (Mat1 : Cv_Mat_Ptr;
-                             Mat2 : Cv_Mat_Ptr) return Integer;
+                             Mat2 : Cv_Mat_Ptr)
+                             return Integer;
+   function Cv_Are_Types_Eq (Mat1 : Cv_Arr_Ptr;
+                             Mat2 : Cv_Arr_Ptr)
+                             return Integer;
 
    function Cv_Are_Cns_Eq (Mat1 : Cv_Mat_Ptr;
-                           Mat2 : Cv_Mat_Ptr) return Integer;
+                           Mat2 : Cv_Mat_Ptr)
+                           return Integer;
+   function Cv_Are_Cns_Eq (Mat1 : Cv_Arr_Ptr;
+                           Mat2 : Cv_Arr_Ptr)
+                           return Integer;
 
    function Cv_Are_Depths_Eq (Mat1 : Cv_Mat_Ptr;
-                              Mat2 : Cv_Mat_Ptr) return Integer;
+                              Mat2 : Cv_Mat_Ptr)
+                              return Integer;
+   function Cv_Are_Depths_Eq (Mat1 : Cv_Arr_Ptr;
+                              Mat2 : Cv_Arr_Ptr)
+                              return Integer;
 
    function Cv_Are_Sizes_Eq (Mat1 : Cv_Mat_Ptr;
-                             Mat2 : Cv_Mat_Ptr) return Integer;
+                             Mat2 : Cv_Mat_Ptr)
+                             return Integer;
+   function Cv_Are_Sizes_Eq (Mat1 : Cv_Arr_Ptr;
+                             Mat2 : Cv_Arr_Ptr)
+                             return Integer;
 
    function Cv_Is_Mat_Const (Mat : Cv_Mat_Ptr) return Integer;
+   function Cv_Is_Mat_Const (Mat : Cv_Arr_Ptr) return Integer;
+
+   function Cv_Mat_Elem_Ptr_Fast (Mat      : Cv_Mat_Ptr;
+                                  Row      : Integer;
+                                  Col      : Integer;
+                                  Pix_Size : Integer)
+                                  return Cv_Void_Ptr;
+   function Cv_Mat_Elem_Ptr_Fast (Mat      : Cv_Arr_Ptr;
+                                  Row      : Integer;
+                                  Col      : Integer;
+                                  Pix_Size : Integer)
+                                  return Cv_Void_Ptr;
+
+   function Cv_Mat_Elem_Ptr (Mat : Cv_Mat_Ptr;
+                             Row : Integer;
+                             Col : Integer)
+                             return Cv_Void_Ptr;
+   function Cv_Mat_Elem_Ptr (Mat : Cv_Arr_Ptr;
+                             Row : Integer;
+                             Col : Integer)
+                             return Cv_Void_Ptr;
+
+--     function Cv_Is_Mat_Hdr (Mat : Cv_Mat_Ptr) return Integer;
+--
+--     function Cv_Is_Mat (Mat : Cv_Mat_Ptr) return Integer;
+--
+--     function Cv_Is_Mask_Arr (Mat : Cv_Mat_Ptr) return Integer;
+--
+--     function Cv_Are_Types_Eq (Mat1 : Cv_Mat_Ptr;
+--                               Mat2 : Cv_Mat_Ptr) return Integer;
+--
+--     function Cv_Are_Cns_Eq (Mat1 : Cv_Mat_Ptr;
+--                             Mat2 : Cv_Mat_Ptr) return Integer;
+--
+--     function Cv_Are_Depths_Eq (Mat1 : Cv_Mat_Ptr;
+--                                Mat2 : Cv_Mat_Ptr) return Integer;
+--
+--     function Cv_Are_Sizes_Eq (Mat1 : Cv_Mat_Ptr;
+--                               Mat2 : Cv_Mat_Ptr) return Integer;
+--
+--     function Cv_Is_Mat_Const (Mat : Cv_Mat_Ptr) return Integer;
 
    function Cv_Elem_Size_1 (E_Type : Unsigned_32) return Unsigned_32; -- used to be Integer
    function Cv_Elem_Size (E_Type : Unsigned_32) return Unsigned_32; -- used to be Integer
@@ -561,14 +625,14 @@ package Core is
                            return Cv_Mat;
 
 
-   function Cv_Mat_Elem_Ptr_Fast (Mat      : Cv_Mat_Ptr;
-                                  Row      : Integer;
-                                  Col      : Integer;
-                                  Pix_Size : Unsigned_32) return Cv_8u_Pointer;
+--     function Cv_Mat_Elem_Ptr_Fast (Mat      : Cv_Mat_Ptr;
+--                                    Row      : Integer;
+--                                    Col      : Integer;
+--                                    Pix_Size : Unsigned_32) return Cv_8u_Pointer;
 
-   function Cv_Mat_Elem_Ptr (Mat : Cv_Mat_Ptr;
-                             Row : Integer;
-                             Col : Integer) return Cv_8u_Pointer;
+--     function Cv_Mat_Elem_Ptr (Mat : Cv_Mat_Ptr;
+--                               Row : Integer;
+--                               Col : Integer) return Cv_8u_Pointer;
 
    function Cv_Mat_Elem (Mat      : Cv_Mat_Ptr;
                          Elemtype : Unsigned_32; -- used to be Integer
@@ -609,18 +673,23 @@ package Core is
    type Mat_Dimensions_Array is array (Integer range <>) of Mat_Dimensions;
    --type Size_Array is array (Integer range <>) of Integer;
 
+--     type Cv_Mat_ND is null record;
+--     pragma Warnings (Off); -- 2208 bits of "Cv_Mat_ND" unused
+--     for Cv_Mat_ND'Size use 2208;
+--     pragma Warnings (On);
    type Cv_Mat_Nd is record
-      Mat_Type : Integer;
-      Dims     : Integer;
-      Refcount : Cv_32u_Array_Ptr;
-      Data     : Mat_Data;
-      Dim      : Mat_Dimensions_Array (1 .. Cv_Max_Dim);
+      Mat_Type     : Integer;
+      Dims         : Integer;
+      Refcount     : access Integer;
+      Hdr_Refcount : Integer;
+      Data         : Mat_Data;
+      Dim          : Mat_Dimensions_Array (0 .. Cv_Max_Dim - 1);
    end record;
    pragma Convention (C_Pass_By_Copy, Cv_Mat_Nd);
    type Cv_Mat_Nd_Ptr is access all Cv_Mat_Nd;
 
-   function Cv_Is_Matnd_Hdr (Mat : Cv_Mat_Nd_Ptr) return Integer;
-   function Cv_Is_Matnd ( Mat : Cv_Mat_Nd_Ptr) return Integer renames Cv_Is_Matnd_Hdr;
+   function Cv_Is_Mat_ND_Hdr (Mat : Cv_Mat_ND_Ptr) return Integer;
+   function Cv_Is_Mat_ND (Mat : Cv_Mat_ND_Ptr) return Integer;
 
    -----------------------------------------------------------------------------
    -- Multi-dimensional sparse array (CvSparseMat)
@@ -628,6 +697,10 @@ package Core is
    Cv_Sparse_Mat_Magic_Val : constant := 16#42440000#;
    Cv_Type_Name_Sparse_Mat : constant String := "opencv-sparse-matrix";
 
+--     type Cv_Sparse_Mat is null record;
+--     pragma Warnings (Off); -- 1312 bits of "Cv_Sparse_Mat" unused
+--     for Cv_Sparse_Mat'Size use 1312;
+--     pragma Warnings (On);
    type Cv_Sparse_Mat is record
       Mat_Type  : Integer;
       Dims      : Integer;
@@ -644,7 +717,7 @@ package Core is
    type Cv_Sparse_Mat_Ptr is access all Cv_Sparse_Mat;
 
    function Cv_Is_Sparse_Mat_Hdr (Mat : Cv_Sparse_Mat_Ptr) return Integer;
-   function Cv_Is_Sparse_Mat (Mat : Cv_Sparse_Mat_Ptr) return Integer renames Cv_Is_Sparse_Mat_Hdr;
+   function Cv_Is_Sparse_Mat (Mat : Cv_Sparse_Mat_Ptr) return Integer;
 
    type Cv_Sparse_Node;
    type Cv_Sparse_Node_Ptr is access all Cv_Sparse_Node;
@@ -689,7 +762,7 @@ package Core is
    pragma Convention (C, Thresh_Arr);
 
    Cv_32f_Array_Null : Cv_32f_Pointer_Array (1 .. 0);
-   Cv_32s_Array_Null :  Cv_32s_Array (1 .. 0);
+   Cv_32s_Array_Null : Cv_32s_Array (1 .. 0);
 
 
    type Cv_Histogram is
@@ -698,7 +771,7 @@ package Core is
          Bins     : Cv_Arr_Ptr;
          Thresh   : Thresh_Arr;
          Thresh2  : Cv_32f_Pointer_Array_Ptr;
-         --           Mat      : Cv_Mat_ND;
+         Mat      : Cv_Mat_ND;
       end record;
    pragma Convention (C_Pass_By_Copy, Cv_Histogram);
    type Cv_Histogram_Ptr is access all Cv_Histogram;
@@ -2098,7 +2171,7 @@ private
    pragma Import (C, Cv_Change_Seq_Block, "cvChangeSeqBlock");
    pragma Import (C, Cv_Next_Seq_Elem, "cvNextSeqElem");
    pragma Import (C, Cv_Mat_Elem, "cvMatElem_wrap");
-   pragma Import (C, Cv_Mat_Elem_Ptr_Fast, "Cv_Mat_Elem_Ptr_Fast");
+--     pragma Import (C, Cv_Mat_Elem_Ptr_Fast, "Cv_Mat_Elem_Ptr_Fast");
    pragma Import (C, Cv_Write_Seq_Elem_Var, "Cv_Write_Seq_Elem_Var");
    pragma Import (C, Cv_Prev_Seq_Elem, "Cv_Prev_Seq_Elem");
    pragma Import (C, Cv_Rev_Read_Seq_Elem, "Cv_Rev_Read_Seq_Elem");
@@ -2106,4 +2179,22 @@ private
    pragma Import (C, Cv_Read_Chain_Point, "Cv_Read_Chain_Point");
    pragma Import (C, Cv_Next_Graph_Edge, "Cv_Next_Graph_Edge");
    pragma Import (C, Cv_Read_Edge, "Cv_Read_Edge");
+
+   pragma Import (C, Cv_Is_Mat_Hdr, "Cv_Is_Mat_Hdr");
+   pragma Import (C, Cv_Is_Mat, "Cv_Is_Mat");
+   pragma Import (C, Cv_Is_Mask_Arr, "Cv_Is_Mask_Arr");
+   pragma Import (C, Cv_Are_Types_Eq, "Cv_Are_Types_Eq");
+   pragma Import (C, Cv_Are_Cns_Eq, "Cv_Are_Cns_Eq");
+   pragma Import (C, Cv_Are_Depths_Eq, "Cv_Are_Depths_Eq");
+   pragma Import (C, Cv_Are_Sizes_Eq, "Cv_Are_Sizes_Eq");
+   pragma Import (C, Cv_Is_Mat_Const, "Cv_Is_Mat_Const");
+   pragma Import (C, Cv_Mat_Elem_Ptr_Fast, "Cv_Mat_Elem_Ptr_Fast");
+   pragma Import (C, Cv_Mat_Elem_Ptr, "Cv_Mat_Elem_Ptr");
+
+   pragma Import (C, Cv_Is_Mat_ND_Hdr, "Cv_Is_Mat_ND_Hdr");
+   pragma Import (C, Cv_Is_Mat_ND, "Cv_Is_Mat_ND");
+
+   pragma Import (C, Cv_Is_Sparse_Mat_Hdr, "Cv_Is_Sparse_Mat_Hdr");
+   pragma Import (C, Cv_Is_Sparse_Mat, "Cv_Is_Sparse_Mat");
+   pragma Import (C, Cv_Is_Sparse_Hist, "Cv_Is_Sparse_Hist");
 end Core;

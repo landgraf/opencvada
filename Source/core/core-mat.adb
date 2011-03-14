@@ -27,6 +27,24 @@ package body Core.Mat is
       return Mat;
    end Cv_Create_Mat;
 
+   function Cv_Create_Mat (Rows     : Integer;
+                           Cols     : Integer;
+                           Depth    : Integer;
+                           Channels : Integer;
+                           Data     : Element_Array)
+                           return Cv_Mat_Ptr is
+      function Cv_Create_Mat_I (Rows   : Integer;
+                                Cols   : Integer;
+                                M_Type : Unsigned_32;
+                                Data   : Element_Array)
+                                return Cv_Mat;
+      pragma Import (C, Cv_Create_Mat_I, "CvMat_wrap");
+      Mat : constant Cv_Mat_Ptr := new Cv_Mat;
+   begin
+      Mat.all := Cv_Create_Mat_I (Rows, Cols, Cv_Make_Type (Depth, Channels), Data);
+      return Mat;
+   end Cv_Create_Mat;
+
    function Cv_Init_Mat_Header (Arr      : Cv_Mat_Ptr;
                                 Rows     : Integer;
                                 Cols     : Integer;
