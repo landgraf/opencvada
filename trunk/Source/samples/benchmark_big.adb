@@ -22,7 +22,7 @@ begin
       return;
    end if;
 
-   Image_Small := Cv_Create_Image ((640, 480), 8, 3);
+   Image_Small := Cv_Create_Image (Cv_Create_Size(640, 480), 8, 3);
    Imgproc.Operations.Cv_Resize (Image, Image_Small);
 
    Cv_Save_Image (Argument (1) & "_small.png", Image_Small);
