@@ -1,5 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Unchecked_Conversion;
+with Ada.Command_Line; use Ada.Command_Line;
 
 with Core; use Core;
 with Core.Operations; use Core.Operations;
@@ -43,7 +44,7 @@ procedure Farneback_Optical_Flow is
       end loop;
    end Draw_Opt_Flow_Map;
 
-   Capture   : aliased Cv_Capture_Ptr := Cv_Create_Camera_Capture (0);
+   Capture   : aliased Cv_Capture_Ptr;-- := Cv_Create_Camera_Capture (0);
    Prev_Gray : Cv_Mat_Ptr := null;
    Gray      : Cv_Mat_Ptr := null;
    Flow      : Cv_Mat_Ptr := null;
@@ -55,6 +56,9 @@ procedure Farneback_Optical_Flow is
    Ret         : Integer := 0;
 begin
    Help;
+
+   Capture := Cv_Create_Camera_Capture (0);
+--     Capture := Cv_Create_File_Capture(Argument(1));
 
    if Capture = null then
       return;

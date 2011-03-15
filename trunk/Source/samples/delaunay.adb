@@ -257,7 +257,7 @@ procedure Delaunay is
 --        Put_Line ("To stop the process, press any key");
 --        New_Line;
 
-      for I in Integer range 0 .. 50
+      --for I in Integer range 0 .. 50
       loop
          Fp := (Float (Random (G)),Float (Random (G)));
          Locate_Point (Subdiv, Fp, Img, Active_Facet_Color);
