@@ -97,10 +97,14 @@ begin
    Cv_Cvt_Color (To_Arr_Ptr (Rsp), To_Arr_Ptr (Hsv), CV_BGR2YCrCb);
    Params := Cv_Create_Mser_Params;
 
+--     Put_Line("1");
+
    Cv_Extract_Mser (To_Arr_Ptr (Hsv), null, Contours'Access, Storage, Params);
    Rsp_Array := new Cv_8u_Array (1 .. (Rsp.all.Width * Rsp.all.Height * 3));
    Rsp_Array := new Cv_8u_Array (0 .. (Rsp.all.Width * Rsp.all.Height * 3) - 1);
-   Rsp_Array.all := Cv_8u_Pointer_Pkg.Value(Rsp.all.Image_Data, Ptrdiff_T(Rsp.all.Width * Rsp.all.Height * 3));
+   Rsp_Array.all := Cv_8u_Pointer_Pkg.Value (Rsp.all.Image_Data, Ptrdiff_T (Rsp.all.Width * Rsp.all.Height * 3));
+
+--     Put_Line ("2");
 
    for I in reverse 0 .. Contours.all.Total - 1 loop
       R := To_Seq_P_P (Cv_Get_Seq_Elem (Contours, I)).all;
@@ -113,7 +117,11 @@ begin
       end loop;
    end loop;
 
+--     Put_Line ("3");
+
    Rsp.all.Image_Data := Rsp_Array.all (0)'Access;
+
+--     Put_Line ("4");
 
    for I in Integer range 0 .. Contours.all.Total - 1 loop
       Contour := To_Contour_P_P (Cv_Get_Seq_Elem (Contours, I)).all;
@@ -126,6 +134,8 @@ begin
          Cv_Ellipse_Box (To_Arr_Ptr (Ellipses), Box, Colors (2), 2);
       end if;
    end loop;
+
+--     Put_Line ("5");
 
    Main_Loop :
    declare

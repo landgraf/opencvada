@@ -31,16 +31,11 @@ procedure Minarea is
    use Cv_Mat_32s;
    package Cv_Mat_8u is new Core.Mat (Unsigned_8);
 
-   package Mat_Nd_8u is new Core.Mat_Nd (Unsigned_8);
-   package Sparse_Mat_8u is new Core.Sparse_Mat (Unsigned_8);
-
-   use Cv_Mat_32s;
-
    package Float_Trig is new
      Ada.Numerics.Generic_Elementary_Functions (Long_Float);
 
    type Cv_Rect_Corners is array (0 .. 3) of Cv_Point_2d_32f;
-   function  GetCorners (Box : Cv_Box_2d) return Cv_Rect_Corners is
+   function GetCorners (Box : Cv_Box_2d) return Cv_Rect_Corners is
       Corners : Cv_Rect_Corners;
       Angle   :  constant Long_Float := Long_Float(Box.Angle) * CV_PI / 180.0;
       A       :  constant Float := Float(Float_Trig.Sin (Angle) * 0.5);
@@ -83,14 +78,19 @@ procedure Minarea is
    -- Test of new Cv_Mat structure
    Mat_32s : aliased Cv_Mat_32s.Cv_Mat_Ptr;
    Arr_32s : aliased Cv_Mat_32s.Element_Array_Ptr;
+   Arr_Get : aliased Cv_Mat_32s.Element_Array_Ptr;
    Mat_8u  : Cv_Mat_8u.Cv_Mat_Ptr;
-   Arr_8u  : Cv_Mat_8u.Element_Array_Ptr;
+--     Arr_8u  : Cv_Mat_8u.Element_Array_Ptr;
+   Arr_8u  : Cv_Mat_8u.Element_Array (0 .. Width * Height * Channels - 1) := (others => 0);
 
+   Elem_32s : Integer;
 
    function To_Int is new Ada.Unchecked_Conversion (Source => Cv_Mat_32s.Cv_Mat_Ptr,
                                                     Target => Integer);
 begin
-   Arr_8u := new Cv_Mat_8u.Element_Array (0 .. Width * Height * Channels - 1);
+
+   Cv_Named_Window ("Red Penguin", 1);
+
    Mat_8u := Cv_Mat_8u.Cv_Create_Mat (Height, Width, Cv_8u, Channels, Arr_8u);
 
    Random_Integer.Reset (Gen_Integer);
@@ -98,6 +98,7 @@ begin
    loop
       Count := (Random_Integer.Random (Gen_Integer) mod Max_Count) + 1;
       Arr_32s := new Cv_Mat_32s.Element_Array (0 .. (Count - 1) * 2 + 1);
+      Arr_Get := new Cv_Mat_32s.Element_Array (0 .. (Count - 1) * 2 + 1);
       for I in Integer range 0 .. Count - 1 loop
          Point.X := Random_Integer.Random (Gen_Integer) mod (Mat_8u.all.Cols * 3 / 4 - Mat_8u.all.Cols / 4) + Mat_8u.all.Cols / 4;
          Point.Y := Random_Integer.Random (Gen_Integer) mod (Mat_8u.all.Rows * 3 / 4 - Mat_8u.all.Rows / 4) + Mat_8u.all.Rows / 4;
@@ -107,10 +108,16 @@ begin
          Arr_32s.all (Index + 1) := Point.Y;
       end loop;
 
---        Mat_32s := Cv_Mat_32s.Cv_Create_Mat (Count, 1, Cv_32s, 2, Arr_32s);
+      Mat_32s := Cv_Mat_32s.Cv_Create_Mat (Count, 1, Cv_32s, 2, Arr_32s);
 
-      Mat_32s := Cv_Create_Mat (Count, 1, Cv_32s, 2);
-      Cv_Set_Data (To_Arr_Ptr (Mat_32s), To_Void_Ptr (Arr_32s), CV_AUTOSTEP);
+      Arr_Get.all := Cv_Mat_32s.Cv_Get_Mat_Data (Mat_32s);
+      Elem_32s := Cv_Mat_32s.Cv_Get_Elem (Mat_32s, 2, 2);
+
+      Put_Line ("" & Elem_32s'Img & " ==" & Arr_32s.all (2 * Mat_32s.all.Step + 2)'Img);
+--        Put_Line ("" & Elem_32s'Img & " ==" & Arr_32s.all (0)'Img);
+
+--        Mat_32s := Cv_Create_Mat (Count, 1, Cv_32s, 2);
+--        Cv_Set_Data (To_Arr_Ptr (Mat_32s), To_Void_Ptr (Arr_32s), CV_AUTOSTEP);
 
       Min_Rect := Cv_Min_Area_Rect2 (Points  => Cv_Mat_32s.To_Arr_Ptr (Mat_32s),
                                      Storage => null);
@@ -135,7 +142,7 @@ begin
       Cv_Circle (Cv_Mat_8u.To_Arr_Ptr (Mat_8u), Cv_Create_Point (Cv_Round (Circle_Center.X), Cv_Round (Circle_Center.Y)), Cv_Round (Circle_Radius), Cv_Create_Scalar (255.0), 1, CV_AA);
 
       Cv_Show_Image (WindowName => "Red Penguin",
-                     Image      => Cv_Mat_8u.To_Arr_Ptr (Mat_8u));
+                     Image      => Cv_Mat_8u.To_Mat_Ptr (Mat_8u));
 
       Cv_Mat_32s.Cv_Release_Mat (Mat_32s, Arr_32s'Access);
 
