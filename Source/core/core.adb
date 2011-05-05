@@ -603,10 +603,10 @@ package body Core is
       return Shift_Left ((Cv_Cn_Max - 1), Integer (Cv_Cn_Shift));
    end Cv_Mat_Cn_Mask;
 
-   function Cv_Mat_Cn (Flags : Unsigned_32) return Unsigned_32 is -- used to be Integer
-   begin
-      return Shift_Right (Unsigned_32 (Flags) and Unsigned_32 (Cv_Mat_Cn_Mask), Integer (Cv_Cn_Shift)) + 1;
-   end Cv_Mat_Cn;
+--     function Cv_Mat_Cn (Flags : Unsigned_32) return Unsigned_32 is -- used to be Integer
+--     begin
+--        return Shift_Right (Unsigned_32 (Flags) and Unsigned_32 (Cv_Mat_Cn_Mask), Integer (Cv_Cn_Shift)) + 1;
+--     end Cv_Mat_Cn;
 
    function Cv_Elem_Size_1 (E_Type : Unsigned_32) return Unsigned_32 is -- used to be Integer
    begin
@@ -648,10 +648,10 @@ package body Core is
       return Flags and Cv_Mat_Type_Mask;
    end Cv_Mat_Type;
 
-   function Cv_Maketype (Depth : Integer; Cn : Integer) return Unsigned_32 is
-   begin
-      return Cv_Mat_Depth (Unsigned_32 (Depth)) + Shift_Left (Unsigned_32 (Cn - 1), Integer (Cv_Cn_Shift));
-   end Cv_Maketype;
+--     function Cv_Maketype (Depth : Integer; Cn : Integer) return Unsigned_32 is
+--     begin
+--        return Cv_Mat_Depth (Unsigned_32 (Depth)) + Shift_Left (Unsigned_32 (Cn - 1), Integer (Cv_Cn_Shift));
+--     end Cv_Maketype;
 
    function Cv_Mat_Depth (M_Type : Unsigned_32) return Unsigned_32 is
    begin

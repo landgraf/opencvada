@@ -1,4 +1,18 @@
 package body Core.Mat is
+   function Cv_Create_Mat2 (Rows     : Integer;
+                            Cols     : Integer;
+                            Depth    : Integer;
+                            Channels : Integer)
+                            return Cv_Mat_Ptr is
+      function Cv_Create_Mat_I (Rows   : Integer;
+                                Cols   : Integer;
+                                M_Type : Unsigned_32)
+                                return Cv_Mat_Ptr;
+      pragma Import (C, Cv_Create_Mat_I, "cvCreateMat");
+   begin
+      return Cv_Create_Mat_I (Rows, Cols, Cv_Make_Type (Depth, Channels));
+   end Cv_Create_Mat2;
+
    function Cv_Create_Mat (Rows     : Integer;
                            Cols     : Integer;
                            Depth    : Integer;
@@ -80,6 +94,39 @@ package body Core.Mat is
       Data := Cv_Pointer_Pkg.Value (Mat.all.Data, Ptrdiff_T (Mat.all.Cols * Mat.all.Rows * Channels));
       return Data;
    end Cv_Get_Mat_Data;
+
+   function Cv_Get_Elem (Mat     : Cv_Mat_Ptr;
+                         Row     : Integer := 0;
+                         Col     : Integer := 0;
+                         Channel : Integer := 0)
+                         return Element_T is
+      Val : constant Cv_Pointer := Mat.all.Data + (Ptrdiff_T (Mat_Index (Mat, Row, Col, Channel)));
+   begin
+      return Val.all;
+   end Cv_Get_Elem;
+
+   procedure Cv_Set_Elem (Mat     : Cv_Mat_Ptr;
+                          Row     : Integer;
+                          Col     : Integer;
+                          Channel : Integer;
+                          Val     : Element_T) is
+      use Cv_Pointer_Pkg;
+      Channels     : constant Integer := Integer (Cv_Mat_Cn (Mat.all.Mat_Type));
+      Elem_Pointer : Cv_Pointer := Mat.all.Data;
+   begin
+      Elem_Pointer := Mat.all.Data + Ptrdiff_T (Mat_Index (Mat, Row, Col, Channel));
+      Elem_Pointer.all := Val;
+   end Cv_Set_Elem;
+
+   function Mat_Index (Mat     : Cv_Mat_Ptr;
+                       Row     : Integer;
+                       Col     : Integer;
+                       Channel : Integer)
+                       return Integer is
+      Channels : constant Integer := Integer (Cv_Mat_Cn (Mat.all.Mat_Type));
+   begin
+      return Mat.all.Rows * Row * Channels + Col * Channels + Channel;
+   end Mat_Index;
 
    procedure Cv_Release_Mat (Mat : in out Cv_Mat_Ptr;
                              Arr : access Element_Array_Ptr := null) is

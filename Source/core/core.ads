@@ -2156,6 +2156,7 @@ private
    --------------
    type Null_Record is null record;
 
+   pragma Import (C, Cv_Maketype, "Cv_Maketype");
    pragma Import (C, Cv_Create_Mat, "CvMat_wrap");
    pragma Import (C, Cv_Ipl_Depth, "cvIplDepth");
    pragma Import (C, Cv_Floor, "cvFloor");
@@ -2197,4 +2198,5 @@ private
    pragma Import (C, Cv_Is_Sparse_Mat_Hdr, "Cv_Is_Sparse_Mat_Hdr");
    pragma Import (C, Cv_Is_Sparse_Mat, "Cv_Is_Sparse_Mat");
    pragma Import (C, Cv_Is_Sparse_Hist, "Cv_Is_Sparse_Hist");
+   pragma Import (C, Cv_Mat_Cn, "Cv_Mat_Cn");
 end Core;

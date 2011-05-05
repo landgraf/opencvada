@@ -34,6 +34,16 @@ package Core.Mat is
    type Cv_Mat_Ptr is access all Cv_Mat;
    pragma Convention (C, Cv_Mat_Ptr);
 
+   -- cvCreateMat()
+   -- Initializes a matrix and allocates internal data
+   function Cv_Create_Mat2 (Rows     : Integer;
+                            Cols     : Integer;
+                            Depth    : Integer;
+                            Channels : Integer)
+                            return Cv_Mat_Ptr;
+
+   -- cvMat()
+   -- Creates a matrix and sets the internal data pointer to point at Data
    function Cv_Create_Mat (Rows     : Integer;
                            Cols     : Integer;
                            Depth    : Integer;
@@ -41,6 +51,8 @@ package Core.Mat is
                            Data     : Element_Array_Ptr := null)
                            return Cv_Mat_Ptr;
 
+   -- cvMat()
+   -- Creates a matrix and sets the internal data pointer to point at Data
    function Cv_Create_Mat (Rows     : Integer;
                            Cols     : Integer;
                            Depth    : Integer;
@@ -48,6 +60,8 @@ package Core.Mat is
                            Data     : Element_Array)
                            return Cv_Mat_Ptr;
 
+   -- cvCreateMatHeader()
+   -- creates a Cv_Mat header
    function Cv_Create_Mat_Header (Rows     : Integer;
                                   Cols     : Integer;
                                   Mat_Type : Unsigned_32)
@@ -69,6 +83,18 @@ package Core.Mat is
 
    function Cv_Get_Mat_Data (Mat : Cv_Mat_Ptr)
                              return Element_Array;
+
+   function Cv_Get_Elem (Mat     : Cv_Mat_Ptr;
+                         Row     : Integer := 0;
+                         Col     : Integer := 0;
+                         Channel : Integer := 0)
+                         return Element_T;
+
+   procedure Cv_Set_Elem (Mat     : Cv_Mat_Ptr;
+                          Row     : Integer;
+                          Col     : Integer;
+                          Channel : Integer;
+                          Val     : Element_T);
 
    function To_Arr_Ptr is new Ada.Unchecked_Conversion    (Target => Cv_Arr_Ptr,
                                                            Source => Cv_Mat_Ptr);
@@ -99,9 +125,17 @@ package Core.Mat is
 
    procedure Cv_Release_Element_Array is new Ada.Unchecked_Deallocation (Object => Element_Array,
                                                                          Name   => Element_Array_Ptr);
+
+   procedure Cv_Release (Mat : access Cv_Mat_Ptr);
 private
    type Cv_Pointer_Ptr is access all Cv_Pointer;
    pragma Convention (C, Cv_Pointer_Ptr);
+
+   function Mat_Index (Mat     : Cv_Mat_Ptr;
+                       Row     : Integer;
+                       Col     : Integer;
+                       Channel : Integer)
+                       return Integer;
 
    function To_Arr_Ptr is new Ada.Unchecked_Conversion (Target => Cv_Arr_Ptr,
                                                         Source => Cv_Pointer);
@@ -125,4 +159,5 @@ private
 
    pragma Import (C, Cv_Create_Mat_Header, "cvCreateMatHeader");
    pragma Import (C, Cv_Clone_Mat, "cvCloneMat");
+   pragma Import (C, Cv_Release, "cvReleaseMat");
 end Core.Mat;
