@@ -1,0 +1,243 @@
+with Ada.Unchecked_Deallocation;
+with Sys_Types_H;
+with Sys_Socket_H;
+with Linux_If_H;
+with Linux_If_Ether_H;
+with Linux_If_Arp_H;
+with Linux_If_Packet_H;
+with Bits_Socket_H;
+with Interfaces.C;
+with Interfaces; use Interfaces;
+with Ada.Unchecked_Conversion;
+with System.Storage_Elements;
+with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+with Sys_Ioctl_H;
+package body Raw_Socket is
+
+   type Data_Type_Ptr is access all Data_Type;
+
+   Buffer : aliased Data_Type;
+   Buff_P : Data_Type_Ptr := Buffer'Access;
+   package Sys_Socket is new Sys_Socket_H (Data_Type_Ptr);
+
+
+   procedure Free is new Ada.Unchecked_Deallocation (Linux_If_H.Ifreq, Linux_If_H.Ifreq_Ptr);
+   --     package C renames Interfaces.C;
+
+   ----------
+   -- Init --
+   ----------
+
+   function Bswap_16 (X : C.int) return C.int is
+      type Byte is new Integer range 0 .. 255;
+      type Byte_Arr is array (1 .. 4) of Byte;
+      pragma Pack(Byte_Arr);
+      for Byte_Arr'Size use 4*8;
+      function To_Byte is new Ada.Unchecked_Conversion (C.Int, Byte_Arr);
+      function To_Int is new Ada.Unchecked_Conversion (Byte_Arr, C.Int);
+      B : Byte_Arr := To_Byte (X);
+      T : Byte;
+   begin
+      T := B (1);
+      B (1) := B (2);
+      B (2) := T;
+      T := B (3);
+      B (3) := B(4);
+      B (4) := T;
+      return To_Int (B);
+   end Bswap_16;
+
+   function Htons (X : C.int) return C.int is
+   begin
+      return Bswap_16 (X);
+   end Htons;
+
+
+   function To_Sll_Addr (Data : Bits_Socket_H.Sockaddr_Sa_Data_Array)
+                         return Linux_If_Packet_H.Sockaddr_Ll_Sll_Addr_Array is
+      use Linux_If_Packet_H;
+      Sl : Sockaddr_Ll_Sll_Addr_Array := (others => C.Unsigned_Char (0));
+   begin
+      for I in 0 .. 5 loop
+         Sl(I) := C.unsigned_char(Character'Pos(Character(Data (I))));
+      end loop;
+      return Sl;
+   end To_Sll_Addr;
+
+
+   function Create_Socket (Iface : String) return Socket_Type is
+      use type C.int;
+--        Int : C.Int;
+      Sock   : Socket_Type;
+      Carr   : C.Char_Array := C.To_C (Iface);
+      Ifr    : Linux_If_H.Ifreq_Ptr := new Linux_If_H.Ifreq;
+
+   begin
+      Sock.S := Sys_Socket.Socket (Bits_Socket_H.PF_PACKET,
+                                  C.Int (Bits_Socket_H.SOCK_RAW),
+                                  Htons (Linux_If_Ether_H.ETH_P_ALL));
+      -- copy interface name string.
+      for I in Iface'Range loop
+         Ifr.Ifr_Ifrn.Ifrn_Name (I - 1) := C.Char (Iface (I));
+      end loop;
+      Ifr.Ifr_Ifrn.Ifrn_Name (Iface'Length .. Ifr.Ifr_Ifrn.Ifrn_Name'Last) := (others => C.Char (Character'Val (0)));
+      -- Request the interface index
+      if Sys_Ioctl_H.Ioctl (C.Int (Sock.S), Sys_Ioctl_H.SIOCGIFINDEX, Ifr) = -1 then
+         Put_Line ("Failed to fetch index of network interface: " & Iface);
+         for I in Iface'Range loop
+            Put (Character (Ifr.Ifr_Ifrn.Ifrn_Name (I - 1))); -- C-range 0..?
+         end loop;
+         New_Line;
+         Sock.S := -1;
+         raise GETINDEX_FAILED;
+      else
+         Put ("Interface index:" & Ifr.Ifr_Ifru.Ifru_Ivalue'Img);
+         Sock.Iface := Ifr.Ifr_Ifru.Ifru_Ivalue;
+      end if;
+      -- Request MAC address of interface
+      if Sys_Ioctl_H.Ioctl (C.Int (Sock.S), Sys_Ioctl_H.SIOCGIFHWADDR, Ifr) = -1 then
+         Put_Line ("Failed to fetch MAC of network interface: " & Iface);
+         Sock.S := -1;
+         raise GETMAC_FAILED;
+      else
+         for I in 0 .. 5 loop
+            Put (Character'Pos (Character (Ifr.Ifr_Ifru.Ifru_Hwaddr.Sa_Data (I))), 7, 16);
+            Put(',');
+         end loop;
+         New_Line;
+         Sock.Src_Mac := To_Sll_Addr(Ifr.Ifr_Ifru.Ifru_Hwaddr.Sa_Data);
+      end if;
+
+      Ifr.Ifr_Ifru.Ifru_Flags := Interfaces.C.Short(Unsigned_16(Ifr.Ifr_Ifru.Ifru_Flags) or Linux_If_H.IFF_PROMISC);
+      if Sys_Ioctl_H.Ioctl (C.Int (Sock.S), Sys_Ioctl_H.Siocsifflags, Ifr) = -1 then
+         Put_Line ("Failed to enable PROMISC-mode on network interface: " & Iface);
+         Sock.S := -1;
+         raise SETPROMISC_FAILED;
+      end if;
+
+      Free (Ifr);
+      return Sock;
+   end Create_Socket;
+
+   function Get_Addr (Sock : Socket_Type) return Addr_Type is
+      Addr : Addr_Type;
+   begin
+      for I in 1 .. 6 loop
+         Addr (I) := Integer (Sock.Src_Mac (I - 1));
+      end loop;
+      return Addr;
+   end Get_Addr;
+
+   -------------
+   -- Receive --
+   -------------
+--     Buff : aliased Sys_Socket_H.Buffer_Type;
+--     function To_Data is new Ada.Unchecked_Conversion (Sys_Socket_H.Buffer_Type, Data_Type);
+
+   function To_Sockaddr (In_Addr : Addr_Type) return Linux_If_Packet_H.Sockaddr_Ll is
+      use type C.Unsigned;
+      Addr : Linux_If_Packet_H.Sockaddr_Ll;
+   begin
+      for I in 1 .. 6 loop
+         Addr.Sll_Addr (I - 1) := C.Unsigned_Char(In_Addr (I));
+      end loop;
+      Addr.Sll_Family := Bits_Socket_H.PF_PACKET;
+      Addr.Sll_Protocol := 0;
+      Addr.Sll_Ifindex := 0; --Sock.Iface;
+      Addr.Sll_Hatype := Linux_If_Arp_H.ARPHRD_ETHER;
+      Addr.Sll_Pkttype := Linux_if_Packet_H.PACKET_OTHERHOST;
+      Addr.sll_halen := Linux_If_Ether_H.ETH_ALEN;
+      return Addr;
+   end To_Sockaddr;
+
+   procedure Receive (Sock : Socket_Type;
+                      Src  : in Addr_Type;
+                      Data   : out Data_Type;
+                      Length : out Integer) is
+      use type C.Unsigned;
+--        Buff_P : Sys_Socket_H.Buffer_Type_Ptr := Buff'Access;
+      Len    : Integer;
+      Addr   : aliased Linux_If_Packet_H.Sockaddr_Ll;
+      Addr_Len : aliased C.Unsigned := Linux_If_Packet_H.Sockaddr_Ll'Size / 8;
+   begin
+
+      Addr := To_Sockaddr (Src);
+      if Src = Null_Addr then
+         Len := Integer (Sys_Socket.Recvfrom (C.Int (Sock.S),
+           Buff_P, -- buffer
+           C.Unsigned (ETH_FRAME_LEN), -- data length, ETH_FRAME_LEN = 1518 bytes
+           0, -- flags
+           null, -- address of sender
+           null)); -- actual size of Addr
+      else
+         Len := Integer (Sys_Socket.Recvfrom (C.Int (Sock.S),
+           Buff_P, -- buffer
+           C.Unsigned (ETH_FRAME_LEN), -- data length, ETH_FRAME_LEN = 1518 bytes
+           0, -- flags
+           Addr'Access, -- address of sender
+           Addr_Len'Access)); -- actual size of Addr
+      end if;
+      --        Length := ETH_FRAME_LEN;
+      Length := Len;
+
+      --        Data := To_Data (Buff);
+      Data := Buff_P.all;
+   end Receive;
+
+   --------------
+   -- Transmit --
+   --------------
+--     Tbuff : aliased Sys_Socket_H.Buffer_Type;
+--     function To_Buff is new Ada.Unchecked_Conversion (Data_Type, Sys_Socket_H.Buffer_Type);
+   Tbuff : aliased Data_Type;
+   Tbuff_Ptr : Data_Type_Ptr := Tbuff'Access;
+   Procedure Transmit (Sock     : Socket_Type;
+                       Dst      : in Addr_Type;
+                       Data     : in Data_Type;
+                       Length   : in Integer) is
+      use Linux_If_Ether_H;
+      use type C.int;
+      use type C.Unsigned;
+      Data_Start : constant Integer := 2 * ETH_ALEN + 1;
+
+--        Buff_P : Sys_Socket_H.Buffer_Type_Ptr := TBuff'Access;
+      Res    : Sys_Types_H.Ssize_T;
+      Addr   : aliased Linux_If_Packet_H.Sockaddr_Ll;
+      --        Int_Res : C.Int;
+--        If_End : Integer;
+   begin
+      ----------------------------------------------------------------------------------
+      -- | DST | SRC | ID |     DATA     | FCS |
+      --   6B    6B    2B    46 - 1500B    4B
+      ----------------------------------------------------------------------------------
+
+      -- Copy Data
+      Tbuff (2 * ETH_ALEN + 3 .. Tbuff'Last) := Data (1 .. Tbuff'Last - 2 * ETH_ALEN - 2);
+      for I in 1 .. ETH_ALEN loop
+         Tbuff (I) := Dst (I);
+         Tbuff (I + ETH_ALEN + 1) := Integer (Sock.Src_Mac (I));
+      end loop;
+      Tbuff (13 .. 14) := (255, 255 );
+
+
+      Addr.Sll_Addr := Sock.Src_Mac(0..7); --(16#0#, 16#19#, 16#B9#, 16#79#, 16#AA#, 16#8F#, 16#0#, 16#0#);
+      Addr.Sll_Family := Bits_Socket_H.PF_PACKET;
+      Addr.Sll_Protocol := 0;
+      Addr.Sll_Ifindex := Sock.Iface;--C.int(Ifr.Ifr_Ifru.Ifru_Ivalue); -- interface index.
+      Addr.Sll_Hatype := Linux_If_Arp_H.ARPHRD_ETHER;
+      Addr.Sll_Pkttype := Linux_if_Packet_H.PACKET_OTHERHOST;
+      Addr.sll_halen := Linux_If_Ether_H.ETH_ALEN;
+
+      Res := Sys_Socket.Sendto (C.Int (Sock.S),
+                                  Tbuff'Access,
+                                  C.Unsigned (2 * 6 + 2 + Length),
+                                  Sock.Iface,
+                                  Addr'access,
+                                  Addr'Size / 8);
+--        Free (Ifr);
+      if Res = -1 then
+         Put ("**** Failed ****: ");-- Put(Addr'Size);
+      end if;
+   end Transmit;
+end Raw_Socket;
