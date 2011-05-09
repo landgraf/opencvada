@@ -1,6 +1,7 @@
 package body Defero is
+--
 
--- Function for converting a generic type into a byte array.
+   -- Function for converting a generic type into a byte array.
    function To_Frame_Data (Buf           : T_Array;
                            Length        : Integer;
                            Header_Length : Integer := 0) return Frame_Data is
@@ -46,4 +47,73 @@ package body Defero is
       Temp_Bytes := To_Byte (Temp_Bytes_Array);
       return Temp_Bytes;
    end To_Frame_Data;
+
+   --
+   procedure Parse_Raw (Buf    : Frame_Data;
+                        Header : out Raw_Frame_Header;
+                        Data   : out Frame_Data) is
+      Data_Temp   : Frame_Data (0 .. Buf'Length - 15);
+      Header_Temp : Raw_Frame_Header;
+   begin
+      Header_Temp.Dest := Mac_Address (Buf (0 .. 5));
+      Header_Temp.Src := Mac_Address (Buf (6 .. 11));
+      Header_Temp.Id := Packet_Type_Id (Buf (12 .. 13));
+      Data_Temp := Frame_Data (Buf (14 .. Buf'Last));
+
+      Header := Header_Temp;
+      Data := Data_Temp;
+   end Parse_Raw;
+
+   -- Amount of Raw Ethernet frames needed to send Data
+   -- in bytes please
+   function Amount_Of_Frames (Data_Bytes           : Integer;
+                              Spec_Header_Size     : Integer;
+                              Constant_Header_Size : Integer;
+                              Frame_Size           : Integer := 1500) return Integer is
+      Max_Data_Per_Frame : Integer := Frame_Size - Constant_Header_Size;
+      Total_Data         : Integer := Data_Bytes + Spec_Header_Size;
+      Ret_Val            : Integer := 0;
+   begin
+      Ret_Val := Total_Data / Max_Data_Per_Frame;
+      if (Total_Data mod Max_Data_Per_Frame) > 0 then
+         Ret_Val := Ret_Val + 1;
+      end if;
+      return Ret_Val;
+   end Amount_Of_Frames;
+
+   -- Creates a raw frame
+   function Create_Raw_Frames (Data            : Frame_Data;
+                               Spec_Header     : Frame_Header := ((others => 0), Length => 0);
+                               Constant_Header : Frame_Header := ((others => 0), Length => 0);
+                               Frame_Size      : Integer := 1500) return Raw_Ethernet_Frame_Array is
+      Frames        : Raw_Ethernet_Frame_Array (0 .. Amount_Of_Frames (Data'Length, Spec_Header.Length, Constant_Header.Length) -1);
+      Spec_Set      : Boolean := False;
+      Next_Data     : Integer := 0;
+      Next_Pos      : Integer := 0;
+      Header_Length : Integer := 0;
+      Test_Val      : Integer;
+   begin
+      for I in Frames'Range loop
+         Next_Pos := 0;
+         Header_Length := 0;
+         Frames (I).Payload (Next_Pos .. Constant_Header.Length - 1) := Constant_Header.Data (0 .. Constant_Header.Length - 1);
+         Next_Pos := Constant_Header.Length;
+         Header_Length := Constant_Header.Length;
+         if not Spec_Set then
+            Frames (I).Payload (Next_Pos .. (Constant_Header.Length + Spec_Header.Length) - 1) := Spec_Header.Data (0 .. Spec_Header.Length - 1);
+            Next_Pos := Constant_Header.Length + Spec_Header.Length;
+            Header_Length := Header_Length + Spec_Header.Length;
+            Spec_Set := True;
+         end if;
+         if not (I = Frames'Length - 1) then
+            Test_Val := Next_Data - Header_Length + Frame_Size;
+            Frames (I).Payload (Next_Pos .. Frames (I).Payload'Last) := Data (Next_Data .. Test_Val - 1);
+            Next_Data := (Next_Data + (Frame_Size - Header_Length));
+         else
+            Frames (I).Payload (Next_Pos .. Next_Pos + Data'Last - Next_Data ) := Data (Next_Data .. Data'Last);
+            Next_Data := Data'Last + 1;
+         end if;
+      end loop;
+      return Frames;
+   end Create_Raw_Frames;
 end Defero;
