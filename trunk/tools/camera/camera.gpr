@@ -1,6 +1,6 @@
 project Camera is
 
-   for Source_Dirs use ("Source");
+   for Source_Dirs use ("Source", "Source\communication");
    for Object_Dir use "Build";
    for Exec_Dir use "Exec";
    --for Main use ("main.adb");
