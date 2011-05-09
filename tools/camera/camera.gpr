@@ -1,0 +1,21 @@
+project Camera is
+
+   for Source_Dirs use ("Source");
+   for Object_Dir use "Build";
+   for Exec_Dir use "Exec";
+   --for Main use ("main.adb");
+
+   for Languages use ("Ada", "C");
+   for Main use ("camera.adb");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnat05");
+      for Default_Switches ("c") use ("-IC:\MDH\master_thesis\opencvada\tools\camera\Include", "-LC:\MDH\master_thesis\opencvada\tools\camera\Lib", "-lwpcap");
+   end Compiler;
+
+   package Linker is
+      for Default_Switches ("c") use ("-IC:\MDH\master_thesis\opencvada\tools\camera\Include", "-LC:\MDH\master_thesis\opencvada\tools\camera\Lib", "-lwpcap");
+   end Linker;
+
+end Camera;
+
