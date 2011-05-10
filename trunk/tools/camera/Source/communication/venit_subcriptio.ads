@@ -1,5 +1,8 @@
 --
-package Venit_Subciptio is
+with Defero;
+use Defero;
+with Interfaces; use Interfaces;
+package Venit_Subcriptio is
 --
 
    -----------------------------------------------------------------------------
@@ -26,6 +29,7 @@ package Venit_Subciptio is
          Options : Header_Options;
          Data    : Header_Data;
       end record;
+
    for Constant_Header use
       record
          Version at 0 range 0 .. 3;
@@ -41,11 +45,21 @@ package Venit_Subciptio is
       end record;
    for Constant_Header'Size use 160;
 
-   --* Converts Constant_Header to defero Frame_Header
+   --* Converts Constant_Header to Frame_Header
    function To_Frame_Header (Src : Constant_Header) return Frame_Header;
 
-   --* Converts defero Frame_header to Constant_Header
+   --* Converts Frame_header to Constant_Header
    function To_Constant_Header (Src    : Frame_Data;
                                 Offset : Integer := 0) return Constant_Header;
 
-end Venit_Subciptio;
+   -----------------------------------------------------------------------------
+   -- Specific constant header creators
+   -----------------------------------------------------------------------------
+   function Ping (Version : Integer := 0;
+                  Ack     : Boolean := False;
+                  Req     : Boolean := True) return Constant_Header;
+--     function Handshake return Constant_Header;
+--     function Subscription return Constant_Header;
+--     function Data return Constant_Header;
+
+end Venit_Subcriptio;

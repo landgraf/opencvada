@@ -1,13 +1,10 @@
+with Ada.Text_IO; use Ada.Text_IO;
 package body Defero is
 --
 
    -- Function for converting a generic type into a byte array.
-   function To_Frame_Data (Buf           : T_Array;
-                           Length        : Integer;
-                           Header_Length : Integer := 0) return Frame_Data is
-      Frames           : Integer := ((T'Size * Length) / 8) / 1500 - Header_Length;
-      Rest             : Integer := ((T'Size * Length) / 8) mod 1500 - Header_Length;
-      Bits             : Integer := (T'Size * Length);
+   function To_Frame_Data (Buf : T_Array) return Frame_Data is
+      Bits : Integer := (T'Size * Buf'Length);
 
       type Bit is new Integer range 0 .. 1;
       for Bit'Size use 1;
@@ -47,6 +44,28 @@ package body Defero is
       Temp_Bytes := To_Byte (Temp_Bytes_Array);
       return Temp_Bytes;
    end To_Frame_Data;
+
+   function From_Frame_Data (Buf : Frame_Data) return T_Array is
+      Bits : Integer := (8 * Buf'Length);
+      type Bit is new Integer range 0 .. 1;
+      for Bit'Size use 1;
+      type Bit_Array is array (Integer range 0 .. Bits - 1) of Bit;
+      for Bit_Array'Component_Size use 1;
+
+      Temp : Bit_Array;
+      for Temp'Address use Buf'Address;
+      pragma Import (Ada, Temp);
+
+      type Fixed_Bit_Array is array (Integer range 0 .. Bits - 1) of Bit;
+      Temp_Fixed : Bit_Array := Temp;
+      for Temp_Fixed'Alignment use 4;
+      Dest : T_Array(0 .. (Bits/T'Size)-1);
+      for Dest'Address use Temp_Fixed'Address;
+      pragma Import (Ada, Dest);
+   begin
+      Put_Line(Dest'Length'Img);
+      return Dest;
+   end From_Frame_Data;
 
    --
    procedure Parse_Raw (Buf    : Frame_Data;
@@ -111,6 +130,12 @@ package body Defero is
             Next_Data := (Next_Data + (Frame_Size - Header_Length));
          else
             Frames (I).Payload (Next_Pos .. Next_Pos + Data'Last - Next_Data ) := Data (Next_Data .. Data'Last);
+            Frames (I).Length := 0;
+            if (Data'Last - Next_Data + Header_Length) >= 46 then
+               Frames (I).Length := Frames (I).Length + (Data'Last - Next_Data + Header_Length);
+            else
+               Frames (I).Length := Frames (I).Length + 46;
+            end if;
             Next_Data := Data'Last + 1;
          end if;
       end loop;
