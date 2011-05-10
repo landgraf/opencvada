@@ -1,0 +1,25 @@
+with "wpdpack_wpcap";
+
+project Ada_Wpd_Pack is
+
+   for Source_Dirs use ("Source");
+   for Object_Dir use "Build";
+   for Exec_Dir use "Exec";
+   for Languages use ("Ada");
+   --for Languages use ("Ada", "C");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-s", "-m");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatw.hkd", "-gnat05");
+      for Default_Switches ("c") use ("-I./WpdPack/Include", "-I./WpdPack/Include/pcap");
+   end Compiler;
+
+   for Library_Name use "Ada_Wpd_Pack";
+   for Library_Dir use "Lib";
+   for Library_Ali_Dir use "Build/Ali";
+   for Library_Version use "1.0";
+
+end Ada_Wpd_Pack;

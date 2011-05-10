@@ -1,0 +1,19 @@
+with "ada_wpd_pack";
+
+project Ada_Wpd_Pack_Sample is
+
+   for Source_Dirs use ("Source/Sample");
+   for Object_Dir use "Build";
+   for Exec_Dir use "Exec";
+   for Languages use ("Ada");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-s", "-m");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatw.hkd", "-gnat05");
+   end Compiler;
+
+   for Main use ("packet_sniffer.adb");
+end Ada_Wpd_Pack_Sample;
