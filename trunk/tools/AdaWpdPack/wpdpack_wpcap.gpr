@@ -1,0 +1,7 @@
+project wpdpack_wpcap is
+   for Externally_Built use "true";
+   for Source_Files use ();
+   for Library_Dir use "./WpdPack/Lib";
+   for Library_Name use "wpcap";
+   for Library_Kind use "static";
+end wpdpack_wpcap;
