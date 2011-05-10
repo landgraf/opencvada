@@ -47,9 +47,12 @@ package Defero is
    generic
       type T is private;
       type T_Array is array (Integer range <>) of T;
-   function To_Frame_Data (Buf           : T_Array;
-                           Length        : Integer;
-                           Header_Length : Integer := 0) return Frame_Data;
+   function To_Frame_Data (Buf : T_Array) return Frame_Data;
+
+   generic
+      type T is private;
+      type T_Array is array (Integer range <>) of T;
+   function From_Frame_Data (Buf : Frame_Data) return T_Array;
 
    -------------------------
    -- Raw Ethernet frame functions
