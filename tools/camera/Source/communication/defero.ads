@@ -97,4 +97,12 @@ private
                               Constant_Header_Size : Integer;
                               Frame_Size           : Integer := 1500) return Integer;
 
+
+
+   function To_Frame_Header (Src : Image_Header) return Frame_Header;
+
+   function To_Image_Header (Src    : Frame_Header;
+                             Offset : Integer := 0)
+                             return Image_Header;
+
 end Defero;

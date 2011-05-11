@@ -170,4 +170,26 @@ package body Defero is
    begin
       return Dest;
    end To_Constant_Header;
+
+
+
+   function To_Frame_Header (Src : Image_Header) return Frame_Header is
+      Dest : Frame_Header;
+      Temp : Frame_Data (0 .. 19);
+      for Temp'Address use Src'Address;
+   begin
+      Dest.Data := Temp;
+      Dest.Length := Image_Header_Size;
+      return Dest;
+   end To_Frame_Header;
+
+   function To_Image_Heaeder (Src    : Frame_Header;
+                              Offset : Integer := 0)
+                              return Image_Header is
+      Temp : Frame_Data (1 .. Image_Header_Size) := Src (Offset .. Offset + Image_Header_Size);
+      Dest : Image_Header;
+      for Dest'Address use Temp'Address;
+   begin
+      return Dest;
+   end To_Image_Header;
 end Defero;

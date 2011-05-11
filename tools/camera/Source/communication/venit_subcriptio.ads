@@ -8,8 +8,7 @@ package Venit_Subcriptio is
    -----------------------------------------------------------------------------
    subtype Header_Version is Unsigned_8 range 0 .. 15;
    subtype Header_Length is Unsigned_8 range 0 .. 15;
-   type Header_Bit is new Integer range 0 .. 1;
-   for Header_Bit'Size use 1;
+   subtype Header_Bit is Boolean;
    subtype Header_Flags is Unsigned_8 range 0 .. 15;
    subtype Header_Sequence is Unsigned_16;
    subtype Header_Options is Unsigned_8;
@@ -31,6 +30,21 @@ package Venit_Subcriptio is
    Const_Header_Min_Length : constant := 4;
    Const_Header_Opt_Length : constant := 1;
 
+   Image_Header_Size : constant := 5;
+   Matrix_Header_Size : constant := 6;
+   Array_Header_Size : constant := 6;
+   Config_Header_Size : constant := 5;
+   Memory_Header_Size : constant := 9;
+
+
+   Color_1_Bit  : constant Header_Color_Depth := 2#0000#; -- 1 bit B/W
+   Gray_8_Bit   : constant Header_Color_Depth := 2#0001#; -- 8 bit grayscale (8)
+   Color_8_Bit  : constant Header_Color_Depth := 2#0010#; -- 8 bit color (3, 3, 2)
+   Color_15_Bit : constant Header_Color_Depth := 2#0011#; -- 15 bit color (5, 5, 5)
+   Color_24_Bit : constant Header_Color_Depth := 2#0100#; -- 24 bit color (8, 8, 8)
+   Color_30_Bit : constant Header_Color_Depth := 2#0101#; -- 30 bit color (10, 10, 10)
+   Color_36_Bit : constant Header_Color_Depth := 2#0110#; -- 36 bit color (12, 12, 12)
+   Color_48_Bit : constant Header_Color_Depth := 2#0111#; -- 48 bit color (16, 16, 16)
 
    type Constant_Header is
       record
@@ -95,7 +109,12 @@ package Venit_Subcriptio is
 
    for Image_Header'Size use 40;
 
---     function To_Frame_Header (Src : Image_Header) return Frame_Header;
+   function Create_Image_Header (Cols   : Header_Columns;
+                                 Rows   : Header_Rows;
+                                 Depth  : Header_Color_Depth := Color_36_Bit;
+                                 Origin : Header_Bit := False;
+                                 Float  : Header_Bit := False)
+                                 return Image_Header;
 
    -----------------------------------------------------------------------------
    -- Matrix header
