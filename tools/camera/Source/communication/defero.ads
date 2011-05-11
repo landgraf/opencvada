@@ -101,7 +101,7 @@ private
 
    function To_Frame_Header (Src : Image_Header) return Frame_Header;
 
-   function To_Image_Header (Src    : Frame_Header;
+   function To_Image_Header (Src    : Frame_Data;
                              Offset : Integer := 0)
                              return Image_Header;
 
