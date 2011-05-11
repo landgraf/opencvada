@@ -79,9 +79,9 @@ package body Suo_Ut is
       Temp.Columns := Src.all.Width;
       Temp.Rows := Src.all.Height;
       Temp.Depth := 2#0110#;
-      Temp.Origin := Header_Bit(src.all.Origin);
-      Temp.Float := 2#0#;
-      Temp.Reserved := (others => 2#0#);
+      Temp.Origin := Boolean'Val(src.all.Origin);
+      Temp.Float := False;
+      Temp.Reserved := (others => False);
       return Temp;
    end Image_To_Header;
 end Suo_Ut;
