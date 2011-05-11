@@ -13,6 +13,7 @@ package Venit_Subcriptio is
    subtype Header_Sequence is Unsigned_16;
    subtype Header_Options is Unsigned_8;
    type Header_Data is array (Integer range 0 .. 14) of Unsigned_8;
+   Null_Header_Data : constant Header_Data := (others => 0);
 
    type Header_Reserved is array (Integer range <>) of Header_Bit;
    for Header_Reserved'Component_Size use 1;
@@ -75,6 +76,18 @@ package Venit_Subcriptio is
       end record;
 
    for Constant_Header'Size use 160;
+
+   function Create_Constant_Header (Version : Header_Version := 0;
+                                    Length  : Header_Length := 0;
+                                    Ack     : Header_Bit := False;
+                                    Nak     : Header_Bit := False;
+                                    Eof     : Header_Bit := False;
+                                    Req     : Header_Bit := False;
+                                    Flags   : Header_Flags := 2#0000#;
+                                    Seq_No  : Header_Sequence := 0;
+                                    Options : Header_Options := 0;
+                                    Data    : Header_Data := Null_Header_Data)
+                                    return Constant_Header;
 
    -----------------------------------------------------------------------------
    -- Specific constant header creators
@@ -141,6 +154,13 @@ package Venit_Subcriptio is
 
    for Matrix_Header'Size use 48;
 
+   function Create_Matrix_Header (Cols      : Header_Columns;
+                                  Rows      : Header_Rows;
+                                  Elem_Size : Header_Elem_Size;
+                                  Padding   : Header_Padding;
+                                  Float     : Header_Bit := False;
+                                  Signed    : Header_Bit := False)
+                                  return Matrix_Header;
    -----------------------------------------------------------------------------
    -- Array header
    -----------------------------------------------------------------------------
@@ -164,6 +184,13 @@ package Venit_Subcriptio is
 
    for Array_Header'Size use 48;
 
+   function Create_Array_Header (Elements  : Header_Elements;
+                                 Elem_Size : Header_Elem_Size;
+                                 Padding   : Header_Padding;
+                                 Float     : Header_Bit := False;
+                                 Signed    : Header_Bit := False)
+                                 return Array_Header;
+
    -----------------------------------------------------------------------------
    -- Configuration header
    -----------------------------------------------------------------------------
@@ -183,6 +210,11 @@ package Venit_Subcriptio is
 
    for Config_Header'Size use 40;
 
+   function Create_Config_Header (Reg_Count : Header_Reg_Count;
+                                  Reg_Size  : Header_Reg_Size;
+                                  Addr_Size : Header_Addr_Size)
+                                  return Config_Header;
+
    -----------------------------------------------------------------------------
    -- Memory header
    -----------------------------------------------------------------------------
@@ -199,4 +231,8 @@ package Venit_Subcriptio is
    end record;
 
    for Memory_Header'Size use 72;
+
+   function Create_Memory_Header (Start_Addr : Header_Mem_Addr;
+                                  End_Addr   : Header_Mem_Addr)
+                                  return Memory_Header;
 end Venit_Subcriptio;
