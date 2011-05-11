@@ -10,13 +10,14 @@ package Venit_Subcriptio is
    -----------------------------------------------------------------------------
    subtype Header_Version is Unsigned_8 range 0 .. 15;
    subtype Header_Length is Unsigned_8 range 0 .. 15;
-   subtype Header_Bit is Integer range 0 .. 1;
+   type Header_Bit is new Integer range 0 .. 1;
+   for Header_Bit'Size use 1;
    subtype Header_Flags is Unsigned_8 range 0 .. 15;
    subtype Header_Sequence is Unsigned_16;
    subtype Header_Options is Unsigned_8;
    type Header_Data is array (Integer range 0 .. 14) of Unsigned_8;
 
-   subtype Header_Reserved is Integer;
+   type Header_Reserved is array (Integer range <>) of Header_Bit;
    subtype Header_Columns is Integer range 0 .. 4095;
    subtype Header_Rows is Integer range 0 .. 4095;
    subtype Header_Color_Depth is Integer range 0 .. 15;
@@ -79,7 +80,6 @@ package Venit_Subcriptio is
 --     function Subscription return Constant_Header;
 --     function Data return Constant_Header;
 
-end Venit_Subcriptio;
    -----------------------------------------------------------------------------
    -- Image header
    -----------------------------------------------------------------------------
@@ -89,7 +89,7 @@ end Venit_Subcriptio;
       Depth    : Header_Color_Depth;
       Origin   : Header_Bit;
       Float    : Header_Bit;
-      Reserved : Header_Reserved;
+      Reserved : Header_Reserved (1 .. 10);
    end record;
 
    for Image_Header use record
@@ -103,6 +103,8 @@ end Venit_Subcriptio;
 
    for Image_Header'Size use 40;
 
+   function To_Frame_Header (Src : Image_Header) return Frame_Header;
+
    -----------------------------------------------------------------------------
    -- Matrix header
    -----------------------------------------------------------------------------
@@ -111,7 +113,7 @@ end Venit_Subcriptio;
       Rows      : Header_Rows;
       Float     : Header_Bit;
       Signed    : Header_Bit;
-      Reserved  : Header_Reserved;
+      Reserved  : Header_Reserved (1 .. 6);
       Elem_Size : Header_Elem_Size;
       Padding   : Header_Padding;
    end record;
@@ -135,7 +137,7 @@ end Venit_Subcriptio;
       Elements  : Header_Elements;
       Float     : Header_Bit;
       Signed    : Header_Bit;
-      Reserved  : Header_Reserved;
+      Reserved  : Header_Reserved (1 .. 6);
       Elem_Size : Header_Elem_Size;
       Padding   : Header_Padding;
    end record;
@@ -158,7 +160,7 @@ end Venit_Subcriptio;
       Reg_Count : Header_Reg_Count;
       Reg_Size  : Header_Reg_Size;
       Addr_Size : Header_Addr_Size;
-      Reserved  : Header_Reserved;
+      Reserved  : Header_Reserved (1 .. 8);
    end record;
 
    for Config_Header use record
@@ -176,7 +178,7 @@ end Venit_Subcriptio;
    type Memory_Header is record
       Start_Addr : Header_Mem_Addr;
       End_Addr   : Header_Mem_Addr;
-      Reserved   : Header_Reserved;
+      Reserved   : Header_Reserved (1 .. 8);
    end record;
 
    for Memory_Header use record
@@ -186,4 +188,4 @@ end Venit_Subcriptio;
    end record;
 
    for Memory_Header'Size use 72;
-end Venit_Subciptio;
+end Venit_Subcriptio;
