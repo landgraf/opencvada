@@ -89,6 +89,23 @@ package Defero is
    --* Converts Frame_header to Constant_Header
    function To_Constant_Header (Src    : Frame_Data;
                                 Offset : Integer := 0) return Constant_Header;
+
+--     function To_Frame_Header (Src : Image_Header) return Frame_Header;
+
+   function To_Image_Header (Src    : Frame_Data;
+                             Offset : Integer := 0)
+                             return Image_Header;
+
+
+   --* Source_T : type that is copied from
+   --* Destination_T : type that will contain all bytes from source_T
+   --* Copies all bytes from Source_T to Destination_T
+   generic
+      type Source_T is private;
+      type Destination_T is private;
+   function Generic_To_Generic (Source : Source_T;
+                                Length : Integer := Source_T'Size / 8) return Destination_T;
+
 private
 
    --* Amount of Raw Ethernet frames needed to send Data
@@ -96,13 +113,5 @@ private
                               Spec_Header_Size     : Integer;
                               Constant_Header_Size : Integer;
                               Frame_Size           : Integer := 1500) return Integer;
-
-
-
-   function To_Frame_Header (Src : Image_Header) return Frame_Header;
-
-   function To_Image_Header (Src    : Frame_Data;
-                             Offset : Integer := 0)
-                             return Image_Header;
 
 end Defero;

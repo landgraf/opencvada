@@ -118,7 +118,6 @@ package body Defero is
          Next_Pos := 0;
          Header_Length := 0;
          C_Head.Seq_No := Unsigned_16 (I);
-         Put_Line(C_Head.Seq_No'Img);
          Frames (I).Payload (Next_Pos .. To_Frame_Header (C_Head).Length - 1) := To_Frame_Header (C_Head).Data (0 .. To_Frame_Header (C_Head).Length - 1);
          Next_Pos := To_Frame_Header (C_Head).Length;
          Header_Length := To_Frame_Header (C_Head).Length;
@@ -192,4 +191,38 @@ package body Defero is
    begin
       return Dest;
    end To_Image_Header;
+
+   --
+   --
+   -- used for converting headers
+   function Generic_To_Generic (Source : Source_T;
+                                Length : Integer := Source_T'Size / 8) return Destination_T is
+      Temp_Source : Frame_Data (0 .. Length - 1);
+      for Temp_Source'Address use Source'Address;
+      Temp_Dest   : Frame_Data (0 .. (Destination_T'Size / 8) -1) := (others => 2#0000_0000#);
+      Destination : Destination_T;
+      for Destination'Address use Temp_Dest'Address;
+      pragma Import(Ada,Destination);
+   begin
+      if (Destination_T'Size / 8) >= Length then
+         for I in Integer range 0 .. Length - 1 loop
+            Temp_Dest (I) := Temp_Source (I);
+            Put_Line(I'Img & Temp_Dest (I)'img & Temp_Source (I)'img);
+         end loop;
+      end if;
+
+      if ((Destination_T'Size / 8) - (32 / 8)) >= Length and Destination_T'Size = Frame_Header'Size then
+         declare
+            Length_Bytes : Frame_Data (0 .. 3);
+            for Length_Bytes'Address use Length'Address;
+            Counter      : Integer := 0;
+         begin
+            for I in Integer range (Destination_T'Size / 8) - 4 .. ((Destination_T'Size / 8) - 1) loop
+               Temp_Dest (I) := Length_Bytes (Counter);
+               Counter := Counter + 1;
+            end loop;
+         end;
+      end if;
+      return Destination;
+   end Generic_To_Generic;
 end Defero;
