@@ -6,7 +6,7 @@ project Camera is
    for Exec_Dir use "Exec";
    --for Main use ("main.adb");
 
-   for Languages use ("Ada", "C");
+   for Languages use ("Ada");
    for Main use ("camera.adb");
 
    package Compiler is
