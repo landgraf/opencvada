@@ -1,4 +1,4 @@
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_Io; use Ada.Text_Io;
 package body Defero is
 --
 
@@ -59,11 +59,11 @@ package body Defero is
       type Fixed_Bit_Array is array (Integer range 0 .. Bits - 1) of Bit;
       Temp_Fixed : Bit_Array := Temp;
       for Temp_Fixed'Alignment use 4;
-      Dest : T_Array(0 .. (Bits/T'Size)-1);
+      Dest : T_Array (0 .. (Bits / T'Size)-1);
       for Dest'Address use Temp_Fixed'Address;
       pragma Import (Ada, Dest);
    begin
-      Put_Line(Dest'Length'Img);
+      Put_Line (Dest'Length'Img);
       return Dest;
    end From_Frame_Data;
 
@@ -103,24 +103,28 @@ package body Defero is
    -- Creates a raw frame
    function Create_Raw_Frames (Data            : Frame_Data;
                                Spec_Header     : Frame_Header := ((others => 0), Length => 0);
-                               Constant_Header : Frame_Header := ((others => 0), Length => 0);
+                               Constant_Head   : Constant_Header;
                                Frame_Size      : Integer := 1500) return Raw_Ethernet_Frame_Array is
-      Frames        : Raw_Ethernet_Frame_Array (0 .. Amount_Of_Frames (Data'Length, Spec_Header.Length, Constant_Header.Length) -1);
+      Frames        : Raw_Ethernet_Frame_Array (0 .. Amount_Of_Frames (Data'Length, Spec_Header.Length, To_Frame_Header (Constant_Head).Length) -1);
       Spec_Set      : Boolean := False;
       Next_Data     : Integer := 0;
       Next_Pos      : Integer := 0;
       Header_Length : Integer := 0;
       Test_Val      : Integer;
+
+      C_Head        : Constant_Header := Constant_Head;
    begin
       for I in Frames'Range loop
          Next_Pos := 0;
          Header_Length := 0;
-         Frames (I).Payload (Next_Pos .. Constant_Header.Length - 1) := Constant_Header.Data (0 .. Constant_Header.Length - 1);
-         Next_Pos := Constant_Header.Length;
-         Header_Length := Constant_Header.Length;
+         C_Head.Seq_No := Unsigned_16 (I);
+         Put_Line(C_Head.Seq_No'Img);
+         Frames (I).Payload (Next_Pos .. To_Frame_Header (C_Head).Length - 1) := To_Frame_Header (C_Head).Data (0 .. To_Frame_Header (C_Head).Length - 1);
+         Next_Pos := To_Frame_Header (C_Head).Length;
+         Header_Length := To_Frame_Header (C_Head).Length;
          if not Spec_Set then
-            Frames (I).Payload (Next_Pos .. (Constant_Header.Length + Spec_Header.Length) - 1) := Spec_Header.Data (0 .. Spec_Header.Length - 1);
-            Next_Pos := Constant_Header.Length + Spec_Header.Length;
+            Frames (I).Payload (Next_Pos .. (Header_Length + Spec_Header.Length) - 1) := Spec_Header.Data (0 .. Spec_Header.Length - 1);
+            Next_Pos := Header_Length + Spec_Header.Length;
             Header_Length := Header_Length + Spec_Header.Length;
             Spec_Set := True;
          end if;
@@ -141,4 +145,29 @@ package body Defero is
       end loop;
       return Frames;
    end Create_Raw_Frames;
+
+   --
+   -- Converts Constant_Header to defero Frame_Header
+   function To_Frame_Header (Src : Constant_Header) return Frame_Header is
+      Dest : Frame_Header;
+      Temp : Frame_Data (0 .. 19);
+      for Temp'Address use Src'Address;
+   begin
+      Dest.Data := Temp;
+      Dest.Length := Integer (Src.Length) + Const_Header_Min_Length;
+      if Src.Flags = 2#1111# or Src.Flags = 2#0101# then
+         Dest.Length := Dest.Length + Const_Header_Opt_Length;
+      end if;
+      return Dest;
+   end To_Frame_Header;
+
+   -- Converts defero Frame_header to Constant_Header
+   function To_Constant_Header (Src    : Frame_Data;
+                                Offset : Integer := 0) return Constant_Header is
+      Src_Temp : Frame_Data (0 .. 19) := Src (Offset .. Offset + 19);
+      Dest     : Constant_Header;
+      for Dest'Address use Src_Temp'Address;
+   begin
+      return Dest;
+   end To_Constant_Header;
 end Defero;
