@@ -76,7 +76,12 @@ package body Suo_Ut is
    function Image_To_Header (Src : Ipl_Image_Ptr) return Image_Header is
       Temp : Image_Header;
    begin
-      Temp.Columns := 500;
+      Temp.Columns := Src.all.Width;
+      Temp.Rows := Src.all.Height;
+      Temp.Depth := 2#0110#;
+      Temp.Origin := Header_Bit(src.all.Origin);
+      Temp.Float := 2#0#;
+      Temp.Reserved := (others => 2#0#);
       return Temp;
    end Image_To_Header;
 end Suo_Ut;

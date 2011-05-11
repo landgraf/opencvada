@@ -8,10 +8,14 @@ package body Venit_Subcriptio is
       Temp : Constant_Header;
    begin
       Temp.Version := Header_Version (Version);
+      Temp.Length := 2#0000#;
       Temp.Ack := Boolean'Pos (Ack);
+      Temp.Nak := 2#0#;
       Temp.Req := Boolean'Pos (Req);
       Temp.Eof := 1;
       Temp.Flags := 2#0001#;
+      Temp.Options := 2#0000_0000#;
+      Temp.Data := (others => 2#0000_0000#);
       return Temp;
    end Ping;
 
