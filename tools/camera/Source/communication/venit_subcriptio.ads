@@ -1,6 +1,4 @@
 --
-with Defero;
-use Defero;
 with Interfaces; use Interfaces;
 package Venit_Subcriptio is
 --
@@ -18,6 +16,7 @@ package Venit_Subcriptio is
    type Header_Data is array (Integer range 0 .. 14) of Unsigned_8;
 
    type Header_Reserved is array (Integer range <>) of Header_Bit;
+   for Header_Reserved'Component_Size use 1;
    subtype Header_Columns is Integer range 0 .. 4095;
    subtype Header_Rows is Integer range 0 .. 4095;
    subtype Header_Color_Depth is Integer range 0 .. 15;
@@ -30,7 +29,7 @@ package Venit_Subcriptio is
    subtype Header_Mem_Addr is Integer;
 
    Const_Header_Min_Length : constant := 4;
-   Const_Header_Opt_Lenght : constant := 1;
+   Const_Header_Opt_Length : constant := 1;
 
 
    type Constant_Header is
@@ -62,13 +61,6 @@ package Venit_Subcriptio is
       end record;
 
    for Constant_Header'Size use 160;
-
-   --* Converts Constant_Header to Frame_Header
-   function To_Frame_Header (Src : Constant_Header) return Frame_Header;
-
-   --* Converts Frame_header to Constant_Header
-   function To_Constant_Header (Src    : Frame_Data;
-                                Offset : Integer := 0) return Constant_Header;
 
    -----------------------------------------------------------------------------
    -- Specific constant header creators
@@ -103,7 +95,7 @@ package Venit_Subcriptio is
 
    for Image_Header'Size use 40;
 
-   function To_Frame_Header (Src : Image_Header) return Frame_Header;
+--     function To_Frame_Header (Src : Image_Header) return Frame_Header;
 
    -----------------------------------------------------------------------------
    -- Matrix header

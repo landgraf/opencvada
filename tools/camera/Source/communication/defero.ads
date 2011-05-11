@@ -4,7 +4,8 @@
 --
 --
 with Interfaces; use Interfaces;
-
+with Venit_Subcriptio;
+use Venit_Subcriptio;
 -- Communication package Defero
 package Defero is
 --
@@ -74,10 +75,20 @@ package Defero is
       end record;
 
    --* Creates a series of Raw Ethernet frames from a frame_data structure
-   function Create_Raw_Frames (Data            : Frame_Data;
-                               Spec_Header     : Frame_Header := ((others => 0), Length => 0);
-                               Constant_Header : Frame_Header := ((others => 0), Length => 0);
-                               Frame_Size      : Integer := 1500) return Raw_Ethernet_Frame_Array;
+   function Create_Raw_Frames (Data                 : Frame_Data;
+                               Spec_Header          : Frame_Header := ((others => 0), Length => 0);
+                               Constant_Head        : Constant_Header;
+                               Frame_Size           : Integer := 1500) return Raw_Ethernet_Frame_Array;
+
+   -----------------------------------------------------------------------------
+   --
+   -----------------------------------------------------------------------------
+      --* Converts Constant_Header to Frame_Header
+   function To_Frame_Header (Src : Constant_Header) return Frame_Header;
+
+   --* Converts Frame_header to Constant_Header
+   function To_Constant_Header (Src    : Frame_Data;
+                                Offset : Integer := 0) return Constant_Header;
 private
 
    --* Amount of Raw Ethernet frames needed to send Data
