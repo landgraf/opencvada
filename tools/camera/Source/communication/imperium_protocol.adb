@@ -1,5 +1,5 @@
 --
-package body Venit_Subcriptio is
+package body Imperium_Protocol is
 --
    --- Creates a ping constant header
    function Ping (Version : Integer := 0;
@@ -127,4 +127,4 @@ package body Venit_Subcriptio is
 
       return Header;
    end Create_Constant_Header;
-end Venit_Subcriptio;
+end Imperium_Protocol;
