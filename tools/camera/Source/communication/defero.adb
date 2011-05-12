@@ -63,7 +63,6 @@ package body Defero is
       for Dest'Address use Temp_Fixed'Address;
       pragma Import (Ada, Dest);
    begin
-      Put_Line (Dest'Length'Img);
       return Dest;
    end From_Frame_Data;
 
@@ -208,7 +207,6 @@ package body Defero is
       if (Destination_T'Size / 8) >= Length then
          for I in Integer range 0 .. Length - 1 loop
             Temp_Dest (I) := Temp_Source (I);
-            Put_Line(I'Img & Temp_Dest (I)'img & Temp_Source (I)'img);
          end loop;
       end if;
 
