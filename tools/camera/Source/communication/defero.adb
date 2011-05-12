@@ -197,6 +197,7 @@ package body Defero is
    -- used for converting headers
    function Generic_To_Generic (Source : Source_T;
                                 Length : Integer := Source_T'Size / 8) return Destination_T is
+      Size : constant integer := Destination_T'Size;
       Temp_Source : Frame_Data (0 .. Length - 1);
       for Temp_Source'Address use Source'Address;
       Temp_Dest   : Frame_Data (0 .. (Destination_T'Size / 8) -1) := (others => 2#0000_0000#);
