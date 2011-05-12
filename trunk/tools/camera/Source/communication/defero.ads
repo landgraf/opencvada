@@ -105,7 +105,6 @@ package Defero is
       type Destination_T is private;
    function Generic_To_Generic (Source : Source_T;
                                 Length : Integer := Source_T'Size / 8) return Destination_T;
-
 private
 
    --* Amount of Raw Ethernet frames needed to send Data

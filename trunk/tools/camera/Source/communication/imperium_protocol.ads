@@ -26,7 +26,10 @@ package Venit_Subcriptio is
    subtype Header_Reg_Count is Integer range 0 .. 65535;
    subtype Header_Reg_Size is Integer range 0 .. 255;
    subtype Header_Addr_Size is Integer range 0 .. 255;
-   subtype Header_Mem_Addr is Integer;
+   type Header_Mem_Addr is array (Integer range 0 .. 0) of Integer;
+   for Header_Mem_Addr'Component_Size use 32;
+   for Header_Mem_Addr'Size use 32;
+
 
    Const_Header_Min_Length : constant := 4;
    Const_Header_Opt_Length : constant := 1;
@@ -76,6 +79,7 @@ package Venit_Subcriptio is
       end record;
 
    for Constant_Header'Size use 160;
+   for Constant_Header'Alignment use 1;
 
    function Create_Constant_Header (Version : Header_Version := 0;
                                     Length  : Header_Length := 0;
@@ -121,6 +125,7 @@ package Venit_Subcriptio is
    end record;
 
    for Image_Header'Size use 40;
+   for Image_Header'Alignment use 1;
 
    function Create_Image_Header (Cols   : Header_Columns;
                                  Rows   : Header_Rows;
@@ -153,6 +158,7 @@ package Venit_Subcriptio is
    end record;
 
    for Matrix_Header'Size use 48;
+   for Matrix_Header'Alignment use 1;
 
    function Create_Matrix_Header (Cols      : Header_Columns;
                                   Rows      : Header_Rows;
@@ -183,6 +189,7 @@ package Venit_Subcriptio is
    end record;
 
    for Array_Header'Size use 48;
+   for Array_Header'Alignment use 1;
 
    function Create_Array_Header (Elements  : Header_Elements;
                                  Elem_Size : Header_Elem_Size;
@@ -209,6 +216,7 @@ package Venit_Subcriptio is
    end record;
 
    for Config_Header'Size use 40;
+   for Config_Header'Alignment use 1;
 
    function Create_Config_Header (Reg_Count : Header_Reg_Count;
                                   Reg_Size  : Header_Reg_Size;
@@ -221,7 +229,7 @@ package Venit_Subcriptio is
    type Memory_Header is record
       Start_Addr : Header_Mem_Addr;
       End_Addr   : Header_Mem_Addr;
-      Reserved   : Header_Reserved (1 .. 8);
+      Reserved   : Header_Reserved (0 .. 7);
    end record;
 
    for Memory_Header use record
@@ -229,8 +237,8 @@ package Venit_Subcriptio is
       End_Addr at 0 range 32 .. 63;
       Reserved at 0 range 64 .. 71;
    end record;
-
    for Memory_Header'Size use 72;
+   for Memory_Header'Alignment use 1;
 
    function Create_Memory_Header (Start_Addr : Header_Mem_Addr;
                                   End_Addr   : Header_Mem_Addr)
