@@ -6,9 +6,6 @@ with Imperium_Protocol; use Imperium_Protocol;
 package Imperator_Verto is
 --
 
-   function To_Test is
-     new Generic_To_Generic (Image_Header, Frame_Header);
-
    function Array_To_Frame_Header is
      new Generic_To_Generic (Array_Header, Frame_Header);
    function Config_To_Frame_Header is

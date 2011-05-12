@@ -4,13 +4,12 @@ with Interfaces; use Interfaces;
 with Ada.Unchecked_Conversion;
 with Ada.Text_Io; use Ada.Text_Io;
 with Defero; use Defero;
-with Venit_Subcriptio;
-use Venit_Subcriptio;
-with Suo_Ut;
-use Suo_Ut;
+with Imperium_Protocol; use Imperium_Protocol;
+with Suo_Ut; use Suo_Ut;
 with Core;
 with Core.Operations;
 with Highgui;
+with Imperator_Verto; use Imperator_Verto;
 procedure Camera is
 
    type Mongo is new Integer range 0 .. 127;
@@ -46,8 +45,8 @@ procedure Camera is
    Spec_Header : Frame_Header := To_Frame_Header (Image_To_Header (Image));
 
 begin
-   Put_Line (Spec_Header.Length'Img);
-   Spec_Header.Length := 5;
+--     Put_Line (Spec_Header.Length'Img);
+--     Spec_Header.Length := 5;
    declare
       Raws : Raw_Ethernet_Frame_Array := Create_Raw_Frames (Image_Data,  To_Frame_Header (Image_To_Header (Image)), Ping);
    begin
