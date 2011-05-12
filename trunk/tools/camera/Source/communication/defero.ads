@@ -4,8 +4,8 @@
 --
 --
 with Interfaces; use Interfaces;
-with Venit_Subcriptio;
-use Venit_Subcriptio;
+with Imperium_Protocol;
+use Imperium_Protocol;
 -- Communication package Defero
 package Defero is
 --

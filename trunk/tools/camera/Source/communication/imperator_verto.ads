@@ -2,7 +2,7 @@
 --
 --
 with Defero; use Defero;
-with Venit_Subcriptio; use Venit_Subcriptio;
+with Imperium_Protocol; use Imperium_Protocol;
 package Imperator_Verto is
 --
 

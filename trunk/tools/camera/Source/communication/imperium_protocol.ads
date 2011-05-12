@@ -1,6 +1,6 @@
 --
 with Interfaces; use Interfaces;
-package Venit_Subcriptio is
+package Imperium_Protocol is
 --
 
    -----------------------------------------------------------------------------
@@ -243,4 +243,4 @@ package Venit_Subcriptio is
    function Create_Memory_Header (Start_Addr : Header_Mem_Addr;
                                   End_Addr   : Header_Mem_Addr)
                                   return Memory_Header;
-end Venit_Subcriptio;
+end Imperium_Protocol;
