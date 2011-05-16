@@ -1,4 +1,5 @@
 with Ada.Text_Io; use Ada.Text_Io;
+with Imperator_Verto;
 package body Defero is
 --
 
@@ -191,37 +192,36 @@ package body Defero is
       return Dest;
    end To_Image_Header;
 
-   --
-   --
-   -- used for converting headers
-   function Generic_To_Generic (Source : Source_T;
-                                Length : Integer := Source_T'Size / 8) return Destination_T is
-      Size : constant integer := Destination_T'Size;
-      Temp_Source : Frame_Data (0 .. Length - 1);
-      for Temp_Source'Address use Source'Address;
-      Temp_Dest   : Frame_Data (0 .. (Destination_T'Size / 8) -1) := (others => 2#0000_0000#);
-      Destination : Destination_T;
-      for Destination'Address use Temp_Dest'Address;
-      pragma Import(Ada,Destination);
-   begin
-      if (Destination_T'Size / 8) >= Length then
-         for I in Integer range 0 .. Length - 1 loop
-            Temp_Dest (I) := Temp_Source (I);
-         end loop;
-      end if;
 
-      if ((Destination_T'Size / 8) - (32 / 8)) >= Length and Destination_T'Size = Frame_Header'Size then
+
+   function From_Raw_Frame (Src : Raw_Ethernet_Frame) return Disctribuebantur_Raw_Frame is
+      Temp : Disctribuebantur_Raw_Frame;
+      Length : Integer := 5;
+   begin
+      Temp.Raw_Frame := Src;
+
+      if Temp.Raw_Frame.Length >= Length then
+         --get constant header
+         Length := Length + Integer (Src.Payload (Src.Payload'First + 1));
+         if not (temp.Raw_Frame.Length >= Length) then
+            goto Is_Not_A_Frame;
+         end if;
+         -- create constant header
          declare
-            Length_Bytes : Frame_Data (0 .. 3);
-            for Length_Bytes'Address use Length'Address;
-            Counter      : Integer := 0;
+            Temp_Header : Frame_Header;
          begin
-            for I in Integer range (Destination_T'Size / 8) - 4 .. ((Destination_T'Size / 8) - 1) loop
-               Temp_Dest (I) := Length_Bytes (Counter);
-               Counter := Counter + 1;
+            Temp_Header.Length := Length;
+            for I in Integer range 0 .. Length loop
+               Temp_Header.Data (I) := Src.Payload (Src.Payload'First + I);
             end loop;
+            Temp.Constant_Head := Frame_To_Constant_Header(Temp_Header);
          end;
+      else
+         goto Is_Not_A_Frame;
       end if;
-      return Destination;
-   end Generic_To_Generic;
+      -- not a real frame
+      << Is_Not_A_Frame >>
+      Temp.Type_Of_Frame := Not_A_Frame;
+      return Temp;
+   end From_Raw_Frame;
 end Defero;
