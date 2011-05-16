@@ -193,17 +193,21 @@ package body Raw_Frame_Toolkit is
    end To_Image_Header;
 
 
-
-   function From_Raw_Frame (Src : Raw_Ethernet_Frame) return Disctribuebantur_Raw_Frame is
-      Temp : Disctribuebantur_Raw_Frame;
+-- converts a raw_ethernet_frame to a parsed one with more information
+   function From_Raw_Frame (Src : Raw_Ethernet_Frame) return Parsed_Raw_Frame is
+      Temp : Parsed_Raw_Frame;
       Length : Integer := 5;
    begin
       Temp.Raw_Frame := Src;
 
       if Temp.Raw_Frame.Length >= Length then
          --get constant header
-         Length := Length + Integer (Src.Payload (Src.Payload'First + 1));
-         if not (temp.Raw_Frame.Length >= Length) then
+         declare
+            Temp_Length : Integer := Integer(shift_Right (Src.Payload (Src.Payload'First + 0), 4));
+         begin
+            Length := Length + Temp_Length;
+         end;
+         if not (Temp.Raw_Frame.Length >= Length) then
             goto Is_Not_A_Frame;
          end if;
          -- create constant header
@@ -211,11 +215,74 @@ package body Raw_Frame_Toolkit is
             Temp_Header : Frame_Header;
          begin
             Temp_Header.Length := Length;
-            for I in Integer range 0 .. Length loop
-               Temp_Header.Data (I) := Src.Payload (Src.Payload'First + I);
+            for I in Integer range 0 .. Length - 1 loop
+               Temp_Header.Data (I) := 1;--src.Payload (Src.Payload'First + I);
             end loop;
             Temp.Constant_Head := Frame_To_Constant_Header(Temp_Header);
          end;
+         -- what type of frame do we have?
+         case (temp.Constant_Head.Flags) is
+            --(Array_Frame, Config_Frame, Image_Frame, Matrix_Frame, Memory_Frame, Control_Frame, Other, Not_A_Frame);
+            when 2#0000# =>
+               -- undefined /at this stage at least
+               Temp.Type_Of_Frame := Other;
+            when 2#0001# | 2#0011# | 2#0100# =>
+               -- control frames
+               Temp.Type_Of_Frame := Control_Frame;
+            when 2#0010# =>
+               -- config frame
+               Temp.Type_Of_Frame := Config_Frame;
+            when 2#0101# =>
+               -- data frame *find out more*
+               declare
+                  Temp_Option : Unsigned_8 := 2#0000_0000#;
+               begin
+                  Temp_Option := Shift_Left (Temp.Constant_Head.Options, 2);
+                  Temp_Option := Shift_Right (Temp_Option, 2);
+                  case Temp_Option is
+                     when 2#000_00000# =>
+                        --image
+                        Temp.Type_Of_Frame := Image_Frame;
+                     when 2#0000_0001# .. 2#0000_1111# =>
+                        -- matrix
+                        Temp.Type_Of_Frame := Matrix_Frame;
+                     when 2#0001_0000# .. 2#0001_1111# =>
+                        -- array
+                        Temp.Type_Of_Frame := Array_Frame;
+                     when others =>
+                        goto Is_Not_A_Frame;
+                  end case;
+               end;
+            when 2#0110# =>
+               -- memory frame
+               Temp.Type_Of_Frame := Memory_Frame;
+            when 2#1111# =>
+               Temp.Type_Of_Frame := Other;
+               -- could look at option here to find out what we are doing.
+            when others =>
+               -- if we get here add your own case!
+               -- or we are parsing something else as our frame that will be bad!
+               goto Is_Not_A_Frame;
+         end case;
+         -- we know know the frame type check for specification header
+         if Temp.Constant_Head.Seq_No = 0 then
+            -- we have a specification header!
+            if not (Size_Of_Headers (Temp.Type_Of_Frame) = 0) then
+               -- we have a spec header!
+               Temp.Spec_Header.Length := Size_Of_Headers (Temp.Type_Of_Frame); -- set length
+               Temp.Spec_Header.Data (0 .. Temp.Spec_Header.Length) := Temp.Raw_Frame.Payload (Temp.Raw_Frame.Payload'First + Length .. (Temp.Raw_Frame.Payload'First + Temp.Spec_Header.Length + Length) -1);
+               Temp.Payload_Start := (Temp.Raw_Frame.Payload'First + Temp.Spec_Header.Length + Length);
+            elsif (Size_Of_Headers (Temp.Type_Of_Frame) = -1) then
+               goto Is_Not_A_Frame;
+            else
+               -- no spec header for this type
+               null;
+            end if;
+         else
+            Temp.Payload_Start := Length; -- should be after the constant header...
+         end if;
+         --           We Are Done Now
+         return Temp;
       else
          goto Is_Not_A_Frame;
       end if;

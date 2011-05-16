@@ -69,10 +69,8 @@ package Raw_Frame_Toolkit is
                                Constant_Head        : Constant_Header;
                                Frame_Size           : Integer := 1500) return Raw_Ethernet_Frame_Array;
 
-   type Spec_Frames_List is (Array_Frame, Config_Frame, Image_Frame, Matrix_Frame, Memory_Frame, Control_Frame, Other, Not_A_Frame);
-
    --
-   type Disctribuebantur_Raw_Frame is
+   type Parsed_Raw_Frame is
       record
          Constant_Head : Constant_Header;
          Type_Of_Frame : Spec_Frames_List;
@@ -81,7 +79,7 @@ package Raw_Frame_Toolkit is
          Raw_Frame     : Raw_Ethernet_Frame;
       end record;
 
-   function From_Raw_Frame (Src : Raw_Ethernet_Frame) return Disctribuebantur_Raw_Frame;
+   function From_Raw_Frame (Src : Raw_Ethernet_Frame) return Parsed_Raw_Frame;
 
    -----------------------------------------------------------------------------
    --
