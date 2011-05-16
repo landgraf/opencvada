@@ -19,6 +19,13 @@ package Imperium_Protocol is
       end record;
 
    -----------------------------------------------------------------------------
+   -- Headers, sizes and things
+   -----------------------------------------------------------------------------
+   type Spec_Frames_List is (Array_Frame, Config_Frame, Image_Frame, Matrix_Frame, Memory_Frame, Control_Frame, Other, Not_A_Frame);
+   -- change me, if you change something!
+   Size_Of_Headers : array (Spec_Frames_List'Range) of Integer := (6,5,5,6,9,0,0,-1);
+
+   -----------------------------------------------------------------------------
    -- Constant header
    -----------------------------------------------------------------------------
    subtype Header_Version is Unsigned_8 range 0 .. 15;

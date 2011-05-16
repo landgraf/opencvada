@@ -43,12 +43,12 @@ procedure Camera is
    Image_Data : Frame_Data := Opencvada_Camera_Api.Image_To_Byte (Image);
    Re_Image : aliased Core.Ipl_Image_Ptr := Byte_To_Image (Image_Data, 1280, 1024);
    Spec_Header : Frame_Header := To_Frame_Header (Image_To_Header (Image));
-
 begin
 --     Put_Line (Spec_Header.Length'Img);
 --     Spec_Header.Length := 5;
    declare
       Raws : Raw_Ethernet_Frame_Array := Create_Raw_Frames (Image_Data,  To_Frame_Header (Image_To_Header (Image)), Ping);
+      Parsed_Frame : Parsed_Raw_Frame :=    From_Raw_Frame (Raws (Raws'First));
    begin
       --     Put_Line ("frames: " & Amount_Of_Frames (Payload'Length, 8, 5)'img & Raws'Length'Img);
       Create (File, Out_File, "test.csv");
@@ -73,5 +73,7 @@ begin
       Core.Operations.Cv_Release_Image (Image'Access);
       Core.Operations.Cv_Release_Image (Re_Image'Access);
    end;
+
+
 
 end Camera;
