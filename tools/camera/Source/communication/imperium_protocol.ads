@@ -1,7 +1,22 @@
 --
 with Interfaces; use Interfaces;
+with Imperator_Verto; use Imperator_Verto;
 package Imperium_Protocol is
 --
+
+   -------------------------
+   -- Raw Data --
+   -------------------------
+   type Frame_Data is array (Integer range <> ) of Unsigned_8;
+
+   -----------------------------------------------------------------------------
+   -- Extra header for frames
+   -----------------------------------------------------------------------------
+   type Frame_Header is
+      record
+         Data   : Frame_Data (0 .. 19);
+         Length : Integer := 5;
+      end record;
 
    -----------------------------------------------------------------------------
    -- Constant header
@@ -99,9 +114,9 @@ package Imperium_Protocol is
    function Ping (Version : Integer := 0;
                   Ack     : Boolean := False;
                   Req     : Boolean := True) return Constant_Header;
---     function Handshake return Constant_Header;
---     function Subscription return Constant_Header;
---     function Data return Constant_Header;
+   --     function Handshake return Constant_Header;
+   --     function Subscription return Constant_Header;
+   --     function Data return Constant_Header;
 
    -----------------------------------------------------------------------------
    -- Image header
@@ -243,4 +258,32 @@ package Imperium_Protocol is
    function Create_Memory_Header (Start_Addr : Header_Mem_Addr;
                                   End_Addr   : Header_Mem_Addr)
                                   return Memory_Header;
+
+
+   ---
+   function Array_To_Frame_Header is
+     new Generic_To_Generic (Array_Header, Frame_Header);
+   function Config_To_Frame_Header is
+     new Generic_To_Generic (Config_Header, Frame_Header);
+   function Constant_To_Frame_Header is
+     new Generic_To_Generic (Constant_Header, Frame_Header);
+   function Image_To_Frame_Header is
+     new Generic_To_Generic (Image_Header, Frame_Header);
+   function Matrix_To_Frame_Header is
+     new Generic_To_Generic (Matrix_Header, Frame_Header);
+   function Memory_To_Frame_Header is
+     new Generic_To_Generic (Memory_Header, Frame_Header);
+
+   function Frame_To_Array_Header is
+     new Generic_To_Generic (Frame_Header, Array_Header);
+   function Frame_To_Config_Header is
+     new Generic_To_Generic (Frame_Header, Config_Header);
+   function Frame_To_Constant_Header is
+     new Generic_To_Generic (Frame_Header, Constant_Header);
+   function Frame_To_Image_Header is
+     new Generic_To_Generic (Frame_Header, Image_Header);
+   function Frame_To_Matrix_Header is
+     new Generic_To_Generic (Frame_Header, Matrix_Header);
+   function Frame_To_Memory_Header is
+     new Generic_To_Generic (Frame_Header, Memory_Header);
 end Imperium_Protocol;

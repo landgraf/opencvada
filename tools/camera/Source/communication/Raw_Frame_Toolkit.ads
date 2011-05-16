@@ -11,11 +11,6 @@ package Defero is
 --
 
    -------------------------
-   -- Raw Data --
-   -------------------------
-   type Frame_Data is array (Integer range <> ) of Unsigned_8;
-
-   -------------------------
    -- Raw Ethernet header --
    -------------------------
    type Mac_Address is array (Integer range 0 .. 5) of Unsigned_8;
@@ -67,18 +62,26 @@ package Defero is
    ------------------------------------
    -- Implementation specific
    -------------------------------------
-   -- Extra header for frames
-   type Frame_Header is
-      record
-         Data : Frame_Data(0 .. 19);
-         Length : Integer := 4;
-      end record;
 
    --* Creates a series of Raw Ethernet frames from a frame_data structure
    function Create_Raw_Frames (Data                 : Frame_Data;
                                Spec_Header          : Frame_Header := ((others => 0), Length => 0);
                                Constant_Head        : Constant_Header;
                                Frame_Size           : Integer := 1500) return Raw_Ethernet_Frame_Array;
+
+   type Spec_Frames_List is (Array_Frame, Config_Frame, Image_Frame, Matrix_Frame, Memory_Frame, Control_Frame, Other, Not_A_Frame);
+
+   --
+   type Disctribuebantur_Raw_Frame is
+      record
+         Constant_Head : Constant_Header;
+         Type_Of_Frame : Spec_Frames_List;
+         Spec_Header   : Frame_Header;
+         Payload_Start : Integer;
+         Raw_Frame     : Raw_Ethernet_Frame;
+      end record;
+
+   function From_Raw_Frame (Src : Raw_Ethernet_Frame) return Disctribuebantur_Raw_Frame;
 
    -----------------------------------------------------------------------------
    --
@@ -96,15 +99,6 @@ package Defero is
                              Offset : Integer := 0)
                              return Image_Header;
 
-
-   --* Source_T : type that is copied from
-   --* Destination_T : type that will contain all bytes from source_T
-   --* Copies all bytes from Source_T to Destination_T
-   generic
-      type Source_T is private;
-      type Destination_T is private;
-   function Generic_To_Generic (Source : Source_T;
-                                Length : Integer := Source_T'Size / 8) return Destination_T;
 private
 
    --* Amount of Raw Ethernet frames needed to send Data
