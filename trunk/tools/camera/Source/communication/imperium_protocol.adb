@@ -101,16 +101,17 @@ package body Imperium_Protocol is
       return Header;
    end Create_Memory_Header;
 
-   function Create_Constant_Header (Version : Header_Version := 0;
-                                    Length  : Header_Length := 0;
-                                    Ack     : Header_Bit := False;
-                                    Nak     : Header_Bit := False;
-                                    Eof     : Header_Bit := False;
-                                    Req     : Header_Bit := False;
-                                    Flags   : Header_Flags := 2#0000#;
-                                    Seq_No  : Header_Sequence := 0;
-                                    Options : Header_Options := 0;
-                                    Data    : Header_Data := Null_Header_Data)
+   function Create_Constant_Header (Version     : Header_Version := 0;
+                                    Length      : Header_Length := 0;
+                                    Ack         : Header_Bit := False;
+                                    Nak         : Header_Bit := False;
+                                    Eof         : Header_Bit := False;
+                                    Req         : Header_Bit := False;
+                                    Flags       : Header_Flags := 2#0000#;
+                                    Seq_No      : Header_Sequence := 0;
+                                    Package_Seq : Header_Package_Sequence := 0;
+                                    Options     : Header_Options := 0;
+                                    Data        : Header_Data := Null_Header_Data)
                                     return Constant_Header is
       Header : Constant_Header;
    begin
@@ -122,6 +123,7 @@ package body Imperium_Protocol is
       Header.Req := Req;
       Header.Flags := Flags;
       Header.Seq_No := Seq_No;
+      Header.Package_Seq := Package_Seq;
       Header.Options := Options;
       Header.Data := Data;
 

@@ -291,4 +291,32 @@ package body Raw_Frame_Toolkit is
       Temp.Type_Of_Frame := Not_A_Frame;
       return Temp;
    end From_Raw_Frame;
+
+   -----------------------------------------------------------------------------
+   -- Raw Ethernet function stuff
+   -----------------------------------------------------------------------------
+--     function Discover (Handle : Pcap_Ptr)
+--                        return Client_Info_Array is
+--     begin
+--        null;
+--        -- Broadcast handshake frame
+--        -- While reply pending
+--        --   If reply is ack handshake
+--        --     Create new client info
+--        --
+--     end Discover;
+--
+--     function Create_Broadcast_Client_Info return Client_Info is
+--        Client : Client_Info;
+--     begin
+--        Client.Device.Raw_Header.Dest := (others => 16#FF#);
+--  --        Client.Device.Raw_Header.Src :=
+--     end Create_Broadcast_Client_Info;
+
+   function Is_Supported_Data_Type (T      : Data_Type;
+                                    Device : Device_Info)
+                                    return Boolean is
+   begin
+      return Device.Data_Types(T);
+   end Is_Supported_Data_Type;
 end Raw_Frame_Toolkit;
