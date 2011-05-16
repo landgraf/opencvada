@@ -1,6 +1,6 @@
 --
 with Interfaces; use Interfaces;
-with Imperator_Verto; use Imperator_Verto;
+with Generic_Toolkit; use Generic_Toolkit;
 package Imperium_Protocol is
 --
 
