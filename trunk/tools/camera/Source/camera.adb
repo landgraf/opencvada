@@ -3,13 +3,13 @@
 with Interfaces; use Interfaces;
 with Ada.Unchecked_Conversion;
 with Ada.Text_Io; use Ada.Text_Io;
-with Defero; use Defero;
+with Raw_Frame_Toolkit; use Raw_Frame_Toolkit;
 with Imperium_Protocol; use Imperium_Protocol;
-with Suo_Ut; use Suo_Ut;
+with OpenCvAda_Camera_API; use OpenCvAda_Camera_API;
 with Core;
 with Core.Operations;
 with Highgui;
-with Imperator_Verto; use Imperator_Verto;
+with Generic_Toolkit; use Generic_Toolkit;
 procedure Camera is
 
    type Mongo is new Integer range 0 .. 127;
@@ -40,7 +40,7 @@ procedure Camera is
    File : File_Type;
 
    Image : aliased Core.Ipl_Image_Ptr := Highgui.Cv_Load_Image ("C:\Users\niklas\Pictures\WP_Emrakul_1280x1024.jpg");
-   Image_Data : Frame_Data := Suo_Ut.Image_To_Byte (Image);
+   Image_Data : Frame_Data := Opencvada_Camera_Api.Image_To_Byte (Image);
    Re_Image : aliased Core.Ipl_Image_Ptr := Byte_To_Image (Image_Data, 1280, 1024);
    Spec_Header : Frame_Header := To_Frame_Header (Image_To_Header (Image));
 
