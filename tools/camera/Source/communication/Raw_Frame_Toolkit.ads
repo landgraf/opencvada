@@ -6,6 +6,7 @@
 with Interfaces; use Interfaces;
 with Imperium_Protocol;
 use Imperium_Protocol;
+with Pcap; use Pcap;
 -- Communication package Defero
 package Raw_Frame_Toolkit is
 --
@@ -97,7 +98,45 @@ package Raw_Frame_Toolkit is
                              Offset : Integer := 0)
                              return Image_Header;
 
+-----------------------------------------------------------------------------
+   -- Raw Ethernet function stuff
+   -----------------------------------------------------------------------------
+   -- Describes what type of device this is.
+   type Device_Type is range 0 .. 65535;
+   for Device_Type'Size use 16;
+
+   type Data_Type is range 0 .. 255;
+   for Data_Type'Size use 8;
+
+   -- Describes which data types the device can process.
+   type Data_Type_Array is array (Data_Type range 0 .. 255) of aliased Boolean;
+
+   type Protocol_Version is range 0 .. 15;
+   for Protocol_Version'Size use 4;
+
+   type Device_Info is record
+      Raw_Header : Raw_Frame_Header;
+      Dev_Type   : Device_Type := 0;
+      Data_Types : Data_Type_Array := (others => False);
+   end record;
+
+   type Client_Info is record
+      Device      : Device_Info;
+      Prot_Ver    : Protocol_Version := 0;
+      Device_Name : String (1 .. 17) := "FF-FF-FF-FF-FF-FF";
+      Device_Addr : Mac_Address := (others => 16#FF#);
+   end record;
+
+   type Client_Info_Array is array (Integer range <>) of Client_Info;
+
+   function Is_Supported_Data_Type (T      : Data_Type;
+                                    Device : Device_Info)
+                                    return Boolean;
+
+--     function Discover (Handle : Pcap_Ptr)
+--                        return Client_Info_Array;
 private
+--     function Create_Broadcast_Client_Info return Client_Info;
 
    --* Amount of Raw Ethernet frames needed to send Data
    function Amount_Of_Frames (Data_Bytes           : Integer;

@@ -1,7 +1,9 @@
 with "../../OpenCvAda";
+with "../AdaWpdPack/ada_wpd_pack";
+
 project Camera is
 
-   for Source_Dirs use ("Source", "Source\communication", "Source\OpenCvAda");
+   for Source_Dirs use ("Source", "Source\communication", "Source\OpenCvAda", "Source\Pcap");
    for Object_Dir use "Build";
    for Exec_Dir use "Exec";
    --for Main use ("main.adb");

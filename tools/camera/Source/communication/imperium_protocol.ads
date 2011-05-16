@@ -33,6 +33,7 @@ package Imperium_Protocol is
    subtype Header_Bit is Boolean;
    subtype Header_Flags is Unsigned_8 range 0 .. 15;
    subtype Header_Sequence is Unsigned_16;
+   subtype Header_Package_Sequence is Unsigned_8;
    subtype Header_Options is Unsigned_8;
    type Header_Data is array (Integer range 0 .. 14) of Unsigned_8;
    Null_Header_Data : constant Header_Data := (others => 0);
@@ -74,16 +75,17 @@ package Imperium_Protocol is
 
    type Constant_Header is
       record
-         Version : Header_Version;
-         Length  : Header_Length;
-         Ack     : Header_Bit;
-         Nak     : Header_Bit;
-         Eof     : Header_Bit;
-         Req     : Header_Bit;
-         Flags   : Header_Flags;
-         Seq_No  : Header_Sequence;
-         Options : Header_Options;
-         Data    : Header_Data;
+         Version     : Header_Version;
+         Length      : Header_Length;
+         Ack         : Header_Bit;
+         Nak         : Header_Bit;
+         Eof         : Header_Bit;
+         Req         : Header_Bit;
+         Flags       : Header_Flags;
+         Seq_No      : Header_Sequence;
+         Package_Seq : Header_Package_Sequence;
+         Options     : Header_Options;
+         Data        : Header_Data;
       end record;
 
    for Constant_Header use
@@ -96,23 +98,25 @@ package Imperium_Protocol is
          Req at 0 range 11 .. 11;
          Flags at 0 range 12 .. 15;
          Seq_No at 0 range 16 .. 31;
-         Options at 0 range 32 .. 39;
-         Data at 0 range 40 .. 159;
+         Package_Seq at 0 range 32 .. 39;
+         Options at 0 range 40 .. 47;
+         Data at 0 range 48 .. 167;
       end record;
 
-   for Constant_Header'Size use 160;
+   for Constant_Header'Size use 168;
    for Constant_Header'Alignment use 1;
 
-   function Create_Constant_Header (Version : Header_Version := 0;
-                                    Length  : Header_Length := 0;
-                                    Ack     : Header_Bit := False;
-                                    Nak     : Header_Bit := False;
-                                    Eof     : Header_Bit := False;
-                                    Req     : Header_Bit := False;
-                                    Flags   : Header_Flags := 2#0000#;
-                                    Seq_No  : Header_Sequence := 0;
-                                    Options : Header_Options := 0;
-                                    Data    : Header_Data := Null_Header_Data)
+   function Create_Constant_Header (Version     : Header_Version := 0;
+                                    Length      : Header_Length := 0;
+                                    Ack         : Header_Bit := False;
+                                    Nak         : Header_Bit := False;
+                                    Eof         : Header_Bit := False;
+                                    Req         : Header_Bit := False;
+                                    Flags       : Header_Flags := 2#0000#;
+                                    Seq_No      : Header_Sequence := 0;
+                                    Package_Seq : Header_Package_Sequence := 0;
+                                    Options     : Header_Options := 0;
+                                    Data        : Header_Data := Null_Header_Data)
                                     return Constant_Header;
 
    -----------------------------------------------------------------------------

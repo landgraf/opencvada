@@ -15,6 +15,7 @@ procedure Camera is
    type Mongo is new Integer range 0 .. 127;
    for Mongo'Size use 7;
 
+   pragma Warnings (Off);
    type Double_Bill is
       record
          A : Mongo;
@@ -23,6 +24,7 @@ procedure Camera is
       end record;
    for Double_Bill'Size use 1500 * 8; --Mongo'Size + Unsigned_8'Size + Unsigned_16'Size;
    pragma Pack (Double_Bill);
+   pragma Warnings (On);
 
    type Pelle_2 is array (Integer range <>) of Double_Bill;
 
