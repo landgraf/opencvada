@@ -1,6 +1,6 @@
 with Ada.Text_Io; use Ada.Text_Io;
-with Imperator_Verto;
-package body Defero is
+with Generic_Toolkit;
+package body Raw_Frame_Toolkit is
 --
 
    -- Function for converting a generic type into a byte array.
@@ -224,4 +224,4 @@ package body Defero is
       Temp.Type_Of_Frame := Not_A_Frame;
       return Temp;
    end From_Raw_Frame;
-end Defero;
+end Raw_Frame_Toolkit;

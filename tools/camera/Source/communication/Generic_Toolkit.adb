@@ -2,7 +2,7 @@
 --
 --
 with Interfaces; use Interfaces;
-package body Imperator_Verto is
+package body Generic_Toolkit is
 --
 
    --
@@ -49,4 +49,4 @@ package body Imperator_Verto is
       end if;
       return Destination;
    end Generic_To_Generic;
-end Imperator_Verto;
+end Generic_Toolkit;

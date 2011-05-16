@@ -2,7 +2,7 @@
 --
 --
 limited with Imperium_Protocol;
-package Imperator_Verto is
+package Generic_Toolkit is
 --
 
    ---
@@ -15,4 +15,4 @@ package Imperator_Verto is
    function Generic_To_Generic (Source : Source_T;
                                 Length : Integer := Source_T'Size / 8) return Destination_T;
 
-end Imperator_Verto;
+end Generic_Toolkit;

@@ -7,7 +7,7 @@ with Interfaces; use Interfaces;
 with Imperium_Protocol;
 use Imperium_Protocol;
 -- Communication package Defero
-package Defero is
+package Raw_Frame_Toolkit is
 --
 
    -------------------------
@@ -107,4 +107,4 @@ private
                               Constant_Header_Size : Integer;
                               Frame_Size           : Integer := 1500) return Integer;
 
-end Defero;
+end Raw_Frame_Toolkit;
