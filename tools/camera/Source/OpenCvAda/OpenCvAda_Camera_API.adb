@@ -2,9 +2,9 @@
 with Interfaces; use Interfaces;
 with Interfaces.C;
 with Ada.Text_Io; use Ada.Text_Io;
-with Defero; use Defero;
+with Raw_Frame_Toolkit; use Raw_Frame_Toolkit;
 --
-package body Suo_Ut is
+package body OpenCvAda_Camera_API is
 --
 
    -- converts byte_Array to ipl_image
@@ -34,7 +34,7 @@ package body Suo_Ut is
 
    -- converts ipl image to byte array
    -- each element is now 12 bit
-   function Image_To_Byte (Src : Ipl_Image_Ptr) return Defero.Frame_Data is
+   function Image_To_Byte (Src : Ipl_Image_Ptr) return Imperium_Protocol.Frame_Data is
       type Internal_12 is new Unsigned_16 range 0 .. 4095;
       for Internal_12'Size use 12;
       type Internal is array (Integer range <>) of Internal_12;
@@ -84,4 +84,4 @@ package body Suo_Ut is
       Temp.Reserved := (others => False);
       return Temp;
    end Image_To_Header;
-end Suo_Ut;
+end OpenCvAda_Camera_API;
