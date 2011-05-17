@@ -42,7 +42,7 @@ procedure Camera is
 
    Payload : Frame_Data := Nej_Nej (Pelle);
    Null_Load : Frame_Data (0 .. 0) := (others => 0);
-   Raws2 : Raw_Ethernet_Frame_Array := Create_Raw_Frames (Null_Load, Constant_Head => Ping, Frame_Size => 0);
+   Raws2 : Raw_Ethernet_Frame_Array := Create_Raw_Frames (Null_Load, Constant_Head => Ping, Frame_Size => 4);
    File : File_Type;
 
    Image : aliased Core.Ipl_Image_Ptr := Highgui.Cv_Load_Image ("./WP_Emrakul_1280x1024.jpg");
@@ -70,7 +70,7 @@ begin
 --     Put_Line (Spec_Header.Length'Img);
 --     Spec_Header.Length := 5;
    declare
-      Raws : Raw_Ethernet_Frame_Array := Create_Raw_Frames (Image_Data,  To_Frame_Header (Image_To_Header (Image)), Create_Constant_Header(0,2#0000#,False,False,False,False,2#0101#,0,2#000_00000#));
+      Raws : Raw_Ethernet_Frame_Array := Create_Raw_Frames (Image_Data,  To_Frame_Header (Image_To_Header (Image)), Create_Constant_Header(0,2#0000#,False,False,False,False,2#0101#,0,2#000_00000#),1001);
       Parsed_Frame : Parsed_Raw_Frame :=    From_Raw_Frame (Raws (Raws'First + 1));
    begin
       --     Put_Line ("frames: " & Amount_Of_Frames (Payload'Length, 8, 5)'img & Raws'Length'Img);
@@ -91,20 +91,21 @@ begin
                 Parsed_Frame.Payload_Start'Img);
       Create (File, Out_File, "test.csv");
       for I in Raws'Range loop
-         for N in Raws (I).Payload'Range loop
-            Put (File, Raws (I).Payload (N)'Img & ", ");
-         end loop;
+--           for N in Raws (I).Payload'Range loop
+--              Put (File, Raws (I).Payload (N)'Img & ", ");
+--           end loop;
+         Put (File, Raws(I).Length'Img);
          New_Line (File);
       end loop;
       Close (File);
---        Put_Line (Raws2'Length'Img);
---        for I in Raws2'Range loop
---           Put_Line (Raws2 (I).Length'Img);
---           for N in 0 .. Raws2 (I).Length loop
---              Put (Raws2 (I).Payload (N)'Img);
---           end loop;
---        end loop;
---        Put_Line ("hallo" & Image_Data'Length'Img);
+      Put_Line (Raws2'Length'Img);
+      for I in Raws2'Range loop
+         Put_Line (Raws2 (I).Length'Img);
+         for N in 0 .. Raws2 (I).Length loop
+            Put (Raws2 (I).Payload (N)'Img);
+         end loop;
+      end loop;
+      Put_Line ("hallo" & Image_Data'Length'Img);
 
 --        Highgui.Cv_Save_Image ("test.png", Re_Image);
 

@@ -92,7 +92,12 @@ package body Raw_Frame_Toolkit is
       Max_Data_Per_Frame : Integer := Frame_Size - Constant_Header_Size;
       Total_Data         : Integer := Data_Bytes + Spec_Header_Size;
       Ret_Val            : Integer := 0;
+      Frames_Needs_To_Be_Atleast_46_Bytes_And_You_Smell : exception;
    begin
+      --        Put_Line(Max_Data_Per_Frame'Img & " = " & Frame_Size'Img & " - " & Constant_Header_Size'Img);
+      if Max_Data_Per_Frame < 1 then
+         raise Frames_Needs_To_Be_Atleast_46_Bytes_And_You_Smell;
+      end if;
       Ret_Val := Total_Data / Max_Data_Per_Frame;
       if (Total_Data mod Max_Data_Per_Frame) > 0 then
          Ret_Val := Ret_Val + 1;
@@ -107,9 +112,9 @@ package body Raw_Frame_Toolkit is
                                Frame_Size      : Integer := 1500) return Raw_Ethernet_Frame_Array is
       -- DONT LOOK AT ME!
       function Im_Tired_Of_This_Shit return Integer is
-         Temp : Integer := Constant_To_Frame_Header (Constant_Head).Length;
+         Temp : Integer := To_Frame_Header (Constant_Head).Length;
       begin
---           Put_Line("Im_Tired_Of_This_Shit" & Temp'Img & Spec_Header.Length'Img);
+         Put_Line (Frame_Size'Img & Temp'Img & Spec_Header.Length'Img & Data'Length'Img);
          if Constant_Head.Flags = 2#0101# then
             Temp := Temp + 1;
          end if;
@@ -132,14 +137,14 @@ package body Raw_Frame_Toolkit is
          -- data headers are bigger
          -- who ever got this idea is gonna get it i promise!
          if C_Head.Flags = 2#0101# then
-            Frames (I).Payload (Next_Pos .. Constant_To_Frame_Header (C_Head).Length) := Constant_To_Frame_Header (C_Head).Data (0 .. Constant_To_Frame_Header (C_Head).Length);
-            Next_Pos := Constant_To_Frame_Header (C_Head).Length + 1;
-            Header_Length := Constant_To_Frame_Header (C_Head).Length + 1;
+            Frames (I).Payload (Next_Pos .. To_Frame_Header (C_Head).Length) := To_Frame_Header (C_Head).Data (0 .. To_Frame_Header (C_Head).Length);
+            Next_Pos := To_Frame_Header (C_Head).Length + 1;
+            Header_Length := To_Frame_Header (C_Head).Length + 1;
 --              Put_Line("c_head:" & Next_Pos'Img & Header_Length'Img);
          else
-            Frames (I).Payload (Next_Pos .. Constant_To_Frame_Header (C_Head).Length - 1) := Constant_To_Frame_Header (C_Head).Data (0 .. Constant_To_Frame_Header (C_Head).Length - 1);
-            Next_Pos := Constant_To_Frame_Header (C_Head).Length;
-            Header_Length := Constant_To_Frame_Header (C_Head).Length;
+            Frames (I).Payload (Next_Pos .. To_Frame_Header (C_Head).Length - 1) := To_Frame_Header (C_Head).Data (0 .. To_Frame_Header (C_Head).Length - 1);
+            Next_Pos := To_Frame_Header (C_Head).Length;
+            Header_Length := To_Frame_Header (C_Head).Length;
          end if;
 
          if not Spec_Set then
@@ -150,15 +155,16 @@ package body Raw_Frame_Toolkit is
          end if;
          if not (I = Frames'Length - 1) then
             Test_Val := Next_Data - Header_Length + Frame_Size;
-            Frames (I).Payload (Next_Pos .. Frames (I).Payload'Last) := Data (Next_Data .. Test_Val - 1);
+            Frames (I).Payload (Next_Pos .. Frame_Size-1) := Data (Next_Data .. Test_Val - 1);
             Next_Data := (Next_Data + (Frame_Size - Header_Length));
+            Frames (I).Length := Frame_Size;
          else
---              declare
---                 Temp_Int : Integer := (Next_Pos + Data'Last - Next_Data) - Next_Pos;
---                 Temp_Int2 : Integer := Data'Last - Next_Data;
---              begin
---                 Put_Line (Temp_Int'Img & Temp_Int2'Img);
---              end;
+            declare
+               Temp_Int : Integer := (Next_Pos +  Data'Last - Next_Data) - Next_Pos;
+               Temp_Int2 : Integer := Data'Last - Next_Data;
+            begin
+               Put_Line (Temp_Int'Img & Temp_Int2'Img & Next_Data'Img & Frames'Length'Img);
+            end;
             Frames (I).Payload (Next_Pos .. Next_Pos + Data'Last - Next_Data ) := Data (Next_Data .. Data'Last);
             Frames (I).Length := 0;
             if (Data'Last - Next_Data + Header_Length) >= 46 then
@@ -171,6 +177,20 @@ package body Raw_Frame_Toolkit is
       end loop;
       return Frames;
    end Create_Raw_Frames;
+
+   -- Converts Constant_Header to defero Frame_Header
+   function To_Frame_Header (Src : Constant_Header) return Frame_Header is
+      Dest : Frame_Header;
+      Temp : Frame_Data (0 .. 19);
+      for Temp'Address use Src'Address;
+   begin
+      Dest.Data := Temp;
+      Dest.Length := Integer (Src.Length) + Const_Header_Min_Length;
+      if Src.Flags = 2#1111# or Src.Flags = 2#0101# then
+         Dest.Length := Dest.Length + Const_Header_Opt_Length;
+      end if;
+      return Dest;
+   end To_Frame_Header;
 
 -- converts a raw_ethernet_frame to a parsed one with more information
    function From_Raw_Frame (Src : Raw_Ethernet_Frame) return Parsed_Raw_Frame is

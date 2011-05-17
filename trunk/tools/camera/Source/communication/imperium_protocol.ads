@@ -276,8 +276,8 @@ package Imperium_Protocol is
      new Generic_To_Generic (Array_Header, Frame_Header);
    function Config_To_Frame_Header is
      new Generic_To_Generic (Config_Header, Frame_Header);
-   function Constant_To_Frame_Header is
-     new Generic_To_Generic (Constant_Header, Frame_Header);
+--     function Constant_To_Frame_Header is
+--       new Generic_To_Generic (Constant_Header, Frame_Header);
    function Image_To_Frame_Header is
      new Generic_To_Generic (Image_Header, Frame_Header);
    function Matrix_To_Frame_Header is
