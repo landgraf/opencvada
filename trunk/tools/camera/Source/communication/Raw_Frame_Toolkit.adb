@@ -107,13 +107,13 @@ package body Raw_Frame_Toolkit is
                                Frame_Size      : Integer := 1500) return Raw_Ethernet_Frame_Array is
       -- DONT LOOK AT ME!
       function Im_Tired_Of_This_Shit return Integer is
-         Temp : Integer := To_Frame_Header (Constant_Head).Length;
+         Temp : Integer := Constant_To_Frame_Header (Constant_Head).Length;
       begin
 --           Put_Line("Im_Tired_Of_This_Shit" & Temp'Img & Spec_Header.Length'Img);
          if Constant_Head.Flags = 2#0101# then
             Temp := Temp + 1;
          end if;
-         return Amount_Of_Frames (Data'Length, Spec_Header.Length, Temp) -1;
+         return Amount_Of_Frames (Data'Length, Spec_Header.Length, Temp,Frame_Size) -1;
       end Im_Tired_Of_This_Shit;
       -- code starts here promise
       Frames        : Raw_Ethernet_Frame_Array (0 .. Im_Tired_Of_This_Shit);
@@ -132,14 +132,14 @@ package body Raw_Frame_Toolkit is
          -- data headers are bigger
          -- who ever got this idea is gonna get it i promise!
          if C_Head.Flags = 2#0101# then
-            Frames (I).Payload (Next_Pos .. To_Frame_Header (C_Head).Length) := To_Frame_Header (C_Head).Data (0 .. To_Frame_Header (C_Head).Length);
-            Next_Pos := To_Frame_Header (C_Head).Length + 1;
-            Header_Length := To_Frame_Header (C_Head).Length + 1;
+            Frames (I).Payload (Next_Pos .. Constant_To_Frame_Header (C_Head).Length) := Constant_To_Frame_Header (C_Head).Data (0 .. Constant_To_Frame_Header (C_Head).Length);
+            Next_Pos := Constant_To_Frame_Header (C_Head).Length + 1;
+            Header_Length := Constant_To_Frame_Header (C_Head).Length + 1;
 --              Put_Line("c_head:" & Next_Pos'Img & Header_Length'Img);
          else
-            Frames (I).Payload (Next_Pos .. To_Frame_Header (C_Head).Length - 1) := To_Frame_Header (C_Head).Data (0 .. To_Frame_Header (C_Head).Length - 1);
-            Next_Pos := To_Frame_Header (C_Head).Length;
-            Header_Length := To_Frame_Header (C_Head).Length;
+            Frames (I).Payload (Next_Pos .. Constant_To_Frame_Header (C_Head).Length - 1) := Constant_To_Frame_Header (C_Head).Data (0 .. Constant_To_Frame_Header (C_Head).Length - 1);
+            Next_Pos := Constant_To_Frame_Header (C_Head).Length;
+            Header_Length := Constant_To_Frame_Header (C_Head).Length;
          end if;
 
          if not Spec_Set then
@@ -171,54 +171,6 @@ package body Raw_Frame_Toolkit is
       end loop;
       return Frames;
    end Create_Raw_Frames;
-
-   --
-   -- Converts Constant_Header to defero Frame_Header
-   function To_Frame_Header (Src : Constant_Header) return Frame_Header is
-      Dest : Frame_Header;
-      Temp : Frame_Data (0 .. 19);
-      for Temp'Address use Src'Address;
-   begin
-      Dest.Data := Temp;
-      Dest.Length := Integer (Src.Length) + Const_Header_Min_Length;
-      if Src.Flags = 2#1111# or Src.Flags = 2#0101# then
-         Dest.Length := Dest.Length + Const_Header_Opt_Length;
-      end if;
-      return Dest;
-   end To_Frame_Header;
-
-   -- Converts defero Frame_header to Constant_Header
-   function To_Constant_Header (Src    : Frame_Data;
-                                Offset : Integer := 0) return Constant_Header is
-      Src_Temp : Frame_Data (0 .. 19) := Src (Offset .. Offset + 19);
-      Dest     : Constant_Header;
-      for Dest'Address use Src_Temp'Address;
-   begin
-      return Dest;
-   end To_Constant_Header;
-
-
-
-   function To_Frame_Header (Src : Image_Header) return Frame_Header is
-      Dest : Frame_Header;
-      Temp : Frame_Data (0 .. 4);
-      for Temp'Address use Src'Address;
-   begin
-      Dest.Data (0 .. 4) := Temp;
-      Dest.Length := Image_Header_Size;
-      return Dest;
-   end To_Frame_Header;
-
-   function To_Image_Header (Src    : Frame_Data;
-                             Offset : Integer := 0)
-                             return Image_Header is
-      Temp : Frame_Data (0 .. Image_Header_Size - 1) := Src (Offset .. Offset + Image_Header_Size - 1);
-      Dest : Image_Header;
-      for Dest'Address use Temp'Address;
-   begin
-      return Dest;
-   end To_Image_Header;
-
 
 -- converts a raw_ethernet_frame to a parsed one with more information
    function From_Raw_Frame (Src : Raw_Ethernet_Frame) return Parsed_Raw_Frame is

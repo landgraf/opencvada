@@ -83,22 +83,6 @@ package Raw_Frame_Toolkit is
    function From_Raw_Frame (Src : Raw_Ethernet_Frame) return Parsed_Raw_Frame;
 
    -----------------------------------------------------------------------------
-   --
-   -----------------------------------------------------------------------------
-      --* Converts Constant_Header to Frame_Header
-   function To_Frame_Header (Src : Constant_Header) return Frame_Header;
-
-   --* Converts Frame_header to Constant_Header
-   function To_Constant_Header (Src    : Frame_Data;
-                                Offset : Integer := 0) return Constant_Header;
-
---     function To_Frame_Header (Src : Image_Header) return Frame_Header;
-
-   function To_Image_Header (Src    : Frame_Data;
-                             Offset : Integer := 0)
-                             return Image_Header;
-
-   -----------------------------------------------------------------------------
    -- Raw Ethernet function stuff
    -----------------------------------------------------------------------------
    -- Describes what type of device this is.

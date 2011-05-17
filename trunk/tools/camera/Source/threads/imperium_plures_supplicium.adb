@@ -133,10 +133,41 @@ package body Imperium_Plures_Supplicium is
          end case;
       end Update_Full_Package;
 
+      procedure Package_Exists (Frame           : in Parsed_Raw_Frame;
+                                Vector_Position : out Integer;
+                                Exists          : out Boolean) is
+         Vec_Pos : Integer := -1;
+      begin
+         if not (Parsed_Vector.Is_Empty (Data_Buffer)) then
+            -- empty
+            null;
+         else
+            for I in Buffer_Index range Parsed_Vector.First_Index (Data_Buffer) .. Parsed_Vector.Last_Index (Data_Buffer) loop
+               -- look for the package
+               declare
+                  Temp : Vecotor_Parsed_Frame := Parsed_Vector.Element (Data_Buffer, I);
+               begin
+                  if Temp.Length >= 0 then
+                     if temp.Buffer (0).Constant_Head.Package_Seq = Frame.Constant_Head.Package_Seq then
+                        --                          We Have A Match
+                        Vector_Position := Integer (I);
+                        Exists := True;
+                        return;
+                     end if;
+                  end if;
+               end;
+               null;
+            end loop;
+         end if;
+         --No Match new package Should Be Added
+         Vector_Position := -1;
+            Exists :=  False;
+            return;
+      end Package_Exists;
+
       -- Adds frame to last spot in specified buffer.
       procedure Add_Frame (Buffer          : in Buffer_Type;
-                           Frame           : in Parsed_Raw_Frame;
-                           Vector_Position : in Integer := 0) is
+                           Frame           : in Parsed_Raw_Frame) is
          Length : Integer := Buffer_Lengths (Buffer) + 1;
       begin
          case Buffer is
@@ -147,16 +178,45 @@ package body Imperium_Plures_Supplicium is
                   -- this is a major fault in code
                   -- and or several devices using same address
                   raise Package_Buffer_Overflow; -- eh what
-               elsif not (frame.Constant_Head.Seq_No >= Length) then
+               elsif Buffer_Lengths (Buffer) < 0 then
+                  -- not a package
+                  -- first frame in a new package
+                  C_C_M_Buffer (Buffer) (0) := Frame;
+                  Update_Full_Package (Eof => Frame.Constant_Head.Eof, Remove => False);
+                  Buffer_Lengths (Buffer) := 0; -- first frame
+               elsif Frame.Constant_Head.Package_Seq /= C_C_M_Buffer (Buffer) (Length - 1).Constant_Head.Package_Seq then
+                  -- wrong package
+                  -- we got a new package HOLD!
+                  raise Package_Buffer_Cant_Add;
+               elsif not (Integer (Frame.Constant_Head.Seq_No) >= Length) then
                   -- package problem
-                  null;
+                  raise Package_Buffer_Logic;
                else
                   C_C_M_Buffer (Buffer) (Length) := Frame;
                   Update_Full_Package(Eof => Frame.Constant_Head.Eof,Remove => False);
                   Buffer_Lengths (Buffer) := Length; -- update to point at this frame
                end if;
             when Data =>
-               null;
+               declare
+                  Package_Pre_Existing : Boolean := False;
+                  Position             : Integer := -1;
+               begin
+                  Package_Exists (Frame, Position, Package_Pre_Existing);
+                  if Package_Pre_Existing then
+                     -- put it into the vector
+                     null;
+                  else
+                     -- create a new vector post
+                     declare
+                        New_Element : Vecotor_Parsed_Frame;
+                     begin
+                        New_Element.Buffer (0) := Frame;
+                        New_Element.Length := 0;
+                        Parsed_Vector.Append (Container => Data_Buffer,
+                                              New_Item  => New_Element);
+                     end;
+                  end if;
+               end;
          end case;
       end Add_Frame;
 
