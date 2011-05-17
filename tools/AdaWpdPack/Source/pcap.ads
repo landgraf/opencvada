@@ -10,6 +10,8 @@ package Pcap is
    use Interfaces.C;
    use Interfaces.C.Strings;
 
+   type Mac_Address is array (Integer range 0 .. 5) of Unsigned_8;
+
    -- Descriptor of an open capture instance. This structure is opaque to the
    -- user, that handles its content through the functions provided by wpcap.dll
    type Pcap is null record;
@@ -49,6 +51,9 @@ package Pcap is
    type Byte_Array is array (Integer range <>) of aliased Unsigned_8;
    type Byte_Array_Ptr is access all Byte_Array;
    Null_Byte_Array : constant Byte_Array (1 .. 0) := (others => 0);
+
+--     subtype Mac_Address is Byte_Array (0 .. 5);
+--     type Mac_Address_Ptr is access all Mac_Address;
 
    -- Equivalent to the timeval struct in C.
    type C_Timeval is record
@@ -173,6 +178,10 @@ package Pcap is
                            Pcap_Stat_Size : access Integer)
                            return Pcap_Stat_Ptr;
 
+   function Get_MAC (Name : String;
+                     Desc : String)
+                     return Mac_Address;
+
 private
    package Byte_Array_Pointer_Pkg is
      new Interfaces.C.Pointers (Integer, Unsigned_8, Byte_Array, 0);
@@ -184,7 +193,7 @@ private
 
    pragma Import (C, Pcap_Set_Non_Block, "pcap_setnonblock");
    pragma Import (C, Pcap_Get_Non_Block, "pcap_getnonblock");
-   pragma Import (C, Pcap_Find_All_Devs, "pcap_findalldevs");
+--     pragma Import (C, Pcap_Find_All_Devs, "pcap_findalldevs");
    pragma Import (C, Pcap_Free_All_Devs, "pcap_freealldevs");
    pragma Import (C, Pcap_Dispatch,      "pcap_dispatch");
    pragma Import (C, Pcap_Loop,          "pcap_loop");

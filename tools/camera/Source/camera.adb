@@ -10,6 +10,10 @@ with Core;
 with Core.Operations;
 with Highgui;
 with Generic_Toolkit; use Generic_Toolkit;
+
+with Ethernet_Internal; use Ethernet_Internal;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Pcap; use Pcap;
 procedure Camera is
 
    type Mongo is new Integer range 0 .. 127;
@@ -41,11 +45,28 @@ procedure Camera is
    Raws2 : Raw_Ethernet_Frame_Array := Create_Raw_Frames (Null_Load, Constant_Head => Ping, Frame_Size => 0);
    File : File_Type;
 
-   Image : aliased Core.Ipl_Image_Ptr := Highgui.Cv_Load_Image ("C:\Users\niklas\Pictures\WP_Emrakul_1280x1024.jpg");
+   Image : aliased Core.Ipl_Image_Ptr := Highgui.Cv_Load_Image ("./WP_Emrakul_1280x1024.jpg");
    Image_Data : Frame_Data := Opencvada_Camera_Api.Image_To_Byte (Image);
    Re_Image : aliased Core.Ipl_Image_Ptr := Byte_To_Image (Image_Data, 1280, 1024);
    Spec_Header : Frame_Header := To_Frame_Header (Image_To_Header (Image));
+
+   NIC_Names : NIC_Info_Array := Get_NICs;
 begin
+   for I in Nic_Names'Range loop
+      Print_NIC (Nic_Names (I));
+--        Put_Line (Nic_Names (I).Name & Ascii.Ht & To_String (Nic_Names (I).Desc));
+--        for J in Nic_Names (I).MAC'Range loop
+--           Put (Nic_Names (I).MAC (J)'Img);
+--        end loop;
+--        New_Line;
+      Ethernet_Internal.Open (Nic_Names (I));
+      if Nic_Names (I).Handle /= null then
+         Put_Line ("NIC open");
+      else
+         Put_Line ("NIC failed to open");
+      end if;
+      Ethernet_Internal.Close (Nic_Names (I));
+   end loop;
 --     Put_Line (Spec_Header.Length'Img);
 --     Spec_Header.Length := 5;
    declare

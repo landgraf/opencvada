@@ -71,24 +71,15 @@ procedure Packet_Sniffer is
    pragma Warnings (Off);
    Err_Buf     : Pcap_Error_String;
    pragma Warnings (On);
+   Ret         : Integer;
    Handle      : Pcap_Ptr := null;
 
    Packet      : aliased Byte_Array_Ptr;
    Header      : aliased Pcap_Packet_Header;
    Stats       : Pcap_Stat_Ptr;
    Stats_Size  : aliased Integer;
-
-   Addr : Mac_Address;
 begin
-
-   Pcap_Find_All_Devs (All_Devs'Access, Err_Buf);
-
-   Addr := Get_MAC ("", "Realtek PCIe GBE Family Controller");
-
-   for I in Addr'Range loop
-      Put (Addr (I)'Img);
-   end loop;
-   New_Line;
+   Ret := Pcap_Find_All_Devs (All_Devs'Access, Err_Buf);
 
    D := All_Devs;
    while D /= null loop
@@ -106,9 +97,9 @@ begin
 
       Stats := Pcap_Stats_Ex (Handle, Stats_Size'Access);
 
---        Put ("RX:" & Integer (Stats.all.Received)'Img);
---        Put (" DP:" & Integer (Stats.all.Dropped)'Img);
---        New_Line;
+      Put ("RX:" & Integer (Stats.all.Received)'Img);
+      Put (" DP:" & Integer (Stats.all.Dropped)'Img);
+      New_Line;
 
 --        if Packet /= null then
 --           Reply_Packet (Handle, Packet);
