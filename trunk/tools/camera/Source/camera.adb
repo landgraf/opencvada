@@ -49,10 +49,25 @@ begin
 --     Put_Line (Spec_Header.Length'Img);
 --     Spec_Header.Length := 5;
    declare
-      Raws : Raw_Ethernet_Frame_Array := Create_Raw_Frames (Image_Data,  To_Frame_Header (Image_To_Header (Image)), Ping);
-      Parsed_Frame : Parsed_Raw_Frame :=    From_Raw_Frame (Raws (Raws'First));
+      Raws : Raw_Ethernet_Frame_Array := Create_Raw_Frames (Image_Data,  To_Frame_Header (Image_To_Header (Image)), Create_Constant_Header(0,2#0000#,False,False,False,False,2#0101#,0,2#000_00000#));
+      Parsed_Frame : Parsed_Raw_Frame :=    From_Raw_Frame (Raws (Raws'First + 1));
    begin
       --     Put_Line ("frames: " & Amount_Of_Frames (Payload'Length, 8, 5)'img & Raws'Length'Img);
+      Put_Line (Parsed_Frame.Constant_Head.Seq_No'Img &
+                Parsed_Frame.Constant_Head.Length'Img &
+                Parsed_Frame.Constant_Head.Options'Img &
+                Parsed_Frame.Constant_Head.Flags'Img &
+                Parsed_Frame.Spec_Header.Length'Img &
+                Parsed_Frame.Type_Of_Frame'Img &
+                Parsed_Frame.Payload_Start'Img);
+      Parsed_Frame := From_Raw_Frame (Raws (Raws'First + 0));
+      Put_Line (Parsed_Frame.Constant_Head.Seq_No'Img &
+                Parsed_Frame.Constant_Head.Length'Img &
+                parsed_Frame.Constant_Head.Options'Img &
+                Parsed_Frame.Constant_Head.Flags'Img &
+                Parsed_Frame.Spec_Header.Length'Img &
+                Parsed_Frame.Type_Of_Frame'Img &
+                Parsed_Frame.Payload_Start'Img);
       Create (File, Out_File, "test.csv");
       for I in Raws'Range loop
          for N in Raws (I).Payload'Range loop
