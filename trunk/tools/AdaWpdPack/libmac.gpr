@@ -1,0 +1,7 @@
+project libmac is
+   for Externally_Built use "true";
+   for Source_Files use ();
+   for Library_Dir use "./WpdPack/Lib";
+   for Library_Name use "libmac";
+   for Library_Kind use "dynamic";
+end libmac;

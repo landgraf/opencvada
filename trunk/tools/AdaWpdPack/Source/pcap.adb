@@ -57,6 +57,50 @@ package body Pcap is
    end Pcap_Next;
 
 
+   function Get_MAC (Name : String;
+                     Desc : String)
+                     return Mac_Address is
+      function W_Get_Mac (Name : String;
+                          Desc : String;
+                          Addr : Mac_Address)
+                          return Integer;
+      pragma Import (C, W_Get_MAC, "GetMAC");
+
+      Ret : Integer;
+      Addr : aliased Mac_Address := (others => 16#FF#);
+   begin
+      Ret := W_Get_Mac (Null_Terminate (Name), Null_Terminate (Desc), Addr);
+
+      if Ret /= 0 then
+         Addr := (others => 16#00#);
+      end if;
+
+      return Addr;
+   end Get_MAC;
+
+   function Pcap_Find_All_Devs (P       : access Pcap_If_Ptr;
+                                Err_Buf : Pcap_Error_String)
+                                return Integer is
+      function Find_Devs (P       : access Pcap_If_Ptr;
+                          Err_Buf : Pcap_Error_String)
+                          return Integer;
+      pragma Import (C, Find_Devs, "pcap_findalldevs");
+
+      It : Pcap_If_Ptr;
+      Ret : Integer;
+   begin
+      Ret := Find_Devs (P, Err_Buf);
+      Ret := 0;
+      It := P.all;
+
+      while It /= null loop
+         Ret := Ret + 1;
+         It := It.all.Next;
+      end loop;
+
+      return Ret;
+   end Pcap_Find_All_Devs;
+
    function Null_Terminate (Str : String)
                             return String is
    begin

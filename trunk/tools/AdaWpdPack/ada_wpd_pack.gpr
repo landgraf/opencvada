@@ -1,12 +1,14 @@
 with "wpdpack_wpcap";
+with "libmac";
 
 project Ada_Wpd_Pack is
 
    for Source_Dirs use ("Source");
+--     for Source_Dirs use ("Source", "Source/C");
    for Object_Dir use "Build";
    for Exec_Dir use "Exec";
    for Languages use ("Ada");
-   --for Languages use ("Ada", "C");
+--     for Languages use ("Ada", "C");
 
    package Builder is
       for Default_Switches ("ada") use ("-s", "-m");

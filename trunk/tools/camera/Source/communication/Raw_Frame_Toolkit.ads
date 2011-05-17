@@ -4,8 +4,8 @@
 --
 --
 with Interfaces; use Interfaces;
-with Imperium_Protocol;
-use Imperium_Protocol;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Imperium_Protocol; use Imperium_Protocol;
 with Pcap; use Pcap;
 -- Communication package Defero
 package Raw_Frame_Toolkit is
@@ -14,7 +14,7 @@ package Raw_Frame_Toolkit is
    -------------------------
    -- Raw Ethernet header --
    -------------------------
-   type Mac_Address is array (Integer range 0 .. 5) of Unsigned_8;
+--     type Mac_Address is array (Integer range 0 .. 5) of Unsigned_8;
    type Packet_Type_Id is array (Integer range 0 .. 1) of Unsigned_8;
 
    type Raw_Frame_Header is
@@ -98,7 +98,7 @@ package Raw_Frame_Toolkit is
                              Offset : Integer := 0)
                              return Image_Header;
 
------------------------------------------------------------------------------
+   -----------------------------------------------------------------------------
    -- Raw Ethernet function stuff
    -----------------------------------------------------------------------------
    -- Describes what type of device this is.
@@ -123,8 +123,8 @@ package Raw_Frame_Toolkit is
    type Client_Info is record
       Device      : Device_Info;
       Prot_Ver    : Protocol_Version := 0;
-      Device_Name : String (1 .. 17) := "FF-FF-FF-FF-FF-FF";
-      Device_Addr : Mac_Address := (others => 16#FF#);
+      Device_Name : Unbounded_String := Null_Unbounded_String;
+      Device_Addr : Mac_Address := (others => 16#00#);
    end record;
 
    type Client_Info_Array is array (Integer range <>) of Client_Info;
