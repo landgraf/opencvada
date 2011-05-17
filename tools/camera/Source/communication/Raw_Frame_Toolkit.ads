@@ -119,6 +119,10 @@ package Raw_Frame_Toolkit is
 
 --     function Discover (Handle : Pcap_Ptr)
 --                        return Client_Info_Array;
+
+
+
+   function To_Frame_Header (Src : Constant_Header) return Frame_Header;
 private
 --     function Create_Broadcast_Client_Info return Client_Info;
 

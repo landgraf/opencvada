@@ -188,7 +188,7 @@ package body Imperium_Plures_Supplicium is
                   -- wrong package
                   -- we got a new package HOLD!
                   raise Package_Buffer_Cant_Add;
-               elsif not (Integer (Frame.Constant_Head.Seq_No) >= Length) then
+               elsif not (Integer (Frame.Constant_Head.Seq_No) > Length) then
                   -- package problem
                   raise Package_Buffer_Logic;
                else
@@ -204,7 +204,14 @@ package body Imperium_Plures_Supplicium is
                   Package_Exists (Frame, Position, Package_Pre_Existing);
                   if Package_Pre_Existing then
                      -- put it into the vector
-                     null;
+                     if not (Parsed_Vector.Element (Data_Buffer, Buffer_Index (Position)).Length < Integer (Frame.Constant_Head.Seq_No)) then
+                        -- old stuff
+                        raise Package_Buffer_Logic;
+                     else
+                        -- Should Add To Vector Now
+--                          Parsed_Vector.Element (Data_Buffer, Buffer_Index (Position)).Length := Parsed_Vector.Element (Data_Buffer, Buffer_Index (Position)).Length + 1;
+                        null;
+                     end if;
                   else
                      -- create a new vector post
                      declare
@@ -214,6 +221,7 @@ package body Imperium_Plures_Supplicium is
                         New_Element.Length := 0;
                         Parsed_Vector.Append (Container => Data_Buffer,
                                               New_Item  => New_Element);
+                        Update_Full_Package (Frame.Constant_Head.Eof, False);
                      end;
                   end if;
                end;
