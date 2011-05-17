@@ -105,7 +105,18 @@ package body Raw_Frame_Toolkit is
                                Spec_Header     : Frame_Header := ((others => 0), Length => 0);
                                Constant_Head   : Constant_Header;
                                Frame_Size      : Integer := 1500) return Raw_Ethernet_Frame_Array is
-      Frames        : Raw_Ethernet_Frame_Array (0 .. Amount_Of_Frames (Data'Length, Spec_Header.Length, To_Frame_Header (Constant_Head).Length) -1);
+      -- DONT LOOK AT ME!
+      function Im_Tired_Of_This_Shit return Integer is
+         Temp : Integer := To_Frame_Header (Constant_Head).Length;
+      begin
+--           Put_Line("Im_Tired_Of_This_Shit" & Temp'Img & Spec_Header.Length'Img);
+         if Constant_Head.Flags = 2#0101# then
+            Temp := Temp + 1;
+         end if;
+         return Amount_Of_Frames (Data'Length, Spec_Header.Length, Temp) -1;
+      end Im_Tired_Of_This_Shit;
+      -- code starts here promise
+      Frames        : Raw_Ethernet_Frame_Array (0 .. Im_Tired_Of_This_Shit);
       Spec_Set      : Boolean := False;
       Next_Data     : Integer := 0;
       Next_Pos      : Integer := 0;
@@ -118,9 +129,19 @@ package body Raw_Frame_Toolkit is
          Next_Pos := 0;
          Header_Length := 0;
          C_Head.Seq_No := Unsigned_16 (I);
-         Frames (I).Payload (Next_Pos .. To_Frame_Header (C_Head).Length - 1) := To_Frame_Header (C_Head).Data (0 .. To_Frame_Header (C_Head).Length - 1);
-         Next_Pos := To_Frame_Header (C_Head).Length;
-         Header_Length := To_Frame_Header (C_Head).Length;
+         -- data headers are bigger
+         -- who ever got this idea is gonna get it i promise!
+         if C_Head.Flags = 2#0101# then
+            Frames (I).Payload (Next_Pos .. To_Frame_Header (C_Head).Length) := To_Frame_Header (C_Head).Data (0 .. To_Frame_Header (C_Head).Length);
+            Next_Pos := To_Frame_Header (C_Head).Length + 1;
+            Header_Length := To_Frame_Header (C_Head).Length + 1;
+--              Put_Line("c_head:" & Next_Pos'Img & Header_Length'Img);
+         else
+            Frames (I).Payload (Next_Pos .. To_Frame_Header (C_Head).Length - 1) := To_Frame_Header (C_Head).Data (0 .. To_Frame_Header (C_Head).Length - 1);
+            Next_Pos := To_Frame_Header (C_Head).Length;
+            Header_Length := To_Frame_Header (C_Head).Length;
+         end if;
+
          if not Spec_Set then
             Frames (I).Payload (Next_Pos .. (Header_Length + Spec_Header.Length) - 1) := Spec_Header.Data (0 .. Spec_Header.Length - 1);
             Next_Pos := Header_Length + Spec_Header.Length;
@@ -132,6 +153,12 @@ package body Raw_Frame_Toolkit is
             Frames (I).Payload (Next_Pos .. Frames (I).Payload'Last) := Data (Next_Data .. Test_Val - 1);
             Next_Data := (Next_Data + (Frame_Size - Header_Length));
          else
+--              declare
+--                 Temp_Int : Integer := (Next_Pos + Data'Last - Next_Data) - Next_Pos;
+--                 Temp_Int2 : Integer := Data'Last - Next_Data;
+--              begin
+--                 Put_Line (Temp_Int'Img & Temp_Int2'Img);
+--              end;
             Frames (I).Payload (Next_Pos .. Next_Pos + Data'Last - Next_Data ) := Data (Next_Data .. Data'Last);
             Frames (I).Length := 0;
             if (Data'Last - Next_Data + Header_Length) >= 46 then
@@ -216,9 +243,11 @@ package body Raw_Frame_Toolkit is
          begin
             Temp_Header.Length := Length;
             for I in Integer range 0 .. Length - 1 loop
-               Temp_Header.Data (I) := 1;--src.Payload (Src.Payload'First + I);
+               Temp_Header.Data (I) := Src.Payload (Src.Payload'First + I);
             end loop;
-            Temp.Constant_Head := Frame_To_Constant_Header(Temp_Header);
+--              Put_Line (Temp_Header.Data (1)'Img & Length'Img);
+            Temp.Constant_Head := Frame_To_Constant_Header (Temp_Header,5);
+--              Put_Line (Temp.Constant_Head.Flags 'Img);
          end;
          -- what type of frame do we have?
          case (temp.Constant_Head.Flags) is
@@ -233,6 +262,9 @@ package body Raw_Frame_Toolkit is
                -- config frame
                Temp.Type_Of_Frame := Config_Frame;
             when 2#0101# =>
+               -- data frame headers are longer
+               Temp.Constant_Head.Options := Src.Payload (Src.Payload'First + Length);
+               Length := Length + 1;
                -- data frame *find out more*
                declare
                   Temp_Option : Unsigned_8 := 2#0000_0000#;
@@ -270,12 +302,14 @@ package body Raw_Frame_Toolkit is
             if not (Size_Of_Headers (Temp.Type_Of_Frame) = 0) then
                -- we have a spec header!
                Temp.Spec_Header.Length := Size_Of_Headers (Temp.Type_Of_Frame); -- set length
-               Temp.Spec_Header.Data (0 .. Temp.Spec_Header.Length) := Temp.Raw_Frame.Payload (Temp.Raw_Frame.Payload'First + Length .. (Temp.Raw_Frame.Payload'First + Temp.Spec_Header.Length + Length) -1);
+--                 Put_Line("spec_length" & Size_Of_Headers (Temp.Type_Of_Frame)'img & Temp.Type_Of_Frame'Img);
+               Temp.Spec_Header.Data (0 .. Temp.Spec_Header.Length - 1) := Temp.Raw_Frame.Payload (Temp.Raw_Frame.Payload'First + Length .. (Temp.Raw_Frame.Payload'First + Temp.Spec_Header.Length + Length) -1);
                Temp.Payload_Start := (Temp.Raw_Frame.Payload'First + Temp.Spec_Header.Length + Length);
             elsif (Size_Of_Headers (Temp.Type_Of_Frame) = -1) then
                goto Is_Not_A_Frame;
             else
                -- no spec header for this type
+               Temp.Spec_Header.Length := 0;
                null;
             end if;
          else
