@@ -9,7 +9,7 @@ project Camera is
    --for Main use ("main.adb");
 
    for Languages use ("Ada");
-   for Main use ("camera.adb");
+   for Main use ("camera.adb", "video_fictus.adb");
 
    package Compiler is
       for Default_Switches ("ada") use ("-gnat05", "-gnatf");

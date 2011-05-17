@@ -4,7 +4,7 @@
 with Ada.Containers.Vectors;
 with Raw_Frame_Toolkit; use Raw_Frame_Toolkit;
 with Ada.Exceptions;
-
+with Interfaces; use Interfaces;
 package Imperium_Plures_Supplicium is
    -- Semaphore
    protected type Semaphore is
@@ -50,6 +50,7 @@ package Imperium_Plures_Supplicium is
 
    Package_Buffer_Overflow : exception;
    Package_Buffer_Logic : exception;
+   Package_Buffer_Cant_Add : exception;
 
    protected type Package_Buffer is
 --        procedure Create_Package (Position : out Integer);
@@ -72,8 +73,7 @@ package Imperium_Plures_Supplicium is
       --------------------------------------------------------------------------
       -- Adds frame to last spot in specified buffer.
       procedure Add_Frame (Buffer          : in Buffer_Type;
-                           Frame           : in Parsed_Raw_Frame;
-                           Vector_Position : in Integer := 0);
+                           Frame           : in Parsed_Raw_Frame);
       -- Figures out by itself where to add the frame.
       procedure Smart_Add_Frame (Frame : in Parsed_Raw_Frame);
       -- Adds a frame to a very specific position /needs two maybe/
