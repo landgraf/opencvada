@@ -29,11 +29,12 @@ package Raw_Frame_Toolkit is
    ---------------------------
    -- Raw Ethernet frame structure
    -----------------------------------------------------
+   Raw_Ethernet_Max_Frame : constant Integer := 1500;
    type Raw_Ethernet_Frame is
       record
          Raw_Header : Raw_Frame_Header;
-         Payload    : Frame_Data (0 .. 1499) := (others => 0);
-         Length     : Integer := 1500;
+         Payload    : Frame_Data (0 .. Raw_Ethernet_Max_Frame - 1) := (others => 0);
+         Length     : Integer := Raw_Ethernet_Max_Frame;
       end record;
 
    type Raw_Ethernet_Frame_Array is array (Integer range <>) of Raw_Ethernet_Frame;

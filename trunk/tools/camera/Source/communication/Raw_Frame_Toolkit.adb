@@ -181,21 +181,21 @@ package body Raw_Frame_Toolkit is
    -- Converts Constant_Header to defero Frame_Header
    function To_Frame_Header (Src : Constant_Header) return Frame_Header is
       Dest : Frame_Header;
-      Temp : Frame_Data (0 .. 19);
+      Temp : Frame_Data (0 .. Const_Header_Max_Size-1);
       for Temp'Address use Src'Address;
    begin
       Dest.Data := Temp;
       Dest.Length := Integer (Src.Length) + Const_Header_Size;
-      if Src.Flags = 2#1111# or Src.Flags = 2#0101# then
-         Dest.Length := Dest.Length;
-      end if;
+--        if Src.Flags = 2#1111# or Src.Flags = 2#0101# then
+--           Dest.Length := Dest.Length + Const_Header_Opt_Length;
+--        end if;
       return Dest;
    end To_Frame_Header;
 
 -- converts a raw_ethernet_frame to a parsed one with more information
    function From_Raw_Frame (Src : Raw_Ethernet_Frame) return Parsed_Raw_Frame is
       Temp : Parsed_Raw_Frame;
-      Length : Integer := 5;
+      Length : Integer := Const_Header_Size;
    begin
       Temp.Raw_Frame := Src;
 

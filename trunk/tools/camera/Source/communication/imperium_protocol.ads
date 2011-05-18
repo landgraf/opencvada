@@ -14,22 +14,6 @@ package Imperium_Protocol is
    Null_Frame_Data : constant Frame_Data (1 .. 0) := (others => 0);
 
    -----------------------------------------------------------------------------
-   -- Extra header for frames
-   -----------------------------------------------------------------------------
-   type Frame_Header is
-      record
-         Data   : Frame_Data (0 .. 19);
-         Length : Integer := 5;
-      end record;
-
-   -----------------------------------------------------------------------------
-   -- Headers, sizes and things
-   -----------------------------------------------------------------------------
-   type Spec_Frames_List is (Array_Frame, Config_Frame, Image_Frame, Matrix_Frame, Memory_Frame, Control_Frame, Other, Not_A_Frame);
-   -- change me, if you change something!
-   Size_Of_Headers : array (Spec_Frames_List'Range) of Integer := (6,5,5,6,9,0,0,-1);
-
-   -----------------------------------------------------------------------------
    -- Constant header
    -----------------------------------------------------------------------------
    subtype Header_Version is Unsigned_8 range 0 .. 15;
@@ -143,6 +127,14 @@ package Imperium_Protocol is
                                     Options     : Header_Options := 0;
                                     Data        : Header_Data := Null_Header_Data)
                                     return Constant_Header;
+   -----------------------------------------------------------------------------
+   -- Extra header for frames
+   -----------------------------------------------------------------------------
+   type Frame_Header is
+      record
+         Data   : Frame_Data (0 .. Const_Header_Max_Size-1);
+         Length : Integer :=  Const_Header_Size;
+      end record;
 
    -----------------------------------------------------------------------------
    -- Specific constant header creators
@@ -301,8 +293,8 @@ package Imperium_Protocol is
      new Generic_To_Generic (Array_Header, Frame_Header);
    function Config_To_Frame_Header is
      new Generic_To_Generic (Config_Header, Frame_Header);
---     function Constant_To_Frame_Header is
---       new Generic_To_Generic (Constant_Header, Frame_Header);
+   --     function Constant_To_Frame_Header is
+   --       new Generic_To_Generic (Constant_Header, Frame_Header);
    function Image_To_Frame_Header is
      new Generic_To_Generic (Image_Header, Frame_Header);
    function Matrix_To_Frame_Header is
@@ -322,4 +314,12 @@ package Imperium_Protocol is
      new Generic_To_Generic (Frame_Header, Matrix_Header);
    function Frame_To_Memory_Header is
      new Generic_To_Generic (Frame_Header, Memory_Header);
+
+   -----------------------------------------------------------------------------
+   -- Headers, sizes and things
+   -----------------------------------------------------------------------------
+   type Spec_Frames_List is (Array_Frame, Config_Frame, Image_Frame, Matrix_Frame, Memory_Frame, Control_Frame, Other, Not_A_Frame);
+   -- change me, if you change something!
+   Size_Of_Headers : array (Spec_Frames_List'Range) of Integer := (Array_Header_Size, Config_Header_Size, Image_Header_Size, Matrix_Header_Size, Memory_Header_Size, 0, 0, -1);
+
 end Imperium_Protocol;
