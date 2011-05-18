@@ -282,6 +282,7 @@ package body Raw_Frame_Toolkit is
             else
                -- no spec header for this type
                Temp.Spec_Header.Length := 0;
+               Temp.Payload_Start := Length
                null;
             end if;
          else
