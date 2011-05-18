@@ -7,6 +7,8 @@ with Interfaces; use Interfaces;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Imperium_Protocol; use Imperium_Protocol;
 with Pcap; use Pcap;
+with Ada.Containers.Vectors;
+
 -- Communication package Defero
 package Raw_Frame_Toolkit is
 --
@@ -64,6 +66,11 @@ package Raw_Frame_Toolkit is
    -- Implementation specific
    -------------------------------------
 
+   function To_Byte_Array (Dest  : Mac_Address;
+                           Src   : Mac_Address;
+                           Frame : Raw_Ethernet_Frame)
+                           return Byte_Array;
+
    --* Creates a series of Raw Ethernet frames from a frame_data structure
    function Create_Raw_Frames (Data                 : Frame_Data;
                                Spec_Header          : Frame_Header := ((others => 0), Length => 0);
@@ -110,6 +117,9 @@ package Raw_Frame_Toolkit is
       Device_Name : Unbounded_String := Null_Unbounded_String;
       Device_Addr : Mac_Address := (others => 16#00#);
    end record;
+
+   package Client_Info_Vector_Pkg is new Ada.Containers.Vectors (Natural, Client_Info);
+   subtype Client_Info_Vector is Client_Info_Vector_Pkg.Vector;
 
    type Client_Info_Array is array (Integer range <>) of Client_Info;
 

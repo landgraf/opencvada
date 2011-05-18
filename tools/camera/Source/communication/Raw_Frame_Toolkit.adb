@@ -185,9 +185,9 @@ package body Raw_Frame_Toolkit is
       for Temp'Address use Src'Address;
    begin
       Dest.Data := Temp;
-      Dest.Length := Integer (Src.Length) + Const_Header_Min_Length;
+      Dest.Length := Integer (Src.Length) + Const_Header_Size;
       if Src.Flags = 2#1111# or Src.Flags = 2#0101# then
-         Dest.Length := Dest.Length + Const_Header_Opt_Length;
+         Dest.Length := Dest.Length;
       end if;
       return Dest;
    end To_Frame_Header;
@@ -282,7 +282,7 @@ package body Raw_Frame_Toolkit is
             else
                -- no spec header for this type
                Temp.Spec_Header.Length := 0;
-               Temp.Payload_Start := Length
+               Temp.Payload_Start := Length;
                null;
             end if;
          else
@@ -326,4 +326,19 @@ package body Raw_Frame_Toolkit is
    begin
       return Device.Data_Types(T);
    end Is_Supported_Data_Type;
+
+   function To_Byte_Array (Dest  : Mac_Address;
+                           Src   : Mac_Address;
+                           Frame : Raw_Ethernet_Frame)
+                           return Byte_Array is
+      Data : Byte_Array (0 .. 13 + Frame.Length);
+   begin
+      Data (0 .. 5) := Byte_Array (Dest);
+      Data (6 .. 11) := Byte_Array (Src);
+      Data (12) := Shift_Right (Unsigned_8 (Frame.Length), 8);
+      Data (13) := Unsigned_8 (Frame.Length) and 16#FF#;
+      Data (14 .. Data'Last) := Frame.Payload (Frame.Payload'First .. Frame.Length - 1);
+
+      return Data;
+   end To_Byte_Array;
 end Raw_Frame_Toolkit;

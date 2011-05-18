@@ -1,4 +1,5 @@
 
+
 package body Ethernet_Internal is
    function Get_NICs return NIC_Info_Array is
       All_Devs  : aliased Pcap_If_Ptr;
@@ -20,9 +21,61 @@ package body Ethernet_Internal is
       return Names;
    end Get_NICs;
 
-   function Discover (Nic : NIC_Info) return RFT.Client_Info_Array is
-      Clients : RFT.Client_Info_Array (1 .. 0);
+   function Find_NIC (Nics  : NIC_Info_Array;
+                      Query : String)
+                      return Integer is
+      Result : Integer := -1;
    begin
+      for I in Nics'Range loop
+         if Nics (I).Name = Query or To_String (Nics (I).Desc) = Query then
+            Result := I;
+            exit;
+         end if;
+      end loop;
+
+      return Result;
+   end Find_NIC;
+
+   function Discover (Nic : NIC_Info) return RFT.Client_Info_Vector is
+      Clients   : RFT.Client_Info_Vector;
+      Header    : Constant_Header := Create_Constant_Header (Flags  => Flag_Handshake,
+                                                             Length => 4,
+                                                             Req    => True,
+                                                             Eof    => True,
+                                                             Data   => (2#01101101#, others => 16#00#));
+
+      Data      : Frame_Data (0 .. 100) := (others => 16#B7#);
+      Frames    : Raw_Ethernet_Frame_Array := Create_Raw_Frames (Constant_Head => Header,
+                                                                 Data          => Data);
+      Parsed_Frame : Parsed_Raw_Frame :=    From_Raw_Frame (Frames (Frames'First));
+      Ret       : Integer;
+      Broadcast : Mac_Address := (others => 16#FF#);
+      Source    : Mac_Address := Nic.MAC;
+      Broadcast_Info : Client_Info := Create_Broadcast_Client (Nic);
+   begin
+      Clients.Append (Broadcast_Info);
+      Put_Line ("Sending crap");
+      for I in Broadcast'Range loop
+         Put (To_Hex (Broadcast (I)) & " ");
+      end loop;
+      New_Line;
+      for I in Broadcast'Range loop
+         Put (To_Hex (Source (I)) & " ");
+      end loop;
+      New_Line;
+      Put_Line ("Frames length:" & Frames'Length'Img);
+      Put_Line (Parsed_Frame.Constant_Head.Seq_No'Img &
+                Parsed_Frame.Constant_Head.Length'Img &
+                Parsed_Frame.Constant_Head.Options'Img &
+                Parsed_Frame.Constant_Head.Flags'Img &
+                Parsed_Frame.Spec_Header.Length'Img &
+                Parsed_Frame.Type_Of_Frame'Img &
+                Parsed_Frame.Payload_Start'Img);
+      Ret := Pcap.Pcap_Send_Packet (Nic.Handle,
+                                    To_Byte_Array (Broadcast, Source, Frames (Frames'First)),
+                                    Frames (Frames'First).Length);
+      Put_Line ("send_packet:" & Ret'Img);
+
       return Clients;
    end Discover;
 
@@ -38,18 +91,23 @@ package body Ethernet_Internal is
    end Open;
 
    function Handshake (Nic : NIC_Info) return RFT.Client_Info is
+      pragma Warnings (Off);
       Client : RFT.Client_Info;
+      pragma Warnings (On);
    begin
       return Client;
    end Handshake;
 
    procedure Print_NIC (Nic : NIC_Info) is
    begin
-      Put_Line ("Name:" & Nic.Name);
-      Put_Line ("Desc:" & To_String (Nic.Desc));
-      Put ("MAC:");
+      Put_Line ("Name: " & Nic.Name);
+      Put_Line ("Desc: " & To_String (Nic.Desc));
+      Put ("MAC: ");
       for I in Nic.MAC'Range loop
-         Put (Item => Integer (Nic.MAC (I)), Base => 16);
+         Put (To_Hex (Nic.Mac (I)));
+         if I < Nic.MAC'Last then
+            Put ("-");
+         end if;
       end loop;
       New_Line;
    end Print_NIC;
@@ -80,4 +138,24 @@ package body Ethernet_Internal is
 
       return Client;
    end Create_Client_Info;
+
+   function To_Hex (Value : Unsigned_8) return Hex_Byte is
+      Hex    : Hex_Byte;
+      First  : Unsigned_8 := Shift_Right (Value, 4);
+      Second : Unsigned_8 := Value and Unsigned_8 (16#F#);
+   begin
+      if First < 10 then
+         Hex (1) := Character'Val (First + Character'Pos ('0'));
+      else
+         Hex (1) := Character'Val (First + Character'Pos ('A') - 10);
+      end if;
+
+      if Second < 10 then
+         Hex (2) := Character'Val (Second + Character'Pos ('0'));
+      else
+         Hex (2) := Character'Val (Second + Character'Pos ('A') - 10);
+      end if;
+
+      return Hex;
+   end To_Hex;
 end Ethernet_Internal;

@@ -42,7 +42,7 @@ procedure Camera is
 
    Payload : Frame_Data := Nej_Nej (Pelle);
    Null_Load : Frame_Data (0 .. 0) := (others => 0);
-   Raws2 : Raw_Ethernet_Frame_Array := Create_Raw_Frames (Null_Load, Constant_Head => Ping, Frame_Size => 4);
+   Raws2 : Raw_Ethernet_Frame_Array := Create_Raw_Frames (Null_Load, Constant_Head => Ping, Frame_Size => 46);
    File : File_Type;
 
    Image : aliased Core.Ipl_Image_Ptr := Highgui.Cv_Load_Image ("./WP_Emrakul_1280x1024.jpg");
@@ -51,22 +51,22 @@ procedure Camera is
    Spec_Header : Frame_Header := To_Frame_Header (Image_To_Header (Image));
 
    NIC_Names : NIC_Info_Array := Get_NICs;
+   Clients   : Client_Info_Vector;
 begin
    for I in Nic_Names'Range loop
       Print_NIC (Nic_Names (I));
---        Put_Line (Nic_Names (I).Name & Ascii.Ht & To_String (Nic_Names (I).Desc));
---        for J in Nic_Names (I).MAC'Range loop
---           Put (Nic_Names (I).MAC (J)'Img);
---        end loop;
---        New_Line;
       Ethernet_Internal.Open (Nic_Names (I));
       if Nic_Names (I).Handle /= null then
-         Put_Line ("NIC open");
+         Put("NIC open");
       else
-         Put_Line ("NIC failed to open");
+         Put("NIC failed to open");
       end if;
-      Ethernet_Internal.Close (Nic_Names (I));
+      New_Line (2);
+--        Ethernet_Internal.Close (Nic_Names (I));
    end loop;
+
+   Clients := Discover (Nic_Names (Find_NIC (Nic_Names, "Realtek PCIe GBE Family Controller")));
+
 --     Put_Line (Spec_Header.Length'Img);
 --     Spec_Header.Length := 5;
    declare
