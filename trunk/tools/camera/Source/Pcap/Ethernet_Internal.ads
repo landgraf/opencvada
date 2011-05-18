@@ -2,11 +2,13 @@
 with Pcap; use Pcap;
 with Raw_Frame_Toolkit;
 with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Integer_Text_Io; use Ada.Integer_Text_Io;
+with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with Interfaces; use Interfaces;
+with Imperium_Protocol; use Imperium_Protocol;
+with Raw_Frame_Toolkit; use Raw_Frame_Toolkit;
 
 package Ethernet_Internal is
    package RFT renames Raw_Frame_Toolkit;
@@ -35,9 +37,13 @@ package Ethernet_Internal is
    -- each found NIC.
    function Get_NICs return NIC_Info_Array;
 
+   function Find_NIC (Nics  : NIC_Info_Array;
+                      Query : String)
+                      return Integer;
+
    -- Broadcasts a handshake frame and generates a list of possible devices to
    -- communicate with along with the devices information.
-   function Discover (Nic : NIC_Info) return RFT.Client_Info_Array;
+   function Discover (Nic : NIC_Info) return RFT.Client_Info_Vector;
 
    -- Close a handle to a NIC.
    procedure Close (Nic : in out NIC_Info);
@@ -45,7 +51,14 @@ package Ethernet_Internal is
    -- Open a handle to a NIC.
    procedure Open (Nic : in out NIC_Info);
 
+   -- Prints out information about a NIC.
+   -- output has the form:
+   -- Name: <Hardware name of the NIC>
+   -- Desc: <Description from the NIC>
+   -- MAC: <MAC address of the NIC>
    procedure Print_NIC (Nic : NIC_Info);
+
+
 private
    Pcap_Nic_Name_Prefix : constant String := "\Device\NPF_";
 
@@ -60,4 +73,7 @@ private
                                 return RFT.Client_Info;
 
    function Create_Broadcast_Client (Nic : NIC_Info) return RFT.Client_Info;
+
+   subtype Hex_Byte is String (1 .. 2);
+   function To_Hex (Value : Unsigned_8) return Hex_Byte;
 end Ethernet_Internal;

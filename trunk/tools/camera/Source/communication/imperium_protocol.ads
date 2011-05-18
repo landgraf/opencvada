@@ -1,13 +1,17 @@
 --
 with Interfaces; use Interfaces;
 with Generic_Toolkit; use Generic_Toolkit;
+with Pcap; use Pcap;
+
 package Imperium_Protocol is
 --
 
    -------------------------
    -- Raw Data --
    -------------------------
-   type Frame_Data is array (Integer range <> ) of Unsigned_8;
+--     type Frame_Data is array (Integer range <> ) of Unsigned_8;
+   subtype Frame_Data is Pcap.Byte_Array;
+   Null_Frame_Data : constant Frame_Data (1 .. 0) := (others => 0);
 
    -----------------------------------------------------------------------------
    -- Extra header for frames
@@ -53,13 +57,25 @@ package Imperium_Protocol is
    for Header_Mem_Addr'Component_Size use 32;
    for Header_Mem_Addr'Size use 32;
 
+   -- Offsets in bits for different parts of the constant header.
+   Offset_Header_Version : constant := 0;
+   Offset_Header_Length  : constant := 4;
+   Offset_Ack            : constant := 8;
+   Offset_Nak            : constant := 9;
+   Offset_Eof            : constant := 10;
+   Offset_Req            : constant := 11;
+   Offset_Flags          : constant := 12;
+   Offset_Seq_No         : constant := 16;
+   Offset_Package_Seq    : constant := 32;
+   Offset_Options        : constant := 40;
+   Offset_Data           : constant := 48;
 
-   Const_Header_Min_Length : constant := 4;
-   Const_Header_Opt_Length : constant := 1;
+   Const_Header_Size     : constant := 6;
+   Const_Header_Max_Size : constant := Const_Header_Size + Header_Length'Last;
 
-   Image_Header_Size : constant := 5;
+   Image_Header_Size  : constant := 5;
    Matrix_Header_Size : constant := 6;
-   Array_Header_Size : constant := 6;
+   Array_Header_Size  : constant := 6;
    Config_Header_Size : constant := 5;
    Memory_Header_Size : constant := 9;
 
@@ -72,6 +88,15 @@ package Imperium_Protocol is
    Color_30_Bit : constant Header_Color_Depth := 2#0101#; -- 30 bit color (10, 10, 10)
    Color_36_Bit : constant Header_Color_Depth := 2#0110#; -- 36 bit color (12, 12, 12)
    Color_48_Bit : constant Header_Color_Depth := 2#0111#; -- 48 bit color (16, 16, 16)
+
+   Flag_None      : constant Header_Flags := 0;
+   Flag_Ping      : constant Header_Flags := 1;
+   Flag_Configure : constant Header_Flags := 2;
+   Flag_Handshake : constant Header_Flags := 3;
+   Flag_Subscribe : constant Header_Flags := 4;
+   Flag_Data      : constant Header_Flags := 5;
+   Flag_Memory    : constant Header_Flags := 6;
+   Flag_Extended  : constant Header_Flags := 15;
 
    type Constant_Header is
       record
@@ -90,7 +115,7 @@ package Imperium_Protocol is
 
    for Constant_Header use
       record
-         Version at 0 range 0 .. 3;
+         Version at 0 range Offset_Header_Version .. 3;
          Length at 0 range 4 .. 7;
          Ack at 0 range 8 .. 8;
          Nak at 0 range 9 .. 9;
