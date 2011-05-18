@@ -1,7 +1,7 @@
 --
 with Interfaces; use Interfaces;
 with Interfaces.C;
-with Ada.Text_Io; use Ada.Text_Io;
+--  with Ada.Text_Io; use Ada.Text_Io;
 with Raw_Frame_Toolkit; use Raw_Frame_Toolkit;
 --
 package body OpenCvAda_Camera_API is
