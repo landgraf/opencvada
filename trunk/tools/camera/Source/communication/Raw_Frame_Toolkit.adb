@@ -304,8 +304,8 @@ package body Raw_Frame_Toolkit is
    begin
       Data (0 .. 5) := Byte_Array (Dest);
       Data (6 .. 11) := Byte_Array (Src);
-      Data (12) := Shift_Right (Unsigned_8 (Frame.Length), 8);
-      Data (13) := Unsigned_8 (Frame.Length) and 16#Ff#;
+      Data (12) := Unsigned_8 (Shift_Right (Unsigned_16 (Frame.Length), 8));
+      Data (13) := Unsigned_8 (Unsigned_16 (Frame.Length) and 16#FF#);
       Data (14 .. Data'Last) := Frame.Payload (Frame.Payload'First .. Frame.Length - 1);
 
       return Data;

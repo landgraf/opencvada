@@ -5,6 +5,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Exceptions; use Ada.Exceptions;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with Interfaces; use Interfaces;
 with Imperium_Protocol; use Imperium_Protocol;
@@ -12,6 +13,8 @@ with Raw_Frame_Toolkit; use Raw_Frame_Toolkit;
 
 package Ethernet_Internal is
    package RFT renames Raw_Frame_Toolkit;
+
+   Pcap_Handle_Null : exception;
 
    NIC_Name_Length : constant Integer := 38;
 
@@ -41,6 +44,10 @@ package Ethernet_Internal is
                       Query : String)
                       return Integer;
 
+   function Find_NIC (Nics  : NIC_Info_Array;
+                      Query : String)
+                      return NIC_Info;
+
    -- Broadcasts a handshake frame and generates a list of possible devices to
    -- communicate with along with the devices information.
    function Discover (Nic : NIC_Info) return RFT.Client_Info_Vector;
@@ -50,6 +57,17 @@ package Ethernet_Internal is
 
    -- Open a handle to a NIC.
    procedure Open (Nic : in out NIC_Info);
+
+   procedure Send (Handle : Pcap_Ptr;
+                   Source : Mac_Address;
+                   Dest   : Mac_Address;
+                   Frame  : Raw_Ethernet_Frame);
+
+   procedure Send (Handle : Pcap_Ptr;
+                   Source : Mac_Address;
+                   Dest   : Mac_Address;
+                   Frames : Raw_Ethernet_Frame_Array);
+
 
    -- Prints out information about a NIC.
    -- output has the form:

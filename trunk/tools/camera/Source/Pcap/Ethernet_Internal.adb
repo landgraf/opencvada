@@ -36,6 +36,21 @@ package body Ethernet_Internal is
       return Result;
    end Find_NIC;
 
+   function Find_NIC (Nics  : NIC_Info_Array;
+                      Query : String)
+                      return NIC_Info is
+      NIC : Nic_Info;
+   begin
+      for I in Nics'Range loop
+         if Nics (I).Name = Query or To_String (Nics (I).Desc) = Query then
+            NIC := Nics (I);
+            exit;
+         end if;
+      end loop;
+
+      return NIC;
+   end Find_NIC;
+
    function Discover (Nic : NIC_Info) return RFT.Client_Info_Vector is
       Clients   : RFT.Client_Info_Vector;
       Header    : Constant_Header := Create_Constant_Header (Flags  => Flag_Handshake,
@@ -53,36 +68,43 @@ package body Ethernet_Internal is
       Source    : Mac_Address := Nic.MAC;
       Broadcast_Info : Client_Info := Create_Broadcast_Client (Nic);
    begin
+      if Nic.Handle = null then
+         raise Pcap_Handle_Null;
+      end if;
+
       Clients.Append (Broadcast_Info);
-      Put_Line ("Sending crap");
-      for I in Broadcast'Range loop
-         Put (To_Hex (Broadcast (I)) & " ");
-      end loop;
-      New_Line;
-      for I in Broadcast'Range loop
-         Put (To_Hex (Source (I)) & " ");
-      end loop;
-      New_Line;
-      Put_Line ("Frames length:" & Frames'Length'Img);
-      Put_Line (Parsed_Frame.Constant_Head.Seq_No'Img &
-                Parsed_Frame.Constant_Head.Length'Img &
-                Parsed_Frame.Constant_Head.Options'Img &
-                Parsed_Frame.Constant_Head.Flags'Img &
-                Parsed_Frame.Spec_Header.Length'Img &
-                Parsed_Frame.Type_Of_Frame'Img &
-                Parsed_Frame.Payload_Start'Img &
-                Parsed_Frame.Raw_Frame.Length'Img);
+
       Ret := Pcap.Pcap_Send_Packet (Nic.Handle,
                                     To_Byte_Array (Broadcast, Source, Frames (Frames'First)),
-                                    Frames (Frames'First).Length);
-      Put_Line ("send_packet:" & Ret'Img);
+                                    Frames (Frames'First).Length + 14);
 
       return Clients;
    end Discover;
 
+   procedure Send (Handle : Pcap_Ptr;
+                   Source : Mac_Address;
+                   Dest   : Mac_Address;
+                   Frame  : Raw_Ethernet_Frame) is
+      Result : Integer;
+   begin
+      Result := Pcap.Pcap_Send_Packet (Handle, To_Byte_Array (Dest, Source, Frame), Frame.Length + 14);
+   end Send;
+
+   procedure Send (Handle : Pcap_Ptr;
+                   Source : Mac_Address;
+                   Dest   : Mac_Address;
+                   Frames : Raw_Ethernet_Frame_Array) is
+   begin
+      for I in Frames'Range loop
+         Put_Line ("Sending frame #" & I'Img);
+         Send (Handle, Source, Dest, Frames (I));
+      end loop;
+   end Send;
+
    procedure Close (Nic : in out NIC_Info) is
    begin
       Pcap_Close (Nic.Handle);
+      Nic.Handle := null;
    end Close;
 
    procedure Open (Nic : in out NIC_Info) is
