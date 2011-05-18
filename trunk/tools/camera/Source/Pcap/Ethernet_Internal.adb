@@ -70,7 +70,8 @@ package body Ethernet_Internal is
                 Parsed_Frame.Constant_Head.Flags'Img &
                 Parsed_Frame.Spec_Header.Length'Img &
                 Parsed_Frame.Type_Of_Frame'Img &
-                Parsed_Frame.Payload_Start'Img);
+                Parsed_Frame.Payload_Start'Img &
+                Parsed_Frame.Raw_Frame.Length'Img);
       Ret := Pcap.Pcap_Send_Packet (Nic.Handle,
                                     To_Byte_Array (Broadcast, Source, Frames (Frames'First)),
                                     Frames (Frames'First).Length);

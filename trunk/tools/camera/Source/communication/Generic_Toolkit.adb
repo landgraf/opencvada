@@ -18,8 +18,8 @@ package body Generic_Toolkit is
       type Frame_Data is array (Integer range <> ) of Unsigned_8;
       type Frame_Header is
          record
-            Data   : Frame_Data (0 .. 19);
-            Length : Integer := 5;
+            Data   : Frame_Data (0 .. 20);
+            Length : Integer := 6;
          end record;
       -----------------------------------------------------------------------------
       Size : constant integer := Destination_T'Size;
@@ -35,8 +35,8 @@ package body Generic_Toolkit is
             Temp_Dest (I) := Temp_Source (I);
          end loop;
       end if;
---((Destination_T'Size / 8) - (32 / 8)) >= Length and
-      if  Destination_T'Size = Frame_Header'Size then
+--
+      if  ((Destination_T'Size / 8) - (32 / 8)) >= Length and Destination_T'Size = Frame_Header'Size then
          Put_Line("im in here being to big" & Length'Img);
          declare
             Length_Bytes : Frame_Data (0 .. 3);

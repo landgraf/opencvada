@@ -15,6 +15,7 @@ package body Imperium_Protocol is
       Temp.Eof := True;
       Temp.Flags := 2#0001#;
       Temp.Options := 2#0000_0000#;
+      Temp.Package_Seq := 2#0000_0000#;
       Temp.Data := (others => 2#0000_0000#);
       return Temp;
    end Ping;
