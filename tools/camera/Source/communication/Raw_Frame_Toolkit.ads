@@ -76,7 +76,7 @@ package Raw_Frame_Toolkit is
    function Create_Raw_Frames (Data                 : Frame_Data;
                                Spec_Header          : Frame_Header := ((others => 0), Length => 0);
                                Constant_Head        : Constant_Header;
-                               Frame_Size           : Integer := 1500) return Raw_Ethernet_Frame_Array;
+                               Frame_Size           : Integer := Raw_Ethernet_Max_Frame) return Raw_Ethernet_Frame_Array;
 
    --
    type Parsed_Raw_Frame is
@@ -141,6 +141,6 @@ private
    function Amount_Of_Frames (Data_Bytes           : Integer;
                               Spec_Header_Size     : Integer;
                               Constant_Header_Size : Integer;
-                              Frame_Size           : Integer := 1500) return Integer;
+                              Frame_Size           : Integer := Raw_Ethernet_Max_Frame) return Integer;
 
 end Raw_Frame_Toolkit;
