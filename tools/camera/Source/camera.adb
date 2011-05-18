@@ -51,7 +51,26 @@ procedure Camera is
    Spec_Header : Frame_Header := To_Frame_Header (Image_To_Header (Image));
 
    NIC_Names : NIC_Info_Array := Get_NICs;
+   NIC : NIC_Info := Find_NIC (Nic_Names, "Realtek PCIe GBE Family Controller");
    Clients   : Client_Info_Vector;
+
+
+   Header    : Constant_Header := Create_Constant_Header (Flags  => Flag_Data,
+                                                          Length => 0);
+
+   function Generate_Data (Count : Integer) return Frame_Data is
+      Data : Frame_Data (0 .. Count - 1);
+   begin
+      for I in Data'Range loop
+         Data (I) := Unsigned_8 (I mod 255) + 1 ;
+      end loop;
+      return Data;
+   end Generate_Data;
+
+   Data : Frame_Data := Generate_Data (65535);
+--     Data      : Frame_Data (0 .. 65535) := (others => 16#C4#);
+   Frames    : Raw_Ethernet_Frame_Array := Create_Raw_Frames (Constant_Head => Header,
+                                                              Data          => Data);
 begin
    for I in Nic_Names'Range loop
       Print_NIC (Nic_Names (I));
@@ -62,10 +81,13 @@ begin
          Put("NIC failed to open");
       end if;
       New_Line (2);
---        Ethernet_Internal.Close (Nic_Names (I));
+      Ethernet_Internal.Close (Nic_Names (I));
    end loop;
 
-   Clients := Discover (Nic_Names (Find_NIC (Nic_Names, "Realtek PCIe GBE Family Controller")));
+   Open (NIC);
+   Clients := Discover (NIC);
+   Send (NIC.Handle, NIC.MAC, Clients.First_Element.Device_Addr, Frames);
+   Close (NIC);
 
 --     Put_Line (Spec_Header.Length'Img);
 --     Spec_Header.Length := 5;
