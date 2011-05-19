@@ -123,7 +123,11 @@ package body Raw_Frame_Toolkit is
          Next_Pos := 0;
          Header_Length := 0;
          C_Head.Seq_No := Unsigned_16 (I);
-
+         if I = (Frames'Length - 1) then
+            C_Head.Eof := True;
+         else
+            C_Head.Eof := False;
+         end if;
          Frames (I).Payload (Next_Pos .. To_Frame_Header (C_Head).Length - 1) := To_Frame_Header (C_Head).Data (0 .. To_Frame_Header (C_Head).Length - 1);
          Next_Pos := To_Frame_Header (C_Head).Length;
          Header_Length := To_Frame_Header (C_Head).Length;

@@ -5,6 +5,7 @@ with Ada.Containers.Vectors;
 with Raw_Frame_Toolkit; use Raw_Frame_Toolkit;
 with Ada.Exceptions;
 with Interfaces; use Interfaces;
+with Imperium_Protocol; use Imperium_Protocol;
 package Imperium_Plures_Supplicium is
    -- Semaphore
    protected type Semaphore is
@@ -30,19 +31,22 @@ package Imperium_Plures_Supplicium is
 
    type Buffer_Index is new Natural;
    type Max_Parsed_Frame_Array is array (Integer range 0 .. 65535) of Parsed_Raw_Frame;
-   type Vecotor_Parsed_Frame is
+   type Vector_Parsed_Frame is
       record
          Buffer : Max_Parsed_Frame_Array;
          Length : Integer := -1;
       end record;
    package Parsed_Vector is
-     new Ada.Containers.Vectors (Buffer_Index, Vecotor_Parsed_Frame);
+     new Ada.Containers.Vectors (Buffer_Index, Vector_Parsed_Frame);
    use Parsed_Vector;
 
    type Buffer_Type is (Config, Control, Data, Memory);
    type Buffer_Length_Array is array (Buffer_Type) of Integer;
    type Buffer_Array is array (Buffer_Type) of Max_Parsed_Frame_Array;
 
+   function Spec_Frame_List_To_Buffer_Type (Src : Spec_Frames_List) return Buffer_Type;
+
+   Not_A_Buffer_Type : exception;
 
    -----------------------------------------------------------------------------
    -- Buffer exceptions
@@ -75,7 +79,8 @@ package Imperium_Plures_Supplicium is
       procedure Add_Frame (Buffer          : in Buffer_Type;
                            Frame           : in Parsed_Raw_Frame);
       -- Figures out by itself where to add the frame.
-      procedure Smart_Add_Frame (Frame : in Parsed_Raw_Frame);
+      procedure Smart_Add_Frame (Frame : in Parsed_Raw_Frame;
+	      Is_Added : out Boolean);
       -- Adds a frame to a very specific position /needs two maybe/
       -- Should not look at any thing just add the frame to the specified position.
       -- Used for testing...

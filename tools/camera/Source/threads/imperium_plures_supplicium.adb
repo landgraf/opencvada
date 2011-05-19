@@ -69,7 +69,7 @@ package body Imperium_Plures_Supplicium is
                   -- should be comparable to first in first out (maybe)
                   for I in Buffer_Index range Parsed_Vector.First_Index (Data_Buffer) .. Parsed_Vector.Last_Index (Data_Buffer) loop
                      declare
-                        Temp : Vecotor_Parsed_Frame := Parsed_Vector.Element (Data_Buffer, I);
+                        Temp : Vector_Parsed_Frame := Parsed_Vector.Element (Data_Buffer, I);
                      begin
                         if Temp.Buffer (Temp.Length).Constant_Head.Eof = True then
                            Have_Full := True;
@@ -145,7 +145,7 @@ package body Imperium_Plures_Supplicium is
             for I in Buffer_Index range Parsed_Vector.First_Index (Data_Buffer) .. Parsed_Vector.Last_Index (Data_Buffer) loop
                -- look for the package
                declare
-                  Temp : Vecotor_Parsed_Frame := Parsed_Vector.Element (Data_Buffer, I);
+                  Temp : Vector_Parsed_Frame := Parsed_Vector.Element (Data_Buffer, I);
                begin
                   if Temp.Length >= 0 then
                      if temp.Buffer (0).Constant_Head.Package_Seq = Frame.Constant_Head.Package_Seq then
@@ -209,13 +209,19 @@ package body Imperium_Plures_Supplicium is
                         raise Package_Buffer_Logic;
                      else
                         -- Should Add To Vector Now
---                          Parsed_Vector.Element (Data_Buffer, Buffer_Index (Position)).Length := Parsed_Vector.Element (Data_Buffer, Buffer_Index (Position)).Length + 1;
-                        null;
+                        declare
+                           Temp : Vector_Parsed_Frame := Parsed_Vector.Element (Data_Buffer, Buffer_Index (Position));
+                        begin
+                           Temp.Length := Temp.Length + 1;
+                           Temp.Buffer (Temp.Length) := Frame;
+                           Parsed_Vector.Replace_Element (Data_Buffer, Buffer_Index (Position), Temp);
+                           Update_Full_Package (Frame.Constant_Head.Eof, False);
+                        end;
                      end if;
                   else
                      -- create a new vector post
                      declare
-                        New_Element : Vecotor_Parsed_Frame;
+                        New_Element : Vector_Parsed_Frame;
                      begin
                         New_Element.Buffer (0) := Frame;
                         New_Element.Length := 0;
@@ -229,9 +235,15 @@ package body Imperium_Plures_Supplicium is
       end Add_Frame;
 
       -- Figures out by itself where to add the frame.
-      procedure Smart_Add_Frame (Frame : in Parsed_Raw_Frame) is
+      -- Not as smart as it sounds :(
+      procedure Smart_Add_Frame (Frame : in Parsed_Raw_Frame;
+                                 Is_Added : out Boolean) is
       begin
-         null;
+         Is_Added := True;
+         Add_Frame (Spec_Frame_List_To_Buffer_Type (Frame.Type_Of_Frame), Frame);
+      exception
+         when Not_A_Buffer_Type | Package_Buffer_Cant_Add | Package_Buffer_Overflow | Package_Buffer_Logic =>
+            Is_Added := False;
       end Smart_Add_Frame;
 
       -- Adds a frame to a very specific position /needs two maybe/
@@ -242,7 +254,38 @@ package body Imperium_Plures_Supplicium is
                                   Position        : in Integer;
                                   Vector_Position : in Integer) is
       begin
-         null;
+         case Buffer is
+            when Config | Control | Memory =>
+               C_C_M_Buffer (Buffer) (Position) := Frame;
+               Update_Full_Package (Frame.Constant_Head.Eof, False);
+            when Data =>
+               declare
+                  Temp : Vector_Parsed_Frame := Parsed_Vector.Element (Data_Buffer, Buffer_Index (Vector_Position));
+               begin
+                  Temp.Length := Position;
+                  Temp.Buffer (Temp.Length) := Frame;
+                  Parsed_Vector.Replace_Element (Data_Buffer, Buffer_Index (Vector_Position), Temp);
+                  Update_Full_Package (Frame.Constant_Head.Eof, False);
+               end;
+         end case;
       end Stupid_Add_Frame;
    end Package_Buffer;
+
+   -- Converts Spec_Frames_List to Buffer_Type
+   function Spec_Frame_List_To_Buffer_Type (Src : Spec_Frames_List) return Buffer_Type is
+   begin
+      -- (Array_Frame, Config_Frame, Image_Frame, Matrix_Frame, Memory_Frame, Control_Frame, Other, Not_A_Frame);
+      case Src is
+         when Array_Frame | Image_Frame | Matrix_Frame =>
+            return Data;
+         when Config_Frame =>
+            return Config;
+         when Control_Frame =>
+            return Control;
+         when Memory_Frame =>
+            return Memory;
+         when others =>
+            raise Not_A_Buffer_Type;
+      end case;
+      end Spec_Frame_List_To_Buffer_Type;
 end Imperium_Plures_Supplicium;
