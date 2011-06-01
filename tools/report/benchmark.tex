@@ -1,7 +1,7 @@
 \chapter{OpenCvAda Benchmark}
 \section{What we want to test:}
 \subsection{Why test?}
-Two of the major design goals in OpenCVAda are that the performance should be similar to OpenCV and operations on identical data should give the same result. To assert that these two goals are met several tests have been created to compare the execution time and output of different programs written identically in C, Python and Ada. 
+Two of the major design goals in OpenCvAda are that the performance should be similar to OpenCV and operations on identical data should give the same result. To assert that these two goals are met several tests have been created to compare the execution time and output of different programs written identically in C, Python and Ada. 
 \\
 Running benchmarks and comparing the results of the samples provided with OpenCv compared to OpenCvAda versions of those samples, allows us to assume that the import to Ada does not change the performance or the results.
 \subsection{Comparing OpenCvAda with OpenCv}
@@ -65,7 +65,7 @@ The hardware used in the tests will be these computers:
 \end{itemize}
 \end{itemize}
 \section{The actual tests:}
-Several programs have been created to test the performance of OpenCVAda. This section describes each test and shows the results of the tests.
+Several programs have been created to test the performance of OpenCvAda. This section describes each test and shows the results of the tests.
 \subsection{Window creation}
 This test was devised to check the overhead of the built-in window handler and general performance of loading and showing images in a window. The actual test consists of creating 100 windows through the Highgui package and showing an image in each window. After all the windows have been created they are all destroyed and the test finishes. The current implementation does not use the available function that destroys all created windows but instead iterates over each window and destroys them one by one. The reason for this is because at the time of implementation the Cv_Destroy_All_Windows function in OpenCV was not working as intended.
 \begin{figure}
@@ -123,7 +123,7 @@ The subset of applications consist of the following:
 \caption{Memory usage per second of Delaunay triangulation.}
 \label{fig:MemUseDelaunay}
 \end{figure}
-The memory usage of the Delaunay triangulation in OpenCVAda is on average 17 percent higher than its OpenCV counterpart as can be seen in Figure \ref{fig:memdelaunay}. Figure \ref{fig:MemUseDelaunay} shows that the behaviour of memory allocation is similar in both OpenCV and OpenCVAda.
+The memory usage of the Delaunay triangulation in OpenCvAda is on average 17 percent higher than its OpenCV counterpart as can be seen in Figure \ref{fig:memdelaunay}. Figure \ref{fig:MemUseDelaunay} shows that the behaviour of memory allocation is similar in both OpenCV and OpenCvAda.
 \begin{figure}
 \centering
 \includegraphics[width=1.0\textwidth]{memfarneback.png}
@@ -136,7 +136,7 @@ The memory usage of the Delaunay triangulation in OpenCVAda is on average 17 per
 \caption{Memory usage per second of Farneback optical flow.}
 \label{fig:MemUseFarneback}
 \end{figure}
-\\Figure \ref{fig:memfarneback} shows again that the memory usage in OpenCVAda is higher than OpenCV, 11 percent more memory is used on average. Figure \ref{fig:MemUseFarneback} shows the similarity of the memory allocation behaviour throughout the execution. The reason why the curves look different is because the application constantly allocate and release images and as a result the memory information from OpenCVAda was polled at peaks more often than OpenCV.
+\\Figure \ref{fig:memfarneback} shows again that the memory usage in OpenCvAda is higher than OpenCV, 11 percent more memory is used on average. Figure \ref{fig:MemUseFarneback} shows the similarity of the memory allocation behaviour throughout the execution. The reason why the curves look different is because the application constantly allocate and release images and as a result the memory information from OpenCvAda was polled at peaks more often than OpenCV.
 \begin{figure}
 \centering
 \includegraphics[width=1.0\textwidth]{memmotion.png}
@@ -149,7 +149,7 @@ The memory usage of the Delaunay triangulation in OpenCVAda is on average 17 per
 \caption{Memory usage per second of motion tracker.}
 \label{fig:MemUseMotion}
 \end{figure}
-\\As with the previous applications, Figure \ref{fig:memmotion} show that OpenCVAda use more memory than OpenCV. Approximately 10 percent more memory is used when the application is execute through OpenCVAda. Figure \ref{fig:MemUseMotion} shows that the behaviour of the applications memory is very similar.
+\\As with the previous applications, Figure \ref{fig:memmotion} show that OpenCvAda use more memory than OpenCV. Approximately 10 percent more memory is used when the application is execute through OpenCvAda. Figure \ref{fig:MemUseMotion} shows that the behaviour of the applications memory is very similar.
 \begin{figure}
 \centering
 \includegraphics[width=1.0\textwidth]{mempolar}
@@ -162,7 +162,7 @@ The memory usage of the Delaunay triangulation in OpenCVAda is on average 17 per
 \caption{Memory usage per second of polar transformation.}
 \label{fig:MemUsePolar}
 \end{figure}
-\\In the final test OpenCVAda utilize more memory yet again, as can be seen in Figure \ref{fig:mempolar} approximately 17 percent more memory is used in OpenCVAda compared to OpenCV. The memory allocation is behaving in a similar manner in both OpenCVAda and OpenCV which is shown in Figure \ref{fig:MemUsePolar}.
+\\In the final test OpenCvAda utilize more memory yet again, as can be seen in Figure \ref{fig:mempolar} approximately 17 percent more memory is used in OpenCvAda compared to OpenCV. The memory allocation is behaving in a similar manner in both OpenCvAda and OpenCV which is shown in Figure \ref{fig:MemUsePolar}.
 \subsection{Linux}
 Comparing the execution time of the Window creation and Large image I/O between Linux and Windows, this allows for a base comparison between the operating systems. The results can be seen in Figure \ref{fig:linuxguichart} and \ref{fig:linuxbigchart}.
 \begin{figure}
@@ -203,9 +203,9 @@ A simple application (an infinite loop that prints the numbers 0-100) was implem
 \caption{Memory usage baseline reference.}
 \label{fig:membaseline}
 \end{figure}
-The test in Figure \ref{fig:membaseline} shows that Ada in this case utilize approximately 25 percent more memory than C. Although the test is very simplistic, the memory difference percentage will be used as a criteria for assessing the memory usage of the OpenCVAda samples compared to their OpenCV equivalent.
+The test in Figure \ref{fig:membaseline} shows that Ada in this case utilize approximately 25 percent more memory than C. Although the test is very simplistic, the memory difference percentage will be used as a criteria for assessing the memory usage of the OpenCvAda samples compared to their OpenCV equivalent.
 \subsection{Correctness}
-By taking the samples supplied with OpenCV and re-implementing them in OpenCVAda it is possible to compare the results from both libraries. If the results are not identical there is some problem that needs to be isolated and repair. In order to get identical results it is not possible to use a live camera to capture frames to process, a video clip will be used instead. Some of the OpenCV samples have a problem with video playback, in these cases a live camera capture was used instead and as a result it is not possible to simply compare the output. In these cases the assessment will be based on the general functionality and similarity of the output.
+By taking the samples supplied with OpenCV and re-implementing them in OpenCvAda it is possible to compare the results from both libraries. If the results are not identical there is some problem that needs to be isolated and repair. In order to get identical results it is not possible to use a live camera to capture frames to process, a video clip will be used instead. Some of the OpenCV samples have a problem with video playback, in these cases a live camera capture was used instead and as a result it is not possible to simply compare the output. In these cases the assessment will be based on the general functionality and similarity of the output.
 \\
 This test involves the samples supplied with OpenCv and the ported versions in OpenCvAda and comparing the results of the executions of the samples. This should show any major errors with the imported functions from C.
 \\
@@ -247,4 +247,4 @@ Performance of OpenCvAda in Windows 7 is better then expected with OpenCvAda hav
 \\
 The correctness test is used as more of a internal test that was used during implementation of OpenCvAda to make sure that OpenCvAda does not break any functionality from OpenCv and that a port between the two is not too complicated. If we look at both the complexity of the samples compared to the OpenCv version and the functionality, OpenCvAda can be considered according to the results found an equal version compared to the C version.
 \\
-The memory management in OpenCVAda is less efficient than OpenCV, in the best case approximately 10 percent and in the worst case 17 percent more memory was used. The average memory use over all four applications were 14.24 percent higher than OpenCV. All of the results are within the criteria specified in Executable reference (section \ref{sec:execref}).
+The memory management in OpenCvAda is less efficient than OpenCV, in the best case approximately 10 percent and in the worst case 17 percent more memory was used. The average memory use over all four applications were 14.24 percent higher than OpenCV. All of the results are within the criteria specified in Executable reference (section \ref{sec:execref}).
