@@ -55,7 +55,7 @@ pragma Convention (C,Foo);
 \end{lstlisting}
 \section{Interfacing C functions}\label{sec:cfunc}
 Functions from C can be imported to Ada by using the import pragma. The pragma takes three parameters, the language convention determines which language the function is written in, the entity parameter is which local function will be used for the binding and the external name is the name of the function to be imported.\\
-If the function to be imported does not have a return value (i.e. void foo( … )) the local entity needs to be a procedure, otherwise it should be a function with a matching return value as the C function.\\
+If the function to be imported does not have a return value (i.e. void foo( … )) the local entity needs to be a procedure, otherwise it should be a function with a matching return value as the C function \cite{taft2006adabasic}.\\
 For example, consider two functions c_foo and c_bar like they are declared below.
 \begin{lstlisting}
 int c_foo(int i, char c);
