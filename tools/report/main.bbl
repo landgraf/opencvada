@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{styleguide95}
 Ada 95 quality and style guide.
@@ -12,6 +12,11 @@ Ada comparison chart.
 \newblock \url{http://www.adacore.com/home/ada_answers/comparison-chart/}.
 \newblock [Online; accessed 1-June-2011].
 
+\bibitem{fedora}
+Fedora.
+\newblock \url{http://fedoraproject.org/}.
+\newblock [Online; accessed 1-June-2011].
+
 \bibitem{nasa}
 Nasa featured images and galleries.
 \newblock \url{http://www.nasa.gov/multimedia/imagegallery}.
@@ -22,9 +27,31 @@ Qt - cross-platform application and ui framework.
 \newblock \url{http://qt.nokia.com}.
 \newblock [Online; accessed 31-May-2011].
 
+\bibitem{win7}
+Windows 7.
+\newblock \url{http://windows.microsoft.com/en-US/windows7/products/home}.
+\newblock [Online; accessed 1-June-2011].
+
 \bibitem{opencv2011}
 Opencv wiki.
 \newblock \url{http://www.opencv.willowgarage.com}, 2011.
 \newblock [Online; accessed 20-May-2011].
+
+\bibitem{bradski2008learningbasic}
+{\sc Bradski, G., and Kaehler, A.}
+\newblock {\em Learning opencv}.
+\newblock O'Reilly, 2008, pp.~31--32.
+
+\bibitem{bradski2008component}
+{\sc Bradski, G., and Kaehler, A.}
+\newblock {\em Learning opencv}.
+\newblock O'Reilly, 2008, pp.~13--14.
+
+\bibitem{taft2006conversion}
+{\sc Taft, S.}
+\newblock {\em Ada 2005 reference manual: language and standard libraries:
+  international standard ISO/IEC 8652/1995 (E) with technical corrigendum 1 and
+  amendment 1}.
+\newblock Springer Verlag, 2006, pp.~287--289.
 
 \end{thebibliography}
