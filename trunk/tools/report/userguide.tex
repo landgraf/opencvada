@@ -1,9 +1,9 @@
 \chapter{OpenCvAda User Guide}\label{sec:userguide}
 \section{Getting Started}
 \subsection{Installation}
-All that is required to install OpenCVAda is to extract it to a folder of choice, optionally this folder can be added to the system path in order to make it easier to include OpenCVAda in projects that will to utilize it.
-\subsection{Creating a OpenCVAda project in GNAT}
-OpenCVAda requires some functionality that is only available in the Ada 2005 standard. This means that all projects that utilizes this library are required to set the Ada 2005 syntax flag in the project settings window. Alternatively the flag can be set manually in the project file by adding the following code:
+All that is required to install OpenCvAda is to extract it to a folder of choice, optionally this folder can be added to the system path in order to make it easier to include OpenCvAda in projects that will to utilize it.
+\subsection{Creating a OpenCvAda project in GNAT}
+OpenCvAda requires some functionality that is only available in the Ada 2005 standard. This means that all projects that utilizes this library are required to set the Ada 2005 syntax flag in the project settings window. Alternatively the flag can be set manually in the project file by adding the following code:
 \begin{lstlisting}
 package Compiler is
 	for Default_Switches ("ada") 
@@ -14,9 +14,9 @@ In order to use the library its project file needs to be included, this can be a
 \begin{lstlisting}
 with "<path_to_opencvada>/opencvada";
 \end{lstlisting}
-After adding the mentioned lines to a project file, OpenCVAda is linked in and will compile together with the project.
+After adding the mentioned lines to a project file, OpenCvAda is linked in and will compile together with the project.
 \subsection{Hello World}
-This section presents a simple example of a minimalistic program that utilizes OpenCVAda to capture an image from a camera and showing it in a window to the user. 
+This section presents a simple example of a minimalistic program that utilizes OpenCvAda to capture an image from a camera and showing it in a window to the user. 
 \begin{lstlisting}
 with Core; use Core; -- Ipl_Image
 with Highgui; use Highgui; -- Cv_Capture and GUI functions
@@ -118,12 +118,12 @@ end Some_Procedure;
 Note that you need an access to the first element in the array and not the array itself.
 \subsubsection{Images and Matrices}
 \subsubsection*{Cv_Arr_Ptr}
-Many of the functions in OpenCVAda work with different types of data, such as Ipl_Image, Cv_Mat and Cv_Sparse_Mat. In most cases these functions are overloaded to take each compatible type separately, but in some cases this is not possible.
+Many of the functions in OpenCvAda work with different types of data, such as Ipl_Image, Cv_Mat and Cv_Sparse_Mat. In most cases these functions are overloaded to take each compatible type separately, but in some cases this is not possible.
 When there are too many different types (or multiple parameters that do not share a common type) it is necessary to make an unchecked conversion to a Cv_Arr_Ptr which is used as a generalised type.
 \subsubsection*{Ipl_Image_Ptr}
 Images are represented with the Ipl_Image type, however this type should not be used directly, instead the access type Ipl_Image_Ptr should be used whenever an image is required. The reason for this is that image data is allocated dynamically with the Cv_Create_Image function and should be released with the Cv_Release_Image procedure. 
 \subsubsection*{The Cv_Mat, Cv_Sparse_Mat and Cv_Mat_ND packages}
-The matrix types in OpenCVAda use generics in order to store data of an arbitrary type. In order to use these types the developer needs to instantiate the relevant package with the type of data to be stored in the matrix. For example,
+The matrix types in OpenCvAda use generics in order to store data of an arbitrary type. In order to use these types the developer needs to instantiate the relevant package with the type of data to be stored in the matrix. For example,
 \begin{lstlisting}
 	package Mat_32f is new Core.Mat(Float);
 \end{lstlisting}
