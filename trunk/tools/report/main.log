@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2010.10.20)  1 JUN 2011 11:33
+This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2010.10.20)  1 JUN 2011 14:31
 entering extended mode
 **C:/MDH/master_thesis/opencvada/tools/report/main.tex
 (C:/MDH/master_thesis/opencvada/tools/report/main.tex
@@ -718,7 +718,12 @@ nd-able and favour-
 Chapter 9.
 ) (C:\MDH\master_thesis\opencvada\tools\report\main.bbl [76
 
-])
+]
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 7.
+
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\t1cmtt.fd"
+File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+))
 (C:\MDH\master_thesis\opencvada\tools\report\appendix1.tex [77
 
 ]
@@ -727,49 +732,48 @@ Appendix A.
 
 ]) (C:\MDH\master_thesis\opencvada\tools\report\appendix2.tex [79]
 Appendix B.
-
-Overfull \hbox (2.9177pt too wide) in paragraph at lines 5--6
-[][][][][][][][][][][][][][][][][][][][][][] 
- []
-
 [80
 
 ]
-Overfull \hbox (2.9177pt too wide) in paragraph at lines 60--61
-[][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-[81] [82]) [83] (C:\MDH\master_thesis\opencvada\tools\report\main.aux)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <5> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 128.
+) [81] (C:\MDH\master_thesis\opencvada\tools\report\main.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 3760 strings out of 495285
- 51609 string characters out of 3179874
- 148060 words of memory out of 3000000
- 6858 multiletter control sequences out of 15000+200000
- 16984 words of font info for 35 fonts, out of 3000000 for 9000
+ 3786 strings out of 495285
+ 52293 string characters out of 3179874
+ 160060 words of memory out of 3000000
+ 6877 multiletter control sequences out of 15000+200000
+ 19529 words of font info for 39 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 39i,16n,58p,1485b,1579s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 39i,16n,58p,1485b,1591s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600
-\ecti1000.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappe
-n\ec\dpi600\ecbx1200.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljf
-our\jknappen\ec\dpi600\ecrm0800.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\f
-onts\pk\ljfour\jknappen\ec\dpi600\ecrm0600.pk> <C:\Users\niklas\AppData\Local\M
-iKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1440.pk> <C:\Users\niklas\AppD
-ata\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm0700.pk> <C:\Users\
-niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\ecsl1000.pk>
+\ecti0500.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappe
+n\ec\dpi600\ecrm0500.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljf
+our\jknappen\ec\dpi600\ecbx0500.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\f
+onts\pk\ljfour\jknappen\ec\dpi600\ectt1000.pk> <C:\Users\niklas\AppData\Local\M
+iKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\ecti1000.pk> <C:\Users\niklas\AppD
+ata\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1200.pk> <C:\Users\
+niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm0800.pk>
  <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\e
-cbx2488.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\
-ec\dpi600\ecbx1000.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfou
-r\jknappen\ec\dpi600\ecrm1000.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fon
-ts\pk\ljfour\jknappen\ec\dpi600\ecrm1200.pk> <C:\Users\niklas\AppData\Local\MiK
-TeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx2074.pk><C:/Program Files (x86)/
-MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on main.pdf (90 pages, 2461838 bytes).
+crm0600.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\
+ec\dpi600\ecbx1440.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfou
+r\jknappen\ec\dpi600\ecrm0700.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fon
+ts\pk\ljfour\jknappen\ec\dpi600\ecsl1000.pk> <C:\Users\niklas\AppData\Local\MiK
+TeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx2488.pk> <C:\Users\niklas\AppDat
+a\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1000.pk> <C:\Users\ni
+klas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1000.pk> <
+C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\ecr
+m1200.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\ec
+\dpi600\ecbx2074.pk><C:/Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfo
+nts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.8/fonts/type1/public/amsfont
+s/cm/cmsy5.pfb>
+Output written on main.pdf (88 pages, 2516724 bytes).
 PDF statistics:
- 915 PDF objects out of 1000 (max. 8388607)
+ 1088 PDF objects out of 1200 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  191 words of extra memory for PDF output out of 10000 (max. 10000000)
 
