@@ -1,0 +1,759 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2010.10.20)  1 JUN 2011 11:22
+entering extended mode
+**C:/MDH/master_thesis/report/main.tex
+(C:/MDH/master_thesis/report/main.tex
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, dumylang, nohyphenation, ge
+rman, ngerman, german-x-2009-06-19, ngerman-x-2009-06-19, french, loaded.
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\report.cls"
+Document Class: report 2007/10/19 v1.4h Standard LaTeX document class
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\size10.clo"
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\inputenc.sty"
+Package: inputenc 2008/03/30 v1.1d Input encoding file
+\inpenc@prehook=\toks14
+\inpenc@posthook=\toks15
+
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\utf8.def"
+File: utf8.def 2008/04/05 v1.1m UTF-8 support for inputenc
+Now handling font encoding OML ...
+... no UTF-8 mapping file for font encoding OML
+Now handling font encoding T1 ...
+... processing UTF-8 mapping file for font encoding T1
+
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\t1enc.dfu"
+File: t1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
+   defining Unicode char U+00A1 (decimal 161)
+   defining Unicode char U+00A3 (decimal 163)
+   defining Unicode char U+00AB (decimal 171)
+   defining Unicode char U+00BB (decimal 187)
+   defining Unicode char U+00BF (decimal 191)
+   defining Unicode char U+00C0 (decimal 192)
+   defining Unicode char U+00C1 (decimal 193)
+   defining Unicode char U+00C2 (decimal 194)
+   defining Unicode char U+00C3 (decimal 195)
+   defining Unicode char U+00C4 (decimal 196)
+   defining Unicode char U+00C5 (decimal 197)
+   defining Unicode char U+00C6 (decimal 198)
+   defining Unicode char U+00C7 (decimal 199)
+   defining Unicode char U+00C8 (decimal 200)
+   defining Unicode char U+00C9 (decimal 201)
+   defining Unicode char U+00CA (decimal 202)
+   defining Unicode char U+00CB (decimal 203)
+   defining Unicode char U+00CC (decimal 204)
+   defining Unicode char U+00CD (decimal 205)
+   defining Unicode char U+00CE (decimal 206)
+   defining Unicode char U+00CF (decimal 207)
+   defining Unicode char U+00D0 (decimal 208)
+   defining Unicode char U+00D1 (decimal 209)
+   defining Unicode char U+00D2 (decimal 210)
+   defining Unicode char U+00D3 (decimal 211)
+   defining Unicode char U+00D4 (decimal 212)
+   defining Unicode char U+00D5 (decimal 213)
+   defining Unicode char U+00D6 (decimal 214)
+   defining Unicode char U+00D8 (decimal 216)
+   defining Unicode char U+00D9 (decimal 217)
+   defining Unicode char U+00DA (decimal 218)
+   defining Unicode char U+00DB (decimal 219)
+   defining Unicode char U+00DC (decimal 220)
+   defining Unicode char U+00DD (decimal 221)
+   defining Unicode char U+00DE (decimal 222)
+   defining Unicode char U+00DF (decimal 223)
+   defining Unicode char U+00E0 (decimal 224)
+   defining Unicode char U+00E1 (decimal 225)
+   defining Unicode char U+00E2 (decimal 226)
+   defining Unicode char U+00E3 (decimal 227)
+   defining Unicode char U+00E4 (decimal 228)
+   defining Unicode char U+00E5 (decimal 229)
+   defining Unicode char U+00E6 (decimal 230)
+   defining Unicode char U+00E7 (decimal 231)
+   defining Unicode char U+00E8 (decimal 232)
+   defining Unicode char U+00E9 (decimal 233)
+   defining Unicode char U+00EA (decimal 234)
+   defining Unicode char U+00EB (decimal 235)
+   defining Unicode char U+00EC (decimal 236)
+   defining Unicode char U+00ED (decimal 237)
+   defining Unicode char U+00EE (decimal 238)
+   defining Unicode char U+00EF (decimal 239)
+   defining Unicode char U+00F0 (decimal 240)
+   defining Unicode char U+00F1 (decimal 241)
+   defining Unicode char U+00F2 (decimal 242)
+   defining Unicode char U+00F3 (decimal 243)
+   defining Unicode char U+00F4 (decimal 244)
+   defining Unicode char U+00F5 (decimal 245)
+   defining Unicode char U+00F6 (decimal 246)
+   defining Unicode char U+00F8 (decimal 248)
+   defining Unicode char U+00F9 (decimal 249)
+   defining Unicode char U+00FA (decimal 250)
+   defining Unicode char U+00FB (decimal 251)
+   defining Unicode char U+00FC (decimal 252)
+   defining Unicode char U+00FD (decimal 253)
+   defining Unicode char U+00FE (decimal 254)
+   defining Unicode char U+00FF (decimal 255)
+   defining Unicode char U+0102 (decimal 258)
+   defining Unicode char U+0103 (decimal 259)
+   defining Unicode char U+0104 (decimal 260)
+   defining Unicode char U+0105 (decimal 261)
+   defining Unicode char U+0106 (decimal 262)
+   defining Unicode char U+0107 (decimal 263)
+   defining Unicode char U+010C (decimal 268)
+   defining Unicode char U+010D (decimal 269)
+   defining Unicode char U+010E (decimal 270)
+   defining Unicode char U+010F (decimal 271)
+   defining Unicode char U+0110 (decimal 272)
+   defining Unicode char U+0111 (decimal 273)
+   defining Unicode char U+0118 (decimal 280)
+   defining Unicode char U+0119 (decimal 281)
+   defining Unicode char U+011A (decimal 282)
+   defining Unicode char U+011B (decimal 283)
+   defining Unicode char U+011E (decimal 286)
+   defining Unicode char U+011F (decimal 287)
+   defining Unicode char U+0130 (decimal 304)
+   defining Unicode char U+0131 (decimal 305)
+   defining Unicode char U+0132 (decimal 306)
+   defining Unicode char U+0133 (decimal 307)
+   defining Unicode char U+0139 (decimal 313)
+   defining Unicode char U+013A (decimal 314)
+   defining Unicode char U+013D (decimal 317)
+   defining Unicode char U+013E (decimal 318)
+   defining Unicode char U+0141 (decimal 321)
+   defining Unicode char U+0142 (decimal 322)
+   defining Unicode char U+0143 (decimal 323)
+   defining Unicode char U+0144 (decimal 324)
+   defining Unicode char U+0147 (decimal 327)
+   defining Unicode char U+0148 (decimal 328)
+   defining Unicode char U+014A (decimal 330)
+   defining Unicode char U+014B (decimal 331)
+   defining Unicode char U+0150 (decimal 336)
+   defining Unicode char U+0151 (decimal 337)
+   defining Unicode char U+0152 (decimal 338)
+   defining Unicode char U+0153 (decimal 339)
+   defining Unicode char U+0154 (decimal 340)
+   defining Unicode char U+0155 (decimal 341)
+   defining Unicode char U+0158 (decimal 344)
+   defining Unicode char U+0159 (decimal 345)
+   defining Unicode char U+015A (decimal 346)
+   defining Unicode char U+015B (decimal 347)
+   defining Unicode char U+015E (decimal 350)
+   defining Unicode char U+015F (decimal 351)
+   defining Unicode char U+0160 (decimal 352)
+   defining Unicode char U+0161 (decimal 353)
+   defining Unicode char U+0162 (decimal 354)
+   defining Unicode char U+0163 (decimal 355)
+   defining Unicode char U+0164 (decimal 356)
+   defining Unicode char U+0165 (decimal 357)
+   defining Unicode char U+016E (decimal 366)
+   defining Unicode char U+016F (decimal 367)
+   defining Unicode char U+0170 (decimal 368)
+   defining Unicode char U+0171 (decimal 369)
+   defining Unicode char U+0178 (decimal 376)
+   defining Unicode char U+0179 (decimal 377)
+   defining Unicode char U+017A (decimal 378)
+   defining Unicode char U+017B (decimal 379)
+   defining Unicode char U+017C (decimal 380)
+   defining Unicode char U+017D (decimal 381)
+   defining Unicode char U+017E (decimal 382)
+   defining Unicode char U+200C (decimal 8204)
+   defining Unicode char U+2013 (decimal 8211)
+   defining Unicode char U+2014 (decimal 8212)
+   defining Unicode char U+2018 (decimal 8216)
+   defining Unicode char U+2019 (decimal 8217)
+   defining Unicode char U+201A (decimal 8218)
+   defining Unicode char U+201C (decimal 8220)
+   defining Unicode char U+201D (decimal 8221)
+   defining Unicode char U+201E (decimal 8222)
+   defining Unicode char U+2030 (decimal 8240)
+   defining Unicode char U+2031 (decimal 8241)
+   defining Unicode char U+2039 (decimal 8249)
+   defining Unicode char U+203A (decimal 8250)
+   defining Unicode char U+2423 (decimal 9251)
+)
+Now handling font encoding OT1 ...
+... processing UTF-8 mapping file for font encoding OT1
+
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\ot1enc.dfu"
+File: ot1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
+   defining Unicode char U+00A1 (decimal 161)
+   defining Unicode char U+00A3 (decimal 163)
+   defining Unicode char U+00B8 (decimal 184)
+   defining Unicode char U+00BF (decimal 191)
+   defining Unicode char U+00C5 (decimal 197)
+   defining Unicode char U+00C6 (decimal 198)
+   defining Unicode char U+00D8 (decimal 216)
+   defining Unicode char U+00DF (decimal 223)
+   defining Unicode char U+00E6 (decimal 230)
+   defining Unicode char U+00EC (decimal 236)
+   defining Unicode char U+00ED (decimal 237)
+   defining Unicode char U+00EE (decimal 238)
+   defining Unicode char U+00EF (decimal 239)
+   defining Unicode char U+00F8 (decimal 248)
+   defining Unicode char U+0131 (decimal 305)
+   defining Unicode char U+0141 (decimal 321)
+   defining Unicode char U+0142 (decimal 322)
+   defining Unicode char U+0152 (decimal 338)
+   defining Unicode char U+0153 (decimal 339)
+   defining Unicode char U+2013 (decimal 8211)
+   defining Unicode char U+2014 (decimal 8212)
+   defining Unicode char U+2018 (decimal 8216)
+   defining Unicode char U+2019 (decimal 8217)
+   defining Unicode char U+201C (decimal 8220)
+   defining Unicode char U+201D (decimal 8221)
+)
+Now handling font encoding OMS ...
+... processing UTF-8 mapping file for font encoding OMS
+
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\omsenc.dfu"
+File: omsenc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
+   defining Unicode char U+00A7 (decimal 167)
+   defining Unicode char U+00B6 (decimal 182)
+   defining Unicode char U+00B7 (decimal 183)
+   defining Unicode char U+2020 (decimal 8224)
+   defining Unicode char U+2021 (decimal 8225)
+   defining Unicode char U+2022 (decimal 8226)
+)
+Now handling font encoding OMX ...
+... no UTF-8 mapping file for font encoding OMX
+Now handling font encoding U ...
+... no UTF-8 mapping file for font encoding U
+   defining Unicode char U+00A9 (decimal 169)
+   defining Unicode char U+00AA (decimal 170)
+   defining Unicode char U+00AE (decimal 174)
+   defining Unicode char U+00BA (decimal 186)
+   defining Unicode char U+02C6 (decimal 710)
+   defining Unicode char U+02DC (decimal 732)
+   defining Unicode char U+200C (decimal 8204)
+   defining Unicode char U+2026 (decimal 8230)
+   defining Unicode char U+2122 (decimal 8482)
+   defining Unicode char U+2423 (decimal 9251)
+))
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\graphics\graphicx.sty"
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\graphics\keyval.sty"
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks16
+)
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\graphics\graphics.sty"
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\graphics\trig.sty"
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\00miktex\graphics.cfg"
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\pdftex-def\pdftex.def"
+File: pdftex.def 2010/02/14 v0.04n Graphics/color for pdfTeX
+\Gread@gobject=\count88
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\fontenc.sty"
+Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
+
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\t1enc.def"
+File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
+))
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\ltxmisc\underscore.sty"
+Package: underscore 2006/09/13
+LaTeX Info: Redefining \_ on input line 42.
+)
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\listings\listings.sty"
+\lst@mode=\count89
+\lst@gtempboxa=\box26
+\lst@token=\toks17
+\lst@length=\count90
+\lst@currlwidth=\dimen105
+\lst@column=\count91
+\lst@pos=\count92
+\lst@lostspace=\dimen106
+\lst@width=\dimen107
+\lst@newlines=\count93
+\lst@lineno=\count94
+\lst@maxwidth=\dimen108
+
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\listings\lstmisc.sty"
+File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
+\c@lstnumber=\count95
+\lst@skipnumbers=\count96
+\lst@framebox=\box27
+)
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\listings\listings.cfg"
+File: listings.cfg 2007/02/22 1.4 listings configuration
+))
+Package: listings 2007/02/22 1.4 (Carsten Heinz)
+
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\float\float.sty"
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count97
+\float@exts=\toks18
+\float@box=\box28
+\@float@everytoks=\toks19
+\@floatcapt=\box29
+)
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\ltxmisc\url.sty"
+\Urlmuskip=\muskip10
+Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
+)
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\listings\lstlang1.sty"
+File: lstlang1.sty 2004/09/05 1.3 listings language file
+)
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\listings\lstlang1.sty"
+File: lstlang1.sty 2004/09/05 1.3 listings language file
+)
+("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\listings\lstlang1.sty"
+File: lstlang1.sty 2004/09/05 1.3 listings language file
+)
+(C:\MDH\master_thesis\report\main.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+
+("C:\Program Files (x86)\MiKTeX 2.8\tex\context\base\supp-pdf.tex"
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count98
+\scratchdimen=\dimen109
+\scratchbox=\box30
+\nofMPsegments=\count99
+\nofMParguments=\count100
+\everyMPshowfont=\toks20
+\MPscratchCnt=\count101
+\MPscratchDim=\dimen110
+\MPnumerator=\count102
+\everyMPtoPDFconversion=\toks21
+)
+\c@lstlisting=\count103
+ (C:\MDH\master_thesis\report\title.tex [1
+
+{C:/ProgramData/MiKTeX/2.8/pdftex/config/pdftex.map}]) (C:\MDH\master_thesis\re
+port\abstract.tex) [1]
+(C:\MDH\master_thesis\report\main.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 2.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 2.
+ [2
+
+] [3])
+\tf@toc=\write3
+ [4]
+(C:\MDH\master_thesis\report\main.lof [5
+
+])
+\tf@lof=\write4
+ [6]
+(C:\MDH\master_thesis\report\introduction.tex
+Chapter 1.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 2.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 2.
+[1
+
+]
+Overfull \hbox (14.41223pt too wide) in paragraph at lines 14--19
+\T1/cmr/m/n/10 are sev-eral ways of map-ping these to Ada from over-load-ing fu
+nc-tions to unchecked_-
+ []
+
+[2]) (C:\MDH\master_thesis\report\designopencvada.tex [3]
+Chapter 2.
+
+Underfull \hbox (badness 10000) in paragraph at lines 8--10
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 20--22
+
+ []
+
+[4
+
+] [5]
+Overfull \hbox (3.92241pt too wide) in paragraph at lines 68--77
+[] 
+ []
+
+[6] [7] [8]) (C:\MDH\master_thesis\report\benchmark.tex [9]
+Chapter 3.
+[10
+
+]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 34.
+ ("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\base\omscmr.fd"
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 34.
+
+
+LaTeX Warning: Citation `win7' on page 11 undefined on input line 34.
+
+
+LaTeX Warning: Citation `fedora' on page 11 undefined on input line 35.
+
+[11] <./images/GuiTestChart.png, id=70, 602.25pt x 372.39125pt>
+File: ./images/GuiTestChart.png Graphic file (type png)
+
+<use ./images/GuiTestChart.png>
+<./images/bigTestChart.png, id=71, 602.25pt x 372.39125pt>
+File: ./images/bigTestChart.png Graphic file (type png)
+
+<use ./images/bigTestChart.png> [12]
+<./images/LongTestChart.png, id=76, 602.25pt x 372.39125pt>
+File: ./images/LongTestChart.png Graphic file (type png)
+
+<use ./images/LongTestChart.png> [13 <C:/MDH/master_thesis/report/images/GuiTes
+tChart.png (PNG copy)>] [14 <C:/MDH/master_thesis/report/images/bigTestChart.pn
+g (PNG copy)> <C:/MDH/master_thesis/report/images/LongTestChart.png (PNG copy)>
+] <./images/memdelaunay.png, id=83, 602.25pt x 372.39125pt>
+File: ./images/memdelaunay.png Graphic file (type png)
+
+<use ./images/memdelaunay.png>
+<./images/MemUseDelaunay.png, id=84, 602.25pt x 372.39125pt>
+File: ./images/MemUseDelaunay.png Graphic file (type png)
+
+<use ./images/MemUseDelaunay.png>
+<./images/memfarneback.png, id=85, 602.25pt x 372.39125pt>
+File: ./images/memfarneback.png Graphic file (type png)
+
+<use ./images/memfarneback.png>
+<./images/MemUseFarneback.png, id=86, 602.25pt x 372.39125pt>
+File: ./images/MemUseFarneback.png Graphic file (type png)
+
+<use ./images/MemUseFarneback.png>
+<./images/memmotion.png, id=87, 602.25pt x 372.39125pt>
+File: ./images/memmotion.png Graphic file (type png)
+
+<use ./images/memmotion.png>
+<./images/MemUseMotion.png, id=88, 602.25pt x 372.39125pt>
+File: ./images/MemUseMotion.png Graphic file (type png)
+
+<use ./images/MemUseMotion.png>
+<./images/mempolar.png, id=89, 602.25pt x 372.39125pt>
+File: ./images/mempolar.png Graphic file (type png)
+
+<use ./images/mempolar.png>
+<./images/MemUsePolar.png, id=90, 602.25pt x 372.39125pt>
+File: ./images/MemUsePolar.png Graphic file (type png)
+
+<use ./images/MemUsePolar.png> [15 <C:/MDH/master_thesis/report/images/memdelau
+nay.png (PNG copy)>] [16 <C:/MDH/master_thesis/report/images/MemUseDelaunay.png
+ (PNG copy)> <C:/MDH/master_thesis/report/images/memfarneback.png (PNG copy)>]
+[17 <C:/MDH/master_thesis/report/images/MemUseFarneback.png (PNG copy)> <C:/MDH
+/master_thesis/report/images/memmotion.png (PNG copy)>]
+<./images/linuxguichart.png, id=100, 602.25pt x 372.39125pt>
+File: ./images/linuxguichart.png Graphic file (type png)
+
+<use ./images/linuxguichart.png>
+<./images/linuxbigchart.png, id=101, 602.25pt x 372.39125pt>
+File: ./images/linuxbigchart.png Graphic file (type png)
+
+<use ./images/linuxbigchart.png>
+<./images/NullTestChart.png, id=102, 602.25pt x 372.39125pt>
+File: ./images/NullTestChart.png Graphic file (type png)
+
+<use ./images/NullTestChart.png>
+<./images/linuxnullchart.png, id=103, 602.25pt x 372.39125pt>
+File: ./images/linuxnullchart.png Graphic file (type png)
+
+<use ./images/linuxnullchart.png>
+<./images/membaseline.png, id=104, 602.25pt x 372.39125pt>
+File: ./images/membaseline.png Graphic file (type png)
+
+<use ./images/membaseline.png> [18 <C:/MDH/master_thesis/report/images/MemUseMo
+tion.png (PNG copy)>] [19 <C:/MDH/master_thesis/report/images/mempolar.png (PNG
+ copy)> <C:/MDH/master_thesis/report/images/MemUsePolar.png (PNG copy)>]
+[20 <C:/MDH/master_thesis/report/images/linuxguichart.png (PNG copy)> <C:/MDH/m
+aster_thesis/report/images/linuxbigchart.png (PNG copy)>]
+<./images/bgfg.png, id=115, 978.65625pt x 415.5525pt>
+File: ./images/bgfg.png Graphic file (type png)
+ <use ./images/bgfg.png>
+<./images/findobj.png, id=117, 779.91376pt x 735.49782pt>
+File: ./images/findobj.png Graphic file (type png)
+
+<use ./images/findobj.png>
+<./images/latentsvm.png, id=118, 618.81187pt x 457.71pt>
+File: ./images/latentsvm.png Graphic file (type png)
+
+<use ./images/latentsvm.png>
+<./images/motempl.png, id=119, 982.42032pt x 429.10312pt>
+File: ./images/motempl.png Graphic file (type png)
+
+<use ./images/motempl.png>
+<./images/mser.png, id=120, 612.03656pt x 493.845pt>
+File: ./images/mser.png Graphic file (type png)
+ <use ./images/mser.png>
+[21 <C:/MDH/master_thesis/report/images/NullTestChart.png (PNG copy)>] [22 <C:/
+MDH/master_thesis/report/images/linuxnullchart.png (PNG copy)> <C:/MDH/master_t
+hesis/report/images/membaseline.png (PNG copy)>])
+(C:\MDH\master_thesis\report\userguide.tex [23 <C:/MDH/master_thesis/report/ima
+ges/bgfg.png>] [24 <C:/MDH/master_thesis/report/images/findobj.png>] [25 <C:/MD
+H/master_thesis/report/images/latentsvm.png> <C:/MDH/master_thesis/report/image
+s/motempl.png>] [26 <C:/MDH/master_thesis/report/images/mser.png>] [27]
+Chapter 4.
+
+Overfull \hbox (2.9177pt too wide) in paragraph at lines 22--24
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+[28
+
+] [29] [30] [31] [32] [33] [34] [35] [36]
+Overfull \hbox (2.9177pt too wide) in paragraph at lines 335--336
+[][][][][][][][][][][] 
+ []
+
+[37] [38] [39] [40]
+Overfull \hbox (2.9177pt too wide) in paragraph at lines 469--470
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+[41] [42]) (C:\MDH\master_thesis\report\c.tex [43]
+Chapter 5.
+[44
+
+]
+
+LaTeX Warning: Citation `ununion' on page 45 undefined on input line 29.
+
+[45] [46]
+Overfull \hbox (7.32953pt too wide) in paragraph at lines 121--124
+\T1/cmr/m/n/10 Ada spec-i-fi-ca-tion of a func-tion com-pa-ra-ble to the C func
+-tion (in sec-tion 5.4.2[])using
+ []
+
+[47]
+Overfull \hbox (18.15207pt too wide) in paragraph at lines 141--144
+\T1/cmr/m/n/10 add a bit more com-plex-ity then us-ing the pre-vi-ous al-ter-na
+-tives. In-ter-faces.C.Pointers
+ []
+
+[48] [49] [50]
+Overfull \hbox (2.9177pt too wide) in paragraph at lines 269--270
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+[51] [52]
+Underfull \hbox (badness 10000) in paragraph at lines 355--355
+[]\T1/cmr/m/n/10 unsigned
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 356--356
+[]\T1/cmr/m/n/10 unsigned
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 357--357
+[]\T1/cmr/m/n/10 unsigned
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 362--362
+[]\T1/cmr/m/n/10 unsigned
+ []
+
+[53]
+Underfull \hbox (badness 2393) in paragraph at lines 368--368
+[]\T1/cmr/m/n/10 record, with pragma Con-ven-tion(C_-Pass_-By_-Copy, <type
+ []
+
+
+Overfull \hbox (0.463pt too wide) in paragraph at lines 365--381
+[] 
+ []
+
+[54]) (C:\MDH\master_thesis\report\cpp.tex [55]
+Chapter 6.
+[56
+
+]
+Overfull \hbox (2.9177pt too wide) in paragraph at lines 19--20
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (2.9177pt too wide) in paragraph at lines 32--33
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+[57]) (C:\MDH\master_thesis\report\communication.tex [58]
+Chapter 7.
+<./images/CameraLost.jpg, id=247, 181.42781pt x 181.42781pt>
+File: ./images/CameraLost.jpg Graphic file (type jpg)
+
+<use ./images/CameraLost.jpg>
+<./images/CameraNotSeq.jpg, id=248, 181.42781pt x 181.42781pt>
+File: ./images/CameraNotSeq.jpg Graphic file (type jpg)
+
+<use ./images/CameraNotSeq.jpg>
+<./images/CameraSeq.jpg, id=249, 181.42781pt x 181.42781pt>
+File: ./images/CameraSeq.jpg Graphic file (type jpg)
+
+<use ./images/CameraSeq.jpg> [59
+
+] [60 <C:/MDH/master_thesis/report/images/CameraLost.jpg> <C:/MDH/master_thesis
+/report/images/CameraNotSeq.jpg> <C:/MDH/master_thesis/report/images/CameraSeq.
+jpg>] [61]
+<./images/Transaction.png, id=260, 435.12563pt x 127.97812pt>
+File: ./images/Transaction.png Graphic file (type png)
+
+<use ./images/Transaction.png>
+<./images/RawEthernetHeader.jpg, id=261, 518.6878pt x 325.215pt>
+File: ./images/RawEthernetHeader.jpg Graphic file (type jpg)
+
+<use ./images/RawEthernetHeader.jpg> [62 <C:/MDH/master_thesis/report/images/Tr
+ansaction.png>] <./images/MainHeader.jpg, id=266, 475.02469pt x 176.91093pt>
+File: ./images/MainHeader.jpg Graphic file (type jpg)
+
+<use ./images/MainHeader.jpg> [63 <C:/MDH/master_thesis/report/images/RawEthern
+etHeader.jpg>] [64 <C:/MDH/master_thesis/report/images/MainHeader.jpg>]
+<./images/HandshakeHeader.jpg, id=273, 470.50781pt x 161.85469pt>
+File: ./images/HandshakeHeader.jpg Graphic file (type jpg)
+
+<use ./images/HandshakeHeader.jpg> [65 <C:/MDH/master_thesis/report/images/Hand
+shakeHeader.jpg>] <./images/PingHeader.jpg, id=277, 476.53032pt x 176.15813pt>
+File: ./images/PingHeader.jpg Graphic file (type jpg)
+
+<use ./images/PingHeader.jpg>
+<./images/SubscriptionHeader.jpg, id=278, 476.53032pt x 190.46156pt>
+File: ./images/SubscriptionHeader.jpg Graphic file (type jpg)
+
+<use ./images/SubscriptionHeader.jpg> [66 <C:/MDH/master_thesis/report/images/P
+ingHeader.jpg> <C:/MDH/master_thesis/report/images/SubscriptionHeader.jpg>]
+<./images/DataTypeHeader.jpg, id=283, 465.99094pt x 27.85406pt>
+File: ./images/DataTypeHeader.jpg Graphic file (type jpg)
+
+<use ./images/DataTypeHeader.jpg> [67 <C:/MDH/master_thesis/report/images/DataT
+ypeHeader.jpg>] <./images/ImageHeader.jpg, id=287, 473.51906pt x 88.83188pt>
+File: ./images/ImageHeader.jpg Graphic file (type jpg)
+
+<use ./images/ImageHeader.jpg> [68 <C:/MDH/master_thesis/report/images/ImageHea
+der.jpg>] <./images/MatrixHeader.jpg, id=291, 472.76625pt x 102.3825pt>
+File: ./images/MatrixHeader.jpg Graphic file (type jpg)
+
+<use ./images/MatrixHeader.jpg>
+<./images/ArrayHeader.jpg, id=292, 472.76625pt x 101.62968pt>
+File: ./images/ArrayHeader.jpg Graphic file (type jpg)
+
+<use ./images/ArrayHeader.jpg> [69 <C:/MDH/master_thesis/report/images/MatrixHe
+ader.jpg> <C:/MDH/master_thesis/report/images/ArrayHeader.jpg>]
+<./images/ConfigurationHeader.jpg, id=296, 472.01344pt x 87.32625pt>
+File: ./images/ConfigurationHeader.jpg Graphic file (type jpg)
+
+<use ./images/ConfigurationHeader.jpg>
+<./images/MemoryHeader.jpg, id=297, 472.76625pt x 146.79843pt>
+File: ./images/MemoryHeader.jpg Graphic file (type jpg)
+
+<use ./images/MemoryHeader.jpg> [70 <C:/MDH/master_thesis/report/images/Configu
+rationHeader.jpg> <C:/MDH/master_thesis/report/images/MemoryHeader.jpg>]
+<./images/GcpPc.png, id=301, 374.90062pt x 194.97844pt>
+File: ./images/GcpPc.png Graphic file (type png)
+
+<use ./images/GcpPc.png> [71]
+<./images/GcpThread.png, id=305, 170.13562pt x 230.36063pt>
+File: ./images/GcpThread.png Graphic file (type png)
+
+<use ./images/GcpThread.png>) (C:\MDH\master_thesis\report\conc.tex [72 <C:/MDH
+/master_thesis/report/images/GcpPc.png>] [73 <C:/MDH/master_thesis/report/image
+s/GcpThread.png>]
+Chapter 8.
+) (C:\MDH\master_thesis\report\fw.tex
+Overfull \hbox (1.40042pt too wide) in paragraph at lines 6--1
+\T1/cmr/m/n/10 The GIMME com-mu-ni-ca-tion pro-to-col was de-signed to be ex-pa
+nd-able and favour-
+ []
+
+[74
+
+] [75]
+Chapter 9.
+
+LaTeX Warning: Citation `ada2012chart' on page 76 undefined on input line 2.
+
+) (C:\MDH\master_thesis\report\main.bbl [76
+
+])
+(C:\MDH\master_thesis\report\appendix1.tex [77
+
+]
+Appendix A.
+[78
+
+]) (C:\MDH\master_thesis\report\appendix2.tex [79]
+Appendix B.
+
+Overfull \hbox (2.9177pt too wide) in paragraph at lines 5--6
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+[80
+
+]
+Overfull \hbox (2.9177pt too wide) in paragraph at lines 60--61
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+[81] [82]) [83] (C:\MDH\master_thesis\report\main.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 3760 strings out of 495285
+ 50985 string characters out of 3179874
+ 148060 words of memory out of 3000000
+ 6858 multiletter control sequences out of 15000+200000
+ 16984 words of font info for 35 fonts, out of 3000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 39i,16n,58p,1469b,1581s stack positions out of 5000i,500n,10000p,200000b,50000s
+ <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600
+\ecti1000.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappe
+n\ec\dpi600\ecbx1200.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljf
+our\jknappen\ec\dpi600\ecrm0800.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\f
+onts\pk\ljfour\jknappen\ec\dpi600\ecrm0600.pk> <C:\Users\niklas\AppData\Local\M
+iKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1440.pk> <C:\Users\niklas\AppD
+ata\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm0700.pk> <C:\Users\
+niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\ecsl1000.pk>
+ <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\e
+cbx2488.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\
+ec\dpi600\ecbx1000.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfou
+r\jknappen\ec\dpi600\ecrm1000.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fon
+ts\pk\ljfour\jknappen\ec\dpi600\ecrm1200.pk> <C:\Users\niklas\AppData\Local\MiK
+TeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx2074.pk><C:/Program Files (x86)/
+MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on main.pdf (90 pages, 2461773 bytes).
+PDF statistics:
+ 915 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 191 words of extra memory for PDF output out of 10000 (max. 10000000)
+

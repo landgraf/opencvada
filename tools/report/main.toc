@@ -1,0 +1,138 @@
+\contentsline {chapter}{\numberline {1}Introduction}{1}
+\contentsline {section}{\numberline {1.1}OpenCv}{1}
+\contentsline {section}{\numberline {1.2}OpenCvAda}{2}
+\contentsline {subsection}{\numberline {1.2.1}Design}{2}
+\contentsline {subsection}{\numberline {1.2.2}Benchmark}{2}
+\contentsline {subsection}{\numberline {1.2.3}User guide}{2}
+\contentsline {section}{\numberline {1.3}Interfacing Ada with C and C++}{2}
+\contentsline {section}{\numberline {1.4}GIMME Communication Protocol}{3}
+\contentsline {chapter}{\numberline {2}Design of OpenCvAda}{4}
+\contentsline {section}{\numberline {2.1}Naming conventions}{4}
+\contentsline {subsection}{\numberline {2.1.1}Types}{4}
+\contentsline {subsection}{\numberline {2.1.2}Functions}{4}
+\contentsline {subsection}{\numberline {2.1.3}Macros and Constants}{5}
+\contentsline {subsection}{\numberline {2.1.4}Pointers}{5}
+\contentsline {subsection}{\numberline {2.1.5}Packages}{6}
+\contentsline {subsection}{\numberline {2.1.6}Generic packages}{6}
+\contentsline {subsection}{\numberline {2.1.7}Summary}{6}
+\contentsline {section}{\numberline {2.2}Pointers}{6}
+\contentsline {subsection}{\numberline {2.2.1}Arrays}{7}
+\contentsline {subsection}{\numberline {2.2.2}Cv_Void}{7}
+\contentsline {subsection}{\numberline {2.2.3}Cv_Arr}{8}
+\contentsline {subsubsection}{Overloading}{8}
+\contentsline {subsection}{\numberline {2.2.4}Strings}{8}
+\contentsline {section}{\numberline {2.3}Records}{8}
+\contentsline {subsection}{\numberline {2.3.1}Cv_Arr records}{8}
+\contentsline {subsection}{\numberline {2.3.2}Sequences and dynamic types}{9}
+\contentsline {subsection}{\numberline {2.3.3}Null records}{9}
+\contentsline {section}{\numberline {2.4}Type conversions}{9}
+\contentsline {chapter}{\numberline {3}OpenCvAda Benchmark}{10}
+\contentsline {section}{\numberline {3.1}What we want to test:}{10}
+\contentsline {subsection}{\numberline {3.1.1}Why test?}{10}
+\contentsline {subsection}{\numberline {3.1.2}Comparing OpenCvAda with OpenCv}{10}
+\contentsline {subsection}{\numberline {3.1.3}Scaling of OpenCvAda}{10}
+\contentsline {subsection}{\numberline {3.1.4}Does the speed of OpenCvAda change in another OS}{11}
+\contentsline {subsection}{\numberline {3.1.5}Samples}{11}
+\contentsline {section}{\numberline {3.2}What we tested with:}{11}
+\contentsline {subsection}{\numberline {3.2.1}The Benchmarker application}{11}
+\contentsline {subsection}{\numberline {3.2.2}The Memory usage application}{11}
+\contentsline {subsection}{\numberline {3.2.3}Platforms}{11}
+\contentsline {subsection}{\numberline {3.2.4}Hardware}{12}
+\contentsline {subsection}{\numberline {3.2.5}Image and Video files used}{12}
+\contentsline {section}{\numberline {3.3}The actual tests:}{12}
+\contentsline {subsection}{\numberline {3.3.1}Window creation}{12}
+\contentsline {subsection}{\numberline {3.3.2}Large image I/O}{13}
+\contentsline {subsection}{\numberline {3.3.3}Algorithms}{13}
+\contentsline {subsection}{\numberline {3.3.4}Memory usage}{13}
+\contentsline {subsection}{\numberline {3.3.5}Linux}{18}
+\contentsline {subsection}{\numberline {3.3.6}Executable reference}{21}
+\contentsline {subsection}{\numberline {3.3.7}Correctness}{21}
+\contentsline {section}{\numberline {3.4}Benchmark Results}{23}
+\contentsline {chapter}{\numberline {4}OpenCvAda User Guide}{28}
+\contentsline {section}{\numberline {4.1}Getting Started}{28}
+\contentsline {subsection}{\numberline {4.1.1}Installation}{28}
+\contentsline {subsection}{\numberline {4.1.2}Creating a OpenCVAda project in GNAT}{28}
+\contentsline {subsection}{\numberline {4.1.3}Hello World}{28}
+\contentsline {section}{\numberline {4.2}Basics }{30}
+\contentsline {subsection}{\numberline {4.2.1}Naming Guide}{30}
+\contentsline {subsubsection}{Functions}{30}
+\contentsline {subsubsection}{Types and Constants}{30}
+\contentsline {subsubsection}{Pointers}{31}
+\contentsline {subsubsection}{Arrays}{31}
+\contentsline {subsection}{\numberline {4.2.2}Standard Types}{31}
+\contentsline {subsubsection}{Integer and Float arrays}{31}
+\contentsline {subsubsection}{Images and Matrices}{31}
+\contentsline {subsubsection}{Null Records (``Black Box'' types)}{32}
+\contentsline {subsubsection}{Strings}{33}
+\contentsline {subsection}{\numberline {4.2.3}Highgui}{33}
+\contentsline {subsubsection}{Creating a Window}{33}
+\contentsline {subsubsection}{Displaying Images}{33}
+\contentsline {subsubsection}{Input}{34}
+\contentsline {subsubsection}{Output}{35}
+\contentsline {subsection}{\numberline {4.2.4}Camera, Video and Images}{36}
+\contentsline {subsubsection}{How to get an image from a camera}{36}
+\contentsline {subsubsection}{How to get an image from a video file}{37}
+\contentsline {subsubsection}{How to get an image from an image file}{37}
+\contentsline {subsubsection}{Saving images}{38}
+\contentsline {subsubsection}{Saving video files}{38}
+\contentsline {section}{\numberline {4.3}Advanced}{39}
+\contentsline {subsection}{\numberline {4.3.1}Unchecked Conversions}{39}
+\contentsline {section}{\numberline {4.4}The Demo Application}{40}
+\contentsline {chapter}{\numberline {5}Interfacing Ada with C}{44}
+\contentsline {section}{\numberline {5.1}Basic types}{44}
+\contentsline {section}{\numberline {5.2}Composite types}{44}
+\contentsline {section}{\numberline {5.3}Interfacing C functions}{45}
+\contentsline {subsection}{\numberline {5.3.1}Macros from C}{46}
+\contentsline {section}{\numberline {5.4}Pointers}{47}
+\contentsline {subsection}{\numberline {5.4.1}What could a pointer from C be?}{47}
+\contentsline {subsection}{\numberline {5.4.2}Mapping int * to Ada}{47}
+\contentsline {subsubsection}{Access to a variable}{48}
+\contentsline {subsubsection}{Arrays}{48}
+\contentsline {subsubsection}{Interfaces.C.Pointers}{48}
+\contentsline {subsection}{\numberline {5.4.3}Mapping int ** to Ada}{49}
+\contentsline {subsubsection}{Access to access}{49}
+\contentsline {subsubsection}{Access to array}{49}
+\contentsline {subsubsection}{Access to Interfaces.C.Pointers}{49}
+\contentsline {subsubsection}{Two dimensional arrays}{50}
+\contentsline {section}{\numberline {5.5}In out parameter}{50}
+\contentsline {section}{\numberline {5.6}Void *}{50}
+\contentsline {subsection}{\numberline {5.6.1}Pointers in records}{51}
+\contentsline {subsection}{\numberline {5.6.2}Constrained Arrays}{52}
+\contentsline {subsection}{\numberline {5.6.3}Strings}{52}
+\contentsline {subsection}{\numberline {5.6.4}Function pointers}{53}
+\contentsline {section}{\numberline {5.7}Type conformance between Ada and C}{54}
+\contentsline {subsection}{\numberline {5.7.1}Basic types}{54}
+\contentsline {subsection}{\numberline {5.7.2}Structs , arrays and pointers}{54}
+\contentsline {section}{\numberline {5.8}Pragmas, Conventions and Keywords}{54}
+\contentsline {subsection}{\numberline {5.8.1}Convention C_Pass_By_Copy}{54}
+\contentsline {subsection}{\numberline {5.8.2}Convention C}{55}
+\contentsline {subsection}{\numberline {5.8.3}Pragma Unchecked_Union}{55}
+\contentsline {subsection}{\numberline {5.8.4}Pragma Import}{55}
+\contentsline {subsection}{\numberline {5.8.5}Aliased}{55}
+\contentsline {chapter}{\numberline {6}Interfacing Ada with C++}{56}
+\contentsline {section}{\numberline {6.1}Importing functions from C++}{56}
+\contentsline {section}{\numberline {6.2}Importing Classes from C++}{57}
+\contentsline {subsection}{\numberline {6.2.1}Vector and String}{58}
+\contentsline {chapter}{\numberline {7}GIMME Communication Protocol}{59}
+\contentsline {section}{\numberline {7.1}Requirements}{59}
+\contentsline {subsection}{\numberline {7.1.1}GCP Functionality}{61}
+\contentsline {subsection}{\numberline {7.1.2}PC requirements}{62}
+\contentsline {section}{\numberline {7.2}Design}{62}
+\contentsline {subsection}{\numberline {7.2.1}Header structure}{62}
+\contentsline {subsection}{\numberline {7.2.2}Raw Ethernet header}{63}
+\contentsline {subsection}{\numberline {7.2.3}Constant and specification headers}{63}
+\contentsline {subsubsection}{Constant header}{63}
+\contentsline {subsubsection}{Specification headers}{67}
+\contentsline {subsection}{\numberline {7.2.4}PC GCP driver design}{71}
+\contentsline {subsubsection}{System design}{71}
+\contentsline {subsubsection}{Network layer}{71}
+\contentsline {subsubsection}{Frame buffer layer}{72}
+\contentsline {subsubsection}{Thread layer}{72}
+\contentsline {subsubsection}{Transaction buffer layer}{72}
+\contentsline {subsubsection}{API layer}{73}
+\contentsline {chapter}{\numberline {8}Summary and Conclusions}{74}
+\contentsline {chapter}{\numberline {9}Future Work}{76}
+\contentsline {chapter}{\numberline {A}Hough_Lines.adb}{78}
+\contentsline {chapter}{\numberline {B}Demo Application}{80}
+\contentsline {section}{\numberline {B.1}Demo.gpr}{80}
+\contentsline {section}{\numberline {B.2}Demo.adb}{80}

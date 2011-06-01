@@ -1,0 +1,49 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Benchmark of window creation and image loading.}}{13}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Benchmark of operations on large images.}}{14}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Benchmark of image processing algorithms.}}{14}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Overall memory usage of Delaunay triangulation.}}{15}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Memory usage per second of Delaunay triangulation.}}{16}
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Overall memory usage of Farneback optical flow.}}{16}
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Memory usage per second of Farneback optical flow.}}{17}
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Overall memory usage of motion tracker.}}{17}
+\contentsline {figure}{\numberline {3.9}{\ignorespaces Memory usage per second of motion tracker.}}{18}
+\contentsline {figure}{\numberline {3.10}{\ignorespaces Overall memory usage of polar transformation.}}{19}
+\contentsline {figure}{\numberline {3.11}{\ignorespaces Memory usage per second of polar transformation.}}{19}
+\contentsline {figure}{\numberline {3.12}{\ignorespaces Comparison of Linux and Windows window creation}}{20}
+\contentsline {figure}{\numberline {3.13}{\ignorespaces Comparison of Linux and Windows large image I/O}}{20}
+\contentsline {figure}{\numberline {3.14}{\ignorespaces Benchmark of Windows reference.}}{21}
+\contentsline {figure}{\numberline {3.15}{\ignorespaces Benchmark of Linux reference.}}{22}
+\contentsline {figure}{\numberline {3.16}{\ignorespaces Memory usage baseline reference.}}{22}
+\contentsline {figure}{\numberline {3.17}{\ignorespaces Comparison of bgfg_codebook sample.}}{23}
+\contentsline {figure}{\numberline {3.18}{\ignorespaces Comparison of find_object sample.}}{24}
+\contentsline {figure}{\numberline {3.19}{\ignorespaces Comparison of latentsvm sample.}}{25}
+\contentsline {figure}{\numberline {3.20}{\ignorespaces Comparison of motempl sample.}}{25}
+\contentsline {figure}{\numberline {3.21}{\ignorespaces Comparison of mser sample.}}{26}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Original image to transmit}}{60}
+\contentsline {figure}{\numberline {7.2}{\ignorespaces If missing data after a lost frame is not skipped the resulting image look distorted}}{60}
+\contentsline {figure}{\numberline {7.3}{\ignorespaces Skipping over lost data by filling it with a solid color gives a more correct result}}{60}
+\contentsline {figure}{\numberline {7.4}{\ignorespaces Representation of a transaction (series of raw Ethernet frames)}}{62}
+\contentsline {figure}{\numberline {7.5}{\ignorespaces Raw Ethernet header}}{63}
+\contentsline {figure}{\numberline {7.6}{\ignorespaces Mandatory protocol header}}{64}
+\contentsline {figure}{\numberline {7.7}{\ignorespaces Handshake header}}{65}
+\contentsline {figure}{\numberline {7.8}{\ignorespaces Ping header}}{66}
+\contentsline {figure}{\numberline {7.9}{\ignorespaces Subscription header}}{66}
+\contentsline {figure}{\numberline {7.10}{\ignorespaces Data type header}}{67}
+\contentsline {figure}{\numberline {7.11}{\ignorespaces Image data header}}{68}
+\contentsline {figure}{\numberline {7.12}{\ignorespaces Matrix data header}}{69}
+\contentsline {figure}{\numberline {7.13}{\ignorespaces Array data header}}{69}
+\contentsline {figure}{\numberline {7.14}{\ignorespaces Configuration header}}{70}
+\contentsline {figure}{\numberline {7.15}{\ignorespaces Memory header}}{70}
+\contentsline {figure}{\numberline {7.16}{\ignorespaces Communication protocol design}}{72}
+\contentsline {figure}{\numberline {7.17}{\ignorespaces Thread layer layout}}{73}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

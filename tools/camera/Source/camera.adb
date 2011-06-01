@@ -51,7 +51,7 @@ procedure Camera is
    Spec_Header : Frame_Header := To_Frame_Header (Image_To_Header (Image));
 
    NIC_Names : NIC_Info_Array := Get_NICs;
-   NIC : NIC_Info := Find_NIC (Nic_Names, "Realtek PCIe GBE Family Controller");
+   NIC : NIC_Info := Find_NIC (Nic_Names, "Intel(R) 82577LM Gigabit Network Connection");
    Clients   : Client_Info_Vector;
 
 
