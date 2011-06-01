@@ -300,6 +300,11 @@ package body Raw_Frame_Toolkit is
       return Device.Data_Types (T);
    end Is_Supported_Data_Type;
 
+--     function Find_Client (Device_Name : String) return Integer is
+--        Result : Integer := -1;
+--     begin
+--     end Find_Client;
+
    function To_Byte_Array (Dest  : Mac_Address;
                            Src   : Mac_Address;
                            Frame : Raw_Ethernet_Frame)
