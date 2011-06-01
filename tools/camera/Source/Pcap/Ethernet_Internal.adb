@@ -15,11 +15,56 @@ package body Ethernet_Internal is
          Names (Index).Name := Value (It.all.Name) (13 .. 50);
          Names (Index).Desc := To_Unbounded_String (Value (It.all.Description));
          Names (Index).MAC := Get_MAC (Names (Index).Name, To_String (Names (Index).Desc));
+         Names (Index).Clients.Append (Create_Broadcast_Client (Names (Index)));
 
          It := It.all.Next;
       end loop;
       return Names;
    end Get_NICs;
+
+   procedure Get_NICs is
+      All_Devs  : aliased Pcap_If_Ptr;
+      It        : Pcap_If_Ptr;
+      Err_Buf   : Pcap_Error_String := (others => Ascii.Nul);
+      NIC_Count : Integer := Pcap_Find_All_Devs (All_Devs'Access, Err_Buf);
+      NIC       : NIC_Info;
+   begin
+      It := All_Devs;
+      while It /= null loop
+         NIC.Name := Value (It.all.Name) (13 .. 50);
+         NIC.Desc := To_Unbounded_String (Value (It.all.Description));
+         NIC.MAC := Get_MAC (Nic.Name, To_String (Nic.Desc));
+         NIC.Clients.Append (Create_Broadcast_Client (NIC));
+
+         Network_Interfaces.Append (NIC);
+         It := It.Next;
+      end loop;
+   end Get_NICs;
+
+   function Fetch_NIC (Index : Integer) return NIC_Info is
+   begin
+      return Network_Interfaces.Element (Index);
+   end Fetch_NIC;
+
+   procedure Go_Boom (Index : Integer) is
+      procedure Go (Element : in out NIC_Info) is
+      begin
+         Element.MAC (Element.MAC'First) := 16#FF#;
+      end Go;
+   begin
+      Network_Interfaces.Update_Element (Index, Go'Access);
+   end Go_Boom;
+
+   function Find_NIC (Query : String) return Integer is
+      Result : Integer := -1;
+   begin
+      for I in Network_Interfaces.First_Index .. Network_Interfaces.Last_Index loop
+         if Network_Interfaces.Element (I).Name = Query or To_String (Network_Interfaces.Element (I).Desc) = Query then
+            Result := I;
+         end if;
+      end loop;
+      return Result;
+   end Find_NIC;
 
    function Find_NIC (Nics  : NIC_Info_Array;
                       Query : String)
@@ -81,6 +126,15 @@ package body Ethernet_Internal is
       return Clients;
    end Discover;
 
+--     procedure Send (NIC    : String;
+--                     Device : String;
+--                     Frame  : Raw_Ehternet_Frame) is
+--        Result : Integer;
+--     begin
+--        Result := Pcap.Pcap_Send_Packet (Network_Interfaces.Element (Find_NIC (NIC)).Handle,
+--                                         To_Byte_Array(
+--     end Send;
+
    procedure Send (Handle : Pcap_Ptr;
                    Source : Mac_Address;
                    Dest   : Mac_Address;
@@ -135,6 +189,20 @@ package body Ethernet_Internal is
       New_Line;
    end Print_NIC;
 
+   procedure Print_NICs is
+   begin
+      for I in Network_Interfaces.First_Index .. Network_Interfaces.Last_Index loop
+         Print_NIC (Network_Interfaces.Element (I));
+      end loop;
+   end Print_NICs;
+
+   function Create_Broadcast_Client (Source : Mac_Address) return RFT.Client_Info is
+   begin
+      return Create_Client_Info (Client_Addr     => (others => 16#FF#),
+                                 NIC_Addr        => Source,
+                                 Client_Dev_Name => To_Unbounded_String ("FF-FF-FF-FF-FF-FF"));
+   end Create_Broadcast_Client;
+
    function Create_Broadcast_Client (Nic : NIC_Info) return RFT.Client_Info is
    begin
       return Create_Client_Info (Client_Addr     => (others => 16#FF#),
@@ -181,4 +249,24 @@ package body Ethernet_Internal is
 
       return Hex;
    end To_Hex;
+
+   function To_String (Mac : Mac_Address) return String is
+      Str : String (1 .. 17);
+   begin
+      Str (1 .. 2) := To_Hex (Mac (Mac'First));
+      Str (3) := '-';
+      Str (4 .. 5) := To_Hex (Mac (Mac'First + 1));
+      Str (6) := '-';
+      Str (7 .. 8) := To_Hex (Mac (Mac'First + 2));
+      Str (9) := '-';
+      Str (10 .. 11) := To_Hex (Mac (Mac'First + 3));
+      Str (12) := '-';
+      Str (13 .. 14) := To_Hex (Mac (Mac'First + 4));
+      Str (15) := '-';
+      Str (16 .. 17) := To_Hex (Mac (Mac'First + 5));
+
+      return Str;
+   end To_String;
+begin
+   Get_NICs;
 end Ethernet_Internal;

@@ -122,6 +122,8 @@ package Raw_Frame_Toolkit is
    package Client_Info_Vector_Pkg is new Ada.Containers.Vectors (Natural, Client_Info);
    subtype Client_Info_Vector is Client_Info_Vector_Pkg.Vector;
 
+--     function Find_Client (Device_Name : String) return Integer;
+
    type Client_Info_Array is array (Integer range <>) of Client_Info;
 
    function Is_Supported_Data_Type (T      : Data_Type;

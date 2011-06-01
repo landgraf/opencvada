@@ -383,7 +383,7 @@ Cv_Write_Frame adds a Ipl_Image_Ptr to the specified Cv_Video_Writer_Ptr.
 \end{lstlisting}
 \section{Advanced}
 \subsection{Unchecked Conversions}
-In certain cases it is required to use an Ada.Unchecked_Conversion between two pointers in OpenCvAda, the reason for this is that in many cases the actual type returned by functions or contained in records are not known until they are put into a context, this is more often then not due to Cv_Seq_Ptr and related records and or functions.
+In certain cases it is required to use an Ada.Unchecked_Conversion \cite{taft2006conversion} between two pointers in OpenCvAda, the reason for this is that in many cases the actual type returned by functions or contained in records are not known until they are put into a context, this is more often then not due to Cv_Seq_Ptr and related records and or functions.
 \\
 Here is a larger example of how Ada.Unchecked_Conversions are used with OpenCvAda, that uses the Cv_Canny and Cv_Hough_Lines2 to find lines in an image.
 \\

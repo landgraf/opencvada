@@ -14,6 +14,7 @@ with Generic_Toolkit; use Generic_Toolkit;
 with Ethernet_Internal; use Ethernet_Internal;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Pcap; use Pcap;
+with Networking; use Networking;
 procedure Camera is
 
    type Mongo is new Integer range 0 .. 127;
@@ -71,6 +72,7 @@ procedure Camera is
 --     Data      : Frame_Data (0 .. 65535) := (others => 16#C4#);
    Frames    : Raw_Ethernet_Frame_Array := Create_Raw_Frames (Constant_Head => Header,
                                                               Data          => Data);
+   Blesch : Nic_Info := Fetch_Nic (0);
 begin
    for I in Nic_Names'Range loop
       Print_NIC (Nic_Names (I));
@@ -83,6 +85,12 @@ begin
       New_Line (2);
       Ethernet_Internal.Close (Nic_Names (I));
    end loop;
+
+   Put_Line ("blesch mac:" & To_String (Blesch.MAC));
+   Go_Boom (0);
+   Put_Line ("blesch mac:" & To_String (Blesch.MAC));
+   Blesch := Fetch_Nic (0);
+   Put_Line ("blesch mac:" & To_String (Blesch.MAC));
 
    Open (NIC);
    Clients := Discover (NIC);

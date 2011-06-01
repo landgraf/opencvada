@@ -5,7 +5,7 @@ The original naming convention in OpenCv uses uppercase letters to denote new wo
 \\
 A special case exists to match the naming convention in OpenCv the main image type is called IplImage and those is called Ipl_Image in OpenCvAda.
 \subsection{Types}
-Types in OpenCvAda will use the OpenCv names but each word will be separated with an underscore instead of only an uppercase letter. OpenCvAda still keeps the Cv prefix as well but adds an underscore after it as well.
+Types in OpenCvAda will use the OpenCv names \cite{bradski2008learningbasic} but each word will be separated with an underscore instead of only an uppercase letter. OpenCvAda still keeps the Cv prefix as well but adds an underscore after it as well.
 \\
 \begin{lstlisting}
 typedef struct CvMat {
@@ -59,7 +59,7 @@ subtype Cv_8u_Pointer is Cv_8u_Pointer_Pkg.Pointer;
 \end{lstlisting}
 In many cases Ada requires that anonymous access types are not used, so each type in OpenCvAda will have an access type associated with it named _Ptr.
 \subsection{Packages}
-OpenCv is divided into modules, the package structure of OpenCvAda is based on these modules. The packages are named according to the modules they represent, in the case of large modules sub-packages are created to separate data types and operations.
+OpenCv is divided into components \cite{bradski2008component}, the package structure of OpenCvAda is based on these modules. The packages are named according to the modules they represent, in the case of large modules sub-packages are created to separate data types and operations.
 For example, in OpenCv there is a module called Core. The Core module as its name implies supplies the core functionality of OpenCv. Because the Core module defines many data types and contains numerous operations it has been divided into two packages in OpenCvAda. The top package is called Core contains all the defined data types and the second package is a sub-package called Core.Operations.\\
 Smaller modules such as Highgui are represented by a single package in order to minimize the number of packages in OpenCvAda.
 \subsection{Generic packages}
