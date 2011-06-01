@@ -2,17 +2,29 @@
 
 \bibitem{styleguide95}
 Ada 95 quality and style guide.
+\newblock
+  \url{http://www.adaic.org/resources/add_content/docs/95style/html/sec_3/3-5.%
+html}.
+\newblock [Online; accessed 14-May-2011].
 
 \bibitem{ada2012chart}
 Ada comparison chart.
+\newblock \url{http://www.adacore.com/home/ada_answers/comparison-chart/}.
+\newblock [Online; accessed 1-June-2011].
 
 \bibitem{nasa}
 Nasa featured images and galleries.
-
-\bibitem{opencv2011}
-Opencv wiki.
+\newblock \url{http://www.nasa.gov/multimedia/imagegallery}.
+\newblock [Online; accessed 31-May-2011].
 
 \bibitem{qtweb}
 Qt - cross-platform application and ui framework.
+\newblock \url{http://qt.nokia.com}.
+\newblock [Online; accessed 31-May-2011].
+
+\bibitem{opencv2011}
+Opencv wiki.
+\newblock \url{http://www.opencv.willowgarage.com}, 2011.
+\newblock [Online; accessed 20-May-2011].
 
 \end{thebibliography}

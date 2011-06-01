@@ -17,11 +17,11 @@
 \contentsline {figure}{\numberline {3.14}{\ignorespaces Benchmark of Windows reference.}}{21}
 \contentsline {figure}{\numberline {3.15}{\ignorespaces Benchmark of Linux reference.}}{22}
 \contentsline {figure}{\numberline {3.16}{\ignorespaces Memory usage baseline reference.}}{22}
-\contentsline {figure}{\numberline {3.17}{\ignorespaces Comparison of bgfg_codebook sample.}}{23}
-\contentsline {figure}{\numberline {3.18}{\ignorespaces Comparison of find_object sample.}}{24}
-\contentsline {figure}{\numberline {3.19}{\ignorespaces Comparison of latentsvm sample.}}{25}
-\contentsline {figure}{\numberline {3.20}{\ignorespaces Comparison of motempl sample.}}{25}
-\contentsline {figure}{\numberline {3.21}{\ignorespaces Comparison of mser sample.}}{26}
+\contentsline {figure}{\numberline {3.17}{\ignorespaces Comparison of bgfg_codebook sample. Left is Ada and right is C. This sample does not look exactly the same due to a camera being used with the sample.}}{23}
+\contentsline {figure}{\numberline {3.18}{\ignorespaces Comparison of find_object sample. Left is Ada and right is C.}}{24}
+\contentsline {figure}{\numberline {3.19}{\ignorespaces Comparison of latentsvm sample. Left is Ada and right is C.}}{25}
+\contentsline {figure}{\numberline {3.20}{\ignorespaces Comparison of motempl sample. Left is Ada and right is C. This sample does not look exactly the same due to a camera being used with the sample.}}{25}
+\contentsline {figure}{\numberline {3.21}{\ignorespaces Comparison of mser sample. Left is Ada and right is C.}}{26}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
