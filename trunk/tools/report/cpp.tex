@@ -1,0 +1,58 @@
+\chapter{Interfacing Ada with C++}
+When interfacing Ada with C++ the problem is not how to do something compared to interfacing with C, but why it can not be done and what tricks and how to bypass certain features in C++ that allows the code to interface with Ada easier or even at all.
+\section{Importing functions from C++}
+C uses a standard Application Binary Interface(ABI) for compilers, C++ does not have this and because of that for all functions that are imported the mangled name that is often unique for different compilers is needed. For simple functions this might not be a huge problem but when we have overloaded functions, namespaces, functions inside classes or templates we need to spend time going through a demangled library file to find the names that match the function that is imported.
+\\
+There are several cases when importing a function from C++ can not be done without changing the C++ code or writing C++ code. During the work on this thesis the following cases have been the most common to cause problems when importing the functions.
+\begin{itemize}
+\item Function is declared inline.
+\item Function body is in a header file.
+\item Function is made inline as a compiler optimisation.
+\item Function is a template or part of a template class.
+\end{itemize}
+Each of these four cases causes the same problem, namely that they are not exported to a library file and therefor can not be imported to Ada. For the first three cases solving this can be done in two ways, first is to move code to body files and making sure they are not inline in the third case this might actually be impossible. Two other methods are to create wrapper functions in C or export the functions using the extern ``C'' command, the result of both of these should be the same namely C++ functions appearing as C functions. The issue is that to use extern ``C'' no C++ specific constructs are allowed this limits the usage dramatically since this for example includes classes, vectors and strings. 
+\\
+In the fourth case when importing a template function to Ada the issue is that to be able to import a function we need to have an instance created in C++ so that the object file or library file actually have any information about the function, the only working way to import a function is to make an instance and import that instance and loose the template functionality. One way to import a template function to Ada that was tried is to have a wrapper in C but the issue that makes this improbable is that even tough Ada have its own generic functions, it was not possible for C to pass enough information to the C++ to be able to use the templates. Another method that was not fully explored is to use a more advanced but stupid C wrapper that would have the possibility to create only a hard coded set of template versions, however if like in the case of OpenCv when template functions are created to be used with any type and be completely generic this is method is very unrealistic. 
+\\
+Without using any of the methods discussed above a function imported from C++ would look like this in Ada:
+\begin{lstlisting}
+function WaitKey (Delay_Ms : Integer := 0) return Integer;
+pragma Import (CPP, WaitKey, "_ZN2cv7waitKeyEi");
+\end{lstlisting}
+But this example is only working on one specific compiler on one platform so for each platform or if the library is recompiled with another compiler we need to find the mangled name again.
+\\
+If we instead use the method with extern “C” described above we would need to first change the C++ code or create a wrapper like this:
+\begin{lstlisting}
+extern "C" {
+	int WaitKey_wrap(int Delay_Ms);
+}
+\end{lstlisting}
+Then we can import the function to Ada using the same method used with C functions.
+\begin{lstlisting}
+function WaitKey (Delay_Ms : Integer := 0) return Integer;
+pragma Import (C, WaitKey, "WaitKey_wrap");
+\end{lstlisting}
+\section{Importing Classes from C++}
+A class as seen from Ada is more or less a record that is passed as a pointer, however to have a working class we need constructors and destructors. It is possible to create wrapper functions in C for constructors and destructors, for simple classes importing them to Ada and allowing Ada to have access to internal variables is not very difficult as long as no C++ specific types or functionality is used. Even the C++ specific things that can be imported to Ada with a bit of tricks with C wrappers can not be used in an Ada record that tries to map the C++ record anyway, so while it is possible to import a function that uses the vector class or string type if they are used as a member of a class then the possible import method is not working anymore since the Ada record will not be equal to the C++ class anymore. For a possible method to map strings and vectors to Ada see Vector and String (section \ref{sec:vec}).
+\subsection{Vector and String}\label{sec:vec}
+Even though the vector class and string type have very little in common the method to map these successfully to Ada is the same. The method involves creating a wrapper function in C that instead of a vector or a string takes a array of the type instead and in that wrapper function the array is converted to a vector and then back again if the function returns the vector as well. The problem with this method is that for every type the vector can have, either a new wrapper function must be created or the wrapper function must be able to chose between the types. If we consider these restrictions then we understand that it is nearly impossible to map a vector used with more then one type, string on the other hand is possible to map using this method. 
+\\
+If we consider the function used to create a window in C++ that has a string as one of the parameters.
+\begin{lstlisting}
+void namedWindow( const string& winname, int flags ):
+\end{lstlisting}
+Then we create a wrapper function in C that takes a char pointer instead and uses the string constructor that creates a string from a char pointer.
+\begin{lstlisting}
+extern "C"{
+	void namedWindow( const char* winname, int flags)
+	{
+		cv::namedWindow(string(winname), flags);
+	}
+}
+\end{lstlisting}
+Then we can create an Ada function that uses the Chars_Ptr type or the Ada string type or any other method that is explained in Interfacing Ada with C, Strings (section \ref{sec:cstrings}).
+\begin{lstlisting}
+ procedure NamedWindow (Window_Name : Chars_Ptr; 
+			Flags : Integer);
+ pragma Import (C, NamedWindow, "namedWindow");
+\end{lstlisting}

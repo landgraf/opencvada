@@ -1,0 +1,562 @@
+\chapter{OpenCvAda User Guide}\label{sec:userguide}
+\section{Getting Started}
+\subsection{Installation}
+All that is required to install OpenCVAda is to extract it to a folder of choice, optionally this folder can be added to the system path in order to make it easier to include OpenCVAda in projects that will to utilize it.
+\subsection{Creating a OpenCVAda project in GNAT}
+OpenCVAda requires some functionality that is only available in the Ada 2005 standard. This means that all projects that utilizes this library are required to set the Ada 2005 syntax flag in the project settings window. Alternatively the flag can be set manually in the project file by adding the following code:
+\begin{lstlisting}
+package Compiler is
+	for Default_Switches ("ada") 
+            use ("-g", "-gnat05");
+end Compiler;
+\end{lstlisting}
+In order to use the library its project file needs to be included, this can be achieved either by adding a dependency through the GNAT GPS IDE (right-click the project, select ``Dependencies'' in the ``Project'' sub-category) or by adding a with clause at the top of the project file:
+\begin{lstlisting}
+with "<path_to_opencvada>/opencvada";
+\end{lstlisting}
+After adding the mentioned lines to a project file, OpenCVAda is linked in and will compile together with the project.
+\subsection{Hello World}
+This section presents a simple example of a minimalistic program that utilizes OpenCVAda to capture an image from a camera and showing it in a window to the user. 
+\begin{lstlisting}
+with Core; use Core; -- Ipl_Image
+with Highgui; use Highgui; -- Cv_Capture and GUI functions
+
+procedure Hello_World is
+	Capture  : aliased Cv_Capture_Ptr := 
+			Cv_Create_Camera_Capture(0);
+	Frame    : aliased Cv_Ipl_Image_Ptr := null;
+begin
+	Cv_Named_Window("Hello World", 
+		         Cv_Window_Autosize);
+
+	Frame := Cv_Query_Frame(Capture);
+	Cv_Show_Image("Hello World", Frame);
+
+Cv_Wait_Key(0);
+		
+	Cv_Release_Capture(Capture'Access);
+	Cv_Destroy_Window("Hello World");
+end Hello_World;
+\end{lstlisting}
+When compiled and run, this program captures a single frame from an automatically selected camera. The program then waits until the user press a key, after which the program close the window and terminates.
+In the declaration stage of the program we have two variables. The first variable, Capture, is used to retrieve
+\begin{lstlisting}
+	Capture  : aliased Cv_Capture_Ptr := 
+		Cv_Create_Camera_Capture(0);
+\end{lstlisting} 
+Cv_Create_Camera_Capture returns a reference to a camera and allows the program to retrieve images from it. The parameter 0 means that OpenCV should use the first camera it is able to find.
+The next variable, Frame, is used to reference an image.
+\begin{lstlisting}
+	Frame    : aliased Cv_Ipl_Image_Ptr := null;
+\end{lstlisting}
+The first thing the program does is to create a window where the captured image will be displayed.
+\begin{lstlisting}
+	Cv_Named_Window("Hello World", 
+			Cv_Window_Autosize);
+\end{lstlisting}
+In this case Cv_Named_Window creates a window with the title “Hello World”, which is displayed in the window frame and is later used to reference the window in the code. By creating the window with the Cv_Window_Autosize flag OpenCV will control the window size itself and does not allow for re-sizing the window.
+The program then captures an image from the camera.
+\begin{lstlisting}
+	Frame := Cv_Query_Frame(Capture);
+\end{lstlisting}
+Cv_Query_Frame asks for the next frame available from the buffer in Capture and returns that image to Frame. If there was a frame to retrieve there is now something that can be displayed in the window.
+\begin{lstlisting}
+	Cv_Show_Image("Hello World", Frame);
+\end{lstlisting}
+With Cv_Show_Image the program can send an image to be displayed in a window. In this case the window handle is “Hello World” and the image to be displayed is referenced by Frame.
+In order to keep the program from terminating instantly after displaying the image the next statement can be used.
+\begin{lstlisting}
+	Cv_Wait_Key(0);
+\end{lstlisting}
+This function waits until the user presses a key and returns the pressed key. The parameter specifies how many milliseconds Cv_Wait_Key should wait before returning in case no key-press event occurs. By setting the parameter to 0 Cv_Wait_Key will wait indefinitely.
+All that remains is to free the resources that has been allocated and then terminate the program.
+\begin{lstlisting}
+	Cv_Release_Capture(Capture'Access);
+	Cv_Destroy_Window("Hello World");
+\end{lstlisting}
+Note that the Frame variable is not released in this case, the reason for that is because it references an image buffer stored inside Capture, which will be released when we release the Capture variable.
+\section{Basics }
+\subsection{Naming Guide}
+\subsubsection{Functions}
+Functions in OpenCvAda uses three rules for naming:
+\begin{enumerate}
+\item Words should be separated with underscore and have a capital first letter. (cvAvg becomes Cv_Avg)
+\item "Constructors" should have Create added after Cv to distinguish themselves from the types they create. (cvPoint becomes Cv_Create_Point)
+\item Except for rule 1 and 2 OpenCvAda should use the same names as OpenCv in C.
+\end{enumerate}
+Remember that Ada unlike C is case insensitive and types can’t have the same names as a function in the same package.
+Macros will keep their names when possible since they use a similar naming convention in C.
+\subsubsection{Types and Constants}
+Basic types uses two rules for naming in OpenCvAda:
+\begin{enumerate}
+\item Words should be separated with underscore and a have a capital first letter. (CvSize becomes Cv_Size)
+\item Except for rule 1 OpenCvAda should use the same names as OpenCv in C.
+\end{enumerate}
+OpenCvAda specific types uses the same naming convention.
+\\
+Constants keep their names from C but will sometimes when appropriate be of a type, for example enumerations are changed to be constants of a specific type.
+\subsubsection{Pointers}
+There are two types of pointers in OpenCvAda first we have the Ada access types and the second is the C compatible Array/Pointer found in Interfaces.C.Pointers.
+\\
+Ada access types uses the suffix _Ptr while C pointers uses the suffix _Pointer. (There are packages asociated with each C pointer that have the suffix _Pkg, these packages are needed for pointer operations or converting the C pointers to more user friendly Ada types)
+\subsubsection{Arrays}
+Array types names are built from the type in the array with the suffix _Array added to the type name.
+\\
+For example the type Cv_Size have an array type associated with it called Cv_Size_Array. (In some cases there exists Arrays of pointers like Cv_Size_Ptr_Array or a pointer of an array like Cv_Point_array_Ptr)
+\subsection{Standard Types}
+\subsubsection{Integer and Float arrays}
+Arrays of integer and floating point values can be passed to functions as is. However, passing an array access is not possible because of the array bound information that is stored in the access. Therefore it is necessary to pass these types of parameters as C compatible pointers.
+\begin{lstlisting}
+procedure Some_Procedure is
+	Arr     : Cv_32f_Array_Ptr := 
+		new Cv_32f_Array(0 .. 100);
+	Arr_Ptr : Cv_32f_Pointer := Arr.all(0'Access);
+begin
+	Cv_Procedure_With_Pointer_Param (Arr_Ptr);
+end Some_Procedure;
+\end{lstlisting}
+Note that you need an access to the first element in the array and not the array itself.
+\subsubsection{Images and Matrices}
+\subsubsection*{Cv_Arr_Ptr}
+Many of the functions in OpenCVAda work with different types of data, such as Ipl_Image, Cv_Mat and Cv_Sparse_Mat. In most cases these functions are overloaded to take each compatible type separately, but in some cases this is not possible.
+When there are too many different types (or multiple parameters that do not share a common type) it is necessary to make an unchecked conversion to a Cv_Arr_Ptr which is used as a generalised type.
+\subsubsection*{Ipl_Image_Ptr}
+Images are represented with the Ipl_Image type, however this type should not be used directly, instead the access type Ipl_Image_Ptr should be used whenever an image is required. The reason for this is that image data is allocated dynamically with the Cv_Create_Image function and should be released with the Cv_Release_Image procedure. 
+\subsubsection*{The Cv_Mat, Cv_Sparse_Mat and Cv_Mat_ND packages}
+The matrix types in OpenCVAda use generics in order to store data of an arbitrary type. In order to use these types the developer needs to instantiate the relevant package with the type of data to be stored in the matrix. For example,
+\begin{lstlisting}
+	package Mat_32f is new Core.Mat(Float);
+\end{lstlisting}
+will instantiate a package that can be used to declare matrices containing Float data. A matrix can now be declared in the following way,
+\begin{lstlisting}
+	Mat : Mat_32f.Cv_Mat_Ptr := 
+		Mat_32f.Cv_Create_Mat(10, 10, Cv_32f, 1);
+\end{lstlisting}
+The above statement will declare and create an empty 10x10 matrix with 1 channel.
+The generic packages contains various unchecked conversions in order to make them compatible with the non-generic packages. For example,
+\begin{lstlisting}
+	Cv_Show_Image("Example", To_Arr_Ptr(Mat));
+\end{lstlisting}
+will convert the generic matrix to a Cv_Arr_Ptr.
+\\
+The Core package also contains the three matrix types as non-generic versions, these types are not meant to be used directly but rather acts as place holders for functions that take a matrix as a parameter. Unchecked conversions are available to and from these placeholder types as well. For example the Cv_Show_Image function can also take a Cv_Mat_Ptr as the image to show.
+\begin{lstlisting}
+	Cv_Show_Image("Example", To_Mat_Ptr(Mat));
+\end{lstlisting}
+\subsubsection{Null Records (``Black Box'' types)}
+In OpenCvAda there are a few null record types that have no representation in actual Ada code and should only be used with the provided access type. The null records are these types:
+\begin{itemize}
+\item Cv_Face_Tracker_Ptr in Legacy
+\item Cv_File_Storage_Ptr in Core
+\item Cv_Contour_Scanner_Ptr in Imgproc
+\item Cv_Feature_Tree_Ptr in Imgproc
+\item Cv_Lsh_P in Imgproc
+\item Cv_Lsh_Operations_Ptr in Imgproc
+\item Cv_Capture_Ptr in Highgui
+\item Cv_Video_Writer_Ptr in Highgui
+\item Cv_Hid_Haar_Classifier_Cascade_Ptr in Objdetect
+\end{itemize}
+\subsubsection{Strings}
+OpenCvAda uses standard Ada strings in all functions and the user do not need to add any ASCII characters to make them C compatible.
+\subsection{Highgui}
+Highgui is the built in GUI for OpenCv, it is not a full GUI but only usable for displaying images and a few helpful controls like buttons and trackbars. Some of the functions in the Highgui package have two versions one that is a function that returns a status value and one that is a procedure.
+\subsubsection{Creating a Window}
+OpenCvAda allows you to create windows in two ways, using the Cv_Named_Window function or by using a function that references a window on a nonexistent window. 
+\begin{itemize}
+\item Cv_Named_Window takes two parameters the string is the name of the window used to reference it and the flag sets the way a window can be re-sized:
+\item Cv_Window_Normal allows the user to re-size the window but keeps the aspect ratio.
+\item Cv_Window_Freeratio allows the user to re-size the window without keeping the aspect ratio.
+\item Cv_Window_Autosize automatically sets the size of the window to match the image shown in the window.
+\end{itemize}
+Cv_Window_Autosize is the standard flag. Every window used in OpenCvAda should be destroyed before ending the program or the program will raise a segfault.
+\begin{lstlisting}
+begin
+	Cv_Named_Window("Main",Cv_Window_Normal);
+	...
+	Cv_Destroy_Window("Main");
+\end{lstlisting}
+\subsubsection{Displaying Images}
+OpenCvAda can display both Ipl_Image_Ptr and Cv_Mat with the Cv_Show_Image function. Cv_Show_Image takes the window name and the image as parameters.
+\begin{lstlisting}
+	Cv_Show_Image("Main", Image);
+\end{lstlisting}
+Cv_Show_Image is only able to display image with 8 bit depth so if other depths are used the image needs to be converted.
+\subsubsection{Input}
+There are several ways to interact with the user with the help of Highgui. Cv_Wait_Key reads the next key pressed on the keyboard on a delay, Cv_Create_Trackbar adds a trackbar to interact with. There are also QT specific buttons that can be created in  a toolbar window.
+Cv_Wait_Key parameter ms_delay(the standard value 0 waits indefinitely or until a key is pressed)  is the time in miliseconds the function should wait for a key press to occur before returning with a null value, the function returns the Character pressed while the procedure ignores the return value. (however it will still wait until a key is pressed if ms_delay is 0)
+Here are three common usages of Cv_Wait_Key:
+\begin{lstlisting}
+	-- wait until a key is pressed
+	Cv_Wait_Key(0);
+\end{lstlisting}
+\begin{lstlisting}
+	-- wait until a key is pressed
+	-- or 100 ms have passed
+	Char := Cv_Wait_Key(100); 
+\end{lstlisting}
+\begin{lstlisting}
+loop
+	-- ends a loop when ESC is pressed
+	exit when Cv_Wait_Key(30) = Ascii.Esc; 
+end loop;
+\end{lstlisting}
+Cv_Create_Trackbar is used to create trackbar or slider in a window so that it is possible to change a value on the fly. The parameters are:
+\begin{itemize}
+\item Trackbar_Name, string with the name of the trackbar.
+\item Window_Name, string with the name of the window where the trackbar should be attached.
+\item Value, access to an integer that contains the current value of the trackbar.
+\item Count, maximum value of the trackbar.
+\item On_Change, access to a procedure of the type Cv_Trackbar_Callback that is called when the value of the trackbar changes.
+\end{itemize}
+Example with the Cv_Trackbar_Callback type: (First the code needed to change the procedure into a C compatible procedure, then the actual code)
+\begin{lstlisting}
+procedure On_Trackbar(Position : Integer);
+pragma Convention (C, On_Trackbar);
+
+Position_Value : aliased Integer := 3;
+Max_Value : constant Integer := 10;
+begin
+Cv_Create_Trackbar("Main trackbar", -- trackbar name
+	"Main", -- name of the window
+	Position_Value'Access,
+	Max_Value,
+	On_Trackbar'Access);
+\end{lstlisting}
+Each time the trackbar changes the code in On_Trackbar will be executed. In this example we assume a global image called Global_Image exists and each time the code is executed the Cv_Erode function will be called with iterations parameter set to the position of the trackbar. Remember to release any local variables declared in a callback function.
+\begin{lstlisting}
+procedure On_Trackbar(Position : Integer) is
+	Local_Image : aliased Ipl_Image_Ptr;
+begin
+	-- Create a new image to store the result
+	Local_Image := Cv_Create_Image
+		(Cv_Get_Size(Global_Image),
+		 Global_Image.all.Depth,
+		 Global_Image.all.N_Channels);
+
+	-- Run Cv_Erode with Iterations = Position
+	Cv_Erode(Global_Image,Local_Image,null,Position);
+
+	-- Show the new "eroded" Image in window Main
+	Cv_Show_Image("Main",Local_Image);
+
+	-- Release the local image
+	Cv_Release_Image(Local_Image'Access);
+end On_Trackbar;
+\end{lstlisting}
+\subsubsection{Output}
+The highgui packages contains a few ways to giving the user an output string. Cv_Add_Text adds a string to an image, Cv_Display_Overlay shows a text string at the top of the image and Cv_Display_Status_Bar changes the value of the status bar below the image.
+Cv_Add_Text takes four parameters, the image where the text is added, the string that contains the text to be added, a Cv_Point where the text should start in the image and the Cv_Font to use.
+\begin{lstlisting}
+	Cv_Add_Text	(Image,
+			"Hello World!",
+			 -- top left corner
+			Cv_Create_Point(0,0),
+			-- scale and thickness
+			Cv_Create_Font(10.0, 2));
+\end{lstlisting}
+In addition to Cv_Add_Text the Cv_Put_Text function is also able to change the color of the text.
+\begin{lstlisting}
+	Cv_Put_Text	(Image,
+			"Hello World!",
+			 -- top left corner
+			Cv_Create_Point(0,0),
+			 -- scale and thickness
+			Cv_Create_Font(10.0, 2),
+			-- the color red
+			Cv_RGB(255,0,0)); 
+\end{lstlisting}
+Cv_Display_Overlay and Cv_Display_Status_Bar both takes the same parameters the only difference is where the text appears in the window.
+\begin{itemize}
+\item Name, is the name of the window where the text should be displayed.
+\item Text, is the string containing the text.
+\item Delay_Ms, is how long the text should be displayed.
+\end{itemize}
+Cv_Display_Overlay shows the text at the top of the image below the toolbar.
+\begin{lstlisting}
+	Cv_Display_Overlay("Main", 
+			   "Hello World!", 
+			   5000);
+\end{lstlisting}
+Cv_Display_Status_Bar shows the text at the bottom of the window in the status bar.
+\begin{lstlisting}
+	Cv_Display_Status_Bar("Main",
+			      "Hello World!", 
+			      5000);
+\end{lstlisting}
+\subsection{Camera, Video and Images}
+\subsubsection{How to get an image from a camera}
+To get an image from a camera two variables are needed, Cv_Capture_Ptr and Ipl_Image_Ptr. 
+\begin{itemize}
+\item Cv_Capture_Ptr is an internal representation used to keep track of a camera.
+\item Ipl_Image_Ptr is a representation of an image and is fully accessible from Ada. 
+\end{itemize}
+Cv_Create_Camera_Capture(<Camera ID>) is used to create the Cv_Capture_Ptr variable.
+CV_Query_Frame(<Cv_Capture_Ptr>) returns the current frame from the camera as an Ipl_Image_Ptr.
+\begin{lstlisting}
+	Capture : aliased Cv_Capture_Ptr;
+	Image : Ipl_Image_Ptr;
+begin
+	-- autopick the camera.
+	Capture := Cv_Create_Camera_Capture(0); 
+	Image := Cv_Query_Frame(Capture);
+\end{lstlisting}
+An image from a Cv_Capture_Ptr is a special case when using release functions to free memory and should not be freed. However the Cv_Capture_Ptr should be released when it is not used anymore.
+\begin{lstlisting}
+	Cv_Release_Capture(Capture'Access);
+\end{lstlisting}
+\subsubsection*{Stereo Camera}
+When using the Cv_Capture_Ptr type for a stereo camera it is recommended to use the function Cv_Grab_Frame and Cv_Retrieve_Frame instead of Cv_Query_Frame (a wrapper of the two functions) since you will want the frames as close in time as possible. 
+Cv_Grab_Frame saves an image buffer and is considered to be ``fast'', while Cv_Retrieve_Frame returns the Ipl_Image_Ptr of the buffer.
+An example of usage of a stereo camera with Cv_Capture_Ptr:
+\begin{lstlisting}
+	Left_Capture  : aliased Cv_Capture_Ptr;
+	Right_Capture : aliased Cv_Capture_Ptr;
+	Left_Image, Right_Image : Ipl_Image_Ptr;
+begin
+	Left_Capture := Cv_Create_Camera_Capture(1);	
+	Right_Capture := Cv_Create_Camera_Capture(2);
+
+	-- Grab the frames from the cameras 
+	-- (This is considered to be fast in OpenCv)
+	Cv_Grab_Frame(Left_Capture);
+	Cv_Grab_Frame(Right_Capture);
+
+	-- Now the buffers should be 
+	-- as close as possible in time.
+	-- We can now access the buffers 
+	-- as Ipl_Image_Ptr when ever we want.
+	Left_Image := Cv_Retrieve_Frame(Left_Capture);
+	Right_Image := Cv_Retrieve_Frame(Right_Capture);
+\end{lstlisting}
+\subsubsection{How to get an image from a video file}
+Using the Cv_Create_File_Capture function instead of a Cv_Capture_Ptr tied to a camera we can have a Cv_Capture_Ptr that retrieves images from a video file. Except for the parameter being a string instead of an integer reference to the camera the Cv_Capture_Ptr created with Cv_Create_Camera_Capture is used exactly the same.
+\begin{lstlisting}
+	Capture := 
+		Cv_Create_File_Capture("hello_world.avi");
+\end{lstlisting}
+\subsubsection{How to get an image from an image file}
+To open a separate image file the Cv_Load_Image function is used. Cv_Load_Image takes two parameters, a string containing the file name (path can be added if needed) and an integer with a flag that decides which color type should be used(Cv_Load_Image_Color is the standard value and creates an image that contains colors). 
+\begin{lstlisting}
+	Image : aliased Ipl_Image_Ptr;
+begin
+	-- opens the image as grayscale.
+	Image := Cv_Load_Image("Hello.jpg",
+		    Cv_Load_Image_Grayscale); 
+\end{lstlisting}
+Images created with Cv_Load_Image should be released when they are not used anymore.
+\begin{lstlisting}
+	Cv_Release_Image(Image'Access);
+\end{lstlisting}
+\subsubsection{Saving images}
+With Cv_Save_Image images can be saved to the hard drive to a normal image file(png,jpg, etc), Cv_Save_Image takes two parameters, the file name with a file name extension that decides the file format to save the image as and the Ipl_Image_Ptr or Cv_Mat_Ptr that will be saved.
+\begin{lstlisting}
+	-- saves the image as a png file.
+	Cv_Save_Image("Output.png", Image); 
+\end{lstlisting}
+\subsubsection{Saving video files}
+Cv_Create_Video_Writer and Cv_Write_Frame allows for the creation of video files. Cv_Create_Video_Writer creates a pointer that is passed to Cv_Write_Frame and contains the information used to add a frame to the video file.
+\begin{itemize}
+\item Cv_Create_Video_Writer needs six parameters:
+\item Filename, the name of the video file and the extension.
+\item Fourcc, an integer created from four characters that decides the codec see Cv_Fourcc below.
+\item Fps, a long float with the amount of frames that should be shown per second.
+\item Width, integer width.
+\item Height, integer height.
+\item Is_Color, 1 for color, 0 for gray scale.
+\end{itemize}
+The Cv_Fourcc function creates a codec integer from four characters, or Cv_Fourcc_Prompt can be used in windows to pick a codec from a list.
+\begin{lstlisting}
+	Writer : Cv_Video_Writer_Ptr;
+begin
+	Writer := Cv_Create_Video_Writer 
+			("output.avi",
+			-- uses the ffdshow codec.
+ 			Cv_Fourcc('F','F','D','S'),
+			24.0, -- fps
+			640, -- width
+			480, -- height
+			1); -- color
+\end{lstlisting}
+Cv_Write_Frame adds a Ipl_Image_Ptr to the specified Cv_Video_Writer_Ptr.
+\begin{lstlisting}
+	Cv_Write_Frame(Writer, Image);
+\end{lstlisting}
+\section{Advanced}
+\subsection{Unchecked Conversions}
+In certain cases it is required to use an Ada.Unchecked_Conversion between two pointers in OpenCvAda, the reason for this is that in many cases the actual type returned by functions or contained in records are not known until they are put into a context, this is more often then not due to Cv_Seq_Ptr and related records and or functions.
+\\
+Here is a larger example of how Ada.Unchecked_Conversions are used with OpenCvAda, that uses the Cv_Canny and Cv_Hough_Lines2 to find lines in an image.
+\\
+Since we know that the Cv_Seq returned by Cv_Hough_Lines2 will contain four integers representing the start and end point of a line, we can see it as an array of Cv_Point with the length of two, the values will be in a Cv_Void_Ptr that can be retrieved from the Cv_Seq. Unchecked_Conversions can only convert between actual types of the same size (e.g. access type to access type) so we need to create a type that is an access to a array of Cv_Point, that can be converted from a Cv_Void_Ptr.
+\begin{lstlisting}
+	subtype Line_Array is Cv_Point_Array (0 .. 1);
+	type Line_Array_Ptr is access Line_Array;
+
+	function To_Line_Array_Ptr is 
+		 new Ada.Unchecked_Conversion 
+			(Target => Line_Array_Ptr, 
+			 Source => Cv_Void_Ptr);
+
+	Line 	: Line_Array;
+	Lines 	: Cv_Seq_Ptr;
+begin
+\end{lstlisting}
+Cv_Hough_Lines2 returns a Cv_Seq_Ptr, the data can be retrieved from the Cv_Seq_Ptr using the Cv_Get_Seq_Elem function that returns a Cv_Void_Ptr so here is when we need to use the Unchecked_Conversion that was created above.
+\begin{lstlisting}
+	Lines := Cv_Hough_Lines2(Dst, 
+				 To_Void_Ptr (Storage), 
+				 Cv_Hough_Probabilistic, 
+				 1.0, Cv_Pi / 180.0, 
+				 100, 5.0, 10.0);
+
+	for I in Integer range 0 .. Lines.all.Total - 1 
+	loop
+		Line := 
+			To_Line_Array_Ptr 
+				(Cv_Get_Seq_Elem 
+					(Lines, I)).all;
+				Cv_Line (Image, 
+				Line (0), 
+				Line (1), 
+				Cv_Rgb (255, 0, 0), 
+				3,
+				8);
+	end loop;
+\end{lstlisting}
+The full example can be found in OpenCvAda/Samples/Hough_Lines.adb or as an appendix  to this document.
+\section{The Demo Application}
+This application allows the user to test the Cv_Corner_Harris function with different values on the fly by using trackbars.
+\\
+Packages needed for this application:
+\begin{lstlisting}
+with Highgui; 			use Highgui;
+with Core; 			use Core;
+with Core.Operations; 		use Core.Operations;
+with Imgproc; 			use Imgproc;
+with Imgproc.Operations; 	use Imgproc.Operations;
+\end{lstlisting}
+The variables used in the application, the aliased variables except for the slider values are aliased so that they can be released when not used anymore.
+\begin{lstlisting}
+procedure Demo is
+	-- Parsed variables created from the trackbars
+	Aperture_Size		: Integer := 1;
+	Block_Size 		: Integer := 1;
+
+	-- Unparsed variables used with the trackbars
+	Slider_A_Value 		: aliased Integer := 1;
+	Slider_B_Value 		: aliased Integer := 1;   
+
+	-- Variables used with the camera.
+	Capture 		: aliased Cv_Capture_Ptr;
+	Image 			: Ipl_Image_Ptr;
+
+	-- Temporary images
+	Corners, Image_Gray 	: aliased Ipl_Image_Ptr;
+   	
+	-- Used to convert a 32F image to a 8U image.
+	Scale, Shift		: Long_Float;
+	Min, Max 		: aliased Long_Float;
+\end{lstlisting}
+Trackbar procedure that is used to change the parameter Aperture_Size in the Cv_Corner_Harris procedure. The value must be between 1 and 31, and can not be even.
+\begin{lstlisting}
+	-- Change the convention to match a C function.
+	procedure Slider_A (Position : Integer);
+	pragma Convention (C, Slider_A);   
+
+	procedure Slider_A (Position : Integer) is
+	begin
+		-- Value is 0 or even.
+		if Position = 0 or Position mod 2 = 0 then 
+			Aperture_Size := Position + 1;
+		else
+			Aperture_Size := Position;
+		end if;
+	end Slider_A;
+\end{lstlisting}
+This trackbar procedure is for the Block_Size parameter and the value can not be 0.
+\begin{lstlisting}
+	-- Change the convention to match a C function.
+	procedure Slider_B (Position : Integer);
+	pragma Convention (C, Slider_B);
+
+	procedure Slider_B (Position : Integer) is
+	begin
+		if Position > 0 then
+			Block_Size := Position;
+		else
+			Block_Size := 1;
+		end if;
+	end Slider_B;
+\end{lstlisting}
+Creates two windows, one for showing the original image and the other one for showing the result of Cv_Corner_Harris. Also the trackbars are added to the Corner window. Unrestricted_Access to the trackbar callbacks is needed since they are subprograms.
+\begin{lstlisting}
+begin
+	-- Create Windows, 
+	-- Corners window will be resizeable. 
+	Cv_Named_Window ("Original",
+			 Highgui.Cv_Window_Autosize);
+	Cv_Named_Window ("Corners", 
+			 Highgui.Cv_Window_Normal);
+
+	-- Move the windows, 
+	-- so they are not on top of eachother.
+	Cv_Move_Window ("Corners", 700, 50);
+	Cv_Move_Window ("Original", 0, 50);
+
+	Cv_Create_Trackbar("Aperture",
+			   "Corners",
+			   Slider_A_Value'Access, 
+			   31, -- Max value.
+			   Slider_A'Unrestricted_Access);
+  	Cv_Create_Trackbar("Block", 
+			   "Corners", 
+			   Slider_B_Value'Access,
+			   11, -- Max value.
+			   Slider_B'Unrestricted_Access);
+\end{lstlisting}
+Loop until the ESC button is clicked, at the start of each loop retrieve a new image from the capture device and show it in the Original window.
+\begin{lstlisting}
+	Capture := Cv_Create_Camera_Capture (0);
+
+	loop
+		exit when Cv_Wait_Key (100) = Ascii.Esc;
+		Image := Cv_Query_Frame (Capture);
+		Cv_Show_Image ("Original", Image);
+\end{lstlisting}
+Create two temporary images, Image_Gray is the gray scale version of Image created with Cv_Cvt_Color while Corners contains the result of the Cv_Corner_Harris procedure.
+\begin{lstlisting}
+		Corners := Cv_Create_Image
+			(Cv_Get_Size(Image),
+			Ipl_Depth_32f, 
+			1);
+		Image_Gray := Cv_Create_Image
+			(Cv_Get_Size (Image),
+			Ipl_Depth_8u,1);
+		Cv_Cvt_Color
+			(Image, Image_Gray, Cv_Rgb2gray);
+		Cv_Corner_Harris(Image_Gray, 
+				 Corners, 
+				 Block_Size, 
+			 	 Aperture_Size);
+\end{lstlisting}
+Convert the result from Cv_Corner_Harris back to a 8U image so that it can be show in a window.
+\begin{lstlisting}
+		Cv_Min_Max_Loc (Corners, 
+			   	Min'Access, 
+				Max'Access, 
+				null, null, null);
+
+		Scale := 255.0 / (Max - Min);
+		Shift := -Min * Scale;
+
+		Cv_Convert_Scale 
+			(Corners, 
+			Image_Gray, Scale, Shift);
+		Cv_Show_Image ("Corners", Image_Gray);
+\end{lstlisting}
+Release the temporary images so that there is no memory leak and then end the loop.
+\begin{lstlisting}
+		Cv_Release_Image (Image_Gray'Access);
+		Cv_Release_Image (Corners'Access);
+	end loop;
+\end{lstlisting}

@@ -31,6 +31,7 @@ package Imperium_Plures_Supplicium is
 
    type Buffer_Index is new Natural;
    type Max_Parsed_Frame_Array is array (Integer range 0 .. 65535) of Parsed_Raw_Frame;
+   type Parsed_Frame_Array is array (Integer range <>) of Parsed_Raw_Frame;
    type Vector_Parsed_Frame is
       record
          Buffer : Max_Parsed_Frame_Array;
@@ -55,6 +56,7 @@ package Imperium_Plures_Supplicium is
    Package_Buffer_Overflow : exception;
    Package_Buffer_Logic : exception;
    Package_Buffer_Cant_Add : exception;
+   Nothing_To_See_Here_Move_Along : exception;
 
    protected type Package_Buffer is
 --        procedure Create_Package (Position : out Integer);
@@ -89,7 +91,18 @@ package Imperium_Plures_Supplicium is
                                   Position        : in Integer;
                                   Vector_Position : in Integer);
       -- Adds a series of frames.
---        procedure Batch_Add_Frame;
+      --        procedure Batch_Add_Frame;
+      --------------------------------------------------------------------------
+      -- Remove frames
+      --------------------------------------------------------------------------
+      procedure Remove_Frames (Buffer : in Buffer_Type;
+                               Vector_Position : in Integer;
+                               Frames          : out Parsed_Frame_Array);
+
+      procedure Remove_Frames (Buffer : in Buffer_Type;
+                               Frames : out Parsed_Frame_Array);
+
+      procedure Smart_Remove_Frames (Frames : out Parsed_Frame_Array);
    private
       --------------------------------------------------------------------------
       -- Internal function / procedures

@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99cThe top-level auxiliary file: main.aux
+The style file: plain.bst
+Database file #1: references.bib
+You're missing a field part---line 59 of file references.bib
+ :  howpublished=
+ :               ”\url{http://www.opencv.willowgarage.com},
+I'm skipping whatever remains of this entry
+I was expecting a `,' or a `}'---line 77 of file references.bib
+ :  
+ :  howpublished=”\url{http://www.adaic.org/resources/add_content/docs/95style/html/sec_3/3-5.html}”,
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+You're missing a field part---line 83 of file references.bib
+ :  howpublished=
+ :               ”\url{http://www.adacore.com/home/ada_answers/comparison-chart/}”,
+I'm skipping whatever remains of this entry
+You're missing a field part---line 89 of file references.bib
+ :  howpublished=
+ :               ”\url{http://qt.nokia.com}”,
+I'm skipping whatever remains of this entry
+You're missing a field part---line 95 of file references.bib
+ :  howpublished=
+ :               ”\url{http://www.nasa.gov/multimedia/imagegallery}”,
+I'm skipping whatever remains of this entry
+You're missing a field part---line 101 of file references.bib
+ :  howpublished=
+ :               ”\url{http://gcc.gnu.org/onlinedocs/gnat_ugn_unw/Building-Mixed-Ada-_0026-C_002b_002b-Programs.html#Building-Mixed-Ada-_0026-C_002b_002b-Programs}”,
+I'm skipping whatever remains of this entry
+You're missing a field part---line 107 of file references.bib
+ :  howpublished=
+ :               ”\url{http://gcc.gnu.org/onlinedocs/gnat_ugn_unw/Building-Mixed-Ada-_0026-C_002b_002b-Programs.html#Building-Mixed-Ada-_0026-C_002b_002b-Programs}”,
+I'm skipping whatever remains of this entry
+You're missing a field part---line 113 of file references.bib
+ :  howpublished=
+ :               ”\url{http://gcc.gnu.org/onlinedocs/gnat_ugn_unw/Building-Mixed-Ada-_0026-C_002b_002b-Programs.html#Building-Mixed-Ada-_0026-C_002b_002b-Programs}”,
+I'm skipping whatever remains of this entry
+You're missing a field part---line 119 of file references.bib
+ :  howpublished=
+ :               ”\url{http://gcc.gnu.org/onlinedocs/gnat_ugn_unw/Building-Mixed-Ada-_0026-C_002b_002b-Programs.html#Building-Mixed-Ada-_0026-C_002b_002b-Programs}”,
+I'm skipping whatever remains of this entry
+Warning--I didn't find a database entry for "win7"
+Warning--I didn't find a database entry for "fedora"
+Warning--I didn't find a database entry for "ununion"
+Warning--I didn't find a database entry for "ada2012chart"
+Warning--to sort, need author or key in opencv2011
+Warning--to sort, need author or key in styleguide95
+Warning--to sort, need author or key in qtweb
+Warning--to sort, need author or key in nasa
+Warning--to sort, need author or key in ada2012
+(There were 9 error messages)

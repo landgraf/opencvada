@@ -1,0 +1,36 @@
+\chapter{Introduction}
+Currently being developed by researchers and faculty at Mälardalen University (MDH) is an FPGA stereo camera system designed to be used for a vision system in robotics. To allow for testing algorithms without implementing them on the FPGA system, a communication protocol allowing the camera to send images and data over Ethernet or USB to a PC system was designed and an implementation was created that interfaces with the Open Source Computer Vision\cite{opencv2011}(OpenCv) library. Due to safety requirements in a robotic implementation the Ada programming language was used to implement the communication protocol. To allow a seamless connection between OpenCv and the communication, Ada bindings for the C version of OpenCv was designed and implemented as well. The reason for creating Ada bindings against the C version of OpenCv instead of the newer C++ version is due to the limitations of interfacing Ada with C++\footnote{See more in the C++ to Ada section.}.
+\\
+The introduction contains four different parts, first is the introduction to the OpenCv library, the second part is an introduction to OpenCvAda, third is a guide to interfacing the Ada programming language with C or C++ and the last part is the communication protocol.
+\\
+After the introduction to the major areas of the report comes the three sections of OpenCvAda, Design, Benchmark and User guide followed by the two sections about interfacing Ada with C and C++, then comes the requirements and design of the communication protocol. The last parts of the report is the conclusions and summary followed by the future work section. In the appendix we can find complete code examples to the OpenCvAda user guide and a cheat sheet for OpenCvAda.
+\section{OpenCv}
+OpenCV is an open source computer vision library written in optimized C and C++ and runs under Linux, Windows and Mac OS X. OpenCV is designed to be an infrastructure for computer vision that is easy to use while maintaining computational efficiency and a focus on real-time applications.
+\\
+The library contains over 500 functions that cover many areas related to vision, such as factory product inspection, medical imaging, security, user interface, camera calibration, stereo vision and robotics. OpenCV has been used in many applications since its first release in 1999. Applications where it has been used include image stitching of satellite images, noise reduction in medical imaging and many others.
+\section{OpenCvAda}
+Due of the potential usefulness of OpenCV in robotics and other safety critical systems and the reliability of Ada in mission-critical applications. By creating Ada bindings for OpenCV it is possible to combine the usefulness of OpenCV with the reliability of Ada. The challenges of creating these bindings are to keep the look and feel of the original C library and maintaining the performance.
+\subsection{Design}
+When designing OpenCvAda, the main design challenge was to keep it as similar as possible to OpenCv in C while making it behave as much as an Ada library as possible. OpenCv is built from a series of modules while OpenCvAda uses packages that split most modules into one package with types and another with operations related to those types.
+\\
+To match Ada naming conventions and avoid name conflicts, OpenCvAda uses a different naming convention then in C. The names of the functions and types will be the same as in C but due to Ada being case-insensitive and Ada not allowing types and functions having the same name, words are separated with underscore rather then uppercase letters.
+\\
+OpenCv uses several void pointer types to ``fake'' generic functions in C. There are several ways of mapping these to Ada from overloading functions to unchecked_conversions, for different types different methods is preferred.
+\subsection{Benchmark}
+When designing and implementing OpenCvAda it was important to keep the functionality and performance as close to the C precursor as possible. To show this we use execution time comparisons between Ada, C and Python versions of the same application and also comparing the results of the C/C++ samples implemented together with OpenCvAda.
+\subsection{User guide}
+To ease the development when working with OpenCvAda a user guide has been written to explain the commonly used types and functions. The user guide explains the functions with both text and code examples. The full application examples are added as an appendix.
+\section{Interfacing Ada with C and C++}
+The majority of work in this thesis is related to interfacing Ada with existing C and C++ code which OpenCV is written in originally. Different problems arise when attempting to match parameters and return values from C/C++ with corresponding types in Ada, this section describes and discusses the problems associated with the interfacing.
+\\
+Both Ada and C have well defined standards, due to this it possible for Ada to provide extensive interfacing support with C. Although the interfacing is trivial for the most part, due to the types in both languages are compatible with each other, there still exists some special cases where Adas strong typing does not interact well with C.
+\\
+Unlike its predecessor C, C++ does not have a well defined standard, which makes interfacing C++ and Ada problematic. It is possible to some extent to create a binding between Ada and C++, but this binding will have serious restrictions in its compatibility between different compilers and even different versions of the same compiler. The reason for this problem is the lack of a standard for C++ compilers, without a standard to follow the compilers can take certain liberties during compilation which results in different name mangling schemes and different ways to structure the object files. Other problems related to interfacing Ada and C++ are caused by features in the C++ language, such as vectors and to some extent templates.
+\\
+This section discusses the problems and solutions to different interfacing problems that arise between Ada and C/C++.
+\section{GIMME Communication Protocol}
+The communication protocol contains a series of requirements detailing what the protocol should be able to handle, with the main requirement being flexibility and extendability. The protocol should handle parallel transactions from one or several devices, regardless of the type of transaction. The medium should be raw Ethernet with a possibility of using USB, the devices are identified using their MAC address.
+\\
+Designed as a layered header system built on top of raw Ethernet frames. One header on each frame in a transaction to distinguish each frame and make it possible to use several concurrent transactions one device and one header for each transaction to describe the transaction. In that section all the headers are explained in detail.
+\\
+The PC side of the communication is explained first by the architecture of the system and then a closer look at the individual subsystems available. The PC implementation of the protocol interfaces through a shared API with OpenCvAda allowing for example direct transfer between camera image to an Ipl_Image used in OpenCvAda.

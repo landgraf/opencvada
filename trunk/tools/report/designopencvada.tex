@@ -1,0 +1,119 @@
+\chapter{Design of OpenCvAda}
+This part details the choices made in the design of OpenCvAda.
+\section{Naming conventions}
+The original naming convention in OpenCv uses uppercase letters to denote new words in names, which is not very readable in Ada, due to Ada being non-case sensitive. So in order to increase the readability and usability of OpenCvAda, it conforms to the Ada 95 Quality and Style guide\cite{styleguide95} to the greatest extent possible while keeping the structure and naming convention similar to the original C library.
+\\
+A special case exists to match the naming convention in OpenCv the main image type is called IplImage and those is called Ipl_Image in OpenCvAda.
+\subsection{Types}
+Types in OpenCvAda will use the OpenCv names but each word will be separated with an underscore instead of only an uppercase letter. OpenCvAda still keeps the Cv prefix as well but adds an underscore after it as well.
+\\
+\begin{lstlisting}
+typedef struct CvMat {
+...
+}
+
+type Cv_Mat is record
+...
+end record;
+\end{lstlisting}
+\subsection{Functions}
+Functions in OpenCvAda will use the same naming convention as detailed in types, except for the functions that have the same name as a type then we will add Create_ after Cv_. This is needed since Ada does not allow a function or procedure to have the same name as a type. Ada allows overloaded functions though so if there is already a Cv_Create_  function it will not cause problems unless they have the exact same parameters.
+\\
+\begin{lstlisting}
+CvSize cvGetSize( ... );
+
+function Cv_Get_Size ( ... ) return Cv_Size;
+\end{lstlisting}
+\begin{lstlisting}
+CvMat cvMat( ... );
+
+Cv_Create_Mat ( ... ) return Cv_Mat;
+\end{lstlisting}
+\subsection{Macros and Constants}
+Macros and constants in C are generally defined in uppercase and with an underscore between each word, with a few exceptions. Constant value macros are defined as constants at package level in OpenCvAda. For example, a constant declared with the \#define pragma in C would in Ada be declared in an appropriate package in the following way.
+\begin{lstlisting}
+#define CV_NO_DEPTH_CHECK 1
+
+Cv_No_Depth_Check : constant := 1;
+\end{lstlisting}
+Function macros follow the same naming convention as constant values, however the functions are wrapped and imported as described in Macros from C in section \ref{sec:macrosc}.
+\subsection{Pointers}
+The majority of functions in OpenCv takes pointers as parameters and in many cases pointers to pointers. As a result of the latter case, each type in OpenCvAda has an access type associated with it because Ada does not support an access to an anonymous access type. The access types share the same name as the type they are an access to with _ptr appended to the name (for example an access type to Cv_Size is named Cv_Size_Ptr).
+\begin{lstlisting}
+type Cv_Mat is record
+	...
+end record;
+
+type Cv_Mat_Ptr is access all Cv_Mat;
+\end{lstlisting}
+Some special cases requires the use of generic Interfaces.C.Pointers, for more information see Pointers in section \ref{sec:pointersdesign}. Just like the access types, many of the types in OpenCvAda has a Interfaces.C.Pointers.Pointer associated with the type. These pointers also share the same name as the type they are pointing to with the suffix _pointer added.
+\begin{lstlisting}
+type Cv_8u_Array is array (Integer range <>) 
+	of aliased Integer;
+
+package Cv_8u_Pointer_Pkg is
+	new Interfaces.C.Pointers(Integer, 
+				  Unsigned_8, 
+				  Cv_8u_Array, 0);
+subtype Cv_8u_Pointer is Cv_8u_Pointer_Pkg.Pointer;
+\end{lstlisting}
+In many cases Ada requires that anonymous access types are not used, so each type in OpenCvAda will have an access type associated with it named _Ptr.
+\subsection{Packages}
+OpenCv is divided into modules, the package structure of OpenCvAda is based on these modules. The packages are named according to the modules they represent, in the case of large modules sub-packages are created to separate data types and operations.
+For example, in OpenCv there is a module called Core. The Core module as its name implies supplies the core functionality of OpenCv. Because the Core module defines many data types and contains numerous operations it has been divided into two packages in OpenCvAda. The top package is called Core contains all the defined data types and the second package is a sub-package called Core.Operations.\\
+Smaller modules such as Highgui are represented by a single package in order to minimize the number of packages in OpenCvAda.
+\subsection{Generic packages}
+Matrices in OpenCv behave differently from the other data types, it is possible to declare a matrix which contains any data type. Because of the generic nature of the matrices they have been placed in generic packages to ease the access of matrix data. Each type of matrix has its own generic package.
+\subsection{Summary}
+\begin{tabular}{| l | l | l | l |}
+\hline
+\textbf{Language} & \textbf{Type} & \textbf{Constructor Function} & \textbf{Function} \\ \hline
+C & CvMat & cvMat & cvGetSize  \\ \hline
+Ada & Cv_Mat & Cv_Create_Mat & Cv_Get_Size  \\ \hline \hline
+\textbf{Language} & \textbf{Macro/Constant} & \textbf{Pointer} & \\ \hline 
+C & CV_RGB & CvMat * &  \\ \hline
+Ada & Cv_Rgb & Cv_Mat_Ptr & \\ \hline
+\end{tabular}
+\section{Pointers}\label{sec:pointersdesign}
+Types that requires the use of pointers (all of them) in OpenCv have almost all of them three different pointers associated with them.
+\begin{enumerate}
+\item Access type with the suffix_Ptr.
+\item Interfaces.C.Pointers.Pointer with the suffix _Pointer.
+\item Array with the suffix _Array
+\end{enumerate}
+This does not include the two dimensional arrays that is available for certain types.
+\\
+The more complex types in OpenCv have release functions associated with them, these functions require access to _Ptr types to function, this requires that the type is created as a or contained in a _Ptr since Ada does not allow access access parameters. One issue with this is that the it might not always be clear when to use _Ptr and when to use the normal type. Possible solutions to this, is wrapper functions removing one access or simply suggesting that if a type is used as access then it should be created as an _Ptr type. To avoid using more memory we have decided on the second option, so if a type is passed to Ada as a pointer and Ada copies the variable data instead of the address there will be two copies of the variable in memory and the one that is created in C will not be release able since the address is lost.
+\\
+The _Pointer type is used in cases where arrays do not produce the correct results or when conversion between types are needed see Type conversions for more information. It is possible to keep using the normal types associated with a _Pointer since it can be converted very easy when needed by passing access to a variable or access to the first element in an array instead. So while the _Pointer types might add complexity they are often needed to produce the correct results and due to type conversions(section \ref{sec:typeconv} hiding the _Pointer type from the user might not be an advisable move, since this would create unnecessary amounts of generic functions\footnote{If generics was used at package level instead this would require the user to instantiate each package for every type that will be used. This assumes that in each package only one type exists that would benefit from being generic.} (basically every function would need to be generic) or hamper the usability by only allowing certain types in each function. A version of the second way is actually used with Cv_Arr overloading but still keeps the Cv_Arr type as a possibility and Cv_Arr have a more limited scoop on what it can contain then other types.
+\subsection{Arrays}\label{sec:array}
+Except for the types that are known to need arrays (where the arrays are used as parameters to functions or in records) basic types and some often used types have array types in OpenCvAda. Except for the _Array types _Pointer also behaves like an array in all cases, but is not as intuitive to use in Ada. The _Array type can be used as a _Pointer so even when OpenCvAda requires the _Pointer the user should still be able to use the _Array. Even the two dimensional array allows the user to use the more standard Ada arrays and passing them as a _Pointer_Array when needed.  
+\\
+Whenever possible OpenCvAda will use the _Array and the _Array_Ptr instead of _Pointer. The _Array_Ptr types are used almost exclusively in records since Ada and C arrays behaviour are not equal in records see Pointers in records(section \ref{sec:ptrinrecord} for more information.
+\subsection{Cv_Void}\label{sec:cvvoid}
+Cv_Void is used as a substitute for generic functions in OpenCv, the issue with Cv_Void is that there is not known set of types that are mapped as a Cv_Void, instead what types a Cv_Void can be depends on the function they are sent to. This causes the preferred method of having overloaded functions for each possible type to not be a realistic method. Cv_Void in OpenCvAda instead relies on Unchecked_Conversions that allows the user to convert them into any other C compatible pointer, a few of the often used types have Unchecked_Conversions already created in OpenCvAda in other cases it is up to the user to create them. Examples of this can be found in the OpenCvAda user guide(section \ref{sec:userguide}).
+\subsection{Cv_Arr}
+The Cv_Arr type is used as a Cv_Void replacement for matrices, images and occasionally other arrays. This allows for the possibility to use a better way of mapping the functions in Ada, overloading the functions with a Cv_Mat and an Ipl_Image version instead of using type conversions.
+\subsubsection{Overloading}
+Overloading functions is the easiest way to map functions with void parameters in Ada but doing this is nearly impossible in most cases in OpenCv see Cv_Void(section \ref{sec:cvvoid} for the reasons why. Since Cv_Arr only has a finite set of possible types mainly Cv_Mat_Ptr and Ipl_Image_Ptr , using overloaded functions will make the api easier to use.
+\subsection{Strings}
+To make interfacing with other Ada applications easier and overall easier to use, we have decided on using the standard Ada String type instead of the Interfaces.C.Strings package. One issue this choice presents is that it requires the user to add the nul character to each string to match its C equivalent, this is solved with wrapper functions adding the nul character to all strings passed as parameters. 
+\\
+In a few cases the Cv_String_Pointer type is needed, the type is comparable to an array of strings and can be either used as is or “converted” from the Cv_String_Array type. More information about the _Pointer types can be found in Pointers(section \ref{sec:pointersdesign}) and Arrays(section \ref{sec:array}).
+\section{Records}
+In OpenCvAda there is three major types of records, Cv_Arr based records, sequences and dynamic types and null records.
+\subsection{Cv_Arr records}
+The records used as Cv_Arr is most of the time Ipl_Image and Cv_Mat. Ipl_Image is a simple record with an pointer containing an array with the data, see type conversions for information how to get the desired data out of it. Cv_Mat on the other hand is available in two versions one simple record similar to Ipl_image and one generic package that allows for more seamless access to the data inside the matrix. 
+\subsection{Sequences and dynamic types}
+Sequences in OpenCv uses the Cv_Seq type or types derived from Cv_Seq. Cv_Seq is a classic linked list with a generic payload access to the payload can be done from a reader/writer system or directly. All the Cv_Seq macros and support functions are available in OpenCvAda, but Cv_Seq causes problems in OpenCvAda due to Ada not allowing the kind of on the fly type conversions that C allows. In OpenCvAda to access the data from a Cv_Seq reader/writer requires a pointer conversion on the payload of the sequence, most of types used in OpenCv will require a Unchecked_Conversion. A very limited set of types have conversions added to to OpenCvAda, an example using Unchecked_Conversions can be found in the OpenCvAda user guide.
+\\
+Due to the method of accessing the data in a Cv_Seq (direct access to a pointer in the record) other methods such as generic functions are not as intuative to work with that is why unchecked_conversions are used. Another reason for this model is that in one small application it is sometimes possible to access a Cv_Seq and expecting several different types of data.
+\subsection{Null records}
+Certain types in OpenCV are opaque, meaning that their implementation is hidden to the user. In OpenCV these types are mainly found in the C part of the library and are used as pointers to C++ classes to avoid the need for separate implementations in C and C++. These opaque data types can be mapped directly to Ada as null records and an access to a null record behaves exactly like a C opaque pointer.
+\\
+Because OpenCVAda provides a binding to the C library of OpenCV null records are used instead of importing the actual implementation of the C++ classes that the opaque types in C reference.
+The drawback of opaque data types is that the data is not easy to access without knowledge of how the data is stored or by having functions that extract the data. This drawback is not of any concern in OpenCVAda since the opaque types are only used for types that are internal to the library (for example handles to capturing devices).
+\section{Type conversions}\label{sec:typeconv}
+Because C/C++ is loosely typed it is possible to convert one type to another with a simple type cast, this is a feature often used in OpenCV. Ada however, is a strongly types language and such conversions are not always possible unless the types being converted are sub-types. In order to convert other types it is necessary to use unchecked conversions that are available through the generic package Ada.Unchecked_Conversion. In comparison with C/C++ the unchecked conversions still adds a layer of protection in the form of checking if the sizes of the converting types match, if they do not the compiler will generate a warning.
+\\
+The functions in OpenCV usually support multiple types of data, such as images, arrays and matrices. Because of this, most functions that operate on data in OpenCV take a void pointer as a data parameter and then cast it to the correct type in the function with the help of type information built into the data types.

@@ -1,0 +1,391 @@
+\chapter{Interfacing Ada with C}
+\section{Basic types}
+Types found in the Standard, Interfaces and Interfaces.C in Ada can be used to map C types. If portability is a huge concern (between architectures while using a different compiler mostly) Interfaces.C should be more correct, in the cases where Interfaces.C and Standard and Interfaces are not the same types( which is the case in most of the types i GNAT so this is a void issue).
+\\
+To find out if two types are equal in C and Ada a compression of the sizes is done, and as long as a type is accessed in only one of the languages having the same size is enough. However for the types to make sense in both languages the actual representation of the types needs to be the same. So C will not care if an Integer is mapped to a Float, it will be hard to track changes made in both languages if such a mapping is made.
+\\
+Enumerations types in Ada is fitted into the smallest possible Integer type available, while in C int is used. Using pragma Convention C on the enumeration type will force the Ada type to be equal to the C type.
+\section{Composite types}
+C structs and unions are mapped in Ada as records, unions use variant records with the C union convention. Unlike the variant records a union ignores the option variable and because of this it can be type equal to a C union.
+When structs are used directly as parameters the corresponding record must have the C_Pass_By_Copy convention to mimic the behaviour of the C struct. When a struct is instead used with a pointer the C_Pass_By_Copy convention is not needed.
+\\
+C struct for comparison: 
+\begin{lstlisting}
+typedef struct {
+	int x;
+	int y;
+} foo;
+\end{lstlisting}
+Ada record that is possible to pass as a parameter in a C function:
+\begin{lstlisting}
+type foo is record
+	x : Integer;
+	y : Integer;
+end record;
+
+pragma Convention (C, foo);
+pragma Convention (C_Pass_By_Copy, foo);
+\end{lstlisting}
+An Ada variant record is not type equal to a C union since the ``option variable'' is part of the record, however if the pragma Unchecked_Union\cite{ununion} is used the ``option variable'' is ignored.
+\\
+C union for reference:
+\begin{lstlisting}
+typedef union{
+	int ivalue;
+	unsigned uvalue;
+	float fvalue;
+} foo;
+\end{lstlisting}
+Ada union that is mappable to a C union:
+\begin{lstlisting}
+type Foo_Options is (One,Two,Three);
+type Foo(Option : Foo_Options := Foo_Options'First) is 
+record
+	case Option is
+		when One =>
+			Ivalue : Integer;
+		when Two =>
+			Uvalue : Unsigned_32;
+		when Three =>
+			Fvalue : Float;
+	end case;
+end record;
+pragma Unchecked_Union (Foo);
+pragma Convention (C,Foo);
+\end{lstlisting}
+\section{Interfacing C functions}\label{sec:cfunc}
+Functions from C can be imported to Ada by using the import pragma. The pragma takes three parameters, the language convention determines which language the function is written in, the entity parameter is which local function will be used for the binding and the external name is the name of the function to be imported.\\
+If the function to be imported does not have a return value (i.e. void foo( … )) the local entity needs to be a procedure, otherwise it should be a function with a matching return value as the C function.\\
+For example, consider two functions c_foo and c_bar like they are declared below.
+\begin{lstlisting}
+int c_foo(int i, char c);
+void c_bar(int i, char c);
+\end{lstlisting}
+In order to import these functions it is required to declare a function and a procedure for c_foo and c_bar respectively. After the declarations the functions can now be imported with the import pragma.
+\begin{lstlisting}
+function Foo (I : Integer; C : Character) return Integer;
+procedure Bar (I : Integer; C : Character);
+
+pragma Import (C, Foo, "c_foo");
+pragma Import (C, Bar, "c_bar");
+\end{lstlisting}
+Matching the parameters from C can be problematic without access to the complete source code or very well documented functions. The problem is discerning whether pointers passed as parameters point to a single variable or an array of variables. For example,
+\begin{lstlisting}
+int func(int *param);
+\end{lstlisting}
+Without further information about the function it is not possible to determine if param is just the address to an integer or an array of integers. For further information see Pointers (section \ref{sec:pointers}).
+\subsection{Macros from C}\label{sec:macrosc}.
+Some C implementations make extensive use of macros for short snippets of code in order to avoid the overhead a function call results in. If a macro needs to be imported to Ada it must be wrapped inside a C function since macros are not represented as symbols in the object files. The cost of doing this is the added overhead of a function call in Ada because for all intents and purposes the macro is now a regular function. As and example, consider a macro that sets a particular bit in a variable. To import this macro to Ada we first create a wrapper function in C.
+\begin{lstlisting}
+#define SET_BIT(value, bit) ((value) | (1 << (bit)))
+int set_bit_wrap(int value, int bit) 
+{ 
+	return SET_BIT(value, bit); 
+}
+\end{lstlisting}
+After the wrapper function has been created we import the function with the import pragma as described earlier in Interfacing C functions (section \ref{sec:cfunc}.
+\begin{lstlisting}
+function Set_Bit (Value : Integer; 
+ 		  Bit : Integer) return Integer;
+pragma Import (C, Set_Bit, "set_bit_wrap");
+\end{lstlisting}
+Depending on the nature of the macro it might be necessary to create several wrapper functions. For instance, the set_bit example macro could be used with other types than standard integers, if more types need to be used with this macro it is necessary to declare additional wrapper functions for each different type to be used.
+\section{Pointers}\label{sec:pointers}
+Ada can reference a pointer in three ways: the access of a type, an array or by using the Interfaces.C.Pointers. Also  In the special case of a char * the Ada type String and the package Interfaces.C.Strings can instead be used, see more in Strings (section \ref{sec:cstrings}). Another special case is the record, where the array must be used with an access type.
+\\
+When a C function can be mapped as a procedure it is possible in Ada to use an in out parameters to map a pointer instead, this should be considered for future use starting in Ada 2012 see In out parameter(section \ref{sec:inout}).
+\\
+If an array is created in C it will begin on index 0 regardless of what you try to bound it to in Ada, also most C implementations will assume an array starts on index 0.
+\subsection{What could a pointer from C be?}
+Consider a function in C with the parameter of the type T * param, what can it actually be?
+\begin{itemize}
+\item A pointer to one element of the type T.
+\item An array of T.
+\end{itemize}
+What about the T ** type what different meanings can it have?
+\begin{itemize}
+\item A pointer to a pointer of type T.
+\item A pointer to an array of T.
+\item A two dimensional array of type T.
+\end{itemize}
+This of course continues for each level of the pointer with adding a N-level array and pointers to the previous level alternatives.
+\\
+The single pointer is trivial to map in Ada since the Interfaces.C.Pointers can be used in both cases, if a more high level Interface is required, an analysis of the code that is imported is needed to map it to either an array or an access type. The second level pointer is trickier since to map a two dimensional array successfully, it is needed in most cases to use an array of Interfaces.C.Pointers. So that each array element is a pointer from Interfaces.C.Pointers.
+\subsection{Mapping int * to Ada}\label{sec:startoada}
+Consider the following function in C:
+\begin{lstlisting}
+void foo(int *value);
+\end{lstlisting}
+Without knowing if the parameter is an array or just a pointer to a single value we present the three ways that is always usable to map the parameter in Ada.
+\subsubsection{Access to a variable}
+Using the access keyword a direct translation from a C pointer to an Ada type is possible, however since pointer arithmetic's in Ada do not work on access types this way will not be able to map an array without using type conversions... Using type conversions is not recommended when it is not necessary (see Void * in section  \ref{sec:voidstar}), due to unsafe practices and added complexity. 
+\\
+Ada specification of a function comparable to the C function (in section \ref{sec:startoada})using access:
+\begin{lstlisting}
+procedure foo(value : access Integer);
+\end{lstlisting}
+\subsubsection{Arrays}
+It is possible to map a C pointer directly to an Ada array. An array in Ada can even be used to reference a single value pointer if an array with only one element is used.
+\\
+Ada specification of a function comparable to the C function(in section \ref{sec:startoada})  using array and type declaration of an array type:
+\begin{lstlisting}
+type Integer_Array is array (Integer range <>) 
+	of aliased Integer;
+
+procedure foo(values : Integer_Array);
+\end{lstlisting}
+Mapping a bounded array as a pointer will of course cause problems, since a C pointer or array does not not share its bounds with Ada. If an element that does not exist in C is referenced in Ada an access violation will occur. This of course works both ways so if C is expecting an array with ten elements and Ada provides one with five elements an access violation will occur in C instead.
+\\
+Something worth nothing is that access to an array does not equal a pointer to an array in C and is instead equal to just a normal array in C.
+\subsubsection{Interfaces.C.Pointers}
+Using the generic package Interfaces.C.Pointers to map C pointers in Ada might add a bit more complexity then using the previous alternatives. Interfaces.C.Pointers does make up for the added complexity with additional functionality like pointer arithmetic's and the possibility of terminated arrays to avoid the problems found when using arrays to map C pointers.
+\\
+Ada specification of the C function (in section \ref{sec:startoada}) using Interfaces.C.Pointers to map a C pointer into Ada:
+\begin{lstlisting}
+type Integer_Array is array (Integer range <>) 
+	of aliased Integer;
+package Integer_Pointer is 
+	new Interfaces.C.Pointers(Integer, 
+				  Integer, 
+				  Integer_Array, 
+				  0);
+
+procedure foo(values : Integer_Pointer.Pointer);
+\end{lstlisting}
+\subsection{Mapping int ** to Ada}
+Consider the following C function taking a double pointer integer as a parameter:
+\begin{lstlisting}
+void foo (int ** value);
+\end{lstlisting}
+We already know what a single level pointer can be referencing, but how is this translated in Ada?
+\subsubsection{Access to access}
+If the value variable is a pointer to a pointer then an access type is needed since Ada does not support anonymous types (type without a name) that is access access.
+\begin{lstlisting}
+type Integer_Ptr is access Integer;
+procedure foo (value : access Integer_Ptr);
+\end{lstlisting}
+While an int ** might not be used a lot, if we considered value instead as a linked list then it is a lot more common to use the ** , so that it is possible to make changes on the linked list. The only change needed to use this way to reference a C Pointer with a record instead,  is to change the access type to be an access to a record instead.
+\subsubsection{Access to array}
+Access to Ada arrays do not equal a pointer to an array in C, so to  map a int ** as a pointer to an array in Ada it is required to create an access type to an array and use access to that type instead.
+\begin{lstlisting}
+type Integer_Array is array (Integer range <>) 
+	of aliased Integer;
+type Integer_Array_Access is access Integer_Array;
+procedure foo (value : access Integer_Array_Access);
+\end{lstlisting}
+When this is actually used an array with bounds needs be be passed even if the array is created in C.
+\subsubsection{Access to Interfaces.C.Pointers}
+A pointer to an array can also be mapped with Interfaces.C.Pointers by passing it as access to the C function.
+\begin{lstlisting}
+type Integer_Array is array (Integer range <>) 
+	of aliased Integer;
+
+package Integer_Pointer is 
+	new Interfaces.C.Pointers(Integer, 
+				  Integer, 
+				  Integer_Array, 
+				  0);
+
+procedure foo(values : access Integer_Pointer.Pointer);
+\end{lstlisting}
+\subsubsection{Two dimensional arrays}
+Mapping an unbounded two dimensional array from C in Ada is a bit trickier. Since it needs to be an array of Interfaces.C.Pointers pointers.
+\begin{lstlisting}
+type Integer_Array is array (Integer range <>) 
+	of aliased Integer;
+package Integer_Pointer is 
+	new Interfaces.C.Pointers(Integer, 
+				  Integer, 
+				  Integer_Array, 
+				  0); 
+type Integer_Pointer_Array is array (Integer range <>) 
+	of Integer_Pointer.Pointer;
+
+procedure foo(value : Integer_Pointer_Array);
+\end{lstlisting}
+Just like one dimensional arrays if the two dimensional array has bounds in C then an other method can be used see Constrained Arrays(section \ref{sec:costrarray}) for more information.
+\section{In out parameter}\label{sec:inout}
+Another way to map C pointers in Ada is, when they are passed as parameters is to use the in and out keywords on the parameter instead. So a variable that is a pointer in C can be called as a in out variable in Ada instead. In Ada 2005 only procedures can use in out parameters, in the upcoming Ada 2012\cite{ada2012} functions will also have support for in out parameters.
+\\
+An in out parameter is equivalent to a parameter passed as access.
+\\
+C void function taking a pointer as parameter:
+\begin{lstlisting}
+void foo(int * value);
+\end{lstlisting}
+The corresponding Ada function mapping the C pointer using an in out parameter:
+\begin{lstlisting}
+procedure foo (value : in out Integer);
+\end{lstlisting}
+In Ada 2012 using in out parameters to map C pointers should be a homogeneous way of mapping different pointer types seamlessly in Ada. More testing will be required for the more advanced types of pointers to make sure they are still working correctly when passed as in out parameters.
+\section{Void *}\label{sec:voidstar}
+In C the void * is often used to allow the use of arbitrary types in functions or structs, since Ada does not have a void type we need a way to work around it.
+The first way of mapping a void * in Ada is by using generics to allow arbitrary types, if generics is used any Ada type can be sent to a function by sending an access to the generic type. The second way is to use an access type that is converted to the desired type with Ada.Unchecked_Conversion.
+\\
+C void pointer example:
+\begin{lstlisting}
+void foo(void * param);
+\end{lstlisting}
+\begin{lstlisting}
+double value = 0.1;
+foo((void *)&value);
+\end{lstlisting}
+Ada void pointer using generics example:
+\begin{lstlisting}
+generic
+	type Element is private;
+procedure foo (Param : access Element);
+\end{lstlisting}
+\begin{lstlisting}
+procedure Foo_Lf is new foo(Long_Float);
+Foo_Lf(0.1);
+\end{lstlisting}
+Void pointer in Ada using Unchecked_Conversion example:
+\begin{lstlisting}
+type Lf_Ptr is access all Long_Float;
+type Void_Ptr is access all Integer;
+
+function To_Void is new Ada.Unchecked_Conversion
+	(Target => Void_Ptr, Source => Lf_Ptr);
+procedure foo (Param : Void_Ptr);
+\end{lstlisting}
+\begin{lstlisting}
+Value : aliased Long_Float := 0.1;
+foo(To_Void(Value'access));
+\end{lstlisting}
+\subsection{Pointers in records}\label{sec:ptrinrecord}
+Normal pointers work in the same way as when mapping C pointers with Ada functions, however when mapping pointers as arrays in records instead access to an array is needed. Unless the array is bounded in C then a similar bounded array in Ada will be equal.
+\\
+A C struct with three different types of pointers:
+\begin{lstlisting}
+typedef struct {
+	int * value;
+	int * value_array;
+	int values[10];
+} foo;
+\end{lstlisting}
+The corresponding Ada records with all three pointers mapped to Ada:
+\begin{lstlisting}
+type Integer_Array is array (Integer range <>) of Integer;
+type Integer_Array_Ptr is access Integer_Array;
+
+type foo is record
+	value : access Integer;
+	value_array : Integer_Array_Ptr;
+	values : Integer_Array(0 .. 9);
+end record;
+\end{lstlisting}
+The reason for the unbounded array to be used as an access type instead of directly as an array is due to Ada having bounds information embedded in the type. In a similar way unbounded two dimensional arrays must also be used as access in records.
+\subsection{Constrained Arrays}\label{sec:costrarray}
+Arrays with known constraints can be directly mapped between Ada and C. Although it is not common to use constrained arrays in parameters in C consider the following function that takes such a parameter.
+\begin{lstlisting}
+void c_proc (int arr[5]);
+\end{lstlisting}
+The equivalent in Ada is to declare a constrained array type and a procedure that takes the new type as a parameter. For example,
+\begin{lstlisting}
+type Constrained_Array is array (Integer range 1 .. 5) 
+	of Integer;
+
+procedure Proc (Arr : Constrained_Array);
+pragma Import (C, Proc, "c_proc");
+\end{lstlisting}
+It is also possible to use unconstrained array types from Ada to map to a constrained array in C.
+\begin{lstlisting}
+type Unconstrained_Array is array (Integer range <>) 
+	of Integer;
+
+procedure Proc (Arr : Unconstrained_Array);
+pragma Import (C, Proc, "c_proc");
+\end{lstlisting}
+However, this is prone to errors as an array that is smaller than the bounds expected by the C function might cause undefined behaviour.
+\begin{lstlisting}
+-- Expected parameter by Proc (c_proc), works
+Proc((1, 2, 3, 4, 5));
+-- Array to short, potential heap corruption 
+Proc ((1, 2, 3));
+-- A longer array causes no problems
+Proc ((1, 2, 3, 4, 5, 6, 7, 8, 9, 10)); 
+\end{lstlisting}
+The three different cases above shows the different cases an unconstrained array type might be used. The array in the first case is the appropriate size and therefore causes no problems. The second array is too short, this might lead to undefined behaviour. The last case might look as though it could potentially cause undefined behaviour, however, this works fine and the function can access data outside the specified bounds (although that would constitute an improper implementation).
+\subsection{Strings}\label{sec:cstrings}
+A C char * can be mapped like a regular pointer or by using the string specific types from Ada String and Interfaces.C.Strings.Chars_Ptr. What needs to be remembered is that char * needs to be nul terminated in most cases, Ada strings are not, Interfaces.C.Strings.Chars_Ptr on the other hand is nul terminated.
+\subsection{Function pointers}
+Ada provide accesses to subprograms that can be mapped directly to the function pointers available in C. A function pointer in C can be declared in one of two ways, either by creating a new type with the keyword typedef.
+\begin{lstlisting}
+typedef int (*Function_Pointer) (int);
+
+void Function_Pointer_Example (Function_Pointer func);
+\end{lstlisting}
+The above example creates a type Function_Pointer that is a pointer to a function which takes an integer as a parameter and returns an integer as result. If the type will only be used for one specific function it can be more convenient to declare the function pointer anonymously directly in the functions parameter list, for example
+\begin{lstlisting}
+void Function_Pointer_Example 
+	(int (*Function_Pointer) (int));
+\end{lstlisting}
+Ada 2005 supports both methods of having accesses to subprograms as well, however when interfacing with C it is not possible to use anonymous types because the Ada access types require a convention pragma, which is not possible to specify for an anonymous type.
+\begin{lstlisting}
+type Function_Access is 
+	access function (Param : Integer) return Integer;
+pragma Convention (C, Function_Access);
+
+procedure Access_Example (Func : Function_Access);
+pragma Import 
+	(C, Access_Example, "Function_Pointer_Example");
+\end{lstlisting}
+The example above works because it is possible to set the convention of the access type, making it compatible with C pointers.
+Although anonymous subprogram access types were introduced in Ada 2005, it is not possible to use an anonymous access when interfacing with C. Consider the following example:
+\begin{lstlisting}
+procedure Access_Example 
+	(Func : access function (param : Integer) 
+			return Integer);
+pragma Import 
+	(C, Access_Example, "Function_Pointer_Example");
+\end{lstlisting}
+Although the code is syntactically correct it will not compile because of a convention mismatch in the Func parameter. Since access types require a C convention when used in C interfaces it is impossible to use an anonymous type because no convention can be applied to these types.
+\section{Type conformance between Ada and C}
+\subsection{Basic types}
+\begin{tabular}{| p{2cm} | l | l | l |}
+\hline
+C & Ada Standard\footnote{10.1 Interfacing to C
+Standard Ada types may be used directly. This may be less portable to other compilers, but will work on all GNAT compilers, which guarantee correspondence between the C and Ada types.} & Ada Interface & Ada Interfaces.C \\ \hline
+int &	Integer &	Integer_32 &	int \\ \hline
+long &	Long_Integer &	Integer_32 &	long \\ \hline
+long long &	Long_Long_Integer &	Integer_64 &	 \\ \hline
+short	& Short_Integer &	Integer_16 &	short\\ \hline
+unsigned&	&	Unsigned_32 &	unsigned\\ \hline
+unsigned long	& &	Unsigned_32 &	unsigned_long\\ \hline
+unsigned long long &	&	Unsigned_64	& \\ \hline
+unsigned short	 & &	Unsigned_16 &	unsigned_short \\ \hline
+float	& Float	 & IEEE_Float_32\footnote{The size of IEEE_Float_32 is not guaranteed to match the size of a standard C float.} &	C_float \\ \hline
+double	& Long_Float &	IEEE_Float_64\footnote{The size of IEEE_Float_64 is not guaranteed to match the size of a standard C double.} &	double \\ \hline
+long double&	Long_Float &	IEEE_Float_64 &	long_double \\ \hline
+char	&Character &	Integer_8 &	char \\ \hline
+unsigned char &  &		Unsigned_8&	unsigned_char\\ \hline
+\end{tabular}
+\subsection{Structs , arrays and pointers}
+Using integer as example should be same for all types. We assume here that * does not equal array if it does it maps like []. For more information see the appropriate section.\\
+\begin{tabular}{| l | p{10cm} |}
+\hline
+struct	& record, with pragma Convention(C_Pass_By_Copy, <type name>); \\ \hline
+struct  * &	access to record \\ \hline
+int[]	& array or access to array \\ \hline
+int[][]	& array of Interfaces.C.Pointers.Pointer \\ \hline
+int[n]	& array (0 .. n - 1) \\ \hline
+int[n][m] &	array (0 .. n -1, 0 .. m - 1) \\ \hline
+int *	& access Integer \\ \hline
+int **	& access Integer_Access\footnote{_Access denotes a type created as an access type to the prefix type. (type Integer_Access is access Integer)} \\ \hline
+char[]	& String, ends with Nul or Interfaces.C.Strings.Chars_Ptr \\ \hline
+char[][] &	Interfaces.C.Strings.Chars_Ptr_Array \\ \hline
+char *	& access Character \\ \hline
+char ** &	access Character_Access\footnote{_Access denotes a type created as an access type to the prefix type. (type Character_Access is access Character)} \\ \hline
+\end{tabular}
+\section{Pragmas, Conventions and Keywords}
+\subsection{Convention C_Pass_By_Copy}
+Used with records so that they can be passed like a C struct when not using them as a pointer.
+\subsection{Convention C}
+Required on certain types like enumerations and function pointers to make them behave like their C equals. In GNAT most types have this convention by default.
+\subsection{Pragma Unchecked_Union}
+Used on an Ada variant record to make it compatible into a C union.
+\subsection{Pragma Import}
+Allows Ada programs to call C functions.
+\subsection{Aliased}
+Suggests to the compiler that it should give an element or a type its own address. This is required on arrays to make them C compatible.

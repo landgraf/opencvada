@@ -49,8 +49,8 @@ package body Imperium_Plures_Supplicium is
                                    Vector_Position  : out Integer;
                                    Have_Full        : out Boolean) is
       begin
-         if (Buffer_Lengths (Buffer) > -1) or
-           (Number_Of_Full_Packages > 0) or
+         if (Buffer_Lengths (Buffer) > -1) and
+           (Number_Of_Full_Packages > 0) and
            (Full_Package_Exists = True) then
             case Buffer is
                when Config | Control | Memory =>
@@ -148,7 +148,7 @@ package body Imperium_Plures_Supplicium is
                   Temp : Vector_Parsed_Frame := Parsed_Vector.Element (Data_Buffer, I);
                begin
                   if Temp.Length >= 0 then
-                     if temp.Buffer (0).Constant_Head.Package_Seq = Frame.Constant_Head.Package_Seq then
+                     if Temp.Buffer (0).Constant_Head.Package_Seq = Frame.Constant_Head.Package_Seq then
                         --                          We Have A Match
                         Vector_Position := Integer (I);
                         Exists := True;
@@ -161,8 +161,8 @@ package body Imperium_Plures_Supplicium is
          end if;
          --No Match new package Should Be Added
          Vector_Position := -1;
-            Exists :=  False;
-            return;
+         Exists :=  False;
+         return;
       end Package_Exists;
 
       -- Adds frame to last spot in specified buffer.
@@ -171,9 +171,9 @@ package body Imperium_Plures_Supplicium is
          Length : Integer := Buffer_Lengths (Buffer) + 1;
       begin
          case Buffer is
-            --type Buffer_Type is (Config, Control, Data, Memory);
+         --type Buffer_Type is (Config, Control, Data, Memory);
             when Config | Control | Memory =>
-               if Length > C_C_M_Buffer(Buffer)'Last then
+               if Length > C_C_M_Buffer (Buffer)'Last then
                   -- Should not happen
                   -- this is a major fault in code
                   -- and or several devices using same address
@@ -193,7 +193,7 @@ package body Imperium_Plures_Supplicium is
                   raise Package_Buffer_Logic;
                else
                   C_C_M_Buffer (Buffer) (Length) := Frame;
-                  Update_Full_Package(Eof => Frame.Constant_Head.Eof,Remove => False);
+                  Update_Full_Package (Eof => Frame.Constant_Head.Eof, Remove => False);
                   Buffer_Lengths (Buffer) := Length; -- update to point at this frame
                end if;
             when Data =>
@@ -236,7 +236,7 @@ package body Imperium_Plures_Supplicium is
 
       -- Figures out by itself where to add the frame.
       -- Not as smart as it sounds :(
-      procedure Smart_Add_Frame (Frame : in Parsed_Raw_Frame;
+      procedure Smart_Add_Frame (Frame    : in Parsed_Raw_Frame;
                                  Is_Added : out Boolean) is
       begin
          Is_Added := True;
@@ -245,6 +245,102 @@ package body Imperium_Plures_Supplicium is
          when Not_A_Buffer_Type | Package_Buffer_Cant_Add | Package_Buffer_Overflow | Package_Buffer_Logic =>
             Is_Added := False;
       end Smart_Add_Frame;
+
+      -- returns if full...
+      -- returns first available full data buffer...
+      -- removes in buffer_type order...
+      procedure Smart_Remove_Frames (Frames : out Parsed_Frame_Array) is
+         Vector_Position : Integer;
+         Is_Full         : Boolean;
+      begin
+         for I in Buffer_Type loop
+            Have_Full_Package (I, Vector_Position, Is_Full);
+            if (Is_Full and I = Data) then
+               --                 Remove_From_Vector
+               Remove_Frames (I, Vector_Position, Frames);
+               return;
+            elsif (Is_Full) then
+               Remove_Frames (I, Frames);
+               return;
+            else
+               raise Nothing_To_See_Here_Move_Along; -- rename me
+            end if;
+         end loop;
+      exception
+            -- no full things..
+         when Nothing_To_See_Here_Move_Along =>
+            declare
+               Empty : Parsed_Frame_Array (1 .. 0);
+            begin
+               Frames := Empty;
+               return;
+            end;
+      end Smart_Remove_Frames;
+
+      -- removes a frame from the specific buffer
+      procedure Remove_Frames (Buffer : in Buffer_Type;
+                               Frames : out Parsed_Frame_Array) is
+         Length : Integer := Buffer_Lengths (Buffer);
+         Is_Full : Boolean;
+      begin
+         Have_Full_Package (Buffer, Is_Full);
+         if (Length = -1 or (not Is_Full)) and not (Buffer = Data) then
+            raise Nothing_To_See_Here_Move_Along;
+         else
+         case Buffer is
+            when Config | Control | Memory =>
+               declare
+                  Temp : Parsed_Frame_Array (0 .. Length);
+               begin
+                  Temp := Parsed_Frame_Array (C_C_M_Buffer (Buffer) (0 .. Length));
+                  Update_Full_Package (True, True);
+                  Buffer_Lengths (Buffer) := -1;
+                  return;
+               end;
+            when Data =>
+               declare
+                  Vec_Position : Integer;
+               begin
+                  Have_Full_Package (Buffer, Vec_Position, Is_Full);
+                  if not Is_Full then
+                     raise Nothing_To_See_Here_Move_Along;
+                  else
+                     Remove_Frames (Buffer, Vec_Position, Frames);
+                     return;
+                  end if;
+               end;
+            end case;
+         end if;
+      end Remove_Frames;
+
+      procedure Remove_Frames (Buffer          : in Buffer_Type;
+                               Vector_Position : in Integer;
+                               Frames          : out Parsed_Frame_Array;
+                               Unsafe          : in Boolean := False) is
+         Temp_Pos : Integer;
+         Is_Full  : Boolean;
+         Temp     : Vector_Parsed_Frame;
+      begin
+         case Buffer is
+            when Config | Control | Memory =>
+               Remove_Frames (Buffer, Frames);
+               return;
+            when Data =>
+               Have_Full_Package (Buffer, Temp_Pos, Is_Full);
+               if (Is_Full and Vector_Position = Temp_Pos) or Unsafe then
+                  -- remove_frame
+                  Temp := Parsed_Vector.Element (Data_Buffer, Vector_Position);
+                  declare
+                     Out_Frame : Parsed_Frame_Array (0 .. Temp.Length);
+                  begin
+                     null;
+                  end;
+                  Update_Full_Package (True, True);
+               else
+                  raise Nothing_To_See_Here_Move_Along;
+               end if;
+         end case;
+      end Remove_Frames;
 
       -- Adds a frame to a very specific position /needs two maybe/
       -- Should not look at any thing just add the frame to the specified position.
@@ -258,6 +354,7 @@ package body Imperium_Plures_Supplicium is
             when Config | Control | Memory =>
                C_C_M_Buffer (Buffer) (Position) := Frame;
                Update_Full_Package (Frame.Constant_Head.Eof, False);
+               Buffer_Lengths (Buffer) := Position; -- update to point at this frame
             when Data =>
                declare
                   Temp : Vector_Parsed_Frame := Parsed_Vector.Element (Data_Buffer, Buffer_Index (Vector_Position));
@@ -287,5 +384,5 @@ package body Imperium_Plures_Supplicium is
          when others =>
             raise Not_A_Buffer_Type;
       end case;
-      end Spec_Frame_List_To_Buffer_Type;
+   end Spec_Frame_List_To_Buffer_Type;
 end Imperium_Plures_Supplicium;
