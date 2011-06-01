@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2010.10.20)  1 JUN 2011 11:22
+This is pdfTeX, Version 3.1415926-1.40.10 (MiKTeX 2.8) (preloaded format=pdflatex 2010.10.20)  1 JUN 2011 11:33
 entering extended mode
-**C:/MDH/master_thesis/report/main.tex
-(C:/MDH/master_thesis/report/main.tex
+**C:/MDH/master_thesis/opencvada/tools/report/main.tex
+(C:/MDH/master_thesis/opencvada/tools/report/main.tex
 LaTeX2e <2009/09/24>
 Babel <v3.8l> and hyphenation patterns for english, dumylang, nohyphenation, ge
 rman, ngerman, german-x-2009-06-19, ngerman-x-2009-06-19, french, loaded.
@@ -322,7 +322,7 @@ File: lstlang1.sty 2004/09/05 1.3 listings language file
 ("C:\Program Files (x86)\MiKTeX 2.8\tex\latex\listings\lstlang1.sty"
 File: lstlang1.sty 2004/09/05 1.3 listings language file
 )
-(C:\MDH\master_thesis\report\main.aux)
+(C:\MDH\master_thesis\opencvada\tools\report\main.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
 LaTeX Font Info:    ... okay on input line 13.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 13.
@@ -350,11 +350,11 @@ LaTeX Font Info:    ... okay on input line 13.
 \everyMPtoPDFconversion=\toks21
 )
 \c@lstlisting=\count103
- (C:\MDH\master_thesis\report\title.tex [1
+ (C:\MDH\master_thesis\opencvada\tools\report\title.tex [1
 
-{C:/ProgramData/MiKTeX/2.8/pdftex/config/pdftex.map}]) (C:\MDH\master_thesis\re
-port\abstract.tex) [1]
-(C:\MDH\master_thesis\report\main.toc
+{C:/ProgramData/MiKTeX/2.8/pdftex/config/pdftex.map}])
+(C:\MDH\master_thesis\opencvada\tools\report\abstract.tex) [1]
+(C:\MDH\master_thesis\opencvada\tools\report\main.toc
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 2.
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -364,12 +364,12 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 ] [3])
 \tf@toc=\write3
  [4]
-(C:\MDH\master_thesis\report\main.lof [5
+(C:\MDH\master_thesis\opencvada\tools\report\main.lof [5
 
 ])
 \tf@lof=\write4
  [6]
-(C:\MDH\master_thesis\report\introduction.tex
+(C:\MDH\master_thesis\opencvada\tools\report\introduction.tex
 Chapter 1.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 2.
@@ -383,7 +383,7 @@ Overfull \hbox (14.41223pt too wide) in paragraph at lines 14--19
 nc-tions to unchecked_-
  []
 
-[2]) (C:\MDH\master_thesis\report\designopencvada.tex [3]
+[2]) (C:\MDH\master_thesis\opencvada\tools\report\designopencvada.tex [3]
 Chapter 2.
 
 Underfull \hbox (badness 10000) in paragraph at lines 8--10
@@ -402,7 +402,8 @@ Overfull \hbox (3.92241pt too wide) in paragraph at lines 68--77
 [] 
  []
 
-[6] [7] [8]) (C:\MDH\master_thesis\report\benchmark.tex [9]
+[6] [7] [8]) (C:\MDH\master_thesis\opencvada\tools\report\benchmark.tex
+[9]
 Chapter 3.
 [10
 
@@ -431,10 +432,11 @@ File: ./images/bigTestChart.png Graphic file (type png)
 <./images/LongTestChart.png, id=76, 602.25pt x 372.39125pt>
 File: ./images/LongTestChart.png Graphic file (type png)
 
-<use ./images/LongTestChart.png> [13 <C:/MDH/master_thesis/report/images/GuiTes
-tChart.png (PNG copy)>] [14 <C:/MDH/master_thesis/report/images/bigTestChart.pn
-g (PNG copy)> <C:/MDH/master_thesis/report/images/LongTestChart.png (PNG copy)>
-] <./images/memdelaunay.png, id=83, 602.25pt x 372.39125pt>
+<use ./images/LongTestChart.png> [13 <C:/MDH/master_thesis/opencvada/tools/repo
+rt/images/GuiTestChart.png (PNG copy)>] [14 <C:/MDH/master_thesis/opencvada/too
+ls/report/images/bigTestChart.png (PNG copy)> <C:/MDH/master_thesis/opencvada/t
+ools/report/images/LongTestChart.png (PNG copy)>]
+<./images/memdelaunay.png, id=83, 602.25pt x 372.39125pt>
 File: ./images/memdelaunay.png Graphic file (type png)
 
 <use ./images/memdelaunay.png>
@@ -465,11 +467,12 @@ File: ./images/mempolar.png Graphic file (type png)
 <./images/MemUsePolar.png, id=90, 602.25pt x 372.39125pt>
 File: ./images/MemUsePolar.png Graphic file (type png)
 
-<use ./images/MemUsePolar.png> [15 <C:/MDH/master_thesis/report/images/memdelau
-nay.png (PNG copy)>] [16 <C:/MDH/master_thesis/report/images/MemUseDelaunay.png
- (PNG copy)> <C:/MDH/master_thesis/report/images/memfarneback.png (PNG copy)>]
-[17 <C:/MDH/master_thesis/report/images/MemUseFarneback.png (PNG copy)> <C:/MDH
-/master_thesis/report/images/memmotion.png (PNG copy)>]
+<use ./images/MemUsePolar.png> [15 <C:/MDH/master_thesis/opencvada/tools/report
+/images/memdelaunay.png (PNG copy)>] [16 <C:/MDH/master_thesis/opencvada/tools/
+report/images/MemUseDelaunay.png (PNG copy)> <C:/MDH/master_thesis/opencvada/to
+ols/report/images/memfarneback.png (PNG copy)>] [17 <C:/MDH/master_thesis/openc
+vada/tools/report/images/MemUseFarneback.png (PNG copy)> <C:/MDH/master_thesis/
+opencvada/tools/report/images/memmotion.png (PNG copy)>]
 <./images/linuxguichart.png, id=100, 602.25pt x 372.39125pt>
 File: ./images/linuxguichart.png Graphic file (type png)
 
@@ -489,11 +492,12 @@ File: ./images/linuxnullchart.png Graphic file (type png)
 <./images/membaseline.png, id=104, 602.25pt x 372.39125pt>
 File: ./images/membaseline.png Graphic file (type png)
 
-<use ./images/membaseline.png> [18 <C:/MDH/master_thesis/report/images/MemUseMo
-tion.png (PNG copy)>] [19 <C:/MDH/master_thesis/report/images/mempolar.png (PNG
- copy)> <C:/MDH/master_thesis/report/images/MemUsePolar.png (PNG copy)>]
-[20 <C:/MDH/master_thesis/report/images/linuxguichart.png (PNG copy)> <C:/MDH/m
-aster_thesis/report/images/linuxbigchart.png (PNG copy)>]
+<use ./images/membaseline.png> [18 <C:/MDH/master_thesis/opencvada/tools/report
+/images/MemUseMotion.png (PNG copy)>] [19 <C:/MDH/master_thesis/opencvada/tools
+/report/images/mempolar.png (PNG copy)> <C:/MDH/master_thesis/opencvada/tools/r
+eport/images/MemUsePolar.png (PNG copy)>] [20 <C:/MDH/master_thesis/opencvada/t
+ools/report/images/linuxguichart.png (PNG copy)> <C:/MDH/master_thesis/opencvad
+a/tools/report/images/linuxbigchart.png (PNG copy)>]
 <./images/bgfg.png, id=115, 978.65625pt x 415.5525pt>
 File: ./images/bgfg.png Graphic file (type png)
  <use ./images/bgfg.png>
@@ -512,13 +516,15 @@ File: ./images/motempl.png Graphic file (type png)
 <./images/mser.png, id=120, 612.03656pt x 493.845pt>
 File: ./images/mser.png Graphic file (type png)
  <use ./images/mser.png>
-[21 <C:/MDH/master_thesis/report/images/NullTestChart.png (PNG copy)>] [22 <C:/
-MDH/master_thesis/report/images/linuxnullchart.png (PNG copy)> <C:/MDH/master_t
-hesis/report/images/membaseline.png (PNG copy)>])
-(C:\MDH\master_thesis\report\userguide.tex [23 <C:/MDH/master_thesis/report/ima
-ges/bgfg.png>] [24 <C:/MDH/master_thesis/report/images/findobj.png>] [25 <C:/MD
-H/master_thesis/report/images/latentsvm.png> <C:/MDH/master_thesis/report/image
-s/motempl.png>] [26 <C:/MDH/master_thesis/report/images/mser.png>] [27]
+[21 <C:/MDH/master_thesis/opencvada/tools/report/images/NullTestChart.png (PNG 
+copy)>] [22 <C:/MDH/master_thesis/opencvada/tools/report/images/linuxnullchart.
+png (PNG copy)> <C:/MDH/master_thesis/opencvada/tools/report/images/membaseline
+.png (PNG copy)>]) (C:\MDH\master_thesis\opencvada\tools\report\userguide.tex
+[23 <C:/MDH/master_thesis/opencvada/tools/report/images/bgfg.png>] [24 <C:/MDH/
+master_thesis/opencvada/tools/report/images/findobj.png>] [25 <C:/MDH/master_th
+esis/opencvada/tools/report/images/latentsvm.png> <C:/MDH/master_thesis/opencva
+da/tools/report/images/motempl.png>] [26 <C:/MDH/master_thesis/opencvada/tools/
+report/images/mser.png>] [27]
 Chapter 4.
 
 Overfull \hbox (2.9177pt too wide) in paragraph at lines 22--24
@@ -537,7 +543,7 @@ Overfull \hbox (2.9177pt too wide) in paragraph at lines 469--470
 [][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[41] [42]) (C:\MDH\master_thesis\report\c.tex [43]
+[41] [42]) (C:\MDH\master_thesis\opencvada\tools\report\c.tex [43]
 Chapter 5.
 [44
 
@@ -557,7 +563,11 @@ Overfull \hbox (18.15207pt too wide) in paragraph at lines 141--144
 -tives. In-ter-faces.C.Pointers
  []
 
-[48] [49] [50]
+[48] [49]
+
+LaTeX Warning: Citation `ada2012' on page 50 undefined on input line 208.
+
+[50]
 Overfull \hbox (2.9177pt too wide) in paragraph at lines 269--270
 [][][][][][][][][][][][][][][][][][][][][] 
  []
@@ -592,7 +602,7 @@ Overfull \hbox (0.463pt too wide) in paragraph at lines 365--381
 [] 
  []
 
-[54]) (C:\MDH\master_thesis\report\cpp.tex [55]
+[54]) (C:\MDH\master_thesis\opencvada\tools\report\cpp.tex [55]
 Chapter 6.
 [56
 
@@ -606,7 +616,7 @@ Overfull \hbox (2.9177pt too wide) in paragraph at lines 32--33
 [][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[57]) (C:\MDH\master_thesis\report\communication.tex [58]
+[57]) (C:\MDH\master_thesis\opencvada\tools\report\communication.tex [58]
 Chapter 7.
 <./images/CameraLost.jpg, id=247, 181.42781pt x 181.42781pt>
 File: ./images/CameraLost.jpg Graphic file (type jpg)
@@ -621,52 +631,59 @@ File: ./images/CameraSeq.jpg Graphic file (type jpg)
 
 <use ./images/CameraSeq.jpg> [59
 
-] [60 <C:/MDH/master_thesis/report/images/CameraLost.jpg> <C:/MDH/master_thesis
-/report/images/CameraNotSeq.jpg> <C:/MDH/master_thesis/report/images/CameraSeq.
-jpg>] [61]
-<./images/Transaction.png, id=260, 435.12563pt x 127.97812pt>
+] [60 <C:/MDH/master_thesis/opencvada/tools/report/images/CameraLost.jpg> <C:/M
+DH/master_thesis/opencvada/tools/report/images/CameraNotSeq.jpg> <C:/MDH/master
+_thesis/opencvada/tools/report/images/CameraSeq.jpg>] [61] <./images/Transactio
+n.png, id=260, 435.12563pt x 127.97812pt>
 File: ./images/Transaction.png Graphic file (type png)
 
 <use ./images/Transaction.png>
 <./images/RawEthernetHeader.jpg, id=261, 518.6878pt x 325.215pt>
 File: ./images/RawEthernetHeader.jpg Graphic file (type jpg)
 
-<use ./images/RawEthernetHeader.jpg> [62 <C:/MDH/master_thesis/report/images/Tr
-ansaction.png>] <./images/MainHeader.jpg, id=266, 475.02469pt x 176.91093pt>
+<use ./images/RawEthernetHeader.jpg> [62 <C:/MDH/master_thesis/opencvada/tools/
+report/images/Transaction.png>]
+<./images/MainHeader.jpg, id=266, 475.02469pt x 176.91093pt>
 File: ./images/MainHeader.jpg Graphic file (type jpg)
 
-<use ./images/MainHeader.jpg> [63 <C:/MDH/master_thesis/report/images/RawEthern
-etHeader.jpg>] [64 <C:/MDH/master_thesis/report/images/MainHeader.jpg>]
+<use ./images/MainHeader.jpg> [63 <C:/MDH/master_thesis/opencvada/tools/report/
+images/RawEthernetHeader.jpg>] [64 <C:/MDH/master_thesis/opencvada/tools/report
+/images/MainHeader.jpg>]
 <./images/HandshakeHeader.jpg, id=273, 470.50781pt x 161.85469pt>
 File: ./images/HandshakeHeader.jpg Graphic file (type jpg)
 
-<use ./images/HandshakeHeader.jpg> [65 <C:/MDH/master_thesis/report/images/Hand
-shakeHeader.jpg>] <./images/PingHeader.jpg, id=277, 476.53032pt x 176.15813pt>
+<use ./images/HandshakeHeader.jpg> [65 <C:/MDH/master_thesis/opencvada/tools/re
+port/images/HandshakeHeader.jpg>]
+<./images/PingHeader.jpg, id=277, 476.53032pt x 176.15813pt>
 File: ./images/PingHeader.jpg Graphic file (type jpg)
 
 <use ./images/PingHeader.jpg>
 <./images/SubscriptionHeader.jpg, id=278, 476.53032pt x 190.46156pt>
 File: ./images/SubscriptionHeader.jpg Graphic file (type jpg)
 
-<use ./images/SubscriptionHeader.jpg> [66 <C:/MDH/master_thesis/report/images/P
-ingHeader.jpg> <C:/MDH/master_thesis/report/images/SubscriptionHeader.jpg>]
+<use ./images/SubscriptionHeader.jpg> [66 <C:/MDH/master_thesis/opencvada/tools
+/report/images/PingHeader.jpg> <C:/MDH/master_thesis/opencvada/tools/report/ima
+ges/SubscriptionHeader.jpg>]
 <./images/DataTypeHeader.jpg, id=283, 465.99094pt x 27.85406pt>
 File: ./images/DataTypeHeader.jpg Graphic file (type jpg)
 
-<use ./images/DataTypeHeader.jpg> [67 <C:/MDH/master_thesis/report/images/DataT
-ypeHeader.jpg>] <./images/ImageHeader.jpg, id=287, 473.51906pt x 88.83188pt>
+<use ./images/DataTypeHeader.jpg> [67 <C:/MDH/master_thesis/opencvada/tools/rep
+ort/images/DataTypeHeader.jpg>]
+<./images/ImageHeader.jpg, id=287, 473.51906pt x 88.83188pt>
 File: ./images/ImageHeader.jpg Graphic file (type jpg)
 
-<use ./images/ImageHeader.jpg> [68 <C:/MDH/master_thesis/report/images/ImageHea
-der.jpg>] <./images/MatrixHeader.jpg, id=291, 472.76625pt x 102.3825pt>
+<use ./images/ImageHeader.jpg> [68 <C:/MDH/master_thesis/opencvada/tools/report
+/images/ImageHeader.jpg>]
+<./images/MatrixHeader.jpg, id=291, 472.76625pt x 102.3825pt>
 File: ./images/MatrixHeader.jpg Graphic file (type jpg)
 
 <use ./images/MatrixHeader.jpg>
 <./images/ArrayHeader.jpg, id=292, 472.76625pt x 101.62968pt>
 File: ./images/ArrayHeader.jpg Graphic file (type jpg)
 
-<use ./images/ArrayHeader.jpg> [69 <C:/MDH/master_thesis/report/images/MatrixHe
-ader.jpg> <C:/MDH/master_thesis/report/images/ArrayHeader.jpg>]
+<use ./images/ArrayHeader.jpg> [69 <C:/MDH/master_thesis/opencvada/tools/report
+/images/MatrixHeader.jpg> <C:/MDH/master_thesis/opencvada/tools/report/images/A
+rrayHeader.jpg>]
 <./images/ConfigurationHeader.jpg, id=296, 472.01344pt x 87.32625pt>
 File: ./images/ConfigurationHeader.jpg Graphic file (type jpg)
 
@@ -674,8 +691,9 @@ File: ./images/ConfigurationHeader.jpg Graphic file (type jpg)
 <./images/MemoryHeader.jpg, id=297, 472.76625pt x 146.79843pt>
 File: ./images/MemoryHeader.jpg Graphic file (type jpg)
 
-<use ./images/MemoryHeader.jpg> [70 <C:/MDH/master_thesis/report/images/Configu
-rationHeader.jpg> <C:/MDH/master_thesis/report/images/MemoryHeader.jpg>]
+<use ./images/MemoryHeader.jpg> [70 <C:/MDH/master_thesis/opencvada/tools/repor
+t/images/ConfigurationHeader.jpg> <C:/MDH/master_thesis/opencvada/tools/report/
+images/MemoryHeader.jpg>]
 <./images/GcpPc.png, id=301, 374.90062pt x 194.97844pt>
 File: ./images/GcpPc.png Graphic file (type png)
 
@@ -683,11 +701,12 @@ File: ./images/GcpPc.png Graphic file (type png)
 <./images/GcpThread.png, id=305, 170.13562pt x 230.36063pt>
 File: ./images/GcpThread.png Graphic file (type png)
 
-<use ./images/GcpThread.png>) (C:\MDH\master_thesis\report\conc.tex [72 <C:/MDH
-/master_thesis/report/images/GcpPc.png>] [73 <C:/MDH/master_thesis/report/image
-s/GcpThread.png>]
+<use ./images/GcpThread.png>)
+(C:\MDH\master_thesis\opencvada\tools\report\conc.tex [72 <C:/MDH/master_thesis
+/opencvada/tools/report/images/GcpPc.png>] [73 <C:/MDH/master_thesis/opencvada/
+tools/report/images/GcpThread.png>]
 Chapter 8.
-) (C:\MDH\master_thesis\report\fw.tex
+) (C:\MDH\master_thesis\opencvada\tools\report\fw.tex
 Overfull \hbox (1.40042pt too wide) in paragraph at lines 6--1
 \T1/cmr/m/n/10 The GIMME com-mu-ni-ca-tion pro-to-col was de-signed to be ex-pa
 nd-able and favour-
@@ -697,19 +716,16 @@ nd-able and favour-
 
 ] [75]
 Chapter 9.
-
-LaTeX Warning: Citation `ada2012chart' on page 76 undefined on input line 2.
-
-) (C:\MDH\master_thesis\report\main.bbl [76
+) (C:\MDH\master_thesis\opencvada\tools\report\main.bbl [76
 
 ])
-(C:\MDH\master_thesis\report\appendix1.tex [77
+(C:\MDH\master_thesis\opencvada\tools\report\appendix1.tex [77
 
 ]
 Appendix A.
 [78
 
-]) (C:\MDH\master_thesis\report\appendix2.tex [79]
+]) (C:\MDH\master_thesis\opencvada\tools\report\appendix2.tex [79]
 Appendix B.
 
 Overfull \hbox (2.9177pt too wide) in paragraph at lines 5--6
@@ -723,19 +739,19 @@ Overfull \hbox (2.9177pt too wide) in paragraph at lines 60--61
 [][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[81] [82]) [83] (C:\MDH\master_thesis\report\main.aux)
+[81] [82]) [83] (C:\MDH\master_thesis\opencvada\tools\report\main.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
  3760 strings out of 495285
- 50985 string characters out of 3179874
+ 51609 string characters out of 3179874
  148060 words of memory out of 3000000
  6858 multiletter control sequences out of 15000+200000
  16984 words of font info for 35 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 39i,16n,58p,1469b,1581s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 39i,16n,58p,1485b,1579s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600
 \ecti1000.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljfour\jknappe
 n\ec\dpi600\ecbx1200.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fonts\pk\ljf
@@ -751,7 +767,7 @@ r\jknappen\ec\dpi600\ecrm1000.pk> <C:\Users\niklas\AppData\Local\MiKTeX\2.8\fon
 ts\pk\ljfour\jknappen\ec\dpi600\ecrm1200.pk> <C:\Users\niklas\AppData\Local\MiK
 TeX\2.8\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx2074.pk><C:/Program Files (x86)/
 MiKTeX 2.8/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on main.pdf (90 pages, 2461773 bytes).
+Output written on main.pdf (90 pages, 2461838 bytes).
 PDF statistics:
  915 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

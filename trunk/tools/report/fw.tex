@@ -1,6 +1,6 @@
  \chapter{Future Work}
 For future work we have discussed and debated several ways of extending and improving OpenCvAda. We believe that OpenCvAda would benefit greatly from a new system to simplify the mapping of pointers to OpenCv. One possible solution becomes available when the new Ada 2012 ISO standard is released. In Ada 2012 \textit{in out} parameters will be usable in both procedures and functions \cite{ada2012chart}, it will then be possible to use these parameter types as a homogeneous pointer type instead of the access types currently being used.
-
+\\
 Another change would be look into the increased usage of generics on the Ada side or a change in the package layout. The C interface changes are not big and maybe not very interesting compared to what can be done with an Ada interface to the C++ version of OpenCv instead.
 \\
 The first steps would be to investigate, design and implement ways of mapping the two biggest culprits from C++ to Ada namely vectors and templates. For vectors the idea would be an Ada type that would make it possible to have a direct mapping to a C++ vector. While for templates what would be needed is not as clear and a lot more information is needed, for example it could involve some way of creating instance of C++ templates from Ada without being forced to hard code the allowed types.
